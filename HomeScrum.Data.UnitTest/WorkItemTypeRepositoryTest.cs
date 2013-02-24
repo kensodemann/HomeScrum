@@ -64,6 +64,23 @@ namespace HomeScrum.Data.UnitTest
       }
 
 
+      [TestMethod]
+      public void Add_AddsWorkItemTypeToDatabase()
+      {
+         var workItemType = new WorkItemType()
+         {
+            Name = "New WorkItem Type",
+            Description = "New one for Insert",
+            StatusCd = 'A',
+            IsTask = 'Y',
+            IsPredefined = 'Y'
+         };
+
+         _repository.Add( workItemType );
+         AssertCollectionContainsWorkItemType( _repository.GetAll(), workItemType );
+      }
+
+
       private void AssertCollectionContainsWorkItemType( ICollection<WorkItemType> workItemTypes, WorkItemType workItemType )
       {
          var workItemTypeFromCollection = workItemTypes.FirstOrDefault( x => x.Id == workItemType.Id );
