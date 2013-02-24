@@ -9,12 +9,11 @@ namespace HomeScrum.Data.SqlServer
 {
    public class DataObjectRepository<DataObjectBase> : IDataObjectRepository<DataObjectBase> where DataObjectBase : BaseDataObject
    {
-      public IEnumerable<DataObjectBase> GetAll()
+      public ICollection<DataObjectBase> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            string typename = typeof( DataObjectBase ).ToString();
-
+            return new List<DataObjectBase>();
             return session
                .CreateCriteria( typeof( DataObjectBase ).ToString() )
                .List<DataObjectBase>();
