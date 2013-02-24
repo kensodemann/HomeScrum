@@ -29,12 +29,26 @@ namespace HomeScrum.Data.SqlServer
 
       public void Add( DataObjectBase dataObject )
       {
-         throw new NotImplementedException();
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            using (ITransaction transaction = session.BeginTransaction())
+            {
+               session.Save( dataObject );
+               transaction.Commit();
+            }
+         }
       }
 
       public void Update( DataObjectBase dataObject )
       {
-         throw new NotImplementedException();
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            using (ITransaction transaction = session.BeginTransaction())
+            {
+               session.Update( dataObject );
+               transaction.Commit();
+            }
+         }
       }
 
       public void Delete( Guid id )
