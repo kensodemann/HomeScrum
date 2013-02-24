@@ -77,7 +77,21 @@ namespace HomeScrum.Data.UnitTest
          };
 
          _repository.Add( workItemType );
+         Assert.AreEqual( TestData.WorkItemTypes.GetLength( 0 ) + 1, _repository.GetAll().Count );
          AssertCollectionContainsWorkItemType( _repository.GetAll(), workItemType );
+      }
+
+      [TestMethod]
+      public void Update_ModifiesNameInDatabase()
+      {
+         var workItemType = TestData.WorkItemTypes[3];
+
+         workItemType.Name += "Modified";
+
+         _repository.Update( workItemType );
+
+         Assert.AreEqual( TestData.WorkItemTypes.GetLength( 0 ), _repository.GetAll().Count );
+         AssertWorkItemTypesAreEqual( workItemType, _repository.Get( workItemType.Id ) );
       }
 
 
