@@ -21,7 +21,10 @@ namespace HomeScrum.Data.SqlServer
 
       public DataObjectBase Get( Guid id )
       {
-         return default( DataObjectBase );
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            return session.Get<DataObjectBase>( id );
+         }
       }
 
       public void Add( DataObjectBase dataObject )

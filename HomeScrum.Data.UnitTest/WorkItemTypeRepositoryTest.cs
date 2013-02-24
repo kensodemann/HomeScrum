@@ -55,6 +55,14 @@ namespace HomeScrum.Data.UnitTest
          Assert.IsNull( workItemType );
       }
 
+      [TestMethod]
+      public void Get_ReturnsWorkItemType()
+      {
+         var workItemType = _repository.Get( TestData.WorkItemTypes[2].Id );
+
+         AssertWorkItemTypesAreEqual( TestData.WorkItemTypes[2], workItemType );
+      }
+
 
       private void AssertCollectionContainsWorkItemType( ICollection<WorkItemType> workItemTypes, WorkItemType workItemType )
       {
