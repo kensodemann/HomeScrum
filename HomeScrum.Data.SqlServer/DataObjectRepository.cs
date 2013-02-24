@@ -13,7 +13,6 @@ namespace HomeScrum.Data.SqlServer
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return new List<DataObjectBase>();
             return session
                .CreateCriteria( typeof( DataObjectBase ).ToString() )
                .List<DataObjectBase>();
@@ -22,7 +21,7 @@ namespace HomeScrum.Data.SqlServer
 
       public DataObjectBase Get( Guid id )
       {
-         throw new NotImplementedException();
+         return default( DataObjectBase );
       }
 
       public void Add( DataObjectBase dataObject )

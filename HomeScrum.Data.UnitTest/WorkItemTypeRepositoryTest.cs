@@ -22,21 +22,37 @@ namespace HomeScrum.Data.UnitTest
       public void InitializeTest()
       {
          TestData.BuildDatabase();
+         _repository = new DataObjectRepository<WorkItemType>();
       }
 
+      private IDataObjectRepository<WorkItemType> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllWorkItemTypes()
       {
-         IDataObjectRepository<WorkItemType> repository = new DataObjectRepository<WorkItemType>();
-
-         var workItemTypes = repository.GetAll();
+         var workItemTypes = _repository.GetAll();
 
          Assert.AreEqual( TestData.WorkItemTypes.GetLength( 0 ), workItemTypes.Count );
          foreach (var wit in TestData.WorkItemTypes)
          {
             AssertCollectionContainsWorkItemType( workItemTypes, wit );
          }
+      }
+
+      [TestMethod]
+      public void GetNonExistentWorkItemType_ReturnsNull()
+      {
+         var workItemType = _repository.Get( Guid.NewGuid() );
+
+         Assert.IsNull( workItemType );
+      }
+
+      [TestMethod]
+      public void GetUsingDefaultGuid_ReturnsNull()
+      {
+         var workItemType = _repository.Get( Guid.NewGuid() );
+
+         Assert.IsNull( workItemType );
       }
 
 
