@@ -48,8 +48,8 @@ namespace HomeScrum.Data.UnitTest
          new WorkItemType ()
          {
             Id=Guid.NewGuid(),
-            Name="Type 1",
-            Description="This is type number 1",
+            Name="SBI",
+            Description="Sprint Backlog Item",
             StatusCd='A',
             IsTask='Y',
             IsPredefined='Y'
@@ -57,8 +57,26 @@ namespace HomeScrum.Data.UnitTest
          new WorkItemType ()
          {
             Id=Guid.NewGuid(),
-            Name="Type 2",
-            Description="This is type number 2",
+            Name="PBI",
+            Description="Product BacklogItem",
+            StatusCd='A',
+            IsTask='N',
+            IsPredefined='Y'
+         },
+         new WorkItemType ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Bug",
+            Description="A problem with the software or design",
+            StatusCd='A',
+            IsTask='Y',
+            IsPredefined='Y'
+         },
+         new WorkItemType ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Issue",
+            Description="A problem in the process that is blocking someone",
             StatusCd='A',
             IsTask='Y',
             IsPredefined='Y'
