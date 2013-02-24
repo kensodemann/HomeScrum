@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A28EE600-6B54-4D61-8E60-8B32F3BEEFED}</ProjectGuid>
+    <ProjectGuid>{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HomeScrum.Data</RootNamespace>
-    <AssemblyName>HomeScrum.Data</AssemblyName>
+    <RootNamespace>HomeScrum.Data.SqlServer</RootNamespace>
+    <AssemblyName>HomeScrum.Data.SqlServer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,17 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\BaseDataObject.cs" />
-    <Compile Include="Domain\WorkItemType.cs" />
+    <Compile Include="DataObjectRepository.cs" />
+    <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IDataObjectRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\WorkType.hbm.xml" />
+    <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
+      <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
+      <Name>HomeScrum.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

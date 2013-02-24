@@ -5,6 +5,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Tier", "Data Tier", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeScrum.Data", "HomeScrum.Data\HomeScrum.Data.csproj", "{A28EE600-6B54-4D61-8E60-8B32F3BEEFED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeScrum.Data.SqlServer", "HomeScrum.Data.SqlServer\HomeScrum.Data.SqlServer.csproj", "{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeScrum.Data.TestConsole", "HomeScrum.Data.TestConsole\HomeScrum.Data.TestConsole.csproj", "{177F6A78-A887-4E61-8387-D2DEC92BCB66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +19,21 @@ Global
 		{A28EE600-6B54-4D61-8E60-8B32F3BEEFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A28EE600-6B54-4D61-8E60-8B32F3BEEFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A28EE600-6B54-4D61-8E60-8B32F3BEEFED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{177F6A78-A887-4E61-8387-D2DEC92BCB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{177F6A78-A887-4E61-8387-D2DEC92BCB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{177F6A78-A887-4E61-8387-D2DEC92BCB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{177F6A78-A887-4E61-8387-D2DEC92BCB66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A28EE600-6B54-4D61-8E60-8B32F3BEEFED} = {9273BD04-0627-44E6-A6E7-E7D3BD51FC9A}
+		{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5} = {9273BD04-0627-44E6-A6E7-E7D3BD51FC9A}
+		{177F6A78-A887-4E61-8387-D2DEC92BCB66} = {9273BD04-0627-44E6-A6E7-E7D3BD51FC9A}
 	EndGlobalSection
 EndGlobal

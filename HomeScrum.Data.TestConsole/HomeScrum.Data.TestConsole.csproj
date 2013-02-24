@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A28EE600-6B54-4D61-8E60-8B32F3BEEFED}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{177F6A78-A887-4E61-8387-D2DEC92BCB66}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HomeScrum.Data</RootNamespace>
-    <AssemblyName>HomeScrum.Data</AssemblyName>
+    <RootNamespace>HomeScrum.Data.TestConsole</RootNamespace>
+    <AssemblyName>HomeScrum.Data.TestConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,12 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,17 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\BaseDataObject.cs" />
-    <Compile Include="Domain\WorkItemType.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IDataObjectRepository.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\WorkType.hbm.xml" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\HomeScrum.Data.SqlServer\Hibernate.cfg.xml">
+      <Link>Hibernate.cfg.xml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Data.SqlServer\HomeScrum.Data.SqlServer.csproj">
+      <Project>{6b0b91f7-d752-4d5d-b3d2-bdc17c17a4a5}</Project>
+      <Name>HomeScrum.Data.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
+      <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
+      <Name>HomeScrum.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

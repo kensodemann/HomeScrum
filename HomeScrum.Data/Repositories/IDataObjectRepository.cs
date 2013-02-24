@@ -9,7 +9,7 @@ namespace HomeScrum.Data.Repositories
 {
    public interface IDataObjectRepository<DataObjectType> where DataObjectType : BaseDataObject
    {
-      IEnumerable<DataObjectType> Get();
+      IEnumerable<DataObjectType> GetAll();
       DataObjectType Get( Guid id );
 
       void Add( DataObjectType dataObject );
