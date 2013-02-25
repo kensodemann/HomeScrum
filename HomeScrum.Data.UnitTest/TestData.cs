@@ -3,10 +3,6 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Data.UnitTest
 {
@@ -27,9 +23,182 @@ namespace HomeScrum.Data.UnitTest
       public static void BuildDatabase()
       {
          new SchemaExport( _configuration ).Execute( false, true, false );
+         CreateInitialProjectStatuses();
+         CreateInitialSprintStatuses();
          CreateInitialWorkItemStatuses();
          CreateInitialWorkItemTypes();
       }
+
+      #region ProjectStatuses
+      private static void CreateInitialProjectStatuses()
+      {
+
+         using (ISession session = _sessionFactory.OpenSession())
+         using (ITransaction transaction = session.BeginTransaction())
+         {
+            foreach (var sprintStatus in ProjectStatuses)
+               session.Save( sprintStatus );
+            transaction.Commit();
+         }
+      }
+
+      public static readonly ProjectStatus[] ProjectStatuses = new[]
+      {
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Active",
+            Description="Active Project",
+            StatusCd='A',
+            IsActive='Y',
+            IsPredefined='Y'
+         },
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Inactive",
+            Description="No longer active",
+            StatusCd='A',
+            IsActive='N',
+            IsPredefined='Y'
+         },
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Closed",
+            Description="The project is closed",
+            StatusCd='A',
+            IsActive='N',
+            IsPredefined='Y'
+         },
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 1",
+            Description="Active Status, Is Active, Predefined",
+            StatusCd='A',
+            IsActive='Y',
+            IsPredefined='Y'
+         },
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 2",
+            Description="Inactive Status, Is Active, Predefined",
+            StatusCd='I',
+            IsActive='Y',
+            IsPredefined='Y'
+         },
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 1",
+            Description="Active Status, Is Not Active, Predefined",
+            StatusCd='A',
+            IsActive='N',
+            IsPredefined='Y'
+         },
+         new ProjectStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 1",
+            Description="Active Status, Is Active, Not Predefined",
+            StatusCd='A',
+            IsActive='Y',
+            IsPredefined='N'
+         }
+      };
+      #endregion
+
+      #region SprintStatuses
+      private static void CreateInitialSprintStatuses()
+      {
+
+         using (ISession session = _sessionFactory.OpenSession())
+         using (ITransaction transaction = session.BeginTransaction())
+         {
+            foreach (var sprintStatus in SprintStatuses)
+               session.Save( sprintStatus );
+            transaction.Commit();
+         }
+      }
+
+      public static readonly SprintStatus[] SprintStatuses = new[]
+      {
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Future",
+            Description="The sprint is set up for the future",
+            StatusCd='A',
+            IsOpenStatus='N',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Planning",
+            Description="In Planning",
+            StatusCd='A',
+            IsOpenStatus='Y',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Active",
+            Description="The sprint is the active one",
+            StatusCd='A',
+            IsOpenStatus='Y',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Complete",
+            Description="The sprint is done",
+            StatusCd='A',
+            IsOpenStatus='N',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 1",
+            Description="Active Status, Is Open, Predefined",
+            StatusCd='A',
+            IsOpenStatus='Y',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 2",
+            Description="Inactive Status, Is Open, Predefined",
+            StatusCd='I',
+            IsOpenStatus='Y',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 1",
+            Description="Active Status, Is Not Open, Predefined",
+            StatusCd='A',
+            IsOpenStatus='N',
+            IsPredefined='Y'
+         },
+         new SprintStatus ()
+         {
+            Id=Guid.NewGuid(),
+            Name="Status 1",
+            Description="Active Status, Is Open, Not Predefined",
+            StatusCd='A',
+            IsOpenStatus='Y',
+            IsPredefined='N'
+         }
+      };
+      #endregion
 
       #region WorkItemStatuses
       private static void CreateInitialWorkItemStatuses()

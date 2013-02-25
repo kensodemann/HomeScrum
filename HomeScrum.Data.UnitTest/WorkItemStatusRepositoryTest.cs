@@ -69,7 +69,7 @@ namespace HomeScrum.Data.UnitTest
       {
          var workItemStatus = new WorkItemStatus()
          {
-            Name = "New WorkItem Type",
+            Name = "New WorkItem Status",
             Description = "New one for Insert",
             StatusCd = 'A',
             IsOpenStatus = 'Y',

@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\BaseDataObject.cs" />
+    <Compile Include="Domain\ProjectStatus.cs" />
+    <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
     <Compile Include="Domain\WorkItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,6 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\WorkType.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\ProjectStatus.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\SprintStatus.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -61,6 +61,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ProjectStatusRepositoryTest.cs" />
+    <Compile Include="SprintStatusRepositoryTest.cs" />
     <Compile Include="WorkItemStatusRepositoryTest.cs" />
     <Compile Include="WorkItemTypeRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
