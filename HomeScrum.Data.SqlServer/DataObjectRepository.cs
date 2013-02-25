@@ -51,9 +51,16 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public void Delete( Guid id )
+      public void Delete( DataObjectBase dataObject )
       {
-         throw new NotImplementedException();
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            using (ITransaction transaction = session.BeginTransaction())
+            {
+               session.Delete( dataObject );
+               transaction.Commit();
+            }
+         }
       }
    }
 }

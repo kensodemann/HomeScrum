@@ -14,6 +14,6 @@ namespace HomeScrum.Data.Repositories
 
       void Add( DataObjectType dataObject );
       void Update( DataObjectType dataObject );
-      void Delete( Guid id );
+      void Delete( DataObjectType dataObject );
    }
 }

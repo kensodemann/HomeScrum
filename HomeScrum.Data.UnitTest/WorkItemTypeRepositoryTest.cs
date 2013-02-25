@@ -94,6 +94,17 @@ namespace HomeScrum.Data.UnitTest
          AssertWorkItemTypesAreEqual( workItemType, _repository.Get( workItemType.Id ) );
       }
 
+      [TestMethod]
+      public void Delete_RevmovesItemFromDatabase()
+      {
+         var workItemType = TestData.WorkItemTypes[2];
+
+         _repository.Delete( workItemType );
+
+         Assert.AreEqual( TestData.WorkItemTypes.GetLength( 0 ) - 1, _repository.GetAll().Count );
+         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == workItemType.Id ) );
+      }
+
 
       private void AssertCollectionContainsWorkItemType( ICollection<WorkItemType> workItemTypes, WorkItemType workItemType )
       {
