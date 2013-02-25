@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="ProjectStatusRepositoryTest.cs" />
     <Compile Include="SprintStatusRepositoryTest.cs" />
+    <Compile Include="AcceptanceCriteriaStatusRepositoryTest.cs" />
     <Compile Include="WorkItemStatusRepositoryTest.cs" />
     <Compile Include="WorkItemTypeRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,9 +72,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utility\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Data.SqlServer\HomeScrum.Data.SqlServer.csproj">
       <Project>{6b0b91f7-d752-4d5d-b3d2-bdc17c17a4a5}</Project>

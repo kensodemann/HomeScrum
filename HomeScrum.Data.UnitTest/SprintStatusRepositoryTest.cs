@@ -30,44 +30,44 @@ namespace HomeScrum.Data.UnitTest
       [TestMethod]
       public void GetAll_ReturnsAllSprintStatuses()
       {
-         var sprintStatuses = _repository.GetAll();
+         var statuses = _repository.GetAll();
 
-         Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ), sprintStatuses.Count );
-         foreach (var wit in TestData.SprintStatuses)
+         Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ), statuses.Count );
+         foreach (var status in TestData.SprintStatuses)
          {
-            AssertCollectionContainsSprintStatus( sprintStatuses, wit );
+            AssertCollectionContainsStatus( statuses, status );
          }
       }
 
       [TestMethod]
       public void GetNonExistentSprintStatus_ReturnsNull()
       {
-         var sprintStatus = _repository.Get( Guid.NewGuid() );
+         var status = _repository.Get( Guid.NewGuid() );
 
-         Assert.IsNull( sprintStatus );
+         Assert.IsNull( status );
       }
 
       [TestMethod]
       public void GetUsingDefaultGuid_ReturnsNull()
       {
-         var sprintStatus = _repository.Get( Guid.NewGuid() );
+         var status = _repository.Get( Guid.NewGuid() );
 
-         Assert.IsNull( sprintStatus );
+         Assert.IsNull( status );
       }
 
       [TestMethod]
       public void Get_ReturnsSprintStatus()
       {
-         var sprintStatus = _repository.Get( TestData.SprintStatuses[2].Id );
+         var status = _repository.Get( TestData.SprintStatuses[2].Id );
 
-         AssertSprintStatusesAreEqual( TestData.SprintStatuses[2], sprintStatus );
+         AssertStatusesAreEqual( TestData.SprintStatuses[2], status );
       }
 
 
       [TestMethod]
       public void Add_AddsSprintStatusToDatabase()
       {
-         var sprintStatus = new SprintStatus()
+         var status = new SprintStatus()
          {
             Name = "New Sprint Type",
             Description = "New one for Insert",
@@ -76,45 +76,45 @@ namespace HomeScrum.Data.UnitTest
             IsPredefined = 'Y'
          };
 
-         _repository.Add( sprintStatus );
+         _repository.Add( status );
          Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
-         AssertCollectionContainsSprintStatus( _repository.GetAll(), sprintStatus );
+         AssertCollectionContainsStatus( _repository.GetAll(), status );
       }
 
       [TestMethod]
       public void Update_ModifiesNameInDatabase()
       {
-         var sprintStatus = TestData.SprintStatuses[3];
+         var status = TestData.SprintStatuses[3];
 
-         sprintStatus.Name += "Modified";
+         status.Name += "Modified";
 
-         _repository.Update( sprintStatus );
+         _repository.Update( status );
 
          Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ), _repository.GetAll().Count );
-         AssertSprintStatusesAreEqual( sprintStatus, _repository.Get( sprintStatus.Id ) );
+         AssertStatusesAreEqual( status, _repository.Get( status.Id ) );
       }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
-         var sprintStatus = TestData.SprintStatuses[2];
+         var status = TestData.SprintStatuses[2];
 
-         _repository.Delete( sprintStatus );
+         _repository.Delete( status );
 
          Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
-         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == sprintStatus.Id ) );
+         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == status.Id ) );
       }
 
 
-      private void AssertCollectionContainsSprintStatus( ICollection<SprintStatus> sprintStatuses, SprintStatus sprintStatus )
+      private void AssertCollectionContainsStatus( ICollection<SprintStatus> statusues, SprintStatus status )
       {
-         var sprintStatusFromCollection = sprintStatuses.FirstOrDefault( x => x.Id == sprintStatus.Id );
+         var statusFromCollection = statusues.FirstOrDefault( x => x.Id == status.Id );
 
-         Assert.IsNotNull( sprintStatusFromCollection );
-         AssertSprintStatusesAreEqual( sprintStatus, sprintStatusFromCollection );
+         Assert.IsNotNull( statusFromCollection );
+         AssertStatusesAreEqual( status, statusFromCollection );
       }
 
-      private static void AssertSprintStatusesAreEqual( SprintStatus expected, SprintStatus actual )
+      private static void AssertStatusesAreEqual( SprintStatus expected, SprintStatus actual )
       {
          Assert.AreNotSame( expected, actual );
          Assert.AreEqual( expected.Id, actual.Id );

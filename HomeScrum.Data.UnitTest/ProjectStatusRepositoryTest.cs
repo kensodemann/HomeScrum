@@ -30,44 +30,44 @@ namespace HomeScrum.Data.UnitTest
       [TestMethod]
       public void GetAll_ReturnsAllProjectStatuses()
       {
-         var ProjectStatus = _repository.GetAll();
+         var statuses = _repository.GetAll();
 
-         Assert.AreEqual( TestData.ProjectStatuses.GetLength( 0 ), ProjectStatus.Count );
-         foreach (var wit in TestData.ProjectStatuses)
+         Assert.AreEqual( TestData.ProjectStatuses.GetLength( 0 ), statuses.Count );
+         foreach (var status in TestData.ProjectStatuses)
          {
-            AssertCollectionContainsProjectStatus( ProjectStatus, wit );
+            AssertCollectionContainsStatus( statuses, status );
          }
       }
 
       [TestMethod]
       public void GetNonExistentProjectStatus_ReturnsNull()
       {
-         var projectStatus = _repository.Get( Guid.NewGuid() );
+         var status = _repository.Get( Guid.NewGuid() );
 
-         Assert.IsNull( projectStatus );
+         Assert.IsNull( status );
       }
 
       [TestMethod]
       public void GetUsingDefaultGuid_ReturnsNull()
       {
-         var projectStatus = _repository.Get( Guid.NewGuid() );
+         var status = _repository.Get( Guid.NewGuid() );
 
-         Assert.IsNull( projectStatus );
+         Assert.IsNull( status );
       }
 
       [TestMethod]
       public void Get_ReturnsProjectStatus()
       {
-         var projectStatus = _repository.Get( TestData.ProjectStatuses[2].Id );
+         var status = _repository.Get( TestData.ProjectStatuses[2].Id );
 
-         AssertProjectStatusesAreEqual( TestData.ProjectStatuses[2], projectStatus );
+         AssertStatusesAreEqual( TestData.ProjectStatuses[2], status );
       }
 
 
       [TestMethod]
       public void Add_AddsProjectStatusToDatabase()
       {
-         var projectStatus = new ProjectStatus()
+         var status = new ProjectStatus()
          {
             Name = "New Project Status",
             Description = "New one for Insert",
@@ -76,45 +76,45 @@ namespace HomeScrum.Data.UnitTest
             IsPredefined = 'Y'
          };
 
-         _repository.Add( projectStatus );
+         _repository.Add( status );
          Assert.AreEqual( TestData.ProjectStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
-         AssertCollectionContainsProjectStatus( _repository.GetAll(), projectStatus );
+         AssertCollectionContainsStatus( _repository.GetAll(), status );
       }
 
       [TestMethod]
       public void Update_ModifiesNameInDatabase()
       {
-         var projectStatus = TestData.ProjectStatuses[3];
+         var status = TestData.ProjectStatuses[3];
 
-         projectStatus.Name += "Modified";
+         status.Name += "Modified";
 
-         _repository.Update( projectStatus );
+         _repository.Update( status );
 
          Assert.AreEqual( TestData.ProjectStatuses.GetLength( 0 ), _repository.GetAll().Count );
-         AssertProjectStatusesAreEqual( projectStatus, _repository.Get( projectStatus.Id ) );
+         AssertStatusesAreEqual( status, _repository.Get( status.Id ) );
       }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
-         var projectStatus = TestData.ProjectStatuses[2];
+         var status = TestData.ProjectStatuses[2];
 
-         _repository.Delete( projectStatus );
+         _repository.Delete( status );
 
          Assert.AreEqual( TestData.ProjectStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
-         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == projectStatus.Id ) );
+         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == status.Id ) );
       }
 
 
-      private void AssertCollectionContainsProjectStatus( ICollection<ProjectStatus> projectStatuses, ProjectStatus projectStatus )
+      private void AssertCollectionContainsStatus( ICollection<ProjectStatus> statuses, ProjectStatus status )
       {
-         var projectStatusFromCollection = projectStatuses.FirstOrDefault( x => x.Id == projectStatus.Id );
+         var statusFromCollection = statuses.FirstOrDefault( x => x.Id == status.Id );
 
-         Assert.IsNotNull( projectStatusFromCollection );
-         AssertProjectStatusesAreEqual( projectStatus, projectStatusFromCollection );
+         Assert.IsNotNull( statusFromCollection );
+         AssertStatusesAreEqual( status, statusFromCollection );
       }
 
-      private static void AssertProjectStatusesAreEqual( ProjectStatus expected, ProjectStatus actual )
+      private static void AssertStatusesAreEqual( ProjectStatus expected, ProjectStatus actual )
       {
          Assert.AreNotSame( expected, actual );
          Assert.AreEqual( expected.Id, actual.Id );

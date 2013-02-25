@@ -16,6 +16,7 @@ namespace HomeScrum.Data.TestConsole
          PrintAllWorkItemStatuses();
          PrintAllSprintStatuses();
          PrintAllProjectStatuses();
+         PrintAllAcceptanceCriteriaStatuses();
       }
 
       private static void PrintAllWorkItemTypes()
@@ -34,39 +35,52 @@ namespace HomeScrum.Data.TestConsole
       private static void PrintAllWorkItemStatuses()
       {
          var repository = new DataObjectRepository<WorkItemStatus>();
-         var workItemStatuses = repository.GetAll();
+         var statuses = repository.GetAll();
 
-         Console.WriteLine( "Work Item Statuses: " + workItemStatuses.Count().ToString() );
+         Console.WriteLine( "Work Item Statuses: " + statuses.Count().ToString() );
 
-         foreach (var workItemStatus in workItemStatuses)
+         foreach (var status in statuses)
          {
-            PrintWorkItemStatus( workItemStatus );
+            PrintWorkItemStatus( status );
          }
       }
 
       private static void PrintAllSprintStatuses()
       {
          var repository = new DataObjectRepository<SprintStatus>();
-         var sprintStatuses = repository.GetAll();
+         var statuses = repository.GetAll();
 
-         Console.WriteLine( "Sprint Statuses: " + sprintStatuses.Count().ToString() );
+         Console.WriteLine( "Sprint Statuses: " + statuses.Count().ToString() );
 
-         foreach (var sprintStatus in sprintStatuses)
+         foreach (var status in statuses)
          {
-            PrintSprintStatus( sprintStatus );
+            PrintSprintStatus( status );
          }
       }
 
       private static void PrintAllProjectStatuses()
       {
          var repository = new DataObjectRepository<ProjectStatus>();
-         var projectStatuses = repository.GetAll();
+         var statuses = repository.GetAll();
 
-         Console.WriteLine( "Project Statuses: " + projectStatuses.Count().ToString() );
+         Console.WriteLine( "Project Statuses: " + statuses.Count().ToString() );
 
-         foreach (var projectStatus in projectStatuses)
+         foreach (var status in statuses)
          {
-            PrintProjectStatus( projectStatus );
+            PrintProjectStatus( status );
+         }
+      }
+
+      private static void PrintAllAcceptanceCriteriaStatuses()
+      {
+         var repository = new DataObjectRepository<AcceptanceCriteriaStatus>();
+         var statuses = repository.GetAll();
+
+         Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );
+
+         foreach (var status in statuses)
+         {
+            PrintAcceptanceCriteriaStatus( status );
          }
       }
 
@@ -81,37 +95,48 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tIsPredefined: " + workItemType.IsPredefined );
       }
 
-      static void PrintWorkItemStatus( WorkItemStatus workItemStatus )
+      static void PrintWorkItemStatus( WorkItemStatus status )
       {
          Console.WriteLine( "\nWorkItemStatus\n" );
-         Console.WriteLine( "\tId: " + workItemStatus.Id.ToString() );
-         Console.WriteLine( "\tName: " + workItemStatus.Name );
-         Console.WriteLine( "\tDescription: " + workItemStatus.Description );
-         Console.WriteLine( "\tStatusCd: " + workItemStatus.StatusCd );
-         Console.WriteLine( "\tIsOpenStatus: " + workItemStatus.IsOpenStatus );
-         Console.WriteLine( "\tIsPredefined: " + workItemStatus.IsPredefined );
+         Console.WriteLine( "\tId: " + status.Id.ToString() );
+         Console.WriteLine( "\tName: " + status.Name );
+         Console.WriteLine( "\tDescription: " + status.Description );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
+         Console.WriteLine( "\tIsOpenStatus: " + status.IsOpenStatus );
+         Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
 
-      static void PrintSprintStatus( SprintStatus sprintStatus )
+      static void PrintSprintStatus( SprintStatus status )
       {
          Console.WriteLine( "\nSprintStatus\n" );
-         Console.WriteLine( "\tId: " + sprintStatus.Id.ToString() );
-         Console.WriteLine( "\tName: " + sprintStatus.Name );
-         Console.WriteLine( "\tDescription: " + sprintStatus.Description );
-         Console.WriteLine( "\tStatusCd: " + sprintStatus.StatusCd );
-         Console.WriteLine( "\tIsOpenStatus: " + sprintStatus.IsOpenStatus );
-         Console.WriteLine( "\tIsPredefined: " + sprintStatus.IsPredefined );
+         Console.WriteLine( "\tId: " + status.Id.ToString() );
+         Console.WriteLine( "\tName: " + status.Name );
+         Console.WriteLine( "\tDescription: " + status.Description );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
+         Console.WriteLine( "\tIsOpenStatus: " + status.IsOpenStatus );
+         Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
 
-      static void PrintProjectStatus( ProjectStatus projectStatus )
+      static void PrintProjectStatus( ProjectStatus status )
       {
          Console.WriteLine( "\nProjectStatus\n" );
-         Console.WriteLine( "\tId: " + projectStatus.Id.ToString() );
-         Console.WriteLine( "\tName: " + projectStatus.Name );
-         Console.WriteLine( "\tDescription: " + projectStatus.Description );
-         Console.WriteLine( "\tStatusCd: " + projectStatus.StatusCd );
-         Console.WriteLine( "\tIsActive: " + projectStatus.IsActive );
-         Console.WriteLine( "\tIsPredefined: " + projectStatus.IsPredefined );
+         Console.WriteLine( "\tId: " + status.Id.ToString() );
+         Console.WriteLine( "\tName: " + status.Name );
+         Console.WriteLine( "\tDescription: " + status.Description );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
+         Console.WriteLine( "\tIsActive: " + status.IsActive );
+         Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
+      }
+
+      static void PrintAcceptanceCriteriaStatus( AcceptanceCriteriaStatus status )
+      {
+         Console.WriteLine( "\nAcceptanceCriteriaStatus\n" );
+         Console.WriteLine( "\tId: " + status.Id.ToString() );
+         Console.WriteLine( "\tName: " + status.Name );
+         Console.WriteLine( "\tDescription: " + status.Description );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
+         Console.WriteLine( "\tIsAccepted: " + status.IsAccepted );
+         Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
    }
 }

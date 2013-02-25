@@ -1,15 +1,15 @@
-﻿using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
-using HomeScrum.Data.SqlServer;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using HomeScrum.Data.Domain;
 using System.Collections.Generic;
 using System.Linq;
+using HomeScrum.Data.SqlServer;
+using HomeScrum.Data.Repositories;
 
 namespace HomeScrum.Data.UnitTest
 {
    [TestClass]
-   public class WorkItemStatusRepositoryTest
+   public class AcceptanceCriteriaStatusRepositoryTest
    {
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
@@ -22,25 +22,25 @@ namespace HomeScrum.Data.UnitTest
       public void InitializeTest()
       {
          TestData.BuildDatabase();
-         _repository = new DataObjectRepository<WorkItemStatus>();
+         _repository = new DataObjectRepository<AcceptanceCriteriaStatus>();
       }
 
-      private IDataObjectRepository<WorkItemStatus> _repository;
+      private IDataObjectRepository<AcceptanceCriteriaStatus> _repository;
 
       [TestMethod]
-      public void GetAll_ReturnsAllWorkItemStatuses()
+      public void GetAll_ReturnsAllAcceptanceCriteriaStatuses()
       {
          var statuses = _repository.GetAll();
 
-         Assert.AreEqual( TestData.WorkItemStatuses.GetLength( 0 ), statuses.Count );
-         foreach (var status in TestData.WorkItemStatuses)
+         Assert.AreEqual( TestData.AcceptanceCriteriaStatuses.GetLength( 0 ), statuses.Count );
+         foreach (var status in TestData.AcceptanceCriteriaStatuses)
          {
             AssertCollectionContainsStatus( statuses, status );
          }
       }
 
       [TestMethod]
-      public void GetNonExistentWorkItemStatus_ReturnsNull()
+      public void GetNonExistentAcceptanceCriteriaStatus_ReturnsNull()
       {
          var status = _repository.Get( Guid.NewGuid() );
 
@@ -56,57 +56,57 @@ namespace HomeScrum.Data.UnitTest
       }
 
       [TestMethod]
-      public void Get_ReturnsWorkItemStatus()
+      public void Get_ReturnsAcceptanceCriteriaStatus()
       {
-         var status = _repository.Get( TestData.WorkItemStatuses[2].Id );
+         var status = _repository.Get( TestData.AcceptanceCriteriaStatuses[2].Id );
 
-         AssertStatusesAreEqual( TestData.WorkItemStatuses[2], status );
+         AssertStatusesAreEqual( TestData.AcceptanceCriteriaStatuses[2], status );
       }
 
 
       [TestMethod]
-      public void Add_AddsWorkItemStatusToDatabase()
+      public void Add_AddsAcceptanceCriteriaStatusToDatabase()
       {
-         var status = new WorkItemStatus()
+         var status = new AcceptanceCriteriaStatus()
          {
-            Name = "New WorkItem Status",
+            Name = "New Acceptance Criteria Status",
             Description = "New one for Insert",
             StatusCd = 'A',
-            IsOpenStatus = 'Y',
+            IsAccepted = 'Y',
             IsPredefined = 'Y'
          };
 
          _repository.Add( status );
-         Assert.AreEqual( TestData.WorkItemStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
+         Assert.AreEqual( TestData.AcceptanceCriteriaStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
          AssertCollectionContainsStatus( _repository.GetAll(), status );
       }
 
       [TestMethod]
       public void Update_ModifiesNameInDatabase()
       {
-         var status = TestData.WorkItemStatuses[3];
+         var status = TestData.AcceptanceCriteriaStatuses[3];
 
          status.Name += "Modified";
 
          _repository.Update( status );
 
-         Assert.AreEqual( TestData.WorkItemStatuses.GetLength( 0 ), _repository.GetAll().Count );
+         Assert.AreEqual( TestData.AcceptanceCriteriaStatuses.GetLength( 0 ), _repository.GetAll().Count );
          AssertStatusesAreEqual( status, _repository.Get( status.Id ) );
       }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
-         var status = TestData.WorkItemStatuses[2];
+         var status = TestData.AcceptanceCriteriaStatuses[2];
 
          _repository.Delete( status );
 
-         Assert.AreEqual( TestData.WorkItemStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
+         Assert.AreEqual( TestData.AcceptanceCriteriaStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
          Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == status.Id ) );
       }
 
 
-      private void AssertCollectionContainsStatus( ICollection<WorkItemStatus> statuses, WorkItemStatus status )
+      private void AssertCollectionContainsStatus( ICollection<AcceptanceCriteriaStatus> statuses, AcceptanceCriteriaStatus status )
       {
          var statusFromCollection = statuses.FirstOrDefault( x => x.Id == status.Id );
 
@@ -114,14 +114,14 @@ namespace HomeScrum.Data.UnitTest
          AssertStatusesAreEqual( status, statusFromCollection );
       }
 
-      private static void AssertStatusesAreEqual( WorkItemStatus expected, WorkItemStatus actual )
+      private static void AssertStatusesAreEqual( AcceptanceCriteriaStatus expected, AcceptanceCriteriaStatus actual )
       {
          Assert.AreNotSame( expected, actual );
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
          Assert.AreEqual( expected.StatusCd, actual.StatusCd );
-         Assert.AreEqual( expected.IsOpenStatus, actual.IsOpenStatus );
+         Assert.AreEqual( expected.IsAccepted, actual.IsAccepted );
          Assert.AreEqual( expected.IsPredefined, actual.IsPredefined );
       }
    }
