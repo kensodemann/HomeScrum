@@ -52,7 +52,7 @@ namespace HomeScrum.Data.UnitTest
             Name="New",
             Description="The Item is brand new",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
@@ -61,7 +61,7 @@ namespace HomeScrum.Data.UnitTest
             Name="In Process",
             Description="The Item is being worked on",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
@@ -70,7 +70,7 @@ namespace HomeScrum.Data.UnitTest
             Name="On Hold",
             Description="The Item was started but cannot be worked on",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
@@ -79,7 +79,7 @@ namespace HomeScrum.Data.UnitTest
             Name="Ready for Test",
             Description="The Item is ready to be tested",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
@@ -88,43 +88,43 @@ namespace HomeScrum.Data.UnitTest
             Name="Complete",
             Description="The Item is done",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
          {
             Id=Guid.NewGuid(),
             Name="Status 1",
-            Description="Active Status, Active, Predefined",
+            Description="Active Status, Is Open, Predefined",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
          {
             Id=Guid.NewGuid(),
             Name="Status 2",
-            Description="Inactive Status, Active, Predefined",
+            Description="Inactive Status, Is Open, Predefined",
             StatusCd='I',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
          {
             Id=Guid.NewGuid(),
             Name="Status 1",
-            Description="Active Status, Not Active, Predefined",
+            Description="Active Status, Is Not Open, Predefined",
             StatusCd='A',
-            IsActive='N',
+            IsOpenStatus='N',
             IsPredefined='Y'
          },
          new WorkItemStatus ()
          {
             Id=Guid.NewGuid(),
             Name="Status 1",
-            Description="Active Status, Active, Not Predefined",
+            Description="Active Status, Is Open, Not Predefined",
             StatusCd='A',
-            IsActive='Y',
+            IsOpenStatus='Y',
             IsPredefined='N'
          }
       };

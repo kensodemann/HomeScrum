@@ -72,7 +72,7 @@ namespace HomeScrum.Data.UnitTest
             Name = "New WorkItem Type",
             Description = "New one for Insert",
             StatusCd = 'A',
-            IsActive = 'Y',
+            IsOpenStatus = 'Y',
             IsPredefined = 'Y'
          };
 
@@ -121,7 +121,7 @@ namespace HomeScrum.Data.UnitTest
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
          Assert.AreEqual( expected.StatusCd, actual.StatusCd );
-         Assert.AreEqual( expected.IsActive, actual.IsActive );
+         Assert.AreEqual( expected.IsOpenStatus, actual.IsOpenStatus );
          Assert.AreEqual( expected.IsPredefined, actual.IsPredefined );
       }
    }
