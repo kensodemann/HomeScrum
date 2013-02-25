@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\BaseDataObject.cs" />
+    <Compile Include="Domain\WorkItemStatus.cs" />
     <Compile Include="Domain\WorkItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IDataObjectRepository.cs" />
