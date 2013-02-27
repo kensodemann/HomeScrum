@@ -6,7 +6,7 @@ using System;
 
 namespace HomeScrum.Data.UnitTest
 {
-   public class TestData
+   public class Database
    {
       private static ISessionFactory _sessionFactory;
       private static Configuration _configuration;
@@ -20,7 +20,7 @@ namespace HomeScrum.Data.UnitTest
       }
 
 
-      public static void BuildDatabase()
+      public static void Build()
       {
          new SchemaExport( _configuration ).Execute( false, true, false );
          CreateInitialAcceptanceCriteriaStatuses();

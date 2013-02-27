@@ -14,14 +14,14 @@ namespace HomeScrum.Data.UnitTest
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
       {
-         TestData.Initialize();
+         Database.Initialize();
       }
 
 
       [TestInitialize]
       public void InitializeTest()
       {
-         TestData.BuildDatabase();
+         Database.Build();
          _repository = new DataObjectRepository<SprintStatus>();
       }
 
@@ -32,8 +32,8 @@ namespace HomeScrum.Data.UnitTest
       {
          var statuses = _repository.GetAll();
 
-         Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ), statuses.Count );
-         foreach (var status in TestData.SprintStatuses)
+         Assert.AreEqual( Database.SprintStatuses.GetLength( 0 ), statuses.Count );
+         foreach (var status in Database.SprintStatuses)
          {
             AssertCollectionContainsStatus( statuses, status );
          }
@@ -58,9 +58,9 @@ namespace HomeScrum.Data.UnitTest
       [TestMethod]
       public void Get_ReturnsSprintStatus()
       {
-         var status = _repository.Get( TestData.SprintStatuses[2].Id );
+         var status = _repository.Get( Database.SprintStatuses[2].Id );
 
-         AssertStatusesAreEqual( TestData.SprintStatuses[2], status );
+         AssertStatusesAreEqual( Database.SprintStatuses[2], status );
       }
 
 
@@ -77,31 +77,31 @@ namespace HomeScrum.Data.UnitTest
          };
 
          _repository.Add( status );
-         Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
+         Assert.AreEqual( Database.SprintStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
          AssertCollectionContainsStatus( _repository.GetAll(), status );
       }
 
       [TestMethod]
       public void Update_ModifiesNameInDatabase()
       {
-         var status = TestData.SprintStatuses[3];
+         var status = Database.SprintStatuses[3];
 
          status.Name += "Modified";
 
          _repository.Update( status );
 
-         Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ), _repository.GetAll().Count );
+         Assert.AreEqual( Database.SprintStatuses.GetLength( 0 ), _repository.GetAll().Count );
          AssertStatusesAreEqual( status, _repository.Get( status.Id ) );
       }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
-         var status = TestData.SprintStatuses[2];
+         var status = Database.SprintStatuses[2];
 
          _repository.Delete( status );
 
-         Assert.AreEqual( TestData.SprintStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
+         Assert.AreEqual( Database.SprintStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
          Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == status.Id ) );
       }
 
