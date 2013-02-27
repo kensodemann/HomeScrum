@@ -23,6 +23,7 @@ namespace HomeScrum.Data.UnitTest
       public void InitializeTest()
       {
          Database.Build();
+         WorkItemTypes.Load();
          _repository = new DataObjectRepository<WorkItemType>();
       }
 
@@ -33,8 +34,8 @@ namespace HomeScrum.Data.UnitTest
       {
          var workItemTypes = _repository.GetAll();
 
-         Assert.AreEqual( Database.WorkItemTypes.GetLength( 0 ), workItemTypes.Count );
-         foreach (var wit in Database.WorkItemTypes)
+         Assert.AreEqual( WorkItemTypes.ModelData.GetLength( 0 ), workItemTypes.Count );
+         foreach (var wit in WorkItemTypes.ModelData)
          {
             AssertCollectionContainsWorkItemType( workItemTypes, wit );
          }
@@ -59,9 +60,9 @@ namespace HomeScrum.Data.UnitTest
       [TestMethod]
       public void Get_ReturnsWorkItemType()
       {
-         var workItemType = _repository.Get( Database.WorkItemTypes[2].Id );
+         var workItemType = _repository.Get( WorkItemTypes.ModelData[2].Id );
 
-         AssertWorkItemTypesAreEqual( Database.WorkItemTypes[2], workItemType );
+         AssertWorkItemTypesAreEqual( WorkItemTypes.ModelData[2], workItemType );
       }
 
 
@@ -78,31 +79,31 @@ namespace HomeScrum.Data.UnitTest
          };
 
          _repository.Add( workItemType );
-         Assert.AreEqual( Database.WorkItemTypes.GetLength( 0 ) + 1, _repository.GetAll().Count );
+         Assert.AreEqual( WorkItemTypes.ModelData.GetLength( 0 ) + 1, _repository.GetAll().Count );
          AssertCollectionContainsWorkItemType( _repository.GetAll(), workItemType );
       }
 
       [TestMethod]
       public void Update_ModifiesNameInDatabase()
       {
-         var workItemType = Database.WorkItemTypes[3];
+         var workItemType = WorkItemTypes.ModelData[3];
 
          workItemType.Name += "Modified";
 
          _repository.Update( workItemType );
 
-         Assert.AreEqual( Database.WorkItemTypes.GetLength( 0 ), _repository.GetAll().Count );
+         Assert.AreEqual( WorkItemTypes.ModelData.GetLength( 0 ), _repository.GetAll().Count );
          AssertWorkItemTypesAreEqual( workItemType, _repository.Get( workItemType.Id ) );
       }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
-         var workItemType = Database.WorkItemTypes[2];
+         var workItemType = WorkItemTypes.ModelData[2];
 
          _repository.Delete( workItemType );
 
-         Assert.AreEqual( Database.WorkItemTypes.GetLength( 0 ) - 1, _repository.GetAll().Count );
+         Assert.AreEqual( WorkItemTypes.ModelData.GetLength( 0 ) - 1, _repository.GetAll().Count );
          Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == workItemType.Id ) );
       }
 
