@@ -1,0 +1,14 @@
+﻿@model IEnumerable<HomeScrum.Data.Domain.WorkItemType>
+
+@{
+    ViewBag.Title = "Administration Routines";
+}
+
+<h2>List of Work Item Types</h2>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@Html.DisplayFor( ModelItem => item.Name )</li>
+    }
+</ul>
