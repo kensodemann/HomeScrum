@@ -1,14 +1,17 @@
-﻿@model IEnumerable<HomeScrum.Data.Domain.WorkItemType>
-
-@{
+﻿@{
     ViewBag.Title = "Administration Routines";
 }
 
-<h2>List of Work Item Types</h2>
+<h2>Administration</h2>
+
+<p>This is really just a place holder.  I don't see this being something that is generally displayed
+    in the actual application.  OTOH, if someone actually navigates here, I may want to show something.
+    I will have to think about that.
+</p>
+
+<p>For now, let's just link to the various base data items.</p>
 
 <ul>
-    @foreach (var item in Model)
-    {
-        <li>@Html.DisplayFor( ModelItem => item.Name )</li>
-    }
-</ul>
+    <li>@Html.ActionLink("Work Item Statuses", "/WorkItemStatuses")</li>
+    <li>@Html.ActionLink("Work Item Types", "/WorkItemTypes")</li>
+</ul> 
