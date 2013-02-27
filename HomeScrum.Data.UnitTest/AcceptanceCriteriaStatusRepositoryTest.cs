@@ -23,6 +23,7 @@ namespace HomeScrum.Data.UnitTest
       public void InitializeTest()
       {
          Database.Build();
+         AcceptanceCriteriaStatuses.Load();
          _repository = new DataObjectRepository<AcceptanceCriteriaStatus>();
       }
 
@@ -33,8 +34,8 @@ namespace HomeScrum.Data.UnitTest
       {
          var statuses = _repository.GetAll();
 
-         Assert.AreEqual( Database.AcceptanceCriteriaStatuses.GetLength( 0 ), statuses.Count );
-         foreach (var status in Database.AcceptanceCriteriaStatuses)
+         Assert.AreEqual( AcceptanceCriteriaStatuses.ModelData.GetLength( 0 ), statuses.Count );
+         foreach (var status in AcceptanceCriteriaStatuses.ModelData)
          {
             AssertCollectionContainsStatus( statuses, status );
          }
@@ -59,9 +60,9 @@ namespace HomeScrum.Data.UnitTest
       [TestMethod]
       public void Get_ReturnsAcceptanceCriteriaStatus()
       {
-         var status = _repository.Get( Database.AcceptanceCriteriaStatuses[2].Id );
+         var status = _repository.Get( AcceptanceCriteriaStatuses.ModelData[2].Id );
 
-         AssertStatusesAreEqual( Database.AcceptanceCriteriaStatuses[2], status );
+         AssertStatusesAreEqual( AcceptanceCriteriaStatuses.ModelData[2], status );
       }
 
 
@@ -78,31 +79,31 @@ namespace HomeScrum.Data.UnitTest
          };
 
          _repository.Add( status );
-         Assert.AreEqual( Database.AcceptanceCriteriaStatuses.GetLength( 0 ) + 1, _repository.GetAll().Count );
+         Assert.AreEqual( AcceptanceCriteriaStatuses.ModelData.GetLength( 0 ) + 1, _repository.GetAll().Count );
          AssertCollectionContainsStatus( _repository.GetAll(), status );
       }
 
       [TestMethod]
       public void Update_ModifiesNameInDatabase()
       {
-         var status = Database.AcceptanceCriteriaStatuses[3];
+         var status = AcceptanceCriteriaStatuses.ModelData[3];
 
          status.Name += "Modified";
 
          _repository.Update( status );
 
-         Assert.AreEqual( Database.AcceptanceCriteriaStatuses.GetLength( 0 ), _repository.GetAll().Count );
+         Assert.AreEqual( AcceptanceCriteriaStatuses.ModelData.GetLength( 0 ), _repository.GetAll().Count );
          AssertStatusesAreEqual( status, _repository.Get( status.Id ) );
       }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
-         var status = Database.AcceptanceCriteriaStatuses[2];
+         var status = AcceptanceCriteriaStatuses.ModelData[2];
 
          _repository.Delete( status );
 
-         Assert.AreEqual( Database.AcceptanceCriteriaStatuses.GetLength( 0 ) - 1, _repository.GetAll().Count );
+         Assert.AreEqual( AcceptanceCriteriaStatuses.ModelData.GetLength( 0 ) - 1, _repository.GetAll().Count );
          Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == status.Id ) );
       }
 

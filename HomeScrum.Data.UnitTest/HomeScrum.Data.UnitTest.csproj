@@ -66,6 +66,7 @@
     <Compile Include="ProjectStatusRepositoryTest.cs" />
     <Compile Include="SprintStatusRepositoryTest.cs" />
     <Compile Include="AcceptanceCriteriaStatusRepositoryTest.cs" />
+    <Compile Include="TestData\AcceptanceCriteriaStatuses.cs" />
     <Compile Include="WorkItemStatusRepositoryTest.cs" />
     <Compile Include="WorkItemTypeRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
