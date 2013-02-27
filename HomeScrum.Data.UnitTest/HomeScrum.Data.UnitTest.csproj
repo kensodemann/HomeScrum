@@ -69,7 +69,7 @@
     <Compile Include="WorkItemStatusRepositoryTest.cs" />
     <Compile Include="WorkItemTypeRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestData\TestData.cs" />
+    <Compile Include="TestData\Database.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -4,7 +4,7 @@ using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using System;
 
-namespace HomeScrum.Data.UnitTest
+namespace HomeScrum.Data.UnitTest.TestData
 {
    public class Database
    {
