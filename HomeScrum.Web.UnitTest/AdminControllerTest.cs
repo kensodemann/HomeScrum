@@ -39,5 +39,31 @@ namespace HomeScrum.Web.UnitTest
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
       }
+
+      [TestMethod]
+      public void WorkItemStatuses_GetsAllWorkItemTypes()
+      {
+         var repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
+
+         var controller = new AdminController(repository.Object, null );
+         controller.WorkItemStatuses();
+
+         repository.Verify( x => x.GetAll(), Times.Once() );
+      }
+
+      [TestMethod]
+      public void WorkItemStatuses_ReturnsViewWithModel()
+      {
+         var repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
+
+         repository.Setup( x => x.GetAll() )
+            .Returns( WorkItemStatuses.ModelData );
+
+         var controller = new AdminController( repository.Object, null );
+         var view = controller.WorkItemStatuses() as ViewResult;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+      }
    }
 }
