@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Repositories;
+using HomeScrum.Data.SqlServer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using HomeScrum.Data.SqlServer;
-using HomeScrum.Data.Repositories;
-using HomeScrum.Data.UnitTest.TestData;
 
 namespace HomeScrum.Data.UnitTest
 {

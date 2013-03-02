@@ -1,7 +1,7 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.TestData;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer;
-using HomeScrum.Data.UnitTest.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

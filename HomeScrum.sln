@@ -17,7 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{964DAB
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeScrum.Web", "HomeScrum.Web\HomeScrum.Web.csproj", "{7457C51A-7B0E-4501-9787-27051B002256}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeScrum.Web.UnitTest", "HomeScrum.Web.UnitTest\HomeScrum.Web.UnitTest.csproj", "{A6B20A88-FF9C-464A-B121-99CEEACB6231}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{CEAA8DDD-81C6-412F-9A53-5DA98065831C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeScrum.Common.TestData", "HomeScrum.Common.TestData\HomeScrum.Common.TestData.csproj", "{BC28D6B5-11DA-4311-9DBE-F08D3B8002D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +52,14 @@ Global
 		{7457C51A-7B0E-4501-9787-27051B002256}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7457C51A-7B0E-4501-9787-27051B002256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7457C51A-7B0E-4501-9787-27051B002256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B20A88-FF9C-464A-B121-99CEEACB6231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B20A88-FF9C-464A-B121-99CEEACB6231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B20A88-FF9C-464A-B121-99CEEACB6231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B20A88-FF9C-464A-B121-99CEEACB6231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC28D6B5-11DA-4311-9DBE-F08D3B8002D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC28D6B5-11DA-4311-9DBE-F08D3B8002D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC28D6B5-11DA-4311-9DBE-F08D3B8002D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC28D6B5-11DA-4311-9DBE-F08D3B8002D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +69,6 @@ Global
 		{6B0B91F7-D752-4D5D-B3D2-BDC17C17A4A5} = {9273BD04-0627-44E6-A6E7-E7D3BD51FC9A}
 		{177F6A78-A887-4E61-8387-D2DEC92BCB66} = {9273BD04-0627-44E6-A6E7-E7D3BD51FC9A}
 		{98F49845-A724-4F85-BF6B-02EA7BE2EBE5} = {9273BD04-0627-44E6-A6E7-E7D3BD51FC9A}
+		{BC28D6B5-11DA-4311-9DBE-F08D3B8002D9} = {CEAA8DDD-81C6-412F-9A53-5DA98065831C}
 	EndGlobalSection
 EndGlobal

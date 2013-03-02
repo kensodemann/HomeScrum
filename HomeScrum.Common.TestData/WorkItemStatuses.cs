@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeScrum.Data.UnitTest.TestData
+namespace HomeScrum.Common.TestData
 {
-   class WorkItemStatuses
+   public class WorkItemStatuses
    {
       public static void Load()
       {
