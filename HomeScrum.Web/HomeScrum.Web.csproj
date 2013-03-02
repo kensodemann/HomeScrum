@@ -300,6 +300,9 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\WorkItemTypes.cshtml" />
     <Content Include="Views\Admin\WorkItemStatuses.cshtml" />
+    <Content Include="Views\Admin\AcceptanceCriteriaStatuses.cshtml" />
+    <Content Include="Views\Admin\ProjectStatuses.cshtml" />
+    <Content Include="Views\Admin\SprintStatuses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

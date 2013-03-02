@@ -54,6 +54,9 @@ namespace HomeScrum.Web.App_Start
       /// <param name="kernel">The kernel.</param>
       private static void RegisterServices( IKernel kernel )
       {
+         kernel.Bind<IDataObjectRepository<AcceptanceCriteriaStatus>>().ToConstant( new DataObjectRepository<AcceptanceCriteriaStatus>() );
+         kernel.Bind<IDataObjectRepository<ProjectStatus>>().ToConstant( new DataObjectRepository<ProjectStatus>() );
+         kernel.Bind<IDataObjectRepository<SprintStatus>>().ToConstant( new DataObjectRepository<SprintStatus>() );
          kernel.Bind<IDataObjectRepository<WorkItemStatus>>().ToConstant( new DataObjectRepository<WorkItemStatus>() );
          kernel.Bind<IDataObjectRepository<WorkItemType>>().ToConstant( new DataObjectRepository<WorkItemType>() );
       }
