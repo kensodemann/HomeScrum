@@ -49,6 +49,18 @@ namespace HomeScrum.Web.Controllers
          return View();
       }
 
+      // GET: /Admin/AcceptanceCriteriaStatuses
+      public ActionResult AcceptanceCriteriaStatuses()
+      {
+         return View( _acceptenceCriteriaStatusRepository.GetAll() );
+      }
+
+      // GET: /Admin/ProjectStatuses
+      public ActionResult ProjectStatuses()
+      {
+         return View( _projectStatusRepository.GetAll() );
+      }
+
       // GET: /Admin/SprintStatuses
       public ActionResult SprintStatuses()
       {

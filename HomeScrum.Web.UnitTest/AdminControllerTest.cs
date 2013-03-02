@@ -15,6 +15,58 @@ namespace HomeScrum.Web.UnitTest
    public class AdminControllerTest
    {
       [TestMethod]
+      public void AcceptanceCriteriaStatuses_ReturnsViewWithModel()
+      {
+         var repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
+
+         repository.Setup( x => x.GetAll() )
+            .Returns( AcceptanceCriteriaStatuses.ModelData );
+
+         var controller = new AdminController( repository.Object, null, null, null, null );
+         var view = controller.AcceptanceCriteriaStatuses() as ViewResult;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+      }
+
+      [TestMethod]
+      public void AcceptanceCriteriaStatuses_GetsAllAcceptanceCriteriaStatuses()
+      {
+         var repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
+
+         var controller = new AdminController( repository.Object, null, null, null, null );
+         controller.AcceptanceCriteriaStatuses();
+
+         repository.Verify( x => x.GetAll(), Times.Once() );
+      }
+
+      [TestMethod]
+      public void ProjectStatuses_ReturnsViewWithModel()
+      {
+         var repository = new Mock<IDataObjectRepository<ProjectStatus>>();
+
+         repository.Setup( x => x.GetAll() )
+            .Returns( ProjectStatuses.ModelData );
+
+         var controller = new AdminController( null, repository.Object, null, null, null );
+         var view = controller.ProjectStatuses() as ViewResult;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+      }
+
+      [TestMethod]
+      public void ProjectStatuses_GetsAllProjectStatuses()
+      {
+         var repository = new Mock<IDataObjectRepository<ProjectStatus>>();
+
+         var controller = new AdminController( null, repository.Object, null, null, null );
+         controller.ProjectStatuses();
+
+         repository.Verify( x => x.GetAll(), Times.Once() );
+      }
+
+      [TestMethod]
       public void SprintStatuses_ReturnsViewWithModel()
       {
          var repository = new Mock<IDataObjectRepository<SprintStatus>>();
