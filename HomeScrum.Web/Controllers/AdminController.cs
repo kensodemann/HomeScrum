@@ -13,22 +13,30 @@ namespace HomeScrum.Web.Controllers
    public class AdminController : Controller
    {
       #region Contstruction
-      private readonly IDataObjectRepository<WorkItemStatus> _statusRepository;
-      private readonly IDataObjectRepository<WorkItemType> _typeRepository;
+      private readonly IDataObjectRepository<AcceptanceCriteriaStatus> _acceptenceCriteriaStatusRepository;
+      private readonly IDataObjectRepository<ProjectStatus> _projectStatusRepository;
+      private readonly IDataObjectRepository<SprintStatus> _sprintStatusRepository;
+      private readonly IDataObjectRepository<WorkItemStatus> _workItemStatusRepository;
+      private readonly IDataObjectRepository<WorkItemType> _workItemTypeRepository;
 
       [Inject]
-      public AdminController( IDataObjectRepository<WorkItemStatus> statusRepository,
-                              IDataObjectRepository<WorkItemType> typeRepository )
+      public AdminController( IDataObjectRepository<AcceptanceCriteriaStatus> acceptenceCriteriaStatusRepository,
+                              IDataObjectRepository<ProjectStatus> projectStatusRepository,
+                              IDataObjectRepository<SprintStatus> sprintStatusRepository,
+                              IDataObjectRepository<WorkItemStatus> workItemStatusRepository,
+                              IDataObjectRepository<WorkItemType> workItemTypeRepository )
       {
-         _statusRepository = statusRepository;
-         _typeRepository = typeRepository;
+         _acceptenceCriteriaStatusRepository = acceptenceCriteriaStatusRepository;
+         _projectStatusRepository = projectStatusRepository;
+         _sprintStatusRepository = sprintStatusRepository;
+         _workItemStatusRepository = workItemStatusRepository;
+         _workItemTypeRepository = workItemTypeRepository;
       }
       #endregion
 
       // TODOs:
       //
       // Immediate:
-      //  Create tests for this.
       //  Create initial pages, etc for the other base items.
       //
       // Long Term:
@@ -38,22 +46,26 @@ namespace HomeScrum.Web.Controllers
       // GET: /Admin/
       public ActionResult Index()
       {
-         return View( );
+         return View();
       }
 
-
-      // GET: /Admin/WorkItemTypes
-      public ActionResult WorkItemTypes()
+      // GET: /Admin/SprintStatuses
+      public ActionResult SprintStatuses()
       {
-         return View( _typeRepository.GetAll() );
+         return View( _sprintStatusRepository.GetAll() );
       }
-
 
       // GET: /Admin/WorkItemStatuses
       public ActionResult WorkItemStatuses()
       {
          // Unltimately, we should have a view model for this instead of the data model
-         return View( _statusRepository.GetAll() );
+         return View( _workItemStatusRepository.GetAll() );
+      }
+
+      // GET: /Admin/WorkItemTypes
+      public ActionResult WorkItemTypes()
+      {
+         return View( _workItemTypeRepository.GetAll() );
       }
    }
 }

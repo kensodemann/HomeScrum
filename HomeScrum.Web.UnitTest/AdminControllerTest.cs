@@ -15,38 +15,27 @@ namespace HomeScrum.Web.UnitTest
    public class AdminControllerTest
    {
       [TestMethod]
-      public void WorkItemTypes_GetsAllWorkItemTypes()
+      public void SprintStatuses_ReturnsViewWithModel()
       {
-         var repository = new Mock<IDataObjectRepository<WorkItemType>>();
-
-         var controller = new AdminController( null, repository.Object );
-         controller.WorkItemTypes();
-
-         repository.Verify( x => x.GetAll(), Times.Once() );
-      }
-
-      [TestMethod]
-      public void WorkItemTypes_ReturnsViewWithModel()
-      {
-         var repository = new Mock<IDataObjectRepository<WorkItemType>>();
+         var repository = new Mock<IDataObjectRepository<SprintStatus>>();
 
          repository.Setup( x => x.GetAll() )
-            .Returns( WorkItemTypes.ModelData );
+            .Returns( SprintStatuses.ModelData );
 
-         var controller = new AdminController( null, repository.Object );
-         var view = controller.WorkItemTypes() as ViewResult;
+         var controller = new AdminController( null, null, repository.Object, null, null );
+         var view = controller.SprintStatuses() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
       }
 
       [TestMethod]
-      public void WorkItemStatuses_GetsAllWorkItemTypes()
+      public void SprintStatuses_GetsAllSprintStatuses()
       {
-         var repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
+         var repository = new Mock<IDataObjectRepository<SprintStatus>>();
 
-         var controller = new AdminController(repository.Object, null );
-         controller.WorkItemStatuses();
+         var controller = new AdminController( null, null, repository.Object, null, null );
+         controller.SprintStatuses();
 
          repository.Verify( x => x.GetAll(), Times.Once() );
       }
@@ -59,11 +48,48 @@ namespace HomeScrum.Web.UnitTest
          repository.Setup( x => x.GetAll() )
             .Returns( WorkItemStatuses.ModelData );
 
-         var controller = new AdminController( repository.Object, null );
+         var controller = new AdminController( null, null, null, repository.Object, null );
          var view = controller.WorkItemStatuses() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
+      }
+
+      [TestMethod]
+      public void WorkItemStatuses_GetsAllWorkItemStatuses()
+      {
+         var repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
+
+         var controller = new AdminController( null, null, null, repository.Object, null );
+         controller.WorkItemStatuses();
+
+         repository.Verify( x => x.GetAll(), Times.Once() );
+      }
+
+      [TestMethod]
+      public void WorkItemTypes_ReturnsViewWithModel()
+      {
+         var repository = new Mock<IDataObjectRepository<WorkItemType>>();
+
+         repository.Setup( x => x.GetAll() )
+            .Returns( WorkItemTypes.ModelData );
+
+         var controller = new AdminController( null, null, null, null, repository.Object );
+         var view = controller.WorkItemTypes() as ViewResult;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+      }
+
+      [TestMethod]
+      public void WorkItemTypes_GetsAllWorkItemTypes()
+      {
+         var repository = new Mock<IDataObjectRepository<WorkItemType>>();
+
+         var controller = new AdminController( null, null, null, null, repository.Object );
+         controller.WorkItemTypes();
+
+         repository.Verify( x => x.GetAll(), Times.Once() );
       }
    }
 }
