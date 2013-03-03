@@ -176,9 +176,14 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AcceptanceCriteriaStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectStatusesController.cs" />
+    <Compile Include="Controllers\SprintStatusesController.cs" />
+    <Compile Include="Controllers\WorkItemStatusesController.cs" />
+    <Compile Include="Controllers\WorkItemTypesController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -298,11 +303,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Admin\WorkItemTypes.cshtml" />
-    <Content Include="Views\Admin\WorkItemStatuses.cshtml" />
-    <Content Include="Views\Admin\AcceptanceCriteriaStatuses.cshtml" />
-    <Content Include="Views\Admin\ProjectStatuses.cshtml" />
-    <Content Include="Views\Admin\SprintStatuses.cshtml" />
+    <Content Include="Views\AcceptanceCriteriaStatuses\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

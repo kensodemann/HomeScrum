@@ -56,7 +56,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AdminControllerTest.cs" />
+    <Compile Include="AcceptanceCriteriaStatusesControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
