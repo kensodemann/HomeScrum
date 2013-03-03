@@ -14,16 +14,24 @@ namespace HomeScrum.Web.UnitTest
    [TestClass]
    public class WorkItemStatusesControllerTest
    {
+      private Mock<IDataObjectRepository<WorkItemStatus>> _repository;
+      private WorkItemStatusesController _controller;
+
+      [TestInitialize]
+      public void InitializeTest()
+      {
+         _repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
+         _controller = new WorkItemStatusesController( _repository.Object );
+      }
+
+
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         var repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
-
-         repository.Setup( x => x.GetAll() )
+         _repository.Setup( x => x.GetAll() )
             .Returns( WorkItemStatuses.ModelData );
 
-         var controller = new WorkItemStatusesController( repository.Object );
-         var view = controller.Index() as ViewResult;
+         var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -32,12 +40,9 @@ namespace HomeScrum.Web.UnitTest
       [TestMethod]
       public void Index_GetsAllWorkItemStatuses()
       {
-         var repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
+         _controller.Index();
 
-         var controller = new WorkItemStatusesController( repository.Object );
-         controller.Index();
-
-         repository.Verify( x => x.GetAll(), Times.Once() );
+         _repository.Verify( x => x.GetAll(), Times.Once() );
       }
    }
 }

@@ -14,23 +14,24 @@ namespace HomeScrum.Web.UnitTest
    [TestClass]
    public class AcceptanceCriteriaStatusesControllerTest
    {
-      private Mock<IDataObjectRepository<AcceptanceCriteriaStatus>> repository;
+      private Mock<IDataObjectRepository<AcceptanceCriteriaStatus>> _repository;
+      private AcceptanceCriteriaStatusesController _controller;
 
       [TestInitialize]
       public void InitializeTest()
       {
-         repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
+         _repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
+         _controller = new AcceptanceCriteriaStatusesController( _repository.Object );
       }
 
 
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         repository.Setup( x => x.GetAll() )
+         _repository.Setup( x => x.GetAll() )
             .Returns( AcceptanceCriteriaStatuses.ModelData );
 
-         var controller = new AcceptanceCriteriaStatusesController( repository.Object );
-         var view = controller.Index() as ViewResult;
+         var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -39,10 +40,9 @@ namespace HomeScrum.Web.UnitTest
       [TestMethod]
       public void Index_GetsAllAcceptanceCriteriaStatuses()
       {
-         var controller = new AcceptanceCriteriaStatusesController( repository.Object );
-         controller.Index();
+         _controller.Index();
 
-         repository.Verify( x => x.GetAll(), Times.Once() );
+         _repository.Verify( x => x.GetAll(), Times.Once() );
       }
 
       [TestMethod]
@@ -50,13 +50,12 @@ namespace HomeScrum.Web.UnitTest
       {
          var model = AcceptanceCriteriaStatuses.ModelData[2];
 
-         repository.Setup( x => x.Get( model.Id ) )
+         _repository.Setup( x => x.Get( model.Id ) )
             .Returns( model );
 
-         var controller = new AcceptanceCriteriaStatusesController( repository.Object );
-         var view = controller.Details( model.Id ) as ViewResult;
+         var view = _controller.Details( model.Id ) as ViewResult;
 
-         repository.Verify( x => x.Get( model.Id ), Times.Once() );
+         _repository.Verify( x => x.Get( model.Id ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -68,13 +67,11 @@ namespace HomeScrum.Web.UnitTest
       {
          var id = Guid.NewGuid();
 
-         repository.Setup( x => x.Get( id ) ).Returns( null as AcceptanceCriteriaStatus );
+         _repository.Setup( x => x.Get( id ) ).Returns( null as AcceptanceCriteriaStatus );
 
-         var controller = new AcceptanceCriteriaStatusesController( repository.Object );
-         var result = controller.Details( id ) as HttpNotFoundResult;
+         var result = _controller.Details( id ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
-
    }
 }

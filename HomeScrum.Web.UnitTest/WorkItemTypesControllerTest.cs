@@ -14,15 +14,22 @@ namespace HomeScrum.Web.UnitTest
    [TestClass]
    public class WorkItemTypeesControllerTest
    {
+      private Mock<IDataObjectRepository<WorkItemType>> _repository;
+
+      [TestInitialize]
+      public void InitializeTest()
+      {
+         _repository = new Mock<IDataObjectRepository<WorkItemType>>();
+      }
+
+
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         var repository = new Mock<IDataObjectRepository<WorkItemType>>();
-
-         repository.Setup( x => x.GetAll() )
+         _repository.Setup( x => x.GetAll() )
             .Returns( WorkItemTypes.ModelData );
 
-         var controller = new WorkItemTypesController( repository.Object );
+         var controller = new WorkItemTypesController( _repository.Object );
          var view = controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
@@ -32,12 +39,41 @@ namespace HomeScrum.Web.UnitTest
       [TestMethod]
       public void Index_GetsAllWorkItemTypes()
       {
-         var repository = new Mock<IDataObjectRepository<WorkItemType>>();
-
-         var controller = new WorkItemTypesController( repository.Object );
+         var controller = new WorkItemTypesController( _repository.Object );
          controller.Index();
 
-         repository.Verify( x => x.GetAll(), Times.Once() );
+         _repository.Verify( x => x.GetAll(), Times.Once() );
+      }
+
+      [TestMethod]
+      public void Details_ReturnsViewWithModel()
+      {
+         var model = WorkItemTypes.ModelData[2];
+
+         _repository.Setup( x => x.Get( model.Id ) )
+            .Returns( model );
+
+         var controller = new WorkItemTypesController( _repository.Object );
+         var view = controller.Details( model.Id ) as ViewResult;
+
+         _repository.Verify( x => x.Get( model.Id ), Times.Once() );
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+         Assert.AreEqual( model, view.Model );
+      }
+
+      [TestMethod]
+      public void Details_ReturnsHttpNotFoundIfNoModel()
+      {
+         var id = Guid.NewGuid();
+
+         _repository.Setup( x => x.Get( id ) ).Returns( null as WorkItemType );
+
+         var controller = new WorkItemTypesController( _repository.Object );
+         var result = controller.Details( id ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
       }
    }
 }
