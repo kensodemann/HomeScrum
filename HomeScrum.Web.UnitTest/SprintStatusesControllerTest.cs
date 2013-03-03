@@ -12,17 +12,17 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest
 {
    [TestClass]
-   public class AcceptanceCriteriaStatusesControllerTest
+   public class SprintStatusesControllerTest
    {
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         var repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
+         var repository = new Mock<IDataObjectRepository<SprintStatus>>();
 
          repository.Setup( x => x.GetAll() )
-            .Returns( AcceptanceCriteriaStatuses.ModelData );
+            .Returns( SprintStatuses.ModelData );
 
-         var controller = new AcceptanceCriteriaStatusesController( repository.Object );
+         var controller = new SprintStatusesController( repository.Object );
          var view = controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
@@ -30,11 +30,11 @@ namespace HomeScrum.Web.UnitTest
       }
 
       [TestMethod]
-      public void Index_GetsAllAcceptanceCriteriaStatuses()
+      public void Index_GetsAllSprintStatuses()
       {
-         var repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
+         var repository = new Mock<IDataObjectRepository<SprintStatus>>();
 
-         var controller = new AcceptanceCriteriaStatusesController( repository.Object );
+         var controller = new SprintStatusesController( repository.Object );
          controller.Index();
 
          repository.Verify( x => x.GetAll(), Times.Once() );

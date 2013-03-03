@@ -58,6 +58,10 @@
   <ItemGroup>
     <Compile Include="AcceptanceCriteriaStatusesControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProjectStatusesControllerTest.cs" />
+    <Compile Include="SprintStatusesControllerTest.cs" />
+    <Compile Include="WorkItemStatusesControllerTest.cs" />
+    <Compile Include="WorkItemTypesControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.TestData\HomeScrum.Common.TestData.csproj">

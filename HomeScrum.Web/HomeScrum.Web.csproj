@@ -304,6 +304,10 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\AcceptanceCriteriaStatuses\Index.cshtml" />
+    <Content Include="Views\WorkItemTypes\Index.cshtml" />
+    <Content Include="Views\WorkItemStatuses\Index.cshtml" />
+    <Content Include="Views\SprintStatuses\Index.cshtml" />
+    <Content Include="Views\ProjectStatuses\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
