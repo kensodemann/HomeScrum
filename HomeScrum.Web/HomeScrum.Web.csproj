@@ -179,6 +179,7 @@
     <Compile Include="Controllers\AcceptanceCriteriaStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Base\DataObjectBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectStatusesController.cs" />
     <Compile Include="Controllers\SprintStatusesController.cs" />

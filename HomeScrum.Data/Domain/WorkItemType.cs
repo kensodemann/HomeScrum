@@ -2,7 +2,7 @@
 
 namespace HomeScrum.Data.Domain
 {
-   public class WorkItemType: BaseDataObject
+   public class WorkItemType: DataObjectBase
    {
       public virtual char StatusCd { get; set; }
       public virtual char IsTask { get; set; }

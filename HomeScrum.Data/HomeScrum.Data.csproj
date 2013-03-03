@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\AcceptanceCriteriaStatus.cs" />
-    <Compile Include="Domain\BaseDataObject.cs" />
+    <Compile Include="Domain\DataObjectBase.cs" />
     <Compile Include="Domain\ProjectStatus.cs" />
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />

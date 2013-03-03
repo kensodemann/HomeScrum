@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class BaseDataObject
+   public class DataObjectBase
    {
       public virtual Guid Id { get; set; }
       public virtual string Name { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class AcceptanceCriteriaStatus:BaseDataObject
+   public class AcceptanceCriteriaStatus : DataObjectBase
    {
       public virtual char StatusCd { get; set; }
       public virtual char IsAccepted { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class SprintStatus : BaseDataObject
+   public class SprintStatus : DataObjectBase
    {
       public virtual char StatusCd { get; set; }
       public virtual char IsOpenStatus { get; set; }

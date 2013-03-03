@@ -7,27 +7,27 @@ using System.Collections.Generic;
 
 namespace HomeScrum.Data.SqlServer
 {
-   public class DataObjectRepository<DataObjectBase> : IDataObjectRepository<DataObjectBase> where DataObjectBase : BaseDataObject
+   public class DataObjectRepository<T> : IDataObjectRepository<T> where T : DataObjectBase
    {
-      public ICollection<DataObjectBase> GetAll()
+      public ICollection<T> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
             return session
-               .CreateCriteria( typeof( DataObjectBase ).ToString() )
-               .List<DataObjectBase>();
+               .CreateCriteria( typeof( T ).ToString() )
+               .List<T>();
          }
       }
 
-      public DataObjectBase Get( Guid id )
+      public T Get( Guid id )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return session.Get<DataObjectBase>( id );
+            return session.Get<T>( id );
          }
       }
 
-      public void Add( DataObjectBase dataObject )
+      public void Add( T dataObject )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
@@ -39,7 +39,7 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public void Update( DataObjectBase dataObject )
+      public void Update( T dataObject )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
@@ -51,7 +51,7 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public void Delete( DataObjectBase dataObject )
+      public void Delete( T dataObject )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {

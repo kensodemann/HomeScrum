@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Repositories
 {
-   public interface IDataObjectRepository<DataObjectType> where DataObjectType : BaseDataObject
+   public interface IDataObjectRepository<DataObjectType> where DataObjectType : DataObjectBase
    {
       ICollection<DataObjectType> GetAll();
       DataObjectType Get( Guid id );
