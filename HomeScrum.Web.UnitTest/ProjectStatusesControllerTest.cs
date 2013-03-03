@@ -44,5 +44,34 @@ namespace HomeScrum.Web.UnitTest
 
          _repository.Verify( x => x.GetAll(), Times.Once() );
       }
+
+      [TestMethod]
+      public void Details_ReturnsViewWithModel()
+      {
+         var model = ProjectStatuses.ModelData[2];
+
+         _repository.Setup( x => x.Get( model.Id ) )
+            .Returns( model );
+
+         var view = _controller.Details( model.Id ) as ViewResult;
+
+         _repository.Verify( x => x.Get( model.Id ), Times.Once() );
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+         Assert.AreEqual( model, view.Model );
+      }
+
+      [TestMethod]
+      public void Details_ReturnsHttpNotFoundIfNoModel()
+      {
+         var id = Guid.NewGuid();
+
+         _repository.Setup( x => x.Get( id ) ).Returns( null as ProjectStatus );
+
+         var result = _controller.Details( id ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
    }
 }

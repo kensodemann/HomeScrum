@@ -1,0 +1,50 @@
+﻿@model HomeScrum.Data.Domain.SprintStatus
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>SprintStatus</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StatusCd)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StatusCd)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsOpenStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsOpenStatus)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsPredefined)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsPredefined)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

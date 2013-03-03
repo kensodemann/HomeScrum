@@ -15,11 +15,13 @@ namespace HomeScrum.Web.UnitTest
    public class WorkItemTypeesControllerTest
    {
       private Mock<IDataObjectRepository<WorkItemType>> _repository;
+      private WorkItemTypesController _controller;
 
       [TestInitialize]
       public void InitializeTest()
       {
          _repository = new Mock<IDataObjectRepository<WorkItemType>>();
+         _controller = new WorkItemTypesController( _repository.Object );
       }
 
 
@@ -27,10 +29,8 @@ namespace HomeScrum.Web.UnitTest
       public void Index_ReturnsViewWithModel()
       {
          _repository.Setup( x => x.GetAll() )
-            .Returns( WorkItemTypes.ModelData );
-
-         var controller = new WorkItemTypesController( _repository.Object );
-         var view = controller.Index() as ViewResult;
+            .Returns( WorkItemTypes.ModelData );         
+         var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -39,8 +39,7 @@ namespace HomeScrum.Web.UnitTest
       [TestMethod]
       public void Index_GetsAllWorkItemTypes()
       {
-         var controller = new WorkItemTypesController( _repository.Object );
-         controller.Index();
+         _controller.Index();
 
          _repository.Verify( x => x.GetAll(), Times.Once() );
       }
@@ -52,12 +51,9 @@ namespace HomeScrum.Web.UnitTest
 
          _repository.Setup( x => x.Get( model.Id ) )
             .Returns( model );
-
-         var controller = new WorkItemTypesController( _repository.Object );
-         var view = controller.Details( model.Id ) as ViewResult;
-
+         var view = _controller.Details( model.Id ) as ViewResult;
+         
          _repository.Verify( x => x.Get( model.Id ), Times.Once() );
-
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
          Assert.AreEqual( model, view.Model );
@@ -69,9 +65,7 @@ namespace HomeScrum.Web.UnitTest
          var id = Guid.NewGuid();
 
          _repository.Setup( x => x.Get( id ) ).Returns( null as WorkItemType );
-
-         var controller = new WorkItemTypesController( _repository.Object );
-         var result = controller.Details( id ) as HttpNotFoundResult;
+         var result = _controller.Details( id ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }

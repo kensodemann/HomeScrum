@@ -23,7 +23,6 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /SprintStatuses/
-
       public ActionResult Index()
       {
          return View( _repository.GetAll() );
@@ -31,15 +30,20 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /SprintStatuses/Details/5
-
-      public ActionResult Details( int id )
+      public ActionResult Details( Guid id )
       {
-         return View();
+         var model = _repository.Get( id );
+
+         if (model == null)
+         {
+            return HttpNotFound();
+         }
+
+         return View( model );
       }
 
       //
       // GET: /SprintStatuses/Create
-
       public ActionResult Create()
       {
          return View();
@@ -47,7 +51,6 @@ namespace HomeScrum.Web.Controllers
 
       //
       // POST: /SprintStatuses/Create
-
       [HttpPost]
       public ActionResult Create( FormCollection collection )
       {
@@ -65,47 +68,19 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /SprintStatuses/Edit/5
-
-      public ActionResult Edit( int id )
+      public ActionResult Edit( Guid id )
       {
          return View();
       }
 
       //
       // POST: /SprintStatuses/Edit/5
-
       [HttpPost]
-      public ActionResult Edit( int id, FormCollection collection )
+      public ActionResult Edit( Guid id, FormCollection collection )
       {
          try
          {
             // TODO: Add update logic here
-
-            return RedirectToAction( "Index" );
-         }
-         catch
-         {
-            return View();
-         }
-      }
-
-      //
-      // GET: /SprintStatuses/Delete/5
-
-      public ActionResult Delete( int id )
-      {
-         return View();
-      }
-
-      //
-      // POST: /SprintStatuses/Delete/5
-
-      [HttpPost]
-      public ActionResult Delete( int id, FormCollection collection )
-      {
-         try
-         {
-            // TODO: Add delete logic here
 
             return RedirectToAction( "Index" );
          }
