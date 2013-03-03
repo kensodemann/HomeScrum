@@ -308,6 +308,7 @@
     <Content Include="Views\WorkItemStatuses\Index.cshtml" />
     <Content Include="Views\SprintStatuses\Index.cshtml" />
     <Content Include="Views\ProjectStatuses\Index.cshtml" />
+    <Content Include="Views\AcceptanceCriteriaStatuses\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
