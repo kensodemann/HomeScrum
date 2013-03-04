@@ -69,5 +69,14 @@ namespace HomeScrum.Web.UnitTest
 
          Assert.IsNotNull( result );
       }
+
+      [TestMethod]
+      public void CreateGet_ReturnsViewWithoutModel()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.IsNull( result.Model );
+      }
    }
 }
