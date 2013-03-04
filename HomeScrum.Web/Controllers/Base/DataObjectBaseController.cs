@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public class DataObjectBaseController<T> : Controller where T: DataObjectBase
+   public class DataObjectBaseController<T> : Controller where T : DataObjectBase
    {
       public DataObjectBaseController( IDataObjectRepository<T> repository )
       {
@@ -48,18 +48,15 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /AcceptanceCriteriaStatuses/Create
       [HttpPost]
-      public virtual ActionResult Create( FormCollection collection )
+      public virtual ActionResult Create( T model )
       {
-         try
+         if (ModelState.IsValid)
          {
-            // TODO: Add insert logic here
-
+            _repository.Add( model );
             return RedirectToAction( "Index" );
          }
-         catch
-         {
-            return View();
-         }
+
+         return View();
       }
 
       //

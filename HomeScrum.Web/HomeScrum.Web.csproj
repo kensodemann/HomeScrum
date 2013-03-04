@@ -314,6 +314,7 @@
     <Content Include="Views\WorkItemTypes\Details.cshtml" />
     <Content Include="Views\WorkItemStatuses\Details.cshtml" />
     <Content Include="Views\SprintStatuses\Details.cshtml" />
+    <Content Include="Views\WorkItemTypes\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

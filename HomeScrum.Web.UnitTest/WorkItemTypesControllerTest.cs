@@ -78,5 +78,41 @@ namespace HomeScrum.Web.UnitTest
          Assert.IsNotNull( result );
          Assert.IsNull( result.Model );
       }
+
+      [TestMethod]
+      public void CreatePost_CallsRepositoryAddIfNoError()
+      {
+         var model = new WorkItemType()
+         {
+            Name = "New Work Item Type",
+            Description = "New Work Item Type",
+            IsPredefined = 'N',
+            IsTask = 'N',
+            StatusCd = 'A'
+         };
+         var result = _controller.Create( model );
+
+         _repository.Verify( x => x.Add( model ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallRepositoryAddIfError()
+      {
+         var model = new WorkItemType()
+         {
+            Name = "New Work Item Type",
+            Description = "New Work Item Type",
+            IsPredefined = 'N',
+            IsTask = 'N',
+            StatusCd = 'A'
+         };
+         _controller.ModelState.AddModelError( "WorkItemType", "This is an error" );
+         var result = _controller.Create( model );
+        
+         _repository.Verify( x => x.Add( It.IsAny<WorkItemType>() ), Times.Never() );
+      }
+
+      // Read this: http://stackoverflow.com/questions/1269713/unit-tests-on-mvc-validation/3353125#3353125
+      // And this: http://johan.driessen.se/posts/testing-dataannotation-based-validation-in-asp.net-mvc
    }
 }
