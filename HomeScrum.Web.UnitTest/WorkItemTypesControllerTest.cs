@@ -7,6 +7,7 @@ using HomeScrum.Web.Controllers;
 using HomeScrum.Common.TestData;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 
 namespace HomeScrum.Web.UnitTest
@@ -29,7 +30,7 @@ namespace HomeScrum.Web.UnitTest
       public void Index_ReturnsViewWithModel()
       {
          _repository.Setup( x => x.GetAll() )
-            .Returns( WorkItemTypes.ModelData );         
+            .Returns( WorkItemTypes.ModelData );
          var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
@@ -52,7 +53,7 @@ namespace HomeScrum.Web.UnitTest
          _repository.Setup( x => x.Get( model.Id ) )
             .Returns( model );
          var view = _controller.Details( model.Id ) as ViewResult;
-         
+
          _repository.Verify( x => x.Get( model.Id ), Times.Once() );
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -80,7 +81,7 @@ namespace HomeScrum.Web.UnitTest
       }
 
       [TestMethod]
-      public void CreatePost_CallsRepositoryAddIfNoError()
+      public void CreatePost_CallsRepositoryAddIfNoModelIsValid()
       {
          var model = new WorkItemType()
          {
@@ -96,7 +97,28 @@ namespace HomeScrum.Web.UnitTest
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCallRepositoryAddIfError()
+      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      {
+         var model = new WorkItemType()
+         {
+            Name = "New Work Item Type",
+            Description = "New Work Item Type",
+            IsPredefined = 'N',
+            IsTask = 'N',
+            StatusCd = 'A'
+         };
+         var result = _controller.Create( model ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
       {
          var model = new WorkItemType()
          {
@@ -108,9 +130,27 @@ namespace HomeScrum.Web.UnitTest
          };
          _controller.ModelState.AddModelError( "WorkItemType", "This is an error" );
          var result = _controller.Create( model );
-        
+
          _repository.Verify( x => x.Add( It.IsAny<WorkItemType>() ), Times.Never() );
       }
+
+      [TestMethod]
+      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      {
+         var model = new WorkItemType()
+         {
+            Name = "New Work Item Type",
+            Description = "New Work Item Type",
+            IsPredefined = 'N',
+            IsTask = 'N',
+            StatusCd = 'A'
+         };
+         _controller.ModelState.AddModelError( "WorkItemType", "This is an error" );
+         var result = _controller.Create( model ) as ViewResult;
+
+         Assert.IsNotNull( result );
+      }
+
 
       // Read this: http://stackoverflow.com/questions/1269713/unit-tests-on-mvc-validation/3353125#3353125
       // And this: http://johan.driessen.se/posts/testing-dataannotation-based-validation-in-asp.net-mvc

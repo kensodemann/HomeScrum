@@ -82,5 +82,76 @@ namespace HomeScrum.Web.UnitTest
          Assert.IsNotNull( result );
          Assert.IsNull( result.Model );
       }
+
+      [TestMethod]
+      public void CreatePost_CallsRepositoryAddIfNoModelIsValid()
+      {
+         var model = new WorkItemStatus()
+         {
+            Name = "New Work Item Status",
+            Description = "New Work Item Status",
+            IsPredefined = 'N',
+            IsOpenStatus = 'Y',
+            StatusCd = 'A'
+         };
+         var result = _controller.Create( model );
+
+         _repository.Verify( x => x.Add( model ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      {
+         var model = new WorkItemStatus()
+         {
+            Name = "New Work Item Status",
+            Description = "New Work Item Status",
+            IsPredefined = 'N',
+            IsOpenStatus = 'Y',
+            StatusCd = 'A'
+         };
+         var result = _controller.Create( model ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      {
+         var model = new WorkItemStatus()
+         {
+            Name = "New Work Item Status",
+            Description = "New Work Item Status",
+            IsPredefined = 'N',
+            IsOpenStatus = 'Y',
+            StatusCd = 'A'
+         };
+         _controller.ModelState.AddModelError( "WorkItemStatus", "This is an error" );
+         var result = _controller.Create( model );
+
+         _repository.Verify( x => x.Add( It.IsAny<WorkItemStatus>() ), Times.Never() );
+      }
+
+      [TestMethod]
+      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      {
+         var model = new WorkItemStatus()
+         {
+            Name = "New Work Item Status",
+            Description = "New Work Item Status",
+            IsPredefined = 'N',
+            IsOpenStatus = 'Y',
+            StatusCd = 'A'
+         };
+         _controller.ModelState.AddModelError( "WorkItemStatus", "This is an error" );
+         var result = _controller.Create( model ) as ViewResult;
+
+         Assert.IsNotNull( result );
+      }
    }
 }

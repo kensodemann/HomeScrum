@@ -82,5 +82,76 @@ namespace HomeScrum.Web.UnitTest
          Assert.IsNotNull( result );
          Assert.IsNull( result.Model );
       }
+
+      [TestMethod]
+      public void CreatePost_CallsRepositoryAddIfNoModelIsValid()
+      {
+         var model = new AcceptanceCriteriaStatus()
+         {
+            Name = "New Acceptance Criteria Status",
+            Description = "New Acceptance Criteria Status",
+            IsPredefined = 'N',
+            IsAccepted = 'Y',
+            StatusCd = 'A'
+         };
+         var result = _controller.Create( model );
+
+         _repository.Verify( x => x.Add( model ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      {
+         var model = new AcceptanceCriteriaStatus()
+         {
+            Name = "New Acceptance Criteria Status",
+            Description = "New Acceptance Criteria Status",
+            IsPredefined = 'N',
+            IsAccepted = 'Y',
+            StatusCd = 'A'
+         };
+         var result = _controller.Create( model ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      {
+         var model = new AcceptanceCriteriaStatus()
+         {
+            Name = "New Acceptance Criteria Status",
+            Description = "New Acceptance Criteria Status",
+            IsPredefined = 'N',
+            IsAccepted = 'Y',
+            StatusCd = 'A'
+         };
+         _controller.ModelState.AddModelError( "AcceptanceCriteriaStatus", "This is an error" );
+         var result = _controller.Create( model );
+
+         _repository.Verify( x => x.Add( It.IsAny<AcceptanceCriteriaStatus>() ), Times.Never() );
+      }
+
+      [TestMethod]
+      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      {
+         var model = new AcceptanceCriteriaStatus()
+         {
+            Name = "New Acceptance Criteria Status",
+            Description = "New Acceptance Criteria Status",
+            IsPredefined = 'N',
+            IsAccepted = 'Y',
+            StatusCd = 'A'
+         };
+         _controller.ModelState.AddModelError( "AcceptanceCriteriaStatus", "This is an error" );
+         var result = _controller.Create( model ) as ViewResult;
+
+         Assert.IsNotNull( result );
+      }
    }
 }
