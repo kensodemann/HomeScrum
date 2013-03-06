@@ -135,5 +135,18 @@ namespace HomeScrum.Web.UnitTest
 
          _repository.Verify( x => x.Get( id ), Times.Once() );
       }
+
+      [TestMethod]
+      public void EditGet_ReturnsViewWithModel()
+      {
+         var model = GetAllModels().ToArray()[3];
+         _repository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.IsNotNull( result.Model );
+         Assert.AreEqual( model, result.Model );
+      }
    }
 }

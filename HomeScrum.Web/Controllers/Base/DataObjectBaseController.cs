@@ -64,7 +64,7 @@ namespace HomeScrum.Web.Controllers.Base
       public virtual ActionResult Edit( Guid id )
       {
          var model = _repository.Get( id );
-         return View();
+         return View( model );
       }
 
       //
