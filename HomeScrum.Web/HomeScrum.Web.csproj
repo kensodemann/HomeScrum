@@ -315,6 +315,16 @@
     <Content Include="Views\WorkItemStatuses\Details.cshtml" />
     <Content Include="Views\SprintStatuses\Details.cshtml" />
     <Content Include="Views\WorkItemTypes\Create.cshtml" />
+    <Content Include="Views\WorkItemTypes\Edit.cshtml" />
+    <Content Include="Views\AcceptanceCriteriaStatuses\Create.cshtml" />
+    <Content Include="Views\AcceptanceCriteriaStatuses\Edit.cshtml" />
+    <Content Include="Views\ProjectStatuses\Create.cshtml" />
+    <Content Include="Views\ProjectStatuses\Edit.cshtml" />
+    <Content Include="Views\WorkItemStatuses\Create.cshtml" />
+    <Content Include="Views\WorkItemStatuses\Edit.cshtml" />
+    <Content Include="Views\SprintStatuses\Create.cshtml" />
+    <Content Include="Views\SprintStatuses\Edit.cshtml" />
+    <Content Include="Views\Shared\_DataObjectList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
