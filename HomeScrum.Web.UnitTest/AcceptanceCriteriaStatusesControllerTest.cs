@@ -153,5 +153,14 @@ namespace HomeScrum.Web.UnitTest
 
          Assert.IsNotNull( result );
       }
+
+      [TestMethod]
+      public void EditGet_CallsRepositoryGet()
+      {
+         Guid id = Guid.NewGuid();
+         _controller.Edit( id );
+
+         _repository.Verify( x => x.Get( id ), Times.Once() );
+      }
    }
 }

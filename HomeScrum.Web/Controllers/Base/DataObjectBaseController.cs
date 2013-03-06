@@ -61,15 +61,16 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /AcceptanceCriteriaStatuses/Edit/5
-      public virtual ActionResult Edit( int id )
+      public virtual ActionResult Edit( Guid id )
       {
+         var model = _repository.Get( id );
          return View();
       }
 
       //
       // POST: /AcceptanceCriteriaStatuses/Edit/5
       [HttpPost]
-      public virtual ActionResult Edit( int id, FormCollection collection )
+      public virtual ActionResult Edit( Guid id, FormCollection collection )
       {
          try
          {

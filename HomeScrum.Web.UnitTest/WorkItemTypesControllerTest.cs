@@ -151,8 +151,13 @@ namespace HomeScrum.Web.UnitTest
          Assert.IsNotNull( result );
       }
 
+      [TestMethod]
+      public void EditGet_CallsRepositoryGet()
+      {
+         Guid id = Guid.NewGuid();
+         _controller.Edit( id );
 
-      // Read this: http://stackoverflow.com/questions/1269713/unit-tests-on-mvc-validation/3353125#3353125
-      // And this: http://johan.driessen.se/posts/testing-dataannotation-based-validation-in-asp.net-mvc
+         _repository.Verify( x => x.Get( id ), Times.Once() );
+      }
    }
 }
