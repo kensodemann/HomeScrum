@@ -148,5 +148,15 @@ namespace HomeScrum.Web.UnitTest
          Assert.IsNotNull( result.Model );
          Assert.AreEqual( model, result.Model );
       }
+
+      [TestMethod]
+      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      {
+         _repository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as T );
+
+         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
    }
 }
