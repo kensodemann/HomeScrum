@@ -81,7 +81,7 @@ namespace HomeScrum.Web.UnitTest
       }
 
       [TestMethod]
-      public void CreatePost_CallsRepositoryAddIfNoModelIsValid()
+      public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
       {
          var model = CreateNewModel();
 
@@ -157,6 +157,16 @@ namespace HomeScrum.Web.UnitTest
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void EditPost_CallRepositoryUpdateIfModelValid()
+      {
+         var model = GetAllModels().ToArray()[2];
+
+         _controller.Edit( model );
+
+         _repository.Verify( x => x.Update( model ), Times.Once() );
       }
    }
 }

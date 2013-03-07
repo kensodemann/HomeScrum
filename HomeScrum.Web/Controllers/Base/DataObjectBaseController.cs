@@ -75,11 +75,11 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /AcceptanceCriteriaStatuses/Edit/5
       [HttpPost]
-      public virtual ActionResult Edit( Guid id, FormCollection collection )
+      public virtual ActionResult Edit( T model )
       {
          try
          {
-            // TODO: Add update logic here
+            _repository.Update( model );
 
             return RedirectToAction( "Index" );
          }
