@@ -2,66 +2,17 @@
 
 @{
     ViewBag.Title = "Create";
+    ViewBag.EditorButtonLabel = "Create";
 }
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>SprintStatus</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StatusCd)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.StatusCd)
-            @Html.ValidationMessageFor(model => model.StatusCd)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsOpenStatus)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.IsOpenStatus)
-            @Html.ValidationMessageFor(model => model.IsOpenStatus)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsPredefined)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.IsPredefined)
-            @Html.ValidationMessageFor(model => model.IsPredefined)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
-}
+@Html.Partial( "_Editor", Model )
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink( "Back to List", "Index" )
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render( "~/bundles/jqueryval" )
 }
