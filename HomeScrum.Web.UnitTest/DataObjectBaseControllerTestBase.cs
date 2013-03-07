@@ -168,5 +168,42 @@ namespace HomeScrum.Web.UnitTest
 
          _repository.Verify( x => x.Update( model ), Times.Once() );
       }
+
+      [TestMethod]
+      public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
+      {
+         var model = GetAllModels().ToArray()[2];
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         _controller.Edit( model );
+
+         _repository.Verify( x => x.Update( It.IsAny<T>() ), Times.Never() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToIndexIfModelIsValid()
+      {
+         var model = GetAllModels().ToArray()[2];
+
+         var result = _controller.Edit( model ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_ReturnsViewIfModelIsNotValid()
+      {
+         var model = GetAllModels().ToArray()[2];
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( model ) as ViewResult;
+
+         Assert.IsNotNull( result );
+      }
    }
 }

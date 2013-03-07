@@ -77,13 +77,13 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Edit( T model )
       {
-         try
+         if (ModelState.IsValid)
          {
             _repository.Update( model );
 
             return RedirectToAction( "Index" );
          }
-         catch
+         else
          {
             return View();
          }
