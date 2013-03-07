@@ -325,6 +325,7 @@
     <Content Include="Views\SprintStatuses\Create.cshtml" />
     <Content Include="Views\SprintStatuses\Edit.cshtml" />
     <Content Include="Views\Shared\_DataObjectList.cshtml" />
+    <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
