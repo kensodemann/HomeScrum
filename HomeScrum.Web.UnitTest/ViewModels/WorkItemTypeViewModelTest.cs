@@ -83,5 +83,47 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.AreEqual( 'A', viewModel.Model.StatusCd );
       }
+
+      [TestMethod]
+      public void IsTaskTrue_IfModelIsTaskY()
+      {
+         var model = CreateModel();
+         model.IsTask = 'Y';
+
+         var viewModel = new WorkItemTypeViewModel( model );
+
+         Assert.IsTrue( viewModel.IsTask );
+      }
+
+      [TestMethod]
+      public void IsTaskFalse_IfModelIsTaskN()
+      {
+         var model = CreateModel();
+         model.IsTask = 'N';
+
+         var viewModel = new WorkItemTypeViewModel( model );
+
+         Assert.IsFalse( viewModel.IsTask );
+      }
+
+      [TestMethod]
+      public void SettingIsTaskTrue_SetsModelIsTaskY()
+      {
+         var viewModel = new WorkItemTypeViewModel();
+
+         viewModel.IsTask = true;
+
+         Assert.AreEqual( 'Y', viewModel.Model.IsTask );
+      }
+
+      [TestMethod]
+      public void SettingIsTaskFalse_SetsModelIsTaskN()
+      {
+         var viewModel = new WorkItemTypeViewModel();
+
+         viewModel.IsTask = false;
+
+         Assert.AreEqual( 'N', viewModel.Model.IsTask );
+      }
    }
 }

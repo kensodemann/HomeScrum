@@ -19,6 +19,10 @@ namespace HomeScrum.Web.Models
          set { Model.StatusCd = value ? 'A' : 'I'; }
       }
 
-      public bool IsTask { get; set; }
+      public bool IsTask
+      {
+         get { return Model.IsTask == 'Y'; }
+         set { Model.IsTask = value ? 'Y' : 'N'; }
+      }
    }
 }
