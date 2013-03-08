@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class ProjectStatus : SystemDataObject
+   public class SystemDataObject : DataObjectBase
    {
-      public virtual char IsActive { get; set; }
+      public virtual char StatusCd { get; set; }
+      public virtual char IsPredefined { get; set; }
    }
 }

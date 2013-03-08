@@ -2,10 +2,8 @@
 
 namespace HomeScrum.Data.Domain
 {
-   public class WorkItemStatus : DataObjectBase
+   public class WorkItemStatus : SystemDataObject
    {
-      public virtual char StatusCd { get; set; }
       public virtual char IsOpenStatus { get; set; }
-      public virtual char IsPredefined { get; set; }
    }
 }
