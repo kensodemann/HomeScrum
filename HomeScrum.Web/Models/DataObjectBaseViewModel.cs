@@ -10,10 +10,15 @@ namespace HomeScrum.Web.Models
    {
       public DataObjectBaseViewModel()
       {
-         model = new T();
+         _model = new T();
       }
 
-      private T model;
-      public T Model { get { return model; } }
+      public DataObjectBaseViewModel( T model )
+      {
+         _model = model;
+      }
+
+      private T _model;
+      public T Model { get { return _model; } }
    }
 }

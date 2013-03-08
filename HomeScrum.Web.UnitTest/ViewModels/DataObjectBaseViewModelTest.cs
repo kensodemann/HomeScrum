@@ -18,5 +18,19 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsTrue( String.IsNullOrEmpty( viewModel.Model.Name ) );
          Assert.IsTrue( string.IsNullOrEmpty( viewModel.Model.Description ) );
       }
+
+      [TestMethod]
+      public void ContructorSetsTheModel()
+      {
+         var model = new DataObjectBase()
+         {
+            Id = Guid.NewGuid(),
+            Name = "The Name",
+            Description = "The Description"
+         };
+         var viewModel = new DataObjectBaseViewModel<DataObjectBase>( model );
+
+         Assert.AreEqual( model, viewModel.Model );
+      }
    }
 }
