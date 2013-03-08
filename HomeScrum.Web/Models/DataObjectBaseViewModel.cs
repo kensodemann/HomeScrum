@@ -20,5 +20,11 @@ namespace HomeScrum.Web.Models
 
       private T _model;
       public T Model { get { return _model; } }
+
+      public string Name
+      {
+         get { return _model.Name; }
+         set { _model.Name = value; }
+      }
    }
 }
