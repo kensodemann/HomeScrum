@@ -13,12 +13,6 @@ namespace HomeScrum.Web.Models
       public WorkItemTypeViewModel( WorkItemType model )
          : base( model ) { }
 
-      public bool IsActive
-      {
-         get { return Model.StatusCd == 'A'; }
-         set { Model.StatusCd = value ? 'A' : 'I'; }
-      }
-
       public bool IsTask
       {
          get { return Model.IsTask == 'Y'; }

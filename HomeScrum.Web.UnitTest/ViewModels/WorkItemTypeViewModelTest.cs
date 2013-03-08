@@ -43,48 +43,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       }
 
       [TestMethod]
-      public void IsActiveTrue_IfModelStatusIsA()
-      {
-         var model = CreateModel();
-         model.StatusCd = 'A';
-
-         var viewModel = new WorkItemTypeViewModel( model );
-
-         Assert.IsTrue( viewModel.IsActive );
-      }
-
-      [TestMethod]
-      public void IsActiveFalse_IfModleStatusIsNotA()
-      {
-         var model = CreateModel();
-         model.StatusCd = 'I';
-
-         var viewModel = new WorkItemTypeViewModel( model );
-
-         Assert.IsFalse( viewModel.IsActive );
-      }
-
-      [TestMethod]
-      public void SettingIsActiveFalse_SetsStatusCdToI()
-      {
-         var viewModel = new WorkItemTypeViewModel();
-
-         viewModel.IsActive = false;
-
-         Assert.AreEqual( 'I', viewModel.Model.StatusCd );
-      }
-
-      [TestMethod]
-      public void SettingIsActiveTrue_SetsStatusCdToA()
-      {
-         var viewModel = new WorkItemTypeViewModel();
-
-         viewModel.IsActive = true;
-
-         Assert.AreEqual( 'A', viewModel.Model.StatusCd );
-      }
-
-      [TestMethod]
       public void IsTaskTrue_IfModelIsTaskY()
       {
          var model = CreateModel();

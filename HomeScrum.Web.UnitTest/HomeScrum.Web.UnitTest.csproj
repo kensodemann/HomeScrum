@@ -65,6 +65,7 @@
     <Compile Include="Controllers\WorkItemStatusesControllerTest.cs" />
     <Compile Include="Controllers\WorkItemTypesControllerTest.cs" />
     <Compile Include="ViewModels\DataObjectBaseViewModelTest.cs" />
+    <Compile Include="ViewModels\SystemDataObjectViewModelTest.cs" />
     <Compile Include="ViewModels\WorkItemTypeViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
