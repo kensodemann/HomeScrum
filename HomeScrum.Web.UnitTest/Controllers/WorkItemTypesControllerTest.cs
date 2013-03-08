@@ -10,7 +10,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 
-namespace HomeScrum.Web.UnitTest
+namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
    public class WorkItemTypeesControllerTest : DataObjectBaseControllerTestBase<WorkItemType>

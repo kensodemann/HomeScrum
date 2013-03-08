@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 
 
-namespace HomeScrum.Web.UnitTest
+namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
    public class ProjectStatusesControllerTest : DataObjectBaseControllerTestBase<ProjectStatus>

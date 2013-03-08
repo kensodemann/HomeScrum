@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace HomeScrum.Web.UnitTest
+namespace HomeScrum.Web.UnitTest.Controllers
 {
    public abstract class DataObjectBaseControllerTestBase<T> where T : DataObjectBase
    {

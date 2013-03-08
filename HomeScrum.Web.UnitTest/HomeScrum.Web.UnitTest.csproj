@@ -57,13 +57,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AcceptanceCriteriaStatusesControllerTest.cs" />
-    <Compile Include="DataObjectBaseControllerTestBase.cs" />
+    <Compile Include="Controllers\AcceptanceCriteriaStatusesControllerTest.cs" />
+    <Compile Include="Controllers\DataObjectBaseControllerTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProjectStatusesControllerTest.cs" />
-    <Compile Include="SprintStatusesControllerTest.cs" />
-    <Compile Include="WorkItemStatusesControllerTest.cs" />
-    <Compile Include="WorkItemTypesControllerTest.cs" />
+    <Compile Include="Controllers\ProjectStatusesControllerTest.cs" />
+    <Compile Include="Controllers\SprintStatusesControllerTest.cs" />
+    <Compile Include="Controllers\WorkItemStatusesControllerTest.cs" />
+    <Compile Include="Controllers\WorkItemTypesControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.TestData\HomeScrum.Common.TestData.csproj">
@@ -81,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
