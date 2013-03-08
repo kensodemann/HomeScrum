@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models
 {
-   public class WorkItemTypeViewModel : DataObjectBaseViewModel<WorkItemType>
+   public class WorkItemTypeViewModel : SystemObjectViewModel<WorkItemType>
    {
       public WorkItemTypeViewModel()
          : base() { }
