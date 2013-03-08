@@ -191,7 +191,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DataObjectBaseViewModel.cs" />
-    <Compile Include="Models\SystemObjectViewModel.cs" />
+    <Compile Include="Models\SystemDataObjectViewModel.cs" />
     <Compile Include="Models\WorkItemTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

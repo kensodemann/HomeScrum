@@ -6,12 +6,12 @@ using System.Web;
 
 namespace HomeScrum.Web.Models
 {
-   public class SystemObjectViewModel<T> : DataObjectBaseViewModel<T> where T : DataObjectBase, new() 
+   public class SystemDataObjectViewModel<T> : DataObjectBaseViewModel<T> where T : DataObjectBase, new() 
    {
-      public SystemObjectViewModel()
+      public SystemDataObjectViewModel()
          : base() { }
 
-      public SystemObjectViewModel( T model )
+      public SystemDataObjectViewModel( T model )
          : base( model ) { }
    }
 }
