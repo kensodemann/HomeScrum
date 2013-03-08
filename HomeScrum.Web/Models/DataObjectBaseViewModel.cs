@@ -26,5 +26,11 @@ namespace HomeScrum.Web.Models
          get { return _model.Name; }
          set { _model.Name = value; }
       }
+
+      public string Description
+      {
+         get { return _model.Description; }
+         set { _model.Description = value; }
+      }
    }
 }

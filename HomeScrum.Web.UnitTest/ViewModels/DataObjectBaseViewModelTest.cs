@@ -61,5 +61,34 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.AreEqual( "Something Else", viewModel.Model.Name );
       }
+
+      [TestMethod]
+      public void Description_ReturnsModelDescription()
+      {
+         var model = new DataObjectBase()
+         {
+            Id = Guid.NewGuid(),
+            Name = "The Name",
+            Description = "The Description"
+         };
+         var viewModel = new DataObjectBaseViewModel<DataObjectBase>( model );
+
+         Assert.AreEqual( model.Description, viewModel.Description );
+      }
+
+      [TestMethod]
+      public void Description_SetsModelDescription()
+      {
+         var model = new DataObjectBase()
+         {
+            Id = Guid.NewGuid(),
+            Name = "The Name",
+            Description = "The Description"
+         };
+         var viewModel = new DataObjectBaseViewModel<DataObjectBase>( model );
+         viewModel.Description = "Something Else";
+
+         Assert.AreEqual( "Something Else", viewModel.Model.Description );
+      }
    }
 }
