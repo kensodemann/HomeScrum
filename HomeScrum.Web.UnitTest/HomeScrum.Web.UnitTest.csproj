@@ -64,6 +64,7 @@
     <Compile Include="Controllers\SprintStatusesControllerTest.cs" />
     <Compile Include="Controllers\WorkItemStatusesControllerTest.cs" />
     <Compile Include="Controllers\WorkItemTypesControllerTest.cs" />
+    <Compile Include="ViewModels\DataObjectBaseViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.TestData\HomeScrum.Common.TestData.csproj">
@@ -82,9 +83,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
