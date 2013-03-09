@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HomeScrum.Data.UnitTest
+namespace HomeScrum.Data.UnitTest.Repositories
 {
    [TestClass]
    public class ProjectStatusRepositoryTest

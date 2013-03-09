@@ -57,11 +57,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ProjectStatusRepositoryTest.cs" />
-    <Compile Include="SprintStatusRepositoryTest.cs" />
-    <Compile Include="AcceptanceCriteriaStatusRepositoryTest.cs" />
-    <Compile Include="WorkItemStatusRepositoryTest.cs" />
-    <Compile Include="WorkItemTypeRepositoryTest.cs" />
+    <Compile Include="Domains\SystemDataObjectTest.cs" />
+    <Compile Include="Repositories\ProjectStatusRepositoryTest.cs" />
+    <Compile Include="Repositories\SprintStatusRepositoryTest.cs" />
+    <Compile Include="Repositories\AcceptanceCriteriaStatusRepositoryTest.cs" />
+    <Compile Include="Repositories\WorkItemStatusRepositoryTest.cs" />
+    <Compile Include="Repositories\WorkItemTypeRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
