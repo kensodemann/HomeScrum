@@ -2,15 +2,12 @@
 
 @{
     ViewBag.Title = "Edit";
+    ViewBag.EditorButtonLabel = "Save";
 }
 
 <h2>Edit</h2>
 
-@{
-    ViewBag.EditorButtonLabel = "Save";
-    Html.Partial( "_Editor", Model );
-}
-@*@Html.Partial( "_Editor", Model )*@
+@Html.Partial( "_Editor", Model )
 
 <div>
     @Html.ActionLink( "Back to List", "Index" )
