@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Unverified",
             Description="Not yet verified",
-            StatusCd='A',
+            AllowUse=true,
             IsAccepted=false,
             IsPredefined=true
          },
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Accepted",
             Description="Accepted",
-            StatusCd='A',
+            AllowUse=true,
             IsAccepted=true,
             IsPredefined=true
          },
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Rejected",
             Description="Rejected",
-            StatusCd='A',
+            AllowUse=true,
             IsAccepted=false,
             IsPredefined=true
          },
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Accepted, Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsAccepted=true,
             IsPredefined=true
          },
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Accepted, Predefined",
-            StatusCd='I',
+            AllowUse=false,
             IsAccepted=true,
             IsPredefined=true
          },
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 3",
             Description="Active Status, Is Not Accepted, Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsAccepted=false,
             IsPredefined=true
          },
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 4",
             Description="Active Status, Is Accepted, Not Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsAccepted=true,
             IsPredefined=false
          }

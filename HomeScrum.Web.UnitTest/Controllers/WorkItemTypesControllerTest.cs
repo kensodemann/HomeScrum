@@ -35,7 +35,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Description = "New Work Item Type",
             IsPredefined = false,
             IsTask = false,
-            StatusCd = 'A'
+            AllowUse = true
          };
       }
    }

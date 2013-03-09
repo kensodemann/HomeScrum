@@ -73,7 +73,7 @@ namespace HomeScrum.Data.UnitTest
          {
             Name = "New WorkItem Type",
             Description = "New one for Insert",
-            StatusCd = 'A',
+            AllowUse = true,
             IsTask = true,
             IsPredefined = true
          };
@@ -122,7 +122,7 @@ namespace HomeScrum.Data.UnitTest
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.StatusCd, actual.StatusCd );
+         Assert.AreEqual( expected.AllowUse, actual.AllowUse );
          Assert.AreEqual( expected.IsTask, actual.IsTask );
          Assert.AreEqual( expected.IsPredefined, actual.IsPredefined );
       }

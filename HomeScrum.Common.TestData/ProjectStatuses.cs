@@ -28,7 +28,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Active",
             Description="Active Project",
-            StatusCd='A',
+            AllowUse=true,
             IsActive=true,
             IsPredefined=true
          },
@@ -37,7 +37,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Inactive",
             Description="No longer active",
-            StatusCd='A',
+            AllowUse=true,
             IsActive=false,
             IsPredefined=true
          },
@@ -46,7 +46,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Closed",
             Description="The project is closed",
-            StatusCd='A',
+            AllowUse=true,
             IsActive=false,
             IsPredefined=true
          },
@@ -55,7 +55,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Active, Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsActive=true,
             IsPredefined=true
          },
@@ -64,7 +64,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Active, Predefined",
-            StatusCd='I',
+            AllowUse=false,
             IsActive=true,
             IsPredefined=true
          },
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Not Active, Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsActive=false,
             IsPredefined=true
          },
@@ -82,7 +82,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Active, Not Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsActive=true,
             IsPredefined=false
          }

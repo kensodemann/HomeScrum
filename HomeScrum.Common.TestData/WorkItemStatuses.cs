@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="New",
             Description="The Item is brand new",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="In Process",
             Description="The Item is being worked on",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="On Hold",
             Description="The Item was started but cannot be worked on",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Ready for Test",
             Description="The Item is ready to be tested",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Complete",
             Description="The Item is done",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Open, Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Open, Predefined",
-            StatusCd='I',
+            AllowUse=false,
             IsOpenStatus=true,
             IsPredefined=true
          },
@@ -92,7 +92,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Not Open, Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=false,
             IsPredefined=true
          },
@@ -101,7 +101,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Open, Not Predefined",
-            StatusCd='A',
+            AllowUse=true,
             IsOpenStatus=true,
             IsPredefined=false
          }

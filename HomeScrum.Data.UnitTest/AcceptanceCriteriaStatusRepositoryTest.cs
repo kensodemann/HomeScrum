@@ -73,7 +73,7 @@ namespace HomeScrum.Data.UnitTest
          {
             Name = "New Acceptance Criteria Status",
             Description = "New one for Insert",
-            StatusCd = 'A',
+            AllowUse = true,
             IsAccepted = true,
             IsPredefined = true
          };
@@ -122,7 +122,7 @@ namespace HomeScrum.Data.UnitTest
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.StatusCd, actual.StatusCd );
+         Assert.AreEqual( expected.AllowUse, actual.AllowUse );
          Assert.AreEqual( expected.IsAccepted, actual.IsAccepted );
          Assert.AreEqual( expected.IsPredefined, actual.IsPredefined );
       }

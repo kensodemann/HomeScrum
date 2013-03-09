@@ -8,7 +8,13 @@ namespace HomeScrum.Data.Domain
 {
    public class SystemDataObject : DataObjectBase
    {
-      public virtual char StatusCd { get; set; }
+      protected virtual char StatusCd { get; set; }
+      public virtual bool AllowUse
+      {
+         get { return StatusCd == 'A'; }
+         set { StatusCd = value ? 'A' : 'I'; }
+      }
+      
       public virtual bool IsPredefined { get; set; }
    }
 }
