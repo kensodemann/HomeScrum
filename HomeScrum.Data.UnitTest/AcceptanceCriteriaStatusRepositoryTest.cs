@@ -74,7 +74,7 @@ namespace HomeScrum.Data.UnitTest
             Name = "New Acceptance Criteria Status",
             Description = "New one for Insert",
             StatusCd = 'A',
-            IsAccepted = 'Y',
+            IsAccepted = true,
             IsPredefined = true
          };
 

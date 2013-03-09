@@ -8,6 +8,6 @@ namespace HomeScrum.Data.Domain
 {
    public class ProjectStatus : SystemDataObject
    {
-      public virtual char IsActive { get; set; }
+      public virtual bool IsActive { get; set; }
    }
 }

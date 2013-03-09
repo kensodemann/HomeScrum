@@ -30,7 +30,7 @@ namespace HomeScrum.Common.TestData
             Name="New",
             Description="The Item is brand new",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -39,7 +39,7 @@ namespace HomeScrum.Common.TestData
             Name="In Process",
             Description="The Item is being worked on",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -48,7 +48,7 @@ namespace HomeScrum.Common.TestData
             Name="On Hold",
             Description="The Item was started but cannot be worked on",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             Name="Ready for Test",
             Description="The Item is ready to be tested",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -66,7 +66,7 @@ namespace HomeScrum.Common.TestData
             Name="Complete",
             Description="The Item is done",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -75,7 +75,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Open, Predefined",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -84,7 +84,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 2",
             Description="Inactive Status, Is Open, Predefined",
             StatusCd='I',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -93,7 +93,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Not Open, Predefined",
             StatusCd='A',
-            IsOpenStatus='N',
+            IsOpenStatus=false,
             IsPredefined=true
          },
          new WorkItemStatus ()
@@ -102,7 +102,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Open, Not Predefined",
             StatusCd='A',
-            IsOpenStatus='Y',
+            IsOpenStatus=true,
             IsPredefined=false
          }
       };

@@ -11,7 +11,8 @@
     <property name="Name"/>
     <property name="Description"/>
     <property name="StatusCd"/>
-    <property name="IsAccepted"/>
+    <property name="IsAccepted"
+              type="YesNo"/>
     <property name="IsPredefined"
               type="YesNo"/>
   </class>

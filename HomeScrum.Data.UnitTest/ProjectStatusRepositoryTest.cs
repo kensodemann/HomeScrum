@@ -74,7 +74,7 @@ namespace HomeScrum.Data.UnitTest
             Name = "New Project Status",
             Description = "New one for Insert",
             StatusCd = 'A',
-            IsActive = 'Y',
+            IsActive = true,
             IsPredefined = true
          };
 

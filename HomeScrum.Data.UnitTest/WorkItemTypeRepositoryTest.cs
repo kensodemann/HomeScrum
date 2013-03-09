@@ -74,7 +74,7 @@ namespace HomeScrum.Data.UnitTest
             Name = "New WorkItem Type",
             Description = "New one for Insert",
             StatusCd = 'A',
-            IsTask = 'Y',
+            IsTask = true,
             IsPredefined = true
          };
 

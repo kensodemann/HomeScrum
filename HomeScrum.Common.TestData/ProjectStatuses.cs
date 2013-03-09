@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
             Name="Active",
             Description="Active Project",
             StatusCd='A',
-            IsActive='Y',
+            IsActive=true,
             IsPredefined=true
          },
          new ProjectStatus ()
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
             Name="Inactive",
             Description="No longer active",
             StatusCd='A',
-            IsActive='N',
+            IsActive=false,
             IsPredefined=true
          },
          new ProjectStatus ()
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
             Name="Closed",
             Description="The project is closed",
             StatusCd='A',
-            IsActive='N',
+            IsActive=false,
             IsPredefined=true
          },
          new ProjectStatus ()
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Active, Predefined",
             StatusCd='A',
-            IsActive='Y',
+            IsActive=true,
             IsPredefined=true
          },
          new ProjectStatus ()
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 2",
             Description="Inactive Status, Is Active, Predefined",
             StatusCd='I',
-            IsActive='Y',
+            IsActive=true,
             IsPredefined=true
          },
          new ProjectStatus ()
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Not Active, Predefined",
             StatusCd='A',
-            IsActive='N',
+            IsActive=false,
             IsPredefined=true
          },
          new ProjectStatus ()
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Active, Not Predefined",
             StatusCd='A',
-            IsActive='Y',
+            IsActive=true,
             IsPredefined=false
          }
       };

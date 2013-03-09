@@ -8,6 +8,6 @@ namespace HomeScrum.Data.Domain
 {
    public class AcceptanceCriteriaStatus : SystemDataObject
    {
-      public virtual char IsAccepted { get; set; }
+      public virtual bool IsAccepted { get; set; }
    }
 }

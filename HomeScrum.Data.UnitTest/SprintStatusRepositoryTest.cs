@@ -74,7 +74,7 @@ namespace HomeScrum.Data.UnitTest
             Name = "New Sprint Type",
             Description = "New one for Insert",
             StatusCd = 'A',
-            IsOpenStatus = 'Y',
+            IsOpenStatus = true,
             IsPredefined = true
          };
 

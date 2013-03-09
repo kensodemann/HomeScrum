@@ -4,6 +4,6 @@ namespace HomeScrum.Data.Domain
 {
    public class WorkItemType : SystemDataObject
    {
-      public virtual char IsTask { get; set; }
+      public virtual bool IsTask { get; set; }
    }
 }

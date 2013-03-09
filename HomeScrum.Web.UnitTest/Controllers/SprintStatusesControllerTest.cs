@@ -33,7 +33,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Name = "New Sprint Status",
             Description = "New Sprint Status",
             IsPredefined = false,
-            IsOpenStatus = 'Y',
+            IsOpenStatus = true,
             StatusCd = 'A'
          };
       }

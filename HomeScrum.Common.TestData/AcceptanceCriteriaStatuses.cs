@@ -30,7 +30,7 @@ namespace HomeScrum.Common.TestData
             Name="Unverified",
             Description="Not yet verified",
             StatusCd='A',
-            IsAccepted='N',
+            IsAccepted=false,
             IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
@@ -39,7 +39,7 @@ namespace HomeScrum.Common.TestData
             Name="Accepted",
             Description="Accepted",
             StatusCd='A',
-            IsAccepted='Y',
+            IsAccepted=true,
             IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
@@ -48,7 +48,7 @@ namespace HomeScrum.Common.TestData
             Name="Rejected",
             Description="Rejected",
             StatusCd='A',
-            IsAccepted='N',
+            IsAccepted=false,
             IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 1",
             Description="Active Status, Is Accepted, Predefined",
             StatusCd='A',
-            IsAccepted='Y',
+            IsAccepted=true,
             IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
@@ -66,7 +66,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 2",
             Description="Inactive Status, Is Accepted, Predefined",
             StatusCd='I',
-            IsAccepted='Y',
+            IsAccepted=true,
             IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
@@ -75,7 +75,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 3",
             Description="Active Status, Is Not Accepted, Predefined",
             StatusCd='A',
-            IsAccepted='N',
+            IsAccepted=false,
             IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
@@ -84,7 +84,7 @@ namespace HomeScrum.Common.TestData
             Name="Status 4",
             Description="Active Status, Is Accepted, Not Predefined",
             StatusCd='A',
-            IsAccepted='Y',
+            IsAccepted=true,
             IsPredefined=false
          }
       };

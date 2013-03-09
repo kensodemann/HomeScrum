@@ -8,6 +8,6 @@ namespace HomeScrum.Data.Domain
 {
    public class SprintStatus : SystemDataObject
    {
-      public virtual char IsOpenStatus { get; set; }
+      public virtual bool IsOpenStatus { get; set; }
    }
 }
