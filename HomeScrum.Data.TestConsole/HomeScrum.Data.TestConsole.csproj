@@ -50,6 +50,7 @@
   <ItemGroup>
     <Content Include="..\HomeScrum.Data.SqlServer\Hibernate.cfg.xml">
       <Link>Hibernate.cfg.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

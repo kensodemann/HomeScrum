@@ -64,7 +64,12 @@
     <Compile Include="WorkItemTypeRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\HomeScrum.Common.TestData\Hibernate.cfg.xml">
+      <Link>Hibernate.cfg.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.TestData\HomeScrum.Common.TestData.csproj">
       <Project>{bc28d6b5-11da-4311-9dbe-f08d3b8002d9}</Project>
