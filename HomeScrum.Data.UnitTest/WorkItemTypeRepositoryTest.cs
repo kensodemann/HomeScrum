@@ -75,7 +75,7 @@ namespace HomeScrum.Data.UnitTest
             Description = "New one for Insert",
             StatusCd = 'A',
             IsTask = 'Y',
-            IsPredefined = 'Y'
+            IsPredefined = true
          };
 
          _repository.Add( workItemType );

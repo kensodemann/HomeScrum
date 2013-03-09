@@ -30,7 +30,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Project",
             StatusCd='A',
             IsActive='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new ProjectStatus ()
          {
@@ -39,7 +39,7 @@ namespace HomeScrum.Common.TestData
             Description="No longer active",
             StatusCd='A',
             IsActive='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new ProjectStatus ()
          {
@@ -48,7 +48,7 @@ namespace HomeScrum.Common.TestData
             Description="The project is closed",
             StatusCd='A',
             IsActive='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new ProjectStatus ()
          {
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Active, Predefined",
             StatusCd='A',
             IsActive='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new ProjectStatus ()
          {
@@ -66,7 +66,7 @@ namespace HomeScrum.Common.TestData
             Description="Inactive Status, Is Active, Predefined",
             StatusCd='I',
             IsActive='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new ProjectStatus ()
          {
@@ -75,7 +75,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Not Active, Predefined",
             StatusCd='A',
             IsActive='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new ProjectStatus ()
          {
@@ -84,7 +84,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Active, Not Predefined",
             StatusCd='A',
             IsActive='Y',
-            IsPredefined='N'
+            IsPredefined=false
          }
       };
    }

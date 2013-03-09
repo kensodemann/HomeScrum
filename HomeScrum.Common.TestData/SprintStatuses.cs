@@ -31,7 +31,7 @@ namespace HomeScrum.Common.TestData
             Description="The sprint is set up for the future",
             StatusCd='A',
             IsOpenStatus='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -40,7 +40,7 @@ namespace HomeScrum.Common.TestData
             Description="In Planning",
             StatusCd='A',
             IsOpenStatus='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             Description="The sprint is the active one",
             StatusCd='A',
             IsOpenStatus='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -58,7 +58,7 @@ namespace HomeScrum.Common.TestData
             Description="The sprint is done",
             StatusCd='A',
             IsOpenStatus='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -67,7 +67,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Open, Predefined",
             StatusCd='A',
             IsOpenStatus='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -76,7 +76,7 @@ namespace HomeScrum.Common.TestData
             Description="Inactive Status, Is Open, Predefined",
             StatusCd='I',
             IsOpenStatus='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -85,7 +85,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Not Open, Predefined",
             StatusCd='A',
             IsOpenStatus='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new SprintStatus ()
          {
@@ -94,7 +94,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Open, Not Predefined",
             StatusCd='A',
             IsOpenStatus='Y',
-            IsPredefined='N'
+            IsPredefined=false
          }
       };
    }

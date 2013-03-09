@@ -12,7 +12,8 @@
     <property name="Description"/>
     <property name="StatusCd"/>
     <property name="IsTask"/>
-    <property name="IsPredefined"/>
+    <property name="IsPredefined"
+              type="YesNo"/>
   </class>
 
 </hibernate-mapping>

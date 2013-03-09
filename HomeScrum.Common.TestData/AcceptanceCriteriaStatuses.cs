@@ -31,7 +31,7 @@ namespace HomeScrum.Common.TestData
             Description="Not yet verified",
             StatusCd='A',
             IsAccepted='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
          {
@@ -40,7 +40,7 @@ namespace HomeScrum.Common.TestData
             Description="Accepted",
             StatusCd='A',
             IsAccepted='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
          {
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             Description="Rejected",
             StatusCd='A',
             IsAccepted='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
          {
@@ -58,7 +58,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Accepted, Predefined",
             StatusCd='A',
             IsAccepted='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
          {
@@ -67,7 +67,7 @@ namespace HomeScrum.Common.TestData
             Description="Inactive Status, Is Accepted, Predefined",
             StatusCd='I',
             IsAccepted='Y',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
          {
@@ -76,7 +76,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Not Accepted, Predefined",
             StatusCd='A',
             IsAccepted='N',
-            IsPredefined='Y'
+            IsPredefined=true
          },
          new AcceptanceCriteriaStatus ()
          {
@@ -85,7 +85,7 @@ namespace HomeScrum.Common.TestData
             Description="Active Status, Is Accepted, Not Predefined",
             StatusCd='A',
             IsAccepted='Y',
-            IsPredefined='N'
+            IsPredefined=false
          }
       };
    }

@@ -75,7 +75,7 @@ namespace HomeScrum.Data.UnitTest
             Description = "New one for Insert",
             StatusCd = 'A',
             IsAccepted = 'Y',
-            IsPredefined = 'Y'
+            IsPredefined = true
          };
 
          _repository.Add( status );

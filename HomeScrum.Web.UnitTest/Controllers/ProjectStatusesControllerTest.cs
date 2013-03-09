@@ -32,7 +32,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             Name = "New Project Status",
             Description = "New Project Status",
-            IsPredefined = 'N',
+            IsPredefined = false,
             IsActive = 'Y',
             StatusCd = 'A'
          };

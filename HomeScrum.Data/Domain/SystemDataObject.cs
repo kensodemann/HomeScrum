@@ -9,6 +9,6 @@ namespace HomeScrum.Data.Domain
    public class SystemDataObject : DataObjectBase
    {
       public virtual char StatusCd { get; set; }
-      public virtual char IsPredefined { get; set; }
+      public virtual bool IsPredefined { get; set; }
    }
 }
