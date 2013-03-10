@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.UnitTest.Helpers;
 
 namespace HomeScrum.Data.UnitTest.Domains
 {
@@ -27,6 +28,15 @@ namespace HomeScrum.Data.UnitTest.Domains
 
          Assert.AreEqual( 'A', model.StatusCd );
          Assert.IsTrue( model.AllowUse );
+      }
+
+      [TestMethod]
+      public void AllowUseName()
+      {
+         var display = AttributeHelper.GetDisplayAttribute( typeof( SystemDataObject ), "AllowUse" );
+
+         Assert.IsNotNull( display );
+         Assert.AreEqual( "Active for Use in System", display.Name );
       }
    }
 }
