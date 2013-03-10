@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -58,6 +59,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Domains\SystemDataObjectTest.cs" />
+    <Compile Include="Domains\DataObjectBaseTest.cs" />
+    <Compile Include="Domains\WorkItemTypeTest.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Repositories\ProjectStatusRepositoryTest.cs" />
     <Compile Include="Repositories\SprintStatusRepositoryTest.cs" />
     <Compile Include="Repositories\AcceptanceCriteriaStatusRepositoryTest.cs" />
