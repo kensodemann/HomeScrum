@@ -138,6 +138,12 @@
   <data name="ProjectStatusIsActive" xml:space="preserve">
     <value>Projects of this status are active</value>
   </data>
+  <data name="SprintStatusIsOpenStatus" xml:space="preserve">
+    <value>Sprints with this status are actively being worked on</value>
+  </data>
+  <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
+    <value>Work items with this status have not been completed</value>
+  </data>
   <data name="WorkItemTypeIsTask" xml:space="preserve">
     <value>Work Items of this Type are Tasks</value>
   </data>

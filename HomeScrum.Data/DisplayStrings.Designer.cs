@@ -124,6 +124,24 @@ namespace HomeScrum.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sprints with this status are actively being worked on.
+        /// </summary>
+        public static string SprintStatusIsOpenStatus {
+            get {
+                return ResourceManager.GetString("SprintStatusIsOpenStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work items with this status have not been completed.
+        /// </summary>
+        public static string WorkItemStatusIsOpenStatus {
+            get {
+                return ResourceManager.GetString("WorkItemStatusIsOpenStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work Items of this Type are Tasks.
         /// </summary>
         public static string WorkItemTypeIsTask {
