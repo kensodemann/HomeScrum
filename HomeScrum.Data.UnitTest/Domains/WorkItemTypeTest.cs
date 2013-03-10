@@ -14,7 +14,8 @@ namespace HomeScrum.Data.UnitTest.Domains
          var display = AttributeHelper.GetDisplayAttribute( typeof( WorkItemType ), "IsTask" );
 
          Assert.IsNotNull( display );
-         Assert.AreEqual( "Is Task", display.Name );
+         Assert.IsNotNull( display.ResourceType );
+         Assert.AreEqual( "WorkItemTypeIsTask", display.Name );
       }
    }
 }

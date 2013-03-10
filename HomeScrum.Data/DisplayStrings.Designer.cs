@@ -22,7 +22,7 @@ namespace HomeScrum.Data {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class DisplayStrings {
+    public class DisplayStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace HomeScrum.Data {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HomeScrum.Data.DisplayStrings", typeof(DisplayStrings).Assembly);
@@ -51,7 +51,7 @@ namespace HomeScrum.Data {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace HomeScrum.Data {
         /// <summary>
         ///   Looks up a localized string similar to Active for use in system.
         /// </summary>
-        internal static string AllowUse {
+        public static string AllowUse {
             get {
                 return ResourceManager.GetString("AllowUse", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace HomeScrum.Data {
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string Description {
+        public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace HomeScrum.Data {
         /// <summary>
         ///   Looks up a localized string similar to Enter a short description.
         /// </summary>
-        internal static string DescriptionPrompt {
+        public static string DescriptionPrompt {
             get {
                 return ResourceManager.GetString("DescriptionPrompt", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace HomeScrum.Data {
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string Name {
+        public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace HomeScrum.Data {
         /// <summary>
         ///   Looks up a localized string similar to Enter a unique name.
         /// </summary>
-        internal static string NamePrompt {
+        public static string NamePrompt {
             get {
                 return ResourceManager.GetString("NamePrompt", resourceCulture);
             }
@@ -108,9 +108,9 @@ namespace HomeScrum.Data {
         /// <summary>
         ///   Looks up a localized string similar to Work Items of this Type are Tasks.
         /// </summary>
-        internal static string WorkItemTypeTask {
+        public static string WorkItemTypeIsTask {
             get {
-                return ResourceManager.GetString("WorkItemTypeTask", resourceCulture);
+                return ResourceManager.GetString("WorkItemTypeIsTask", resourceCulture);
             }
         }
     }

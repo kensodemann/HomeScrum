@@ -52,6 +52,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DisplayStrings.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Domain\AcceptanceCriteriaStatus.cs" />
     <Compile Include="Domain\DataObjectBase.cs" />
@@ -65,8 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DisplayStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DisplayStrings.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Mappings\WorkStatus.hbm.xml" />
   </ItemGroup>
