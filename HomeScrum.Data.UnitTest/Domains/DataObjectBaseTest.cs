@@ -33,5 +33,16 @@ namespace HomeScrum.Data.UnitTest.Domains
          Assert.AreEqual( "DescriptionPrompt", display.Prompt );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.DescriptionPrompt ) );
       }
+
+      [TestMethod]
+      public void NameIsRequired()
+      {
+         var required = AttributeHelper.GetRequiredAttribute( typeof( DataObjectBase ), "Name" );
+
+         Assert.IsNotNull( required );
+         Assert.AreEqual( "NameIsRequired", required.ErrorMessageResourceName );
+         Assert.AreEqual( typeof( ErrorMessages ), required.ErrorMessageResourceType );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.NameIsRequired ) );
+      }
    }
 }

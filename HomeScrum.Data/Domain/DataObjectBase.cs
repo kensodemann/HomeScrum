@@ -12,6 +12,7 @@ namespace HomeScrum.Data.Domain
       public virtual Guid Id { get; set; }
 
       [Display( Name = "Name", Prompt = "NamePrompt", ResourceType = typeof( DisplayStrings ) )]
+      [Required( ErrorMessageResourceName = "NameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
       public virtual string Name { get; set; }
 
       [Display( Name = "Description", Prompt = "DescriptionPrompt", ResourceType = typeof( DisplayStrings ) )]

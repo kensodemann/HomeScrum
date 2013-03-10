@@ -7,7 +7,12 @@ namespace HomeScrum.Data.UnitTest.Helpers
    {
       public static DisplayAttribute GetDisplayAttribute( Type modelType, string propertyName )
       {
-         return GetAttribute( modelType, typeof(DisplayAttribute), propertyName ) as DisplayAttribute;
+         return GetAttribute( modelType, typeof( DisplayAttribute ), propertyName ) as DisplayAttribute;
+      }
+
+      public static RequiredAttribute GetRequiredAttribute( Type modelType, string propertyName )
+      {
+         return GetAttribute( modelType, typeof( RequiredAttribute ), propertyName ) as RequiredAttribute;
       }
 
       private static Attribute GetAttribute( Type modelType, Type attributeType, string propertyName )
