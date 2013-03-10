@@ -36,8 +36,9 @@ namespace HomeScrum.Data.UnitTest.Domains
          var display = AttributeHelper.GetDisplayAttribute( typeof( SystemDataObject ), "AllowUse" );
 
          Assert.IsNotNull( display );
-         Assert.IsNotNull( display.ResourceType );
+         Assert.AreEqual(typeof(DisplayStrings), display.ResourceType );
          Assert.AreEqual( "AllowUse", display.Name );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.AllowUse ) );
       }
    }
 }

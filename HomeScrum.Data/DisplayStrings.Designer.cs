@@ -61,6 +61,15 @@ namespace HomeScrum.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This status indicates the criteria has been met.
+        /// </summary>
+        public static string AcceptanceCriteriaStatusIsAccepted {
+            get {
+                return ResourceManager.GetString("AcceptanceCriteriaStatusIsAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active for use in system.
         /// </summary>
         public static string AllowUse {

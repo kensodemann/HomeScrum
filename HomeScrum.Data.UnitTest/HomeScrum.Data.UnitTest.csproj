@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Domains\SystemDataObjectTest.cs" />
     <Compile Include="Domains\DataObjectBaseTest.cs" />
+    <Compile Include="Domains\AcceptanceCriteriaStatusTest.cs" />
     <Compile Include="Domains\WorkItemTypeTest.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Repositories\ProjectStatusRepositoryTest.cs" />

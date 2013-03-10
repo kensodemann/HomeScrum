@@ -14,9 +14,11 @@ namespace HomeScrum.Data.UnitTest.Domains
          var display = AttributeHelper.GetDisplayAttribute( typeof( DataObjectBase ), "Name" );
 
          Assert.IsNotNull( display );
-         Assert.IsNotNull( display.ResourceType );
+         Assert.AreEqual(typeof(DisplayStrings), display.ResourceType );
          Assert.AreEqual( "Name", display.Name );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.Name ) );
          Assert.AreEqual( "NamePrompt", display.Prompt );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.NamePrompt ) );
       }
 
       [TestMethod]
@@ -25,9 +27,11 @@ namespace HomeScrum.Data.UnitTest.Domains
          var display = AttributeHelper.GetDisplayAttribute( typeof( DataObjectBase ), "Description" );
 
          Assert.IsNotNull( display );
-         Assert.IsNotNull( display.ResourceType );
+         Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
          Assert.AreEqual( "Description", display.Name );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.Description ) );
          Assert.AreEqual( "DescriptionPrompt", display.Prompt );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.DescriptionPrompt ) );
       }
    }
 }
