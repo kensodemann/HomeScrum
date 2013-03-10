@@ -11,10 +11,10 @@ namespace HomeScrum.Data.Domain
    {
       public virtual Guid Id { get; set; }
 
-      [Display( Name = "Name", Prompt = "Enter a unique name" )]
+      [Display( Name = "Name", Prompt = "NamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string Name { get; set; }
 
-      [Display( Name = "Description", Prompt = "Enter a short description" )]
+      [Display( Name = "Description", Prompt = "DescriptionPrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string Description { get; set; }
    }
 }

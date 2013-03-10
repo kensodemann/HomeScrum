@@ -14,8 +14,9 @@ namespace HomeScrum.Data.UnitTest.Domains
          var display = AttributeHelper.GetDisplayAttribute( typeof( DataObjectBase ), "Name" );
 
          Assert.IsNotNull( display );
+         Assert.IsNotNull( display.ResourceType );
          Assert.AreEqual( "Name", display.Name );
-         Assert.AreEqual( "Enter a unique name", display.Prompt );
+         Assert.AreEqual( "NamePrompt", display.Prompt );
       }
 
       [TestMethod]
@@ -24,8 +25,9 @@ namespace HomeScrum.Data.UnitTest.Domains
          var display = AttributeHelper.GetDisplayAttribute( typeof( DataObjectBase ), "Description" );
 
          Assert.IsNotNull( display );
+         Assert.IsNotNull( display.ResourceType );
          Assert.AreEqual( "Description", display.Name );
-         Assert.AreEqual( "Enter a short description", display.Prompt );
+         Assert.AreEqual( "DescriptionPrompt", display.Prompt );
       }
    }
 }

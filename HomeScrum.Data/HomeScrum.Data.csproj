@@ -48,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisplayStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DisplayStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Domain\AcceptanceCriteriaStatus.cs" />
     <Compile Include="Domain\DataObjectBase.cs" />
     <Compile Include="Domain\ProjectStatus.cs" />
@@ -59,6 +64,10 @@
     <Compile Include="Repositories\IDataObjectRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DisplayStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DisplayStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mappings\WorkStatus.hbm.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace HomeScrum.Data.Domain
    {
       public virtual char StatusCd { get; private set; }
 
-      [Display( Name = "Active for Use in System" )]
+      [Display( Name = "AllowUse", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool AllowUse
       {
          get { return StatusCd == 'A'; }
