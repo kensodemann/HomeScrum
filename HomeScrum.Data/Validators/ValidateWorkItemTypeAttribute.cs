@@ -20,7 +20,7 @@ namespace HomeScrum.Data.Validators
       {
          if (WorkItemTypeWithSameNameExists( value ))
          {
-            return new ValidationResult( this.ErrorMessage );
+            return new ValidationResult( GetErrorMessage() );
          }
 
          return ValidationResult.Success;
@@ -38,6 +38,17 @@ namespace HomeScrum.Data.Validators
          }
 
          return typeWithSameName != null;
+      }
+
+      private string GetErrorMessage()
+      {
+         if (!String.IsNullOrWhiteSpace( this.ErrorMessageResourceName ) && this.ErrorMessageResourceType != null)
+         {
+            return ErrorMessageResourceType.InvokeMember( this.ErrorMessageResourceName,
+               System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.GetProperty,
+               null, null, null ).ToString();
+         }
+         return this.ErrorMessage;
       }
    }
 }

@@ -110,5 +110,25 @@ namespace HomeScrum.Data.UnitTest.Validators
 
          Assert.AreEqual( ValidationResult.Success, result );
       }
+
+      [TestMethod]
+      public void ValidatorUsesResourceString_IfValidResourceGiven()
+      {
+         var model = new WorkItemType();
+         model.Name = WorkItemTypes.ModelData[1].Name;
+         _validator.ErrorMessage = "This is my error message";
+         _validator.ErrorMessageResourceName = "TestErrorMessage";
+         _validator.ErrorMessageResourceType = typeof( TestStrings );
+
+         var result = _validator.GetValidationResult( model, new ValidationContext( model, null, null ) );
+
+         Assert.AreEqual( TestStrings.TestErrorMessage, result.ErrorMessage );
+      }
+
+      // TODO: Add test for:
+      //    o rename the validator class
+      //    o incomplete resource (give no ErrorMessageResourceName)
+      //    o invalid resource (give bad ErrorMessageResourceName)
+      //    o no error message given (use default generic message)
    }
 }
