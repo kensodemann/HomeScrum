@@ -33,7 +33,8 @@ namespace HomeScrum.Data.Validators
          var workItemType = value as WorkItemType;
          if (workItemType != null)
          {
-            typeWithSameName = this.Repository.GetAll().FirstOrDefault( x => x.Name == workItemType.Name );
+            typeWithSameName = this.Repository.GetAll()
+               .FirstOrDefault( x => x.Name == workItemType.Name && x.Id != workItemType.Id );
          }
 
          return typeWithSameName != null;
