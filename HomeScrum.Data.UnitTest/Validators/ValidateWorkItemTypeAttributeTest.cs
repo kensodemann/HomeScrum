@@ -35,5 +35,18 @@ namespace HomeScrum.Data.UnitTest.Validators
 
          _repository.Verify( x => x.GetAll(), Times.Once() );
       }
+
+      [TestMethod]
+      public void ValidatorReturnsErrorMessage_IfNameExistsOnNewObject()
+      {
+         var workItemType = new WorkItemType();
+         workItemType.Name = WorkItemTypes.ModelData[1].Name;
+         _validator.ErrorMessage = "This is my error message";
+
+         var result = _validator.GetValidationResult( workItemType, new ValidationContext( workItemType, null, null ) );
+
+         Assert.AreNotEqual( ValidationResult.Success, result );
+         Assert.AreEqual( "This is my error message", result.ErrorMessage );
+      }
    }
 }

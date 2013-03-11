@@ -18,7 +18,15 @@ namespace HomeScrum.Data.Validators
 
       protected override ValidationResult IsValid( object value, ValidationContext validationContext )
       {
-         this.Repository.GetAll();
+         var workItemType = value as WorkItemType;
+         if (workItemType != null)
+         {
+            var typeWithSameName = this.Repository.GetAll().FirstOrDefault( x => x.Name == workItemType.Name );
+            if (typeWithSameName != null)
+            {
+               return new ValidationResult( this.ErrorMessage );
+            }
+         }
 
          return ValidationResult.Success;
       }
