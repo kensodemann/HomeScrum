@@ -80,7 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Validators\ValidateWorkItemTypeAttributeTest.cs" />
+    <Compile Include="Validators\SystemDataObjectValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\HomeScrum.Common.TestData\Hibernate.cfg.xml">
