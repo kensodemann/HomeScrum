@@ -23,14 +23,14 @@ namespace HomeScrum.Data.UnitTest.Validators
       }
 
 
-      //[TestMethod]
-      //public void ValidatorGetsAllWorkItemTypes_IfValueWorkItemType()
-      //{
-      //   var model = new WorkItemType();
-      //   var result = _validator.GetValidationResult( model, new ValidationContext( model, null, null ) );
+      [TestMethod]
+      public void ModelIsValid_GetsAllItemFromRepository()
+      {
+         var model = new WorkItemType();
+         var result = _validator.ModelIsValid( model );
 
-      //   _repository.Verify( x => x.GetAll(), Times.Once() );
-      //}
+         _repository.Verify( x => x.GetAll(), Times.Once() );
+      }
 
       //[TestMethod]
       //public void ValidatorDoesNotGetAll_IfValueNotWorkItemType()

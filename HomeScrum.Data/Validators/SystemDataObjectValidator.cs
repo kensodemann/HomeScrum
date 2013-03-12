@@ -20,7 +20,8 @@ namespace HomeScrum.Data.Validators
 
       public bool ModelIsValid( DataObjectType model )
       {
-         throw new NotImplementedException();
+         var items = Repository.GetAll();
+         return true;
       }
 
       public ICollection<KeyValuePair<string, string>> Messages
