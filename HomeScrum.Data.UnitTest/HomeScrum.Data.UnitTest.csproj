@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Validators\SystemDataObjectValidatorTest.cs" />
     <Compile Include="Validators\AcceptanceCriteriaStatusValidatorTest.cs" />
+    <Compile Include="Validators\ProjectStatusValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\HomeScrum.Common.TestData\Hibernate.cfg.xml">

@@ -54,6 +54,11 @@ namespace HomeScrum.Web.App_Start
       /// <param name="kernel">The kernel.</param>
       private static void RegisterServices( IKernel kernel )
       {
+         RegisterRepositories( kernel );
+      }
+
+      private static void RegisterRepositories( IKernel kernel )
+      {
          kernel.Bind<IDataObjectRepository<AcceptanceCriteriaStatus>>().ToConstant( new DataObjectRepository<AcceptanceCriteriaStatus>() );
          kernel.Bind<IDataObjectRepository<ProjectStatus>>().ToConstant( new DataObjectRepository<ProjectStatus>() );
          kernel.Bind<IDataObjectRepository<SprintStatus>>().ToConstant( new DataObjectRepository<SprintStatus>() );

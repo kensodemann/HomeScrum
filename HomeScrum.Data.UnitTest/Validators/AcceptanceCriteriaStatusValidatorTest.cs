@@ -11,7 +11,6 @@ namespace HomeScrum.Data.UnitTest.Validators
    [TestClass]
    public class AcceptanceCriteriaStatusValidatorTest
    {
-
       private Mock<IDataObjectRepository<AcceptanceCriteriaStatus>> _repository;
       private AcceptanceCriteriaStatusValidator _validator;
 
@@ -33,6 +32,7 @@ namespace HomeScrum.Data.UnitTest.Validators
 
          var result = _validator.ModelIsValid( model );
 
+         Assert.IsFalse( result );
          Assert.AreEqual( 1, _validator.Messages.Count );
          foreach (var message in _validator.Messages)
          {
