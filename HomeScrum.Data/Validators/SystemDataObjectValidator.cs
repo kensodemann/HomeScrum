@@ -21,9 +21,9 @@ namespace HomeScrum.Data.Validators
       protected IDataObjectRepository<DataObjectType> Repository { get; private set; }
       protected virtual string ObjectName { get { return "System Data Object"; } }
 
-      public ICollection<KeyValuePair<string, string>> Messages { get; private set; }
+      public virtual ICollection<KeyValuePair<string, string>> Messages { get; private set; }
 
-      public bool ModelIsValid( DataObjectType model )
+      public virtual bool ModelIsValid( DataObjectType model )
       {
          Messages.Clear();
 
