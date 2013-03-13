@@ -81,6 +81,7 @@
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Validators\SystemDataObjectValidatorTest.cs" />
+    <Compile Include="Validators\AcceptanceCriteriaStatusValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\HomeScrum.Common.TestData\Hibernate.cfg.xml">
