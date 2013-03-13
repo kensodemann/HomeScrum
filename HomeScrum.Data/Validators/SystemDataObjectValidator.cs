@@ -11,6 +11,7 @@ namespace HomeScrum.Data.Validators
 {
    public class SystemDataObjectValidator<DataObjectType> : IValidator<DataObjectType> where DataObjectType : SystemDataObject
    {
+      [Inject]
       public SystemDataObjectValidator( IDataObjectRepository<DataObjectType> repository )
       {
          Repository = repository;
@@ -20,8 +21,7 @@ namespace HomeScrum.Data.Validators
 
       public bool ModelIsValid( DataObjectType model )
       {
-         var items = Repository.GetAll();
-         return true;
+         return !ItemWithSameNameExists( model );
       }
 
       public ICollection<KeyValuePair<string, string>> Messages
@@ -38,19 +38,11 @@ namespace HomeScrum.Data.Validators
       //   return ValidationResult.Success;
       //}
 
-      //private bool WorkItemTypeWithSameNameExists( object value )
-      //{
-      //   WorkItemType typeWithSameName = null;
-
-      //   var workItemType = value as WorkItemType;
-      //   if (workItemType != null)
-      //   {
-      //      typeWithSameName = this.Repository.GetAll()
-      //         .FirstOrDefault( x => x.Name == workItemType.Name && x.Id != workItemType.Id );
-      //   }
-
-      //   return typeWithSameName != null;
-      //}
+      private bool ItemWithSameNameExists( DataObjectType model )
+      {
+         return this.Repository.GetAll()
+                   .FirstOrDefault( x => x.Name == model.Name && x.Id != model.Id ) != null;
+      }
 
       //private string GetErrorMessage()
       //{
