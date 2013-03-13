@@ -61,6 +61,15 @@ namespace HomeScrum.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A {0} named &quot;{1}&quot; already exists..
+        /// </summary>
+        public static string NameIsNotUnique {
+            get {
+                return ResourceManager.GetString("NameIsNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a name..
         /// </summary>
         public static string NameIsRequired {

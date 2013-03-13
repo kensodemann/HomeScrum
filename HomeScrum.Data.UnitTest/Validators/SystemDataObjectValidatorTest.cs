@@ -77,24 +77,32 @@ namespace HomeScrum.Data.UnitTest.Validators
          Assert.IsTrue( result );
       }
 
-      //[TestMethod]
-      //public void ValidatorUsesResourceString_IfValidResourceGiven()
-      //{
-      //   var model = new WorkItemType();
-      //   model.Name = WorkItemTypes.ModelData[1].Name;
-      //   _validator.ErrorMessage = "This is my error message";
-      //   _validator.ErrorMessageResourceName = "TestErrorMessage";
-      //   _validator.ErrorMessageResourceType = typeof( TestStrings );
+      [TestMethod]
+      public void MessagesIsEmpty_IfModelIsValid()
+      {
+         var model = new WorkItemType();
 
-      //   var result = _validator.GetValidationResult( model, new ValidationContext( model, null, null ) );
+         var result = _validator.ModelIsValid( model );
 
-      //   Assert.AreEqual( TestStrings.TestErrorMessage, result.ErrorMessage );
-      //}
+         Assert.IsTrue( result );
+         Assert.AreEqual( 0, _validator.Messages.Count );
+      }
 
-      // TODO: Add test for:
-      //    o rename the validator class
-      //    o incomplete resource (give no ErrorMessageResourceName)
-      //    o invalid resource (give bad ErrorMessageResourceName)
-      //    o no error message given (use default generic message)
+      [TestMethod]
+      public void MessagesContainsUniqueNameMessage_IfNameNotUnique()
+      {
+         var model = new WorkItemType();
+         model.Name = WorkItemTypes.ModelData[1].Name;
+         model.Id = WorkItemTypes.ModelData[0].Id;
+
+         var result = _validator.ModelIsValid( model );
+
+         Assert.AreEqual( 1, _validator.Messages.Count );
+         foreach (var message in _validator.Messages)
+         {
+            Assert.AreEqual( "Name", message.Key );
+            Assert.AreEqual( String.Format( ErrorMessages.NameIsNotUnique, "System Data Object", model.Name ), message.Value );
+         }
+      }
    }
 }

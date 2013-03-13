@@ -15,28 +15,30 @@ namespace HomeScrum.Data.Validators
       public SystemDataObjectValidator( IDataObjectRepository<DataObjectType> repository )
       {
          Repository = repository;
+         Messages = new List<KeyValuePair<string, string>>();
       }
 
-      public IDataObjectRepository<DataObjectType> Repository { get; private set; }
+      protected IDataObjectRepository<DataObjectType> Repository { get; private set; }
+      protected virtual string ObjectName { get { return "System Data Object"; } }
+
+      public ICollection<KeyValuePair<string, string>> Messages { get; private set; }
 
       public bool ModelIsValid( DataObjectType model )
       {
-         return !ItemWithSameNameExists( model );
+         Messages.Clear();
+
+         VerifyNameIsUnique( model );
+
+         return Messages.Count == 0;
       }
 
-      public ICollection<KeyValuePair<string, string>> Messages
+      private void VerifyNameIsUnique( DataObjectType model )
       {
-         get { throw new NotImplementedException(); }
+         if (ItemWithSameNameExists( model ))
+         {
+            AddMessage( "Name", ErrorMessages.NameIsNotUnique, model );
+         }
       }
-      //protected override ValidationResult IsValid( object value, ValidationContext validationContext )
-      //{
-      //   if (WorkItemTypeWithSameNameExists( value ))
-      //   {
-      //      return new ValidationResult( GetErrorMessage() );
-      //   }
-
-      //   return ValidationResult.Success;
-      //}
 
       private bool ItemWithSameNameExists( DataObjectType model )
       {
@@ -44,15 +46,10 @@ namespace HomeScrum.Data.Validators
                    .FirstOrDefault( x => x.Name == model.Name && x.Id != model.Id ) != null;
       }
 
-      //private string GetErrorMessage()
-      //{
-      //   if (!String.IsNullOrWhiteSpace( this.ErrorMessageResourceName ) && this.ErrorMessageResourceType != null)
-      //   {
-      //      return ErrorMessageResourceType.InvokeMember( this.ErrorMessageResourceName,
-      //         System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.GetProperty,
-      //         null, null, null ).ToString();
-      //   }
-      //   return this.ErrorMessage;
-      //}
+      private void AddMessage( string key, string message, DataObjectType model )
+      {
+         var newMessage = new KeyValuePair<string, string>( key, String.Format( message, ObjectName, model.Name ) );
+         Messages.Add( newMessage );
+      }
    }
 }
