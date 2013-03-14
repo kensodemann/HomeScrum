@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Validators
 {
-   class WorkItemStatusValidator : SystemDataObjectValidator<WorkItemStatus>
+   public class WorkItemStatusValidator : SystemDataObjectValidator<WorkItemStatus>
    {
       public WorkItemStatusValidator( IDataObjectRepository<WorkItemStatus> repository )
          : base( repository ) { }
+
+      protected override string ObjectName { get { return "Work Item Status"; } }
    }
 }
