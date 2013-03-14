@@ -61,7 +61,7 @@ namespace HomeScrum.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A {0} named &quot;{1}&quot; already exists..
+        ///   Looks up a localized string similar to {0} &quot;{1}&quot; already exists..
         /// </summary>
         public static string NameIsNotUnique {
             get {
