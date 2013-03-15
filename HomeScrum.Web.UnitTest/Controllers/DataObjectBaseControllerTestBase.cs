@@ -261,6 +261,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
+      // TODO: Create validator tests for the Create POST.
+
 
       #region private helpers
       ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
