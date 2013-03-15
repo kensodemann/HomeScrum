@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
+using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Controllers.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,6 +17,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public abstract class DataObjectBaseControllerTestBase<T> where T : DataObjectBase
    {
       protected Mock<IDataObjectRepository<T>> _repository;
+      protected Mock<IValidator<T>> _validator;
       protected DataObjectBaseController<T> _controller;
 
       protected abstract ICollection<T> GetAllModels();

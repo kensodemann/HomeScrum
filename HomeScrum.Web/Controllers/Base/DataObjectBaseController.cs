@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
+using HomeScrum.Data.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,16 @@ namespace HomeScrum.Web.Controllers.Base
 {
    public class DataObjectBaseController<T> : Controller where T : DataObjectBase
    {
-      public DataObjectBaseController( IDataObjectRepository<T> repository )
+      public DataObjectBaseController( IDataObjectRepository<T> repository, IValidator<T> validator )
       {
          _repository = repository;
       }
 
       private readonly IDataObjectRepository<T> _repository;
       public IDataObjectRepository<T> Repository { get { return _repository; } }
+
+      private readonly IValidator<T> _validator;
+      public IValidator<T> Validator { get { return _validator; } }
 
       //
       // GET: /AcceptanceCriteriaStatuses/

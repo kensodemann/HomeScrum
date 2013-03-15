@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
+using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using Ninject;
 using System;
@@ -12,7 +13,7 @@ namespace HomeScrum.Web.Controllers
    public class AcceptanceCriteriaStatusesController : DataObjectBaseController<AcceptanceCriteriaStatus>
    {
       [Inject]
-      public AcceptanceCriteriaStatusesController( IDataObjectRepository<AcceptanceCriteriaStatus> repository )
-         : base( repository ) { }
+      public AcceptanceCriteriaStatusesController( IDataObjectRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )
+         : base( repository, validator ) { }
    }
 }

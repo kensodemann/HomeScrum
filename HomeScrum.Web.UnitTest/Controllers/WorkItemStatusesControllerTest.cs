@@ -7,6 +7,7 @@ using HomeScrum.Web.Controllers;
 using HomeScrum.Common.TestData;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using HomeScrum.Data.Validators;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -18,7 +19,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void InitializeTest()
       {
          _repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
-         _controller = new WorkItemStatusesController( _repository.Object );
+         _validator = new Mock<IValidator<WorkItemStatus>>();
+         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object );
       }
 
       protected override ICollection<WorkItemStatus> GetAllModels()

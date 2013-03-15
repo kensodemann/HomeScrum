@@ -8,6 +8,7 @@ using HomeScrum.Common.TestData;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using HomeScrum.Data.Validators;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -19,7 +20,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void InitializeTest()
       {
          _repository = new Mock<IDataObjectRepository<WorkItemType>>();
-         _controller = new WorkItemTypesController( _repository.Object );
+         _validator = new Mock<IValidator<WorkItemType>>();
+         _controller = new WorkItemTypesController( _repository.Object, _validator.Object );
       }
 
       protected override ICollection<WorkItemType> GetAllModels()
