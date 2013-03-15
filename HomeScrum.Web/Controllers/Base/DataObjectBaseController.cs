@@ -55,6 +55,8 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Create( T model )
       {
+         Validate( model );
+
          if (ModelState.IsValid)
          {
             _repository.Add( model );

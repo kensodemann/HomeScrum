@@ -138,6 +138,51 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreatePost_PassesModelToValidator()
+      {
+         var model = GetAllModels().ToArray()[3];
+
+         _controller.Create( model );
+
+         _validator.Verify( x => x.ModelIsValid( model ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = GetAllModels().ToArray()[3];
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( false );
+
+         var result = _controller.Create( model );
+
+         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         foreach (var message in messages)
+         {
+            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+         }
+         Assert.IsTrue( result is ViewResult );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = GetAllModels().ToArray()[3];
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( true );
+
+         var result = _controller.Create( model );
+
+         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.IsNotNull( result );
+         Assert.IsTrue( result is RedirectToRouteResult );
+      }
+
+      [TestMethod]
       public void EditGet_CallsRepositoryGet()
       {
          Guid id = Guid.NewGuid();
@@ -260,8 +305,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
       }
-
-      // TODO: Create validator tests for the Create POST.
 
 
       #region private helpers
