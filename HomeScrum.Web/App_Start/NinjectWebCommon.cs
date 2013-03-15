@@ -11,6 +11,7 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Data.Domain;
    using HomeScrum.Data.Repositories;
    using HomeScrum.Data.SqlServer;
+   using HomeScrum.Data.Validators;
 
    public static class NinjectWebCommon
    {
@@ -55,6 +56,7 @@ namespace HomeScrum.Web.App_Start
       private static void RegisterServices( IKernel kernel )
       {
          RegisterRepositories( kernel );
+         RegisterValidators( kernel );
       }
 
       private static void RegisterRepositories( IKernel kernel )
@@ -64,6 +66,15 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IDataObjectRepository<SprintStatus>>().ToConstant( new DataObjectRepository<SprintStatus>() );
          kernel.Bind<IDataObjectRepository<WorkItemStatus>>().ToConstant( new DataObjectRepository<WorkItemStatus>() );
          kernel.Bind<IDataObjectRepository<WorkItemType>>().ToConstant( new DataObjectRepository<WorkItemType>() );
+      }
+
+      private static void RegisterValidators( IKernel kernel )
+      {
+         kernel.Bind<IValidator<AcceptanceCriteriaStatus>>().To( typeof( AcceptanceCriteriaStatusValidator ) );
+         kernel.Bind<IValidator<ProjectStatus>>().To( typeof( ProjectStatusValidator ) );
+         kernel.Bind<IValidator<SprintStatus>>().To( typeof( SprintStatusValidator ) );
+         kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
+         kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
       }
    }
 }
