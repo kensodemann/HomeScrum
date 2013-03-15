@@ -15,14 +15,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class WorkItemStatusesControllerTest : DataObjectBaseControllerTestBase<WorkItemStatus>
    {
-      [TestInitialize]
-      public void InitializeTest()
-      {
-         _repository = new Mock<IDataObjectRepository<WorkItemStatus>>();
-         _validator = new Mock<IValidator<WorkItemStatus>>();
-         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object );
-      }
-
       protected override ICollection<WorkItemStatus> GetAllModels()
       {
          return WorkItemStatuses.ModelData;
@@ -38,6 +30,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsOpenStatus = true,
             AllowUse = true
          };
+      }
+
+      [TestInitialize]
+      public override void InitializeTest()
+      {
+         base.InitializeTest();
+         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object );
       }
    }
 }

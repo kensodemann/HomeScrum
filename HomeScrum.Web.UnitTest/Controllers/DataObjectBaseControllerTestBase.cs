@@ -23,6 +23,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected abstract ICollection<T> GetAllModels();
       protected abstract T CreateNewModel();
 
+      public virtual void InitializeTest()
+      {
+         _repository = new Mock<IDataObjectRepository<T>>();
+         _validator = new Mock<IValidator<T>>();
+
+         _validator.Setup( x => x.ModelIsValid( It.IsAny<T>() ) ).Returns( true );
+      }
+
 
       [TestMethod]
       public void Index_ReturnsViewWithModel()
@@ -217,5 +225,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _validator.Verify( x => x.ModelIsValid( model ), Times.Once() );
       }
+
+      [TestMethod]
+      public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = GetAllModels().ToArray()[3];
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( false );
+
+         _controller.Edit( model );
+
+         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         foreach (var message in messages)
+         {
+            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+         }
+      }
+
+      #region private helpers
+      ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
+      {
+         var messages = new List<KeyValuePair<string, string>>();
+
+         messages.Add( new KeyValuePair<string, string>( "Name", "Name is not unique" ) );
+         messages.Add( new KeyValuePair<string, string>( "SomethingElse", "Another Message" ) );
+
+         return messages;
+      }
+      #endregion
    }
 }

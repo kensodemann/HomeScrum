@@ -16,14 +16,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class WorkItemTypeesControllerTest : DataObjectBaseControllerTestBase<WorkItemType>
    {
-      [TestInitialize]
-      public void InitializeTest()
-      {
-         _repository = new Mock<IDataObjectRepository<WorkItemType>>();
-         _validator = new Mock<IValidator<WorkItemType>>();
-         _controller = new WorkItemTypesController( _repository.Object, _validator.Object );
-      }
-
       protected override ICollection<WorkItemType> GetAllModels()
       {
          return WorkItemTypes.ModelData;
@@ -40,5 +32,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
             AllowUse = true
          };
       }
+
+      [TestInitialize]
+      public override void InitializeTest()
+      {
+         base.InitializeTest();
+         _controller = new WorkItemTypesController( _repository.Object, _validator.Object );
+      }
+
    }
 }

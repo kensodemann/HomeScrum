@@ -15,14 +15,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class SprintStatusesControllerTest : DataObjectBaseControllerTestBase<SprintStatus>
    {
-      [TestInitialize]
-      public void InitializeTest()
-      {
-         _repository = new Mock<IDataObjectRepository<SprintStatus>>();
-         _validator = new Mock<IValidator<SprintStatus>>();
-         _controller = new SprintStatusesController( _repository.Object, _validator.Object );
-      }
-
       protected override ICollection<SprintStatus> GetAllModels()
       {
          return SprintStatuses.ModelData;
@@ -38,6 +30,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsOpenStatus = true,
             AllowUse = true
          };
+      }
+
+      [TestInitialize]
+      public override void InitializeTest()
+      {
+         base.InitializeTest();
+         _controller = new SprintStatusesController( _repository.Object, _validator.Object );
       }
    }
 }

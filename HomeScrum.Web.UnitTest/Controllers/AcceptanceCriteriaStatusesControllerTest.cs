@@ -15,14 +15,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class AcceptanceCriteriaStatusesControllerTest : DataObjectBaseControllerTestBase<AcceptanceCriteriaStatus>
    {
-      [TestInitialize]
-      public void InitializeTest()
-      {
-         _repository = new Mock<IDataObjectRepository<AcceptanceCriteriaStatus>>();
-         _validator = new Mock<IValidator<AcceptanceCriteriaStatus>>();
-         _controller = new AcceptanceCriteriaStatusesController( _repository.Object, _validator.Object );
-      }
-
       protected override ICollection<AcceptanceCriteriaStatus> GetAllModels()
       {
          return AcceptanceCriteriaStatuses.ModelData;
@@ -39,5 +31,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
             AllowUse = true
          };
       }
+
+      [TestInitialize]
+      public override void InitializeTest()
+      {
+         base.InitializeTest();
+         _controller = new AcceptanceCriteriaStatusesController( _repository.Object, _validator.Object );
+      }
+
+
+
    }
 }

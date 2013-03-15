@@ -82,7 +82,13 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Edit( T model )
       {
-         _validator.ModelIsValid( model );
+         if (!_validator.ModelIsValid( model ))
+         {
+            foreach (var message in _validator.Messages)
+            {
+               ModelState.AddModelError( message.Key, message.Value );
+            }
+         }
 
          if (ModelState.IsValid)
          {

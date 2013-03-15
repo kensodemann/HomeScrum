@@ -15,14 +15,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class ProjectStatusesControllerTest : DataObjectBaseControllerTestBase<ProjectStatus>
    {
-      [TestInitialize]
-      public void InitializeTest()
-      {
-         _repository = new Mock<IDataObjectRepository<ProjectStatus>>();
-         _validator = new Mock<IValidator<ProjectStatus>>();
-         _controller = new ProjectStatusesController( _repository.Object, _validator.Object );
-      }
-
       protected override ICollection<ProjectStatus> GetAllModels()
       {
          return ProjectStatuses.ModelData;
@@ -38,6 +30,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = true,
             AllowUse = true
          };
+      }
+
+      [TestInitialize]
+      public override void InitializeTest()
+      {
+         base.InitializeTest();
+         _controller = new ProjectStatusesController( _repository.Object, _validator.Object );
       }
    }
 }
