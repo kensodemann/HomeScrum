@@ -207,5 +207,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( result );
       }
+
+      [TestMethod]
+      public void EditPost_PassesModelToValidator()
+      {
+         var model = GetAllModels().ToArray()[3];
+
+         _controller.Edit( model );
+
+         _validator.Verify( x => x.ModelIsValid( model ), Times.Once() );
+      }
    }
 }

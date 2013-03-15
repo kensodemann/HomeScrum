@@ -14,6 +14,7 @@ namespace HomeScrum.Web.Controllers.Base
       public DataObjectBaseController( IDataObjectRepository<T> repository, IValidator<T> validator )
       {
          _repository = repository;
+         _validator = validator;
       }
 
       private readonly IDataObjectRepository<T> _repository;
@@ -81,6 +82,8 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Edit( T model )
       {
+         _validator.ModelIsValid( model );
+
          if (ModelState.IsValid)
          {
             _repository.Update( model );
