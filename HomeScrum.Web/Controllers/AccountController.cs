@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebMatrix.WebData;
-//using HomeScrum.Web.Filters;
 using HomeScrum.Web.Models;
 
 namespace HomeScrum.Web.Controllers
