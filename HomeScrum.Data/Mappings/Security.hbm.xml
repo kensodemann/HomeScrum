@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="HomeScrum.Data"
+                   namespace="HomeScrum.Data.Domain">
+  <sql-query name="ValidateUser">
+    <return-scalar column="formattedName"
+                   type ="String"/>
+    select coalesce( users.lastName, '' ) +
+           case when users.lastName is not null
+              then ', '
+              else ''
+           end + users.firstName
+      from users
+     where userId = :userId
+       and password = HashBytes( 'SHA1', :password )
+  </sql-query>
+</hibernate-mapping>
