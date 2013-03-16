@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
+   [Authorize]
    public class DataObjectBaseController<T> : Controller where T : DataObjectBase
    {
       public DataObjectBaseController( IDataObjectRepository<T> repository, IValidator<T> validator )
