@@ -6,7 +6,6 @@
   <class name="User"
          table="Users">
     <id name="Id"/>
-    <property name="Password"/>
     <property name="FirstName"/>
     <property name="MiddleName"/>
     <property name="LastName"/>

@@ -17,6 +17,9 @@ namespace HomeScrum.Data.TestConsole
          PrintAllSprintStatuses();
          PrintAllProjectStatuses();
          PrintAllAcceptanceCriteriaStatuses();
+
+         var repository = new SecurityRepository();
+         Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
       }
 
       private static void PrintAllWorkItemTypes()

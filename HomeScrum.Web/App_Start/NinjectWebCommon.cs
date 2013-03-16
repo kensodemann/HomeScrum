@@ -66,6 +66,8 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IDataObjectRepository<SprintStatus>>().ToConstant( new DataObjectRepository<SprintStatus>() );
          kernel.Bind<IDataObjectRepository<WorkItemStatus>>().ToConstant( new DataObjectRepository<WorkItemStatus>() );
          kernel.Bind<IDataObjectRepository<WorkItemType>>().ToConstant( new DataObjectRepository<WorkItemType>() );
+
+         kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
       }
 
       private static void RegisterValidators( IKernel kernel )

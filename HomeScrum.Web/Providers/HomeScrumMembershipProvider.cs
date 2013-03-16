@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using HomeScrum.Data.Repositories;
+using Ninject;
 using WebMatrix.WebData;
 
 namespace HomeScrum.Web.Providers
 {
    public class HomeScrumMembershipProvider : ExtendedMembershipProvider
    {
+      private ISecurityRepository _securityRepository = DependencyResolver.Current.GetService<ISecurityRepository>();
+
+      
+      //public HomeScrumMembershipProvider( ISecurityRepository securityRepository )
+      //{
+      //   _securityRepository = securityRepository;
+      //}
+
       public override bool ValidateUser( string username, string password )
       {
-         return username == "kws" && password == "kws";
+         //return username == "kws" && password == "kws";
+         return _securityRepository.IsValidLogin( username, password );
       }
 
 

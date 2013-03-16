@@ -9,9 +9,9 @@
            case when users.lastName is not null
               then ', '
               else ''
-           end + users.firstName
+           end + users.firstName as formattedName
       from users
-     where userId = :userId
-       and password = HashBytes( 'SHA1', :password )
+     where password = HashBytes( 'SHA1', cast( :password as varchar(4000) ) )
+       and userId = :userId
   </sql-query>
 </hibernate-mapping>
