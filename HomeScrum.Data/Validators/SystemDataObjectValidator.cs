@@ -12,13 +12,13 @@ namespace HomeScrum.Data.Validators
    public class SystemDataObjectValidator<DataObjectType> : IValidator<DataObjectType> where DataObjectType : SystemDataObject
    {
       [Inject]
-      public SystemDataObjectValidator( IDataObjectRepository<DataObjectType> repository )
+      public SystemDataObjectValidator( IRepository<DataObjectType> repository )
       {
          Repository = repository;
          Messages = new List<KeyValuePair<string, string>>();
       }
 
-      protected IDataObjectRepository<DataObjectType> Repository { get; private set; }
+      protected IRepository<DataObjectType> Repository { get; private set; }
       protected virtual string ObjectName { get { return "System Data Object"; } }
 
       public virtual ICollection<KeyValuePair<string, string>> Messages { get; private set; }

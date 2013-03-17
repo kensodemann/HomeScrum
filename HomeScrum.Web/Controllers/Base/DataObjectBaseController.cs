@@ -12,14 +12,14 @@ namespace HomeScrum.Web.Controllers.Base
    [Authorize]
    public class DataObjectBaseController<T> : Controller where T : DataObjectBase
    {
-      public DataObjectBaseController( IDataObjectRepository<T> repository, IValidator<T> validator )
+      public DataObjectBaseController( IRepository<T> repository, IValidator<T> validator )
       {
          _repository = repository;
          _validator = validator;
       }
 
-      private readonly IDataObjectRepository<T> _repository;
-      public IDataObjectRepository<T> Repository { get { return _repository; } }
+      private readonly IRepository<T> _repository;
+      public IRepository<T> Repository { get { return _repository; } }
 
       private readonly IValidator<T> _validator;
       public IValidator<T> Validator { get { return _validator; } }

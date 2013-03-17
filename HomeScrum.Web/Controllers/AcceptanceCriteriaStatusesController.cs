@@ -13,7 +13,7 @@ namespace HomeScrum.Web.Controllers
    public class AcceptanceCriteriaStatusesController : DataObjectBaseController<AcceptanceCriteriaStatus>
    {
       [Inject]
-      public AcceptanceCriteriaStatusesController( IDataObjectRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )
+      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )
          : base( repository, validator ) { }
    }
 }

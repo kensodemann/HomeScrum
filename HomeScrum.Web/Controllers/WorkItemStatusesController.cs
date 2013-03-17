@@ -13,7 +13,7 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemStatusesController : DataObjectBaseController<WorkItemStatus>
    {
       [Inject]
-      public WorkItemStatusesController( IDataObjectRepository<WorkItemStatus> repository, IValidator<WorkItemStatus> validator )
+      public WorkItemStatusesController( IRepository<WorkItemStatus> repository, IValidator<WorkItemStatus> validator )
          : base( repository, validator ) { }
    }
 }

@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          ProjectStatuses.Load();
-         _repository = new DataObjectRepository<ProjectStatus>();
+         _repository = new Repository<ProjectStatus>();
       }
 
-      private IDataObjectRepository<ProjectStatus> _repository;
+      private IRepository<ProjectStatus> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllProjectStatuses()

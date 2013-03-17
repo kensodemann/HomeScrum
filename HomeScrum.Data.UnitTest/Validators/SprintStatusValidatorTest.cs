@@ -11,13 +11,13 @@ namespace HomeScrum.Data.UnitTest.Validators
    [TestClass]
    public class SprintStatusValidatorTest
    {
-      private Mock<IDataObjectRepository<SprintStatus>> _repository;
+      private Mock<IRepository<SprintStatus>> _repository;
       private SprintStatusValidator _validator;
 
       [TestInitialize]
       public void InitializeTest()
       {
-         _repository = new Mock<IDataObjectRepository<SprintStatus>>();
+         _repository = new Mock<IRepository<SprintStatus>>();
          _repository.Setup( x => x.GetAll() ).Returns( SprintStatuses.ModelData );
          _validator = new SprintStatusValidator( _repository.Object );
       }

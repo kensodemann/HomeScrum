@@ -28,7 +28,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllWorkItemTypes()
       {
-         var repository = new DataObjectRepository<WorkItemType>();
+         var repository = new Repository<WorkItemType>();
          var workItemTypes = repository.GetAll();
 
          Console.WriteLine( "Work Item Types: " + workItemTypes.Count().ToString() );
@@ -41,7 +41,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllWorkItemStatuses()
       {
-         var repository = new DataObjectRepository<WorkItemStatus>();
+         var repository = new Repository<WorkItemStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Work Item Statuses: " + statuses.Count().ToString() );
@@ -54,7 +54,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllSprintStatuses()
       {
-         var repository = new DataObjectRepository<SprintStatus>();
+         var repository = new Repository<SprintStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Sprint Statuses: " + statuses.Count().ToString() );
@@ -67,7 +67,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllProjectStatuses()
       {
-         var repository = new DataObjectRepository<ProjectStatus>();
+         var repository = new Repository<ProjectStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Project Statuses: " + statuses.Count().ToString() );
@@ -80,7 +80,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllAcceptanceCriteriaStatuses()
       {
-         var repository = new DataObjectRepository<AcceptanceCriteriaStatus>();
+         var repository = new Repository<AcceptanceCriteriaStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );

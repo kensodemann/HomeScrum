@@ -61,11 +61,11 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         kernel.Bind<IDataObjectRepository<AcceptanceCriteriaStatus>>().ToConstant( new DataObjectRepository<AcceptanceCriteriaStatus>() );
-         kernel.Bind<IDataObjectRepository<ProjectStatus>>().ToConstant( new DataObjectRepository<ProjectStatus>() );
-         kernel.Bind<IDataObjectRepository<SprintStatus>>().ToConstant( new DataObjectRepository<SprintStatus>() );
-         kernel.Bind<IDataObjectRepository<WorkItemStatus>>().ToConstant( new DataObjectRepository<WorkItemStatus>() );
-         kernel.Bind<IDataObjectRepository<WorkItemType>>().ToConstant( new DataObjectRepository<WorkItemType>() );
+         kernel.Bind<IRepository<AcceptanceCriteriaStatus>>().ToConstant( new Repository<AcceptanceCriteriaStatus>() );
+         kernel.Bind<IRepository<ProjectStatus>>().ToConstant( new Repository<ProjectStatus>() );
+         kernel.Bind<IRepository<SprintStatus>>().ToConstant( new Repository<SprintStatus>() );
+         kernel.Bind<IRepository<WorkItemStatus>>().ToConstant( new Repository<WorkItemStatus>() );
+         kernel.Bind<IRepository<WorkItemType>>().ToConstant( new Repository<WorkItemType>() );
 
          kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
       }

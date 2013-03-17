@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          AcceptanceCriteriaStatuses.Load();
-         _repository = new DataObjectRepository<AcceptanceCriteriaStatus>();
+         _repository = new Repository<AcceptanceCriteriaStatus>();
       }
 
-      private IDataObjectRepository<AcceptanceCriteriaStatus> _repository;
+      private IRepository<AcceptanceCriteriaStatus> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllAcceptanceCriteriaStatuses()
