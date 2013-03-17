@@ -24,5 +24,12 @@ namespace HomeScrum.Data.Domain
       public virtual string LastName { get; set; }
 
       public virtual char StatusCd { get; set; }
+
+      [Display( Name = "UserIsActive", ResourceType = typeof( DisplayStrings ) )]
+      public virtual bool IsActive
+      {
+         get { return StatusCd == 'A'; }
+         set { StatusCd = value ? 'A' : 'I'; }
+      }
    }
 }

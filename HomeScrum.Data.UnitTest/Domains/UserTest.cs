@@ -95,5 +95,38 @@ namespace HomeScrum.Data.UnitTest.Domains
 
          Assert.IsNull( required );
       }
+
+      [TestMethod]
+      public void StatusCdIsI_IfUserNotActive()
+      {
+         var model = new User();
+
+         model.IsActive = false;
+
+         Assert.AreEqual( 'I', model.StatusCd );
+         Assert.IsFalse( model.IsActive );
+      }
+
+      [TestMethod]
+      public void StatusCdIsA_IfUserIsActive()
+      {
+         var model = new User();
+
+         model.IsActive = true;
+
+         Assert.AreEqual( 'A', model.StatusCd );
+         Assert.IsTrue( model.IsActive );
+      }
+
+      [TestMethod]
+      public void IsActiveName()
+      {
+         var display = AttributeHelper.GetDisplayAttribute( typeof( User ), "IsActive" );
+
+         Assert.IsNotNull( display );
+         Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
+         Assert.AreEqual( "UserIsActive", display.Name );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.UserIsActive ) );
+      }
    }
 }

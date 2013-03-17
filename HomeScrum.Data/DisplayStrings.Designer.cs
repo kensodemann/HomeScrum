@@ -187,6 +187,15 @@ namespace HomeScrum.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User is active..
+        /// </summary>
+        public static string UserIsActive {
+            get {
+                return ResourceManager.GetString("UserIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work items with this status have not been completed.
         /// </summary>
         public static string WorkItemStatusIsOpenStatus {

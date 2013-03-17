@@ -159,6 +159,9 @@
   <data name="UserIdPrompt" xml:space="preserve">
     <value>Enter a unique User Id</value>
   </data>
+  <data name="UserIsActive" xml:space="preserve">
+    <value>User is active.</value>
+  </data>
   <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
     <value>Work items with this status have not been completed</value>
   </data>
