@@ -26,7 +26,17 @@ namespace HomeScrum.Data.SqlServer
 
       public void ChangePassword( string userId, string password )
       {
-         throw new NotImplementedException();
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            using (ITransaction transaction = session.BeginTransaction())
+            {
+               session.CreateSQLQuery( "update users set password = hashbytes('SHA1', cast(:password as varchar(4000))) where userId = :userId" )
+                  .SetString( "userId", userId )
+                  .SetString( "password", password )
+                  .ExecuteUpdate();
+               transaction.Commit();
+            }
+         }
       }
    }
 }

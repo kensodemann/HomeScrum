@@ -20,6 +20,10 @@ namespace HomeScrum.Data.TestConsole
 
          var repository = new SecurityRepository();
          Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
+         repository.ChangePassword( "admin", "something" );
+         Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
+         repository.ChangePassword( "admin", "admin" );
+         Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
       }
 
       private static void PrintAllWorkItemTypes()
