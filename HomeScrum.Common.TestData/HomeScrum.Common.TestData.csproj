@@ -67,6 +67,7 @@
     <Compile Include="ProjectStatuses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SprintStatuses.cs" />
+    <Compile Include="Users.cs" />
     <Compile Include="WorkItemStatuses.cs" />
     <Compile Include="WorkItemTypes.cs" />
   </ItemGroup>

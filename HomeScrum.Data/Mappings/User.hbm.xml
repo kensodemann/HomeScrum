@@ -5,7 +5,7 @@
 
   <class name="User"
          table="Users">
-    <id name="Id"/>
+    <id name="UserId"/>
     <property name="FirstName"/>
     <property name="MiddleName"/>
     <property name="LastName"/>
