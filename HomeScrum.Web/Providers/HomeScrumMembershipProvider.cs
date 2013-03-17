@@ -13,15 +13,8 @@ namespace HomeScrum.Web.Providers
    {
       private ISecurityRepository _securityRepository = DependencyResolver.Current.GetService<ISecurityRepository>();
 
-      
-      //public HomeScrumMembershipProvider( ISecurityRepository securityRepository )
-      //{
-      //   _securityRepository = securityRepository;
-      //}
-
       public override bool ValidateUser( string username, string password )
       {
-         //return username == "kws" && password == "kws";
          return _securityRepository.IsValidLogin( username, password );
       }
 
