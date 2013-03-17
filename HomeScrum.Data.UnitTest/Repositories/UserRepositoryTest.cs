@@ -41,30 +41,29 @@ namespace HomeScrum.Data.UnitTest.Repositories
          }
       }
 
-      //[TestMethod]
-      //public void GetNonExistentUser_ReturnsNull()
-      //{
-      //   var user = _repository.Get( "IDontExist" );
+      [TestMethod]
+      public void GetNonExistentUser_ReturnsNull()
+      {
+         var user = _repository.Get( "IDontExist" );
 
-      //   Assert.IsNull( user );
-      //}
+         Assert.IsNull( user );
+      }
 
-      //[TestMethod]
-      //public void GetNullUserId_ReturnsNull()
-      //{
-      //   var user = _repository.Get( null );
+      [TestMethod]
+      public void GetNullUserId_ReturnsNull()
+      {
+         var user = _repository.Get( null );
 
-      //   Assert.IsNull( user );
-      //}
+         Assert.IsNull( user );
+      }
 
-      //[TestMethod]
-      //public void Get_ReturnsUser()
-      //{
-      //   var user = _repository.Get( Users.ModelData[2].UserId );
+      [TestMethod]
+      public void Get_ReturnsUser()
+      {
+         var user = _repository.Get( Users.ModelData[2].UserId );
 
-      //   AssertUsersAreEqual( Users.ModelData[2], user );
-      //}
-
+         AssertUsersAreEqual( Users.ModelData[2], user );
+      }
 
       [TestMethod]
       public void Add_AddsUserToDatabase()
@@ -83,18 +82,18 @@ namespace HomeScrum.Data.UnitTest.Repositories
          AssertCollectionContainsUser( _repository.GetAll(), user );
       }
 
-      //[TestMethod]
-      //public void Update_ModifiesNameInDatabase()
-      //{
-      //   var user = Users.ModelData[3];
+      [TestMethod]
+      public void Update_ModifiesNameInDatabase()
+      {
+         var user = Users.ModelData[3];
 
-      //   user.FirstName += "Modified";
+         user.FirstName += "Modified";
 
-      //   _repository.Update( user );
+         _repository.Update( user );
 
-      //   Assert.AreEqual( Users.ModelData.GetLength( 0 ), _repository.GetAll().Count );
-      //   AssertUsersAreEqual( user, _repository.Get( user.UserId ) );
-      //}
+         Assert.AreEqual( Users.ModelData.GetLength( 0 ), _repository.GetAll().Count );
+         AssertUsersAreEqual( user, _repository.Get( user.UserId ) );
+      }
 
       [TestMethod]
       public void Delete_RevmovesItemFromDatabase()

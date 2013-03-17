@@ -19,11 +19,11 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public T Get( Guid id )
+      public T Get( object id )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return session.Get<T>( id );
+            return (id == default( object )) ? default( T ) : session.Get<T>( id );
          }
       }
 

@@ -10,7 +10,7 @@ namespace HomeScrum.Data.Repositories
    public interface IRepository<T>
    {
       ICollection<T> GetAll();
-      T Get( Guid id );
+      T Get( object id );
 
       void Add( T dataObject );
       void Update( T dataObject );
