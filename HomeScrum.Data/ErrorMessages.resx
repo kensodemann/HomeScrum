@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FirstNameIsRequired" xml:space="preserve">
+    <value>Please enter a first name.</value>
+  </data>
   <data name="NameIsNotUnique" xml:space="preserve">
     <value>{0} "{1}" already exists.</value>
   </data>
   <data name="NameIsRequired" xml:space="preserve">
     <value>Please enter a name.</value>
+  </data>
+  <data name="UserIdIsRequired" xml:space="preserve">
+    <value>Please enter a user Id.</value>
   </data>
 </root>
