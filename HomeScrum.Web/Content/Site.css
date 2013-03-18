@@ -1,1 +1,116 @@
 ﻿/* Leave plain for now, add own layout after content fleshed out a bit more */
+article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
+{   
+  display: block;   
+}
+
+body
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
+  max-width: 1024px;
+  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
+  background-color: #333;
+}
+
+header
+{
+  background-color: #0B5FA5;
+  text-align: center;
+  color: #000000;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+header h1
+{
+  margin: 0px;
+  font-size: xx-large;
+  color: #e0e0e0;
+}
+
+header h2
+{
+  margin: 0px;
+  font-size: large;
+}
+
+.Content
+{
+  background-color: #BF8330;
+  margin-top: 0px;
+}
+
+.Sidebar
+{
+  padding: 0px 10px;
+  float: left;
+  width: 180px;
+}
+
+.Sidebar nav h2
+{
+  color: #e0e0e0;
+  font-size: large;
+  border-bottom: thin #25547B solid;
+}
+
+.Sidebar nav ul 
+{
+  padding-left: 0px;
+}
+
+.Sidebar nav ul li
+{
+  font-size: small;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  list-style-type: none;
+}
+
+.Sidebar a
+{
+  color: #25547B;
+}
+
+.Sidebar a:hover
+{
+  color: #043C6B;
+}
+
+
+.WorkArea
+{
+  background-color: #25547B;
+  margin-left: 200px;
+  color: #FFFFFF;
+}
+
+.WorkArea a
+{
+  color: #FFFFFF;
+}
+
+.WorkArea a:hover
+{
+  color: #e0e0e0;
+}
+
+
+article
+{
+  padding: 20px 10px;
+  font-size: small;
+}
+
+
+article h2
+{
+  margin: 0px;
+  font-size: large;
+}
+
+article h3
+{
+  font-size: medium;
+}
