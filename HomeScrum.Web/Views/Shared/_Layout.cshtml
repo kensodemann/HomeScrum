@@ -10,21 +10,20 @@
 </head>
 <body>
     <header>
+        <section id="login">
+            @Html.Partial( "_LoginPartial" )
+        </section>
         <h1>@Html.ActionLink( "Home Scrum", "Index", "Home" )</h1>
         <h2>A general, short description of the tool goes here</h2>
         <h2>Various helpful items may be placed here.</h2>
-        <div class="float-right">
-            <section id="login">
-                @Html.Partial( "_LoginPartial" )
-            </section>
-            <nav>
-                <ul id="menu">
-                    <li>@Html.ActionLink( "Home", "Index", "Home" )</li>
-                    <li>@Html.ActionLink( "About", "About", "Home" )</li>
-                    <li>@Html.ActionLink( "Contact", "Contact", "Home" )</li>
-                </ul>
-            </nav>
-        </div>
+
+        <nav>
+            <ul id="menu">
+                <li>@Html.ActionLink( "Home", "Index", "Home" )</li>
+                <li>@Html.ActionLink( "About", "About", "Home" )</li>
+                <li>@Html.ActionLink( "Contact", "Contact", "Home" )</li>
+            </ul>
+        </nav>
     </header>
 
     <div class="Content">
@@ -55,9 +54,9 @@
 
         <section class="WorkArea">
             @RenderSection( "featured", required: false )
-            <section class="content-wrapper main-content clear-fix">
+            <article class="content-wrapper main-content clear-fix">
                 @RenderBody()
-            </section>
+            </article>
         </section>
     </div>
 
