@@ -1,48 +1,75 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>HomeScrum - @ViewBag.Title</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("HomeScrum", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
+<head>
+    <meta charset="utf-8" />
+    <title>HomeScrum - @ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render( "~/Content/css" )
+    @Scripts.Render( "~/bundles/modernizr" )
+</head>
+<body>
+    <header>
+        <h1>@Html.ActionLink( "Home Scrum", "Index", "Home" )</h1>
+        <h2>A general, short description of the tool goes here</h2>
+        <h2>Various helpful items may be placed here.</h2>
+        <div class="float-right">
+            <section id="login">
+                @Html.Partial( "_LoginPartial" )
+            </section>
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink( "Home", "Index", "Home" )</li>
+                    <li>@Html.ActionLink( "About", "About", "Home" )</li>
+                    <li>@Html.ActionLink( "Contact", "Contact", "Home" )</li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="Content">
+
+        <aside class="Sidebar">
+            <nav>
+                <h2>Tasks</h2>
+
+                <ul>
+                    <li><a href="#">Add New Task</a></li>
+                    <li><a href="#">My Task List</a></li>
+                </ul>
+
+                <h2>Admin</h2>
+
+                <ul>
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="#">Users</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li>@Html.ActionLink( "Acceptance Criteria Statuses", "Index", "AcceptanceCriteriaStatuses" )</a></li>
+                    <li>@Html.ActionLink( "Project Statuses", "Index", "ProjectStatuses" )</li>
+                    <li>@Html.ActionLink( "Sprint Statuses", "Index", "SprintStatuses" )</li>
+                    <li>@Html.ActionLink( "Work Item Statuses", "Index", "WorkItemStatuses" )</a></li>
+                    <li>@Html.ActionLink( "Work Item Types", "Index", "WorkItemTypes" )</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <section class="WorkArea">
+            @RenderSection( "featured", required: false )
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()
             </section>
-        </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - Ken Sodemann</p>
-                </div>
-            </div>
-        </footer>
+        </section>
+    </div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - Ken Sodemann</p>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render( "~/bundles/jquery" )
+    @RenderSection( "scripts", required: false )
+</body>
 </html>
