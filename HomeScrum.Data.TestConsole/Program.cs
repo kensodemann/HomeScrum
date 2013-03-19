@@ -20,9 +20,9 @@ namespace HomeScrum.Data.TestConsole
 
          var repository = new SecurityRepository();
          Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
-         repository.ChangePassword( "admin", "something" );
+         repository.ChangePassword( "admin", "admin", "something" );
          Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
-         repository.ChangePassword( "admin", "admin" );
+         repository.ChangePassword( "admin", "something", "admin" );
          Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
       }
 

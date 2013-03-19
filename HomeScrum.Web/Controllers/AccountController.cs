@@ -53,7 +53,65 @@ namespace HomeScrum.Web.Controllers
 
          return RedirectToAction( "Index", "Home" );
       }
-      
+
+
+      //
+      // GET: /Account/Manage
+
+      public ActionResult Manage( ManageMessageId? message )
+      {
+         ViewBag.StatusMessage =
+             message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+             : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+             : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+             : "";
+         // TODO: Get rid of this here and in the view.
+         ViewBag.HasLocalPassword = true;
+         ViewBag.ReturnUrl = Url.Action( "Manage" );
+         return View();
+      }
+
+      //
+      // POST: /Account/Manage
+
+      [HttpPost]
+      [ValidateAntiForgeryToken]
+      public ActionResult Manage( LocalPasswordModel model )
+      {
+         bool hasLocalAccount = true;
+         ViewBag.HasLocalPassword = hasLocalAccount;
+         ViewBag.ReturnUrl = Url.Action( "Manage" );
+
+
+         if (ModelState.IsValid)
+         {
+            // ChangePassword will throw an exception rather than return false in certain failure scenarios.
+            bool changePasswordSucceeded;
+            try
+            {
+               // TODO: Implement this in our provider.
+               changePasswordSucceeded = WebSecurity.ChangePassword( User.Identity.Name, model.OldPassword, model.NewPassword );
+            }
+            catch (Exception)
+            {
+               changePasswordSucceeded = false;
+            }
+
+            if (changePasswordSucceeded)
+            {
+               return RedirectToAction( "Manage", new { Message = ManageMessageId.ChangePasswordSuccess } );
+            }
+            else
+            {
+               ModelState.AddModelError( "", "The current password is incorrect or the new password is invalid." );
+            }
+         }
+
+         // If we got this far, something failed, redisplay form
+         return View( model );
+      }
+
+
 
       #region Helpers
       private ActionResult RedirectToLocal( string returnUrl )
@@ -66,6 +124,13 @@ namespace HomeScrum.Web.Controllers
          {
             return RedirectToAction( "Index", "Home" );
          }
+      }
+
+      public enum ManageMessageId
+      {
+         ChangePasswordSuccess,
+         SetPasswordSuccess,
+         RemoveLoginSuccess,
       }
       #endregion
    }
