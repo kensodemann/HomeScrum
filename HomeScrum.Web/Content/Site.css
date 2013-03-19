@@ -1,4 +1,4 @@
-﻿/* Leave plain for now, add own layout after content fleshed out a bit more */
+﻿/* Leave plain for now, add own layout after content fleshed out a bit more
 article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
 {   
   display: block;   
@@ -8,7 +8,7 @@ body
 {
   font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
   max-width: 1024px;
-  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
+  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body 
   background-color: #333;
 }
 
@@ -114,4 +114,4 @@ article h2
 article h3
 {
   font-size: medium;
-}
+}*/
