@@ -44,5 +44,31 @@ namespace HomeScrum.Web.UnitTest.Providers
          _securityRepository.Verify();
          Assert.IsFalse( result );
       }
+
+      [TestMethod]
+      public void ChangePasswordReturnsTrue_IfPasswordChanged()
+      {
+         _securityRepository.Setup( x => x.ChangePassword( "jimmy", "crackcorn", "idontcare" ) )
+            .Returns( true )
+            .Verifiable();
+
+         var result = membershipProvider.ChangePassword( "jimmy", "crackcorn", "idontcare" );
+
+         _securityRepository.Verify();
+         Assert.IsTrue( result );
+      }
+
+      [TestMethod]
+      public void ChangePasswordReturnsFalse_IfPasswordNotChanged()
+      {
+         _securityRepository.Setup( x => x.ChangePassword( "jimmy", "crackcorn", "idontcare" ) )
+            .Returns( false )
+            .Verifiable();
+
+         var result = membershipProvider.ChangePassword( "jimmy", "crackcorn", "idontcare" );
+
+         _securityRepository.Verify();
+         Assert.IsFalse( result );
+      }
    }
 }

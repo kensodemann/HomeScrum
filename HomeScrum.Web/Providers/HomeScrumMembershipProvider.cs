@@ -30,7 +30,7 @@ namespace HomeScrum.Web.Providers
 
       public override bool ChangePassword( string username, string oldPassword, string newPassword )
       {
-         throw new NotImplementedException();
+         return _securityRepository.ChangePassword( username, oldPassword, newPassword );
       }
 
 
