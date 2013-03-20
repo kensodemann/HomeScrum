@@ -11,7 +11,14 @@ namespace HomeScrum.Web.Providers
 {
    public class HomeScrumMembershipProvider : ExtendedMembershipProvider
    {
-      private ISecurityRepository _securityRepository = DependencyResolver.Current.GetService<ISecurityRepository>();
+      private ISecurityRepository _securityRepository;
+
+      public HomeScrumMembershipProvider( ISecurityRepository securityRepository )
+      {
+         _securityRepository = securityRepository;
+      }
+
+      public HomeScrumMembershipProvider() : this( DependencyResolver.Current.GetService<ISecurityRepository>() ) { }
 
       public override bool ValidateUser( string username, string password )
       {
