@@ -28,6 +28,11 @@ namespace HomeScrum.Web.Providers
          return _securityRepository.IsValidLogin( username, password );
       }
 
+      public override bool ChangePassword( string username, string oldPassword, string newPassword )
+      {
+         throw new NotImplementedException();
+      }
+
 
       #region Unused Methods
       public override bool ConfirmAccount( string accountConfirmationToken )
@@ -110,11 +115,6 @@ namespace HomeScrum.Web.Providers
          {
             throw new NotImplementedException();
          }
-      }
-
-      public override bool ChangePassword( string username, string oldPassword, string newPassword )
-      {
-         throw new NotImplementedException();
       }
 
       public override bool ChangePasswordQuestionAndAnswer( string username, string password, string newPasswordQuestion, string newPasswordAnswer )

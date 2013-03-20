@@ -24,23 +24,28 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public void ChangePassword( string userId, string oldPassword, string newPassword )
+      public bool ChangePassword( string userId, string oldPassword, string newPassword )
       {
+         if (!IsValidLogin( userId, oldPassword ))
+         {
+            return false;
+         }
+
          using (ISession session = NHibernateHelper.OpenSession())
          {
             using (ITransaction transaction = session.BeginTransaction())
             {
                session.CreateSQLQuery( "update users " +
                                           "set password = hashbytes('SHA1', cast(:newPass as varchar(4000))) " +
-                                        "where userId = :userId " +
-                                          "and password = hashbytes('SHA1', cast(:oldPass as varchar(4000)))" )
+                                        "where userId = :userId" )
                   .SetString( "userId", userId )
                   .SetString( "newPass", newPassword )
-                  .SetString( "oldPass", oldPassword )
                   .ExecuteUpdate();
                transaction.Commit();
             }
          }
+
+         return true;
       }
    }
 }

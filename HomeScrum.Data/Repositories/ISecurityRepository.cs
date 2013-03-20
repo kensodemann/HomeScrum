@@ -9,6 +9,6 @@ namespace HomeScrum.Data.Repositories
    public interface ISecurityRepository
    {
       bool IsValidLogin( string userId, string password );
-      void ChangePassword( string userId, string oldPassword, string newPassword );
+      bool ChangePassword( string userId, string oldPassword, string newPassword );
    }
 }
