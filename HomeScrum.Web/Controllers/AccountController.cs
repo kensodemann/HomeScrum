@@ -89,7 +89,6 @@ namespace HomeScrum.Web.Controllers
             bool changePasswordSucceeded;
             try
             {
-               // TODO: Implement this in our provider.
                changePasswordSucceeded = WebSecurity.ChangePassword( User.Identity.Name, model.OldPassword, model.NewPassword );
             }
             catch (Exception)

@@ -33,6 +33,17 @@ namespace HomeScrum.Web.Providers
          return _securityRepository.ChangePassword( username, oldPassword, newPassword );
       }
 
+      // NOTE: This is required by WebSecurity.ChangePassword().  We are not really taking advantage of
+      //       any of this structure right now
+      //
+      // TODO: Look into adding more of this functionallity.  It may also be wise to split this into
+      //       a seperate table in the database.
+      public override System.Web.Security.MembershipUser GetUser( string username, bool userIsOnline )
+      {
+         return new System.Web.Security.MembershipUser( "HomeScrumMembershipProvider", username, username, null, null, null, true, false,
+            DateTime.MinValue, DateTime.MinValue, DateTime.Now, DateTime.MinValue, DateTime.MinValue );
+      }
+
 
       #region Unused Methods
       public override bool ConfirmAccount( string accountConfirmationToken )
@@ -163,11 +174,6 @@ namespace HomeScrum.Web.Providers
       }
 
       public override string GetPassword( string username, string answer )
-      {
-         throw new NotImplementedException();
-      }
-
-      public override System.Web.Security.MembershipUser GetUser( string username, bool userIsOnline )
       {
          throw new NotImplementedException();
       }
