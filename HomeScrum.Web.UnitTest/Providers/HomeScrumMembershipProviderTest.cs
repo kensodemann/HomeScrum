@@ -70,5 +70,14 @@ namespace HomeScrum.Web.UnitTest.Providers
          _securityRepository.Verify();
          Assert.IsFalse( result );
       }
+
+      [TestMethod]
+      public void GetUser_ReturnsAUser()
+      {
+         var result = membershipProvider.GetUser( "jimmy", true );
+
+         Assert.AreEqual( "jimmy", result.UserName );
+         Assert.IsNotNull( result );
+      }
    }
 }
