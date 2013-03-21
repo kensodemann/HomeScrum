@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Validators
 {
-   public interface IValidator<DataObjectType> where DataObjectType : DataObjectBase
+   public interface IValidator<T> //where T : DataObjectBase
    {
-      bool ModelIsValid( DataObjectType model );
+      bool ModelIsValid( T model );
       ICollection<KeyValuePair<string, string>> Messages { get; }
    }
 }
