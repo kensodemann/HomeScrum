@@ -16,7 +16,6 @@ namespace HomeScrum.Web.Controllers
    {
       //
       // GET: /Account/Login
-
       [AllowAnonymous]
       public ActionResult Login( string returnUrl )
       {
@@ -24,9 +23,9 @@ namespace HomeScrum.Web.Controllers
          return View();
       }
 
+
       //
       // POST: /Account/Login
-
       [HttpPost]
       [AllowAnonymous]
       [ValidateAntiForgeryToken]
@@ -42,9 +41,9 @@ namespace HomeScrum.Web.Controllers
          return View( model );
       }
 
+
       //
       // POST: /Account/LogOff
-
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult LogOff()
@@ -57,7 +56,6 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Account/Manage
-
       public ActionResult Manage( ManageMessageId? message )
       {
          ViewBag.StatusMessage =
@@ -65,23 +63,18 @@ namespace HomeScrum.Web.Controllers
              : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
              : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
              : "";
-         // TODO: Get rid of this here and in the view.
-         ViewBag.HasLocalPassword = true;
          ViewBag.ReturnUrl = Url.Action( "Manage" );
          return View();
       }
 
+
       //
       // POST: /Account/Manage
-
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Manage( LocalPasswordModel model )
       {
-         bool hasLocalAccount = true;
-         ViewBag.HasLocalPassword = hasLocalAccount;
          ViewBag.ReturnUrl = Url.Action( "Manage" );
-
 
          if (ModelState.IsValid)
          {
@@ -109,7 +102,6 @@ namespace HomeScrum.Web.Controllers
          // If we got this far, something failed, redisplay form
          return View( model );
       }
-
 
 
       #region Helpers
