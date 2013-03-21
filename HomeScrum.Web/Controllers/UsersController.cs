@@ -9,12 +9,12 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class UserController : Controller
+   public class UsersController : Controller
    {
       private readonly IRepository<User> _repository;
 
       [Inject]
-      public UserController( IRepository<User> repository )
+      public UsersController( IRepository<User> repository )
       {
          _repository = repository;
       }

@@ -15,7 +15,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       private Mock<IRepository<User>> _repository;
       private Mock<IValidator<User>> _validator;
-      private UserController _controller;
+      private UsersController _controller;
 
       [TestInitialize]
       public virtual void InitializeTest()
@@ -25,7 +25,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _validator.Setup( x => x.ModelIsValid( It.IsAny<User>() ) ).Returns( true );
 
-         _controller = new UserController( _repository.Object );
+         _controller = new UsersController( _repository.Object );
       }
 
 

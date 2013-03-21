@@ -146,7 +146,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectStatusesController.cs" />
     <Compile Include="Controllers\SprintStatusesController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WorkItemStatusesController.cs" />
     <Compile Include="Controllers\WorkItemTypesController.cs" />
     <Compile Include="Global.asax.cs">
