@@ -80,6 +80,8 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IValidator<SprintStatus>>().To( typeof( SprintStatusValidator ) );
          kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
          kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
+
+         kernel.Bind<IValidator<User>>().To( typeof( UserValidator ) );
       }
 
       private static void RegisterProviders( IKernel kernel )

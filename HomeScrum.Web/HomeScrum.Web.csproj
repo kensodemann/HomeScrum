@@ -293,6 +293,7 @@
     <Content Include="Views\AcceptanceCriteriaStatuses\_Editor.cshtml" />
     <Content Include="Views\ProjectStatuses\_Editor.cshtml" />
     <Content Include="Views\SprintStatuses\_Editor.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
