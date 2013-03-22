@@ -1,18 +1,7 @@
 ﻿@model HomeScrum.Data.Domain.WorkItemStatus
 
 @{
-    ViewBag.Title = "Create";
-    ViewBag.EditorButtonLabel = "Create";
+    ViewBag.Title = "Create New Work Item Status";
 }
 
-<h2>Create</h2>
-
-@Html.Partial( "_Editor", Model )
-
-<div>
-    @Html.ActionLink( "Back to List", "Index" )
-</div>
-
-@section Scripts {
-    @Scripts.Render( "~/bundles/jqueryval" )
-}
+@Html.Partial( "_CreateTemplate", Model )
