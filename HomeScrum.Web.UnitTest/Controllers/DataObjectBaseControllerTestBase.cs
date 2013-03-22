@@ -16,16 +16,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
 {
    public abstract class DataObjectBaseControllerTestBase<T> where T : DataObjectBase
    {
-      protected Mock<IRepository<T>> _repository;
+      protected Mock<IRepository<T, Guid>> _repository;
       protected Mock<IValidator<T>> _validator;
-      protected DataObjectBaseController<T> _controller;
+      protected DataObjectBaseController<T, Guid> _controller;
 
       protected abstract ICollection<T> GetAllModels();
       protected abstract T CreateNewModel();
 
       public virtual void InitializeTest()
       {
-         _repository = new Mock<IRepository<T>>();
+         _repository = new Mock<IRepository<T, Guid>>();
          _validator = new Mock<IValidator<T>>();
 
          _validator.Setup( x => x.ModelIsValid( It.IsAny<T>() ) ).Returns( true );

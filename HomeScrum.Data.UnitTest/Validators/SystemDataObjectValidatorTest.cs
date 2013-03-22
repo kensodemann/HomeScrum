@@ -11,13 +11,13 @@ namespace HomeScrum.Data.UnitTest.Validators
    [TestClass]
    public class SystemDataObjectValidatorTest
    {
-      private Mock<IRepository<WorkItemType>> _repository;
+      private Mock<IRepository<WorkItemType, Guid>> _repository;
       private SystemDataObjectValidator<WorkItemType> _validator;
 
       [TestInitialize]
       public void InitializeTest()
       {
-         _repository = new Mock<IRepository<WorkItemType>>();
+         _repository = new Mock<IRepository<WorkItemType, Guid>>();
          _repository.Setup( x => x.GetAll() ).Returns( WorkItemTypes.ModelData );
          _validator = new SystemDataObjectValidator<WorkItemType>( _repository.Object );
       }

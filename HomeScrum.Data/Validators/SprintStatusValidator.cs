@@ -10,7 +10,7 @@ namespace HomeScrum.Data.Validators
 {
    public class SprintStatusValidator : SystemDataObjectValidator<SprintStatus>
    {
-      public SprintStatusValidator( IRepository<SprintStatus> repository )
+      public SprintStatusValidator( IRepository<SprintStatus, Guid> repository )
          : base( repository ) { }
 
       protected override string ObjectName { get { return "Sprint Status"; } }

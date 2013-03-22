@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          SprintStatuses.Load();
-         _repository = new Repository<SprintStatus>();
+         _repository = new Repository<SprintStatus, Guid>();
       }
 
-      private IRepository<SprintStatus> _repository;
+      private IRepository<SprintStatus, Guid> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllSprintStatuses()

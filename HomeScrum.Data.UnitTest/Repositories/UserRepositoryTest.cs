@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          Users.Load();
-         _repository = new Repository<User>();
+         _repository = new Repository<User, String>();
       }
 
-      private IRepository<User> _repository;
+      private IRepository<User, String> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllUseres()

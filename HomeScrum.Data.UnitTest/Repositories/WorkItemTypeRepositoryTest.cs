@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          WorkItemTypes.Load();
-         _repository = new Repository<WorkItemType>();
+         _repository = new Repository<WorkItemType, Guid>();
       }
 
-      private IRepository<WorkItemType> _repository;
+      private IRepository<WorkItemType, Guid> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllWorkItemTypes()

@@ -10,7 +10,7 @@ namespace HomeScrum.Data.Validators
 {
    public class WorkItemStatusValidator : SystemDataObjectValidator<WorkItemStatus>
    {
-      public WorkItemStatusValidator( IRepository<WorkItemStatus> repository )
+      public WorkItemStatusValidator( IRepository<WorkItemStatus, Guid> repository )
          : base( repository ) { }
 
       protected override string ObjectName { get { return "Work Item Status"; } }

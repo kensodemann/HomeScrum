@@ -10,10 +10,10 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class AcceptanceCriteriaStatusesController : DataObjectBaseController<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusesController : DataObjectBaseController<AcceptanceCriteriaStatus, Guid>
    {
       [Inject]
-      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )
+      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus, Guid> repository, IValidator<AcceptanceCriteriaStatus> validator )
          : base( repository, validator ) { }
    }
 }

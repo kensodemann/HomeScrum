@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Repositories
 {
-   public interface IRepository<T>
+   public interface IRepository<T, KeyT>
    {
       ICollection<T> GetAll();
-      T Get( object id );
+      T Get( KeyT id );
 
       void Add( T dataObject );
       void Update( T dataObject );

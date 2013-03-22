@@ -61,12 +61,12 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         kernel.Bind<IRepository<AcceptanceCriteriaStatus>>().ToConstant( new Repository<AcceptanceCriteriaStatus>() );
-         kernel.Bind<IRepository<ProjectStatus>>().ToConstant( new Repository<ProjectStatus>() );
-         kernel.Bind<IRepository<SprintStatus>>().ToConstant( new Repository<SprintStatus>() );
-         kernel.Bind<IRepository<WorkItemStatus>>().ToConstant( new Repository<WorkItemStatus>() );
-         kernel.Bind<IRepository<WorkItemType>>().ToConstant( new Repository<WorkItemType>() );
-         kernel.Bind<IRepository<User>>().ToConstant( new Repository<User>() );
+         kernel.Bind<IRepository<AcceptanceCriteriaStatus, Guid>>().ToConstant( new Repository<AcceptanceCriteriaStatus, Guid>() );
+         kernel.Bind<IRepository<ProjectStatus, Guid>>().ToConstant( new Repository<ProjectStatus, Guid>() );
+         kernel.Bind<IRepository<SprintStatus, Guid>>().ToConstant( new Repository<SprintStatus, Guid>() );
+         kernel.Bind<IRepository<WorkItemStatus, Guid>>().ToConstant( new Repository<WorkItemStatus, Guid>() );
+         kernel.Bind<IRepository<WorkItemType, Guid>>().ToConstant( new Repository<WorkItemType, Guid>() );
+         kernel.Bind<IRepository<User, String>>().ToConstant( new Repository<User, String>() );
 
          kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
       }

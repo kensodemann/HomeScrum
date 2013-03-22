@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace HomeScrum.Data.SqlServer
 {
-   public class Repository<T> : IRepository<T>
+   public class Repository<T, KeyT> : IRepository<T, KeyT>
    {
       public ICollection<T> GetAll()
       {
@@ -19,12 +19,17 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public T Get( object id )
+      public T Get( KeyT id )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return (id == default( object )) ? default( T ) : session.Get<T>( id );
+            return AreEqual(id,default( KeyT )) ? default( T ) : session.Get<T>( id );
          }
+      }
+
+      private bool AreEqual( KeyT x, KeyT y)
+      {
+         return EqualityComparer<KeyT>.Default.Equals(x, y);
       }
 
       public void Add( T dataObject )

@@ -10,10 +10,10 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemTypesController : DataObjectBaseController<WorkItemType>
+   public class WorkItemTypesController : DataObjectBaseController<WorkItemType, Guid>
    {
       [Inject]
-      public WorkItemTypesController( IRepository<WorkItemType> repository, IValidator<WorkItemType> validator )
+      public WorkItemTypesController( IRepository<WorkItemType, Guid> repository, IValidator<WorkItemType> validator )
          : base( repository, validator ) { }
    }
 }
