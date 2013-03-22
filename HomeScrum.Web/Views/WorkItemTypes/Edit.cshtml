@@ -1,18 +1,7 @@
 ﻿@model HomeScrum.Data.Domain.WorkItemType
 
 @{
-    ViewBag.Title = "Edit";
-    ViewBag.EditorButtonLabel = "Save";
+    ViewBag.Title = "Edit Work Item Type";
 }
 
-<h2>Edit</h2>
-
-@Html.Partial( "_Editor", Model )
-
-<div>
-    @Html.ActionLink( "Back to List", "Index" )
-</div>
-
-@section Scripts {
-    @Scripts.Render( "~/bundles/jqueryval" )
-}
+@Html.Partial( "_EditTemplate", Model )
