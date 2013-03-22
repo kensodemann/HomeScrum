@@ -12,6 +12,7 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Data.Repositories;
    using HomeScrum.Data.SqlServer;
    using HomeScrum.Data.Validators;
+   using HomeScrum.Web.Providers;
 
    public static class NinjectWebCommon
    {
@@ -57,6 +58,7 @@ namespace HomeScrum.Web.App_Start
       {
          RegisterRepositories( kernel );
          RegisterValidators( kernel );
+         RegisterProviders( kernel );
       }
 
       private static void RegisterRepositories( IKernel kernel )
@@ -78,6 +80,11 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IValidator<SprintStatus>>().To( typeof( SprintStatusValidator ) );
          kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
          kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
+      }
+
+      private static void RegisterProviders( IKernel kernel )
+      {
+         kernel.Bind<IWebSecurity>().ToConstant( new WebSecurityWrapper() );
       }
    }
 }

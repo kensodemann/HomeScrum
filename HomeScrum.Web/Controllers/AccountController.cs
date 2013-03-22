@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using WebMatrix.WebData;
 using HomeScrum.Web.Models;
+using HomeScrum.Web.Providers;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -14,6 +15,14 @@ namespace HomeScrum.Web.Controllers
    //[InitializeSimpleMembership]
    public class AccountController : Controller
    {
+      private readonly IWebSecurity WebSecurity;
+
+      public AccountController( IWebSecurity webSecurity )
+         : base()
+      {
+         WebSecurity = webSecurity;
+      }
+
       //
       // GET: /Account/Login
       [AllowAnonymous]
@@ -82,7 +91,7 @@ namespace HomeScrum.Web.Controllers
             bool changePasswordSucceeded;
             try
             {
-               changePasswordSucceeded = WebSecurity.ChangePassword( User.Identity.Name, model.OldPassword, model.NewPassword );
+               changePasswordSucceeded = WebSecurity.ChangePassword( WebSecurity.CurrentUser.Identity.Name, model.OldPassword, model.NewPassword );
             }
             catch (Exception)
             {
