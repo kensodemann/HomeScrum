@@ -9,7 +9,9 @@
     <property name="FirstName"/>
     <property name="MiddleName"/>
     <property name="LastName"/>
-    <property name="StatusCd"/>
+    <property name="StatusCd" type="Char"/>
+    <property name="Password"
+              update="false"/>
   </class>
 
 </hibernate-mapping>
