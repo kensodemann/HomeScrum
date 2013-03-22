@@ -12,13 +12,19 @@ namespace HomeScrum.Web.Models
       {
          User = user;
          Password = new LocalPasswordModel();
+         this.UserIsNew = false;
       }
 
       public UserEditorViewModel()
-         : this( new User() ) { }
+         : this( new User() )
+      {
+         this.UserIsNew = true;
+      }
 
 
       public User User { get; set; }
       public LocalPasswordModel Password { get; set; }
+
+      public bool UserIsNew { get; private set; }
    }
 }
