@@ -294,6 +294,10 @@
     <Content Include="Views\ProjectStatuses\_Editor.cshtml" />
     <Content Include="Views\SprintStatuses\_Editor.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\_Editor.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
