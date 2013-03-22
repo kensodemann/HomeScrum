@@ -65,7 +65,6 @@
     <Compile Include="Controllers\DataObjectBaseControllerTestBase.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />
-    <Compile Include="Models\UserEditorViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ProjectStatusesControllerTest.cs" />
     <Compile Include="Controllers\SprintStatusesControllerTest.cs" />
