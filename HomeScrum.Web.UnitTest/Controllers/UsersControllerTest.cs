@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using HomeScrum.Common.TestData;
 using System.Collections.Generic;
 using System.Linq;
+using HomeScrum.Web.Models;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -19,9 +20,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IValidator<User>> _validator;
       private UsersController _controller;
 
-      private User CreateNewModel()
+      private UserEditorViewModel CreateNewModel()
       {
-         return new User()
+         var user = new User()
          {
             UserId = "ABC",
             FirstName = "Abe",
@@ -29,9 +30,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
             LastName = "Crabby",
             IsActive = true
          };
+
+         return new UserEditorViewModel( user );
       }
 
-      
+
       [TestInitialize]
       public virtual void InitializeTest()
       {
@@ -42,7 +45,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller = new UsersController( _repository.Object, _validator.Object );
       }
-      
+
       [TestMethod]
       public void Index_GetsAllItems()
       {
@@ -109,7 +112,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = _controller.Create( model );
 
-         _repository.Verify( x => x.Add( model ), Times.Once() );
+         _repository.Verify( x => x.Add( model.User ), Times.Once() );
       }
 
       [TestMethod]
@@ -150,23 +153,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_PassesModelToValidator()
+      public void CreatePost_PassesUserToValidator()
       {
-         var model = Users.ModelData.ToArray()[3];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
 
          _controller.Create( model );
 
-         _validator.Verify( x => x.ModelIsValid( model ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model.User ), Times.Once() );
       }
 
       [TestMethod]
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model = Users.ModelData.ToArray()[3];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
 
          var result = _controller.Create( model );
 
@@ -182,10 +185,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var model = Users.ModelData.ToArray()[3];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );
 
          var result = _controller.Create( model );
 
@@ -204,20 +207,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReturnsViewWithModel()
+      public void EditGet_ReturnsViewWithEditorModel()
       {
-         var model = Users.ModelData.ToArray()[3];
-         _repository.Setup( x => x.Get( model.UserId ) ).Returns( model );
+         var user = Users.ModelData.ToArray()[3];
+         _repository.Setup( x => x.Get( user.UserId ) ).Returns( user );
 
-         var result = _controller.Edit( model.UserId ) as ViewResult;
-
+         var result = _controller.Edit( user.UserId ) as ViewResult;
          Assert.IsNotNull( result );
-         Assert.IsNotNull( result.Model );
-         Assert.AreEqual( model, result.Model );
+
+         var editorModel = result.Model as UserEditorViewModel;
+         Assert.IsNotNull( editorModel );
+         Assert.AreEqual( user, editorModel.User );
       }
 
       [TestMethod]
-      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      public void EditGet_ReturnsNoDataFoundIfUserNotFoundInRepository()
       {
          _repository.Setup( x => x.Get( It.IsAny<String>() ) ).Returns( null as User );
 
@@ -229,17 +233,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
-         var model = Users.ModelData.ToArray()[2];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
 
          _controller.Edit( model );
 
-         _repository.Verify( x => x.Update( model ), Times.Once() );
+         _repository.Verify( x => x.Update( model.User ), Times.Once() );
       }
 
       [TestMethod]
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
-         var model = Users.ModelData.ToArray()[2];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( model );
@@ -250,7 +254,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
-         var model = Users.ModelData.ToArray()[2];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
 
          var result = _controller.Edit( model ) as RedirectToRouteResult;
 
@@ -265,7 +269,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
-         var model = Users.ModelData.ToArray()[2];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( model ) as ViewResult;
@@ -274,23 +278,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_PassesModelToValidator()
+      public void EditPost_PassesUserToValidator()
       {
-         var model = Users.ModelData.ToArray()[3];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
 
          _controller.Edit( model );
 
-         _validator.Verify( x => x.ModelIsValid( model ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model.User ), Times.Once() );
       }
 
       [TestMethod]
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model = Users.ModelData.ToArray()[3];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3]);
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
 
          var result = _controller.Edit( model );
 
@@ -306,10 +310,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var model = Users.ModelData.ToArray()[3];
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3]);
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );
 
          var result = _controller.Edit( model );
 

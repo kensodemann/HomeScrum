@@ -1,4 +1,4 @@
-﻿@model HomeScrum.Data.Domain.User
+﻿@model HomeScrum.Web.Models.UserEditorViewModel
 
 @using (Html.BeginForm())
 {
@@ -8,43 +8,43 @@
         <legend>User</legend>
 
         <div class="editor-label">
-            @Html.LabelFor( model => model.UserId )
+            @Html.LabelFor( model => model.User.UserId )
         </div>
         <div class="editor-field">
-            @Html.EditorFor( model => model.UserId )
-            @Html.ValidationMessageFor( model => model.UserId )
+            @Html.EditorFor( model => model.User.UserId )
+            @Html.ValidationMessageFor( model => model.User.UserId )
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor( model => model.FirstName )
+            @Html.LabelFor( model => model.User.FirstName )
         </div>
         <div class="editor-field">
-            @Html.EditorFor( model => model.FirstName )
-            @Html.ValidationMessageFor( model => model.FirstName )
+            @Html.EditorFor( model => model.User.FirstName )
+            @Html.ValidationMessageFor( model => model.User.FirstName )
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor( model => model.MiddleName )
+            @Html.LabelFor( model => model.User.MiddleName )
         </div>
         <div class="editor-field">
-            @Html.EditorFor( model => model.MiddleName )
-            @Html.ValidationMessageFor( model => model.MiddleName )
+            @Html.EditorFor( model => model.User.MiddleName )
+            @Html.ValidationMessageFor( model => model.User.MiddleName )
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor( model => model.LastName )
+            @Html.LabelFor( model => model.User.LastName )
         </div>
         <div class="editor-field">
-            @Html.EditorFor( model => model.LastName )
-            @Html.ValidationMessageFor( model => model.LastName )
+            @Html.EditorFor( model => model.User.LastName )
+            @Html.ValidationMessageFor( model => model.User.LastName )
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor( model => model.IsActive )
+            @Html.LabelFor( model => model.User.IsActive )
         </div>
         <div class="editor-field">
-            @Html.EditorFor( model => model.IsActive )
-            @Html.ValidationMessageFor( model => model.IsActive )
+            @Html.EditorFor( model => model.User.IsActive )
+            @Html.ValidationMessageFor( model => model.User.IsActive )
         </div>
 
         <p>
