@@ -1,4 +1,4 @@
-﻿/* Leave plain for now, add own layout after content fleshed out a bit more
+﻿Leave plain for now, add own layout after content fleshed out a bit more
 article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
 {   
   display: block;   
@@ -8,15 +8,12 @@ body
 {
   font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
   max-width: 1024px;
-  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body 
-  background-color: #333;
+  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
 }
 
 header
 {
-  background-color: #0B5FA5;
   text-align: center;
-  color: #000000;
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 0px;
@@ -26,7 +23,6 @@ header h1
 {
   margin: 0px;
   font-size: xx-large;
-  color: #e0e0e0;
 }
 
 header h2
@@ -37,7 +33,6 @@ header h2
 
 .Content
 {
-  background-color: #BF8330;
   margin-top: 0px;
 }
 
@@ -50,7 +45,6 @@ header h2
 
 .Sidebar nav h2
 {
-  color: #e0e0e0;
   font-size: large;
   border-bottom: thin #25547B solid;
 }
@@ -81,9 +75,7 @@ header h2
 
 .WorkArea
 {
-  background-color: #25547B;
   margin-left: 200px;
-  color: #FFFFFF;
   min-height: 400px;
 }
 
@@ -114,4 +106,4 @@ article h2
 article h3
 {
   font-size: medium;
-}*/
+}
