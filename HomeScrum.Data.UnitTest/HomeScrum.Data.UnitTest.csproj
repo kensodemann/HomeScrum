@@ -86,6 +86,7 @@
     <Compile Include="Validators\AcceptanceCriteriaStatusValidatorTest.cs" />
     <Compile Include="Validators\ProjectStatusValidatorTest.cs" />
     <Compile Include="Validators\SprintStatusValidatorTest.cs" />
+    <Compile Include="Validators\UserValidatorTest.cs" />
     <Compile Include="Validators\WorkItemTypeValidatorTest.cs" />
     <Compile Include="Validators\WorkItemStatusValidatorTest.cs" />
   </ItemGroup>
