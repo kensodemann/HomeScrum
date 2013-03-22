@@ -200,6 +200,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreatePost_CallsSecurityRepositoryToSetPassword()
+      {
+         var model = CreateNewModel();
+         model.Password = "NewPassword";
+
+         _controller.Create( model );
+
+         _securityRepository
+            .Verify( x => x.ChangePassword( model.User.UserId, "bogus", model.Password ), Times.Once() );
+      }
+
+      [TestMethod]
       public void EditGet_CallsRepositoryGet()
       {
          var userId = "test";
@@ -322,6 +334,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotCallsSecurityRepositoryToSetPassword()
+      {
+         var model = CreateNewModel();
+         model.Password = "NewPassword";
+
+         _controller.Edit( model );
+
+         _securityRepository
+            .Verify( x => x.ChangePassword( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>() ), Times.Never() );
       }
 
 
