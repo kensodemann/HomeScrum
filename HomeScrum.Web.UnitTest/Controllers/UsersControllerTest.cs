@@ -16,7 +16,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class UsersControllerTest
    {
-      private Mock<IRepository<User, String>> _repository;
+      private Mock<IRepository<User, String>> _userRepository;
+      private Mock<ISecurityRepository> _securityRepository;
       private Mock<IValidator<User>> _validator;
       private UsersController _controller;
 
@@ -38,12 +39,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         _repository = new Mock<IRepository<User, String>>();
+         _userRepository = new Mock<IRepository<User, String>>();
+         _securityRepository = new Mock<ISecurityRepository>();
          _validator = new Mock<IValidator<User>>();
 
          _validator.Setup( x => x.ModelIsValid( It.IsAny<User>() ) ).Returns( true );
 
-         _controller = new UsersController( _repository.Object, _validator.Object );
+         _controller = new UsersController( _userRepository.Object, _securityRepository.Object, _validator.Object );
       }
 
       [TestMethod]
@@ -51,13 +53,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _controller.Index();
 
-         _repository.Verify( x => x.GetAll(), Times.Once() );
+         _userRepository.Verify( x => x.GetAll(), Times.Once() );
       }
 
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         _repository.Setup( x => x.GetAll() )
+         _userRepository.Setup( x => x.GetAll() )
             .Returns( Users.ModelData );
 
          var view = _controller.Index() as ViewResult;
@@ -72,12 +74,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = Users.ModelData.ToArray()[2];
 
-         _repository.Setup( x => x.Get( model.UserId ) )
+         _userRepository.Setup( x => x.Get( model.UserId ) )
             .Returns( model );
 
          var view = _controller.Details( model.UserId ) as ViewResult;
 
-         _repository.Verify( x => x.Get( model.UserId ), Times.Once() );
+         _userRepository.Verify( x => x.Get( model.UserId ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -89,7 +91,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var userId = "test";
 
-         _repository.Setup( x => x.Get( userId ) ).Returns( null as User );
+         _userRepository.Setup( x => x.Get( userId ) ).Returns( null as User );
 
          var result = _controller.Details( userId ) as HttpNotFoundResult;
 
@@ -112,7 +114,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = _controller.Create( model );
 
-         _repository.Verify( x => x.Add( model.User ), Times.Once() );
+         _userRepository.Verify( x => x.Add( model.User ), Times.Once() );
       }
 
       [TestMethod]
@@ -138,7 +140,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( model );
 
-         _repository.Verify( x => x.Add( It.IsAny<User>() ), Times.Never() );
+         _userRepository.Verify( x => x.Add( It.IsAny<User>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -203,14 +205,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var userId = "test";
          _controller.Edit( userId );
 
-         _repository.Verify( x => x.Get( userId ), Times.Once() );
+         _userRepository.Verify( x => x.Get( userId ), Times.Once() );
       }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithEditorModel()
       {
          var user = Users.ModelData.ToArray()[3];
-         _repository.Setup( x => x.Get( user.UserId ) ).Returns( user );
+         _userRepository.Setup( x => x.Get( user.UserId ) ).Returns( user );
 
          var result = _controller.Edit( user.UserId ) as ViewResult;
          Assert.IsNotNull( result );
@@ -223,7 +225,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfUserNotFoundInRepository()
       {
-         _repository.Setup( x => x.Get( It.IsAny<String>() ) ).Returns( null as User );
+         _userRepository.Setup( x => x.Get( It.IsAny<String>() ) ).Returns( null as User );
 
          var result = _controller.Edit( "random" ) as HttpNotFoundResult;
 
@@ -237,7 +239,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _repository.Verify( x => x.Update( model.User ), Times.Once() );
+         _userRepository.Verify( x => x.Update( model.User ), Times.Once() );
       }
 
       [TestMethod]
@@ -248,7 +250,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( model );
 
-         _repository.Verify( x => x.Update( It.IsAny<User>() ), Times.Never() );
+         _userRepository.Verify( x => x.Update( It.IsAny<User>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -291,7 +293,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3]);
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
@@ -310,7 +312,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3]);
+         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );

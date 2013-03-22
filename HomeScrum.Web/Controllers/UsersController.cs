@@ -16,30 +16,29 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( IRepository<User, String> repository, IValidator<User> validator )
+      public UsersController( IRepository<User, String> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
       {
-         _repository = repository;
+         _userRepository = userRepository;
+         _securityRepository = securityRepository;
          _validator = validator;
       }
 
-      private readonly IRepository<User, String> _repository;
-      public IRepository<User, String> Repository { get { return _repository; } }
-
+      private readonly IRepository<User, String> _userRepository;
+      private readonly ISecurityRepository _securityRepository;
       private readonly IValidator<User> _validator;
-      public IValidator<User> Validator { get { return _validator; } }
 
       //
       // GET: /AcceptanceCriteriaStatuses/
       public virtual ActionResult Index()
       {
-         return View( _repository.GetAll() );
+         return View( _userRepository.GetAll() );
       }
 
       //
       // GET: /AcceptanceCriteriaStatuses/Details/5
       public virtual ActionResult Details( string id )
       {
-         var model = _repository.Get( id );
+         var model = _userRepository.Get( id );
 
          if (model == null)
          {
@@ -64,7 +63,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
-            _repository.Add( viewModel.User );
+            _userRepository.Add( viewModel.User );
             return RedirectToAction( "Index" );
          }
 
@@ -75,7 +74,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /AcceptanceCriteriaStatuses/Edit/5
       public virtual ActionResult Edit( string id )
       {
-         var model = _repository.Get( id );
+         var model = _userRepository.Get( id );
          if (model != null)
          {
             return View( new UserEditorViewModel( model ) );
@@ -93,7 +92,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
-            _repository.Update( viewModel.User );
+            _userRepository.Update( viewModel.User );
 
             return RedirectToAction( "Index" );
          }
