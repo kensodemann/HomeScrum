@@ -16,18 +16,18 @@
 
         <fieldset>
             <legend>Log in Form</legend>
-            <div class="formDataLine">
+            <div class="formSingleLineEdit">
                 @Html.LabelFor( m => m.UserName )
                 @Html.TextBoxFor( m => m.UserName )
                 @Html.ValidationMessageFor( m => m.UserName )
             </div>
-            <div class="formDataLine">
+            <div class="formSingleLineEdit">
                 @Html.LabelFor( m => m.Password )
                 @Html.PasswordFor( m => m.Password )
                 @Html.ValidationMessageFor( m => m.Password )
             </div>
-            <input type="submit" value="Log in" />
         </fieldset>
+        <input type="submit" value="Log in" />
     }
 </section>
 

@@ -16,6 +16,7 @@ namespace HomeScrum.Data.Domain
       public virtual string Name { get; set; }
 
       [Display( Name = "Description", Prompt = "DescriptionPrompt", ResourceType = typeof( DisplayStrings ) )]
+      [UIHint( "MultilineText" )]
       public virtual string Description { get; set; }
    }
 }
