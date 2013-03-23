@@ -30,64 +30,6 @@ a
     color: #BF8330;
   }
 
-/* forms */
-fieldset
-{
-  border: none;
-  margin: 0px;
-  padding: 0px;
-}
-
-  fieldset legend
-  {
-    display: none;
-  }
-
-  fieldset .formDataLine
-  {
-    margin: 0px;
-    margin-bottom:10px;
-  }
-
-/* validations */
-.field-validation-error
-{
-  color: #e80c4d;
-  font-weight: bold;
-}
-
-.field-validation-valid
-{
-  display: none;
-}
-
-input.input-validation-error
-{
-  border: 1px solid #e80c4d;
-}
-
-input[type="checkbox"].input-validation-error
-{
-  border: 0 none;
-}
-
-.validation-summary-errors
-{
-  color: #e80c4d;
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-  .validation-summary-errors ul
-  {
-    list-style: none;
-  }
-
-.validation-summary-valid
-{
-  display: none;
-}
-
 
 /*
  * Header Region
@@ -204,13 +146,79 @@ article
   article h2
   {
     margin: 0px;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align:center;
     font-size: large;
+    color: white;
+    background-color: #A66000;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius:0.5em;
   }
 
   article h3
   {
     font-size: medium;
   }
+
+
+/* forms */
+fieldset
+{
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+  fieldset legend
+  {
+    display: none;
+  }
+
+  fieldset .formDataLine
+  {
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+/* validations */
+.field-validation-error
+{
+  color: #e80c4d;
+  font-weight: bold;
+}
+
+.field-validation-valid
+{
+  display: none;
+}
+
+input.input-validation-error
+{
+  border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error
+{
+  border: 0 none;
+}
+
+.validation-summary-errors
+{
+  color: #e80c4d;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+  .validation-summary-errors ul
+  {
+    list-style: none;
+  }
+
+.validation-summary-valid
+{
+  display: none;
+}
 
 
 /*
