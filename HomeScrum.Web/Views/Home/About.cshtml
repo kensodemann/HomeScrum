@@ -1,34 +1,45 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "About Home Scrum";
 }
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
+    <h2>@ViewBag.Title.</h2>
 </hgroup>
 
 <article>
     <p>
-        Use this area to provide additional information.
+        Home Scrum is a very simple project tracking tool that is loosely built around the Scrum methodology of software development.
+        I am not sure this tool will ever completely implement all of the functionallity required to truly do scrum, so if you are
+        looking for a full fledged scrum management tool, you probably need to keep looking.  This is meant to be a scrum-like tool
+        for personal use (or very small groups).
     </p>
-
     <p>
-        Use this area to provide additional information.
+        Home Scrum was started because I wanted a simple project I could work on in order to practice using some technologies
+        that I do not get to use often at my day job.  These technologies include:
     </p>
-
+    <ul>
+        <li>MVC</li>
+        <li>Object-Relational Mapping (I am using NHibernate in this project, though I have also used Microsoft's Entity Framework)</li>
+        <li>Dependency Injection (I am using Ninject for this project, though I have also used Unity and MEF)</li>
+    </ul>
     <p>
-        Use this area to provide additional information.
+        I decided to go with this tool because I needed a way to keep track of tasks that I needed to do on these side projects I work on.
+        I only get to work on them sporadically, so I am constantly forgetting where I am on the project and what needs to be done.  So I 
+        figured I may as well make one of the projects be the building of a tool to help me out.
+    </p>
+    <p>
+        I named it "Home Scrum" because I suck at naming things, I am primarily going to use it for tracking projects that I work on
+        at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
     </p>
 </article>
 
-<aside>
-    <h3>Aside Title</h3>
+<article>
+    <h2>About Scrum</h2>
     <p>
-        Use this area to provide additional information.
+        If you would like to learn more about scrum, these resources may be helpful:
     </p>
     <ul>
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
+        <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
     </ul>
-</aside>
+</article>
