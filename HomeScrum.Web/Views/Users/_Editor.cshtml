@@ -1,74 +1,62 @@
 ﻿@model HomeScrum.Web.Models.UserEditorViewModel
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary( true )
+<div id="UserEditor">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary( true )
 
-    <fieldset>
-        <legend>User</legend>
+        <fieldset>
+            <legend>User</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor( model => model.User.UserId )
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor( model => model.User.UserId )
-            @Html.ValidationMessageFor( model => model.User.UserId )
-        </div>
-
-        @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
-        @if (Model == null)
-        {
-            <div class="editor-label">
-                @Html.LabelFor( model => model.Password )
+            <div class="formSingleLineEdit">
+                @Html.LabelFor( model => model.User.UserId )
+                @Html.EditorFor( model => model.User.UserId )
+                @Html.ValidationMessageFor( model => model.User.UserId )
             </div>
-            <div class="editor-field">
-                @Html.EditorFor( model => model.Password )
-                @Html.ValidationMessageFor( model => model.Password )
-            </div>
+
+            @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
+            @if (Model == null)
+            {
+                <div class="formSingleLineEdit">
+                    @Html.LabelFor( model => model.Password )
+                    @Html.EditorFor( model => model.Password )
+                    @Html.ValidationMessageFor( model => model.Password )
+                </div>
             
-            <div class="editor-label">
-                @Html.LabelFor( model => model.ConfirmPassword )
+                <div class="formSingleLineEdit">
+                    @Html.LabelFor( model => model.ConfirmPassword )
+                    @Html.EditorFor( model => model.ConfirmPassword )
+                    @Html.ValidationMessageFor( model => model.ConfirmPassword )
+                </div>
+            }
+
+            <div class="formSingleLineEdit">
+                @Html.LabelFor( model => model.User.FirstName )
+                @Html.EditorFor( model => model.User.FirstName )
+                @Html.ValidationMessageFor( model => model.User.FirstName )
             </div>
-            <div class="editor-field">
-                @Html.EditorFor( model => model.ConfirmPassword )
-                @Html.ValidationMessageFor( model => model.ConfirmPassword )
+
+            <div class="formSingleLineEdit">
+                @Html.LabelFor( model => model.User.MiddleName )
+                @Html.EditorFor( model => model.User.MiddleName )
+                @Html.ValidationMessageFor( model => model.User.MiddleName )
             </div>
-        }
 
-        <div class="editor-label">
-            @Html.LabelFor( model => model.User.FirstName )
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor( model => model.User.FirstName )
-            @Html.ValidationMessageFor( model => model.User.FirstName )
-        </div>
+            <div class="formSingleLineEdit">
+                @Html.LabelFor( model => model.User.LastName )
+                @Html.EditorFor( model => model.User.LastName )
+                @Html.ValidationMessageFor( model => model.User.LastName )
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor( model => model.User.MiddleName )
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor( model => model.User.MiddleName )
-            @Html.ValidationMessageFor( model => model.User.MiddleName )
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor( model => model.User.LastName )
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor( model => model.User.LastName )
-            @Html.ValidationMessageFor( model => model.User.LastName )
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor( model => model.User.IsActive )
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor( model => model.User.IsActive )
-            @Html.ValidationMessageFor( model => model.User.IsActive )
-        </div>
-
+            <div class="formBooleanOption">
+                @Html.EditorFor( model => model.User.IsActive )
+                @Html.LabelFor( model => model.User.IsActive )
+                @Html.ValidationMessageFor( model => model.User.IsActive )
+            </div>
+        </fieldset>
+    
         <p>
             <input type="submit" value="@ViewBag.EditorButtonLabel" />
         </p>
-    </fieldset>
-}
+    }
+</div>

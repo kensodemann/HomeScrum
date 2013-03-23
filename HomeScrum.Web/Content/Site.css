@@ -210,6 +210,11 @@ fieldset
       display: table-row;
     }
 
+#UserEditor fieldset .formSingleLineEdit label
+{
+  width: 8em;
+}
+
 
 /* validations */
 .field-validation-error
