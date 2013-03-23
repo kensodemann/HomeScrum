@@ -13,6 +13,13 @@ body
   margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
 }
 
+.endRegion
+{
+  clear: both;
+}
+
+
+/* Links */
 a
 {
   color: #25547B;
@@ -23,12 +30,26 @@ a
     color: #BF8330;
   }
 
-.endRegion
+/* forms */
+fieldset
 {
-  clear: both;
+  border: none;
+  margin: 0px;
+  padding: 0px;
 }
 
-/* styles for validation helpers */
+  fieldset legend
+  {
+    display: none;
+  }
+
+  fieldset .formDataLine
+  {
+    margin: 0px;
+    margin-bottom:10px;
+  }
+
+/* validations */
 .field-validation-error
 {
   color: #e80c4d;
