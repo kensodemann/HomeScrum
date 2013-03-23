@@ -1,6 +1,16 @@
-﻿Leave plain for now, add own layout after content fleshed out a bit more article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
+﻿/*
+ *  General formatting
+ */
+article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
 {
   display: block;
+}
+
+body
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
+  max-width: 1024px;
+  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
 }
 
 a
@@ -18,13 +28,49 @@ a
   clear: both;
 }
 
-body
+/* styles for validation helpers */
+.field-validation-error
 {
-  font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
-  max-width: 1024px;
-  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
+  color: #e80c4d;
+  font-weight: bold;
 }
 
+.field-validation-valid
+{
+  display: none;
+}
+
+input.input-validation-error
+{
+  border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error
+{
+  border: 0 none;
+}
+
+.validation-summary-errors
+{
+  color: #e80c4d;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+  .validation-summary-errors ul
+  {
+    list-style: none;
+  }
+
+.validation-summary-valid
+{
+  display: none;
+}
+
+
+/*
+ * Header Region
+ */
 header
 {
   padding: 10px;
@@ -85,6 +131,11 @@ header
   display: inline;
 }
 
+
+/*
+ * Content Region
+ */
+
 .Content
 {
   margin-top: 0px;
@@ -119,8 +170,7 @@ header
 
 .WorkArea
 {
-  margin-left: 200px;
-  /*min-height: 400px;*/
+  margin-left: 220px;
 }
 
 article
@@ -141,6 +191,10 @@ article
     font-size: medium;
   }
 
+
+/*
+ * Footer Region
+ */
 footer div#copyright
 {
   float: left;
