@@ -10,20 +10,21 @@
 </head>
 <body>
     <header>
-        <section id="login">
-            @Html.Partial( "_LoginPartial" )
-        </section>
-        <h1>@Html.ActionLink( "Home Scrum", "Index", "Home" )</h1>
-        <h2>A general, short description of the tool goes here</h2>
-        <h2>Various helpful items may be placed here.</h2>
+        <h1>Home Scrum</h1>
 
-        <nav>
-            <ul id="menu">
-                <li>@Html.ActionLink( "Home", "Index", "Home" )</li>
-                <li>@Html.ActionLink( "About", "About", "Home" )</li>
-                <li>@Html.ActionLink( "Contact", "Contact", "Home" )</li>
-            </ul>
-        </nav>
+        <section id="headerMenu">
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink( "Home", "Index", "Home" )</li>
+                    <li>@Html.ActionLink( "About", "About", "Home" )</li>
+                    <li>@Html.ActionLink( "Contact", "Contact", "Home" )</li>
+                </ul>
+            </nav>
+            <section id="login">
+                @Html.Partial( "_LoginPartial" )
+            </section>
+        </section>
+
     </header>
 
     <div class="Content">

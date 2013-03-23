@@ -1,7 +1,6 @@
-﻿Leave plain for now, add own layout after content fleshed out a bit more
-article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
-{   
-  display: block;   
+﻿Leave plain for now, add own layout after content fleshed out a bit more article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
+{
+  display: block;
 }
 
 body
@@ -13,26 +12,53 @@ body
 
 header
 {
-  text-align: center;
   padding: 10px;
-  margin-top: 10px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 
-header h1
+  header h1
+  {
+    margin: 0px;
+    font-size: xx-large;
+    float: left;
+  }
+
+  header section#headerMenu
+  {
+    float: right;
+  }
+
+  header nav ul
+  {
+    margin: 0px;
+    text-align: right;
+  }
+
+    header nav ul li
+    {
+      display: inline;
+      list-style-type: none;
+      font-size: small;
+      margin: 0px;
+    }
+
+#login
 {
   margin: 0px;
-  font-size: xx-large;
+  display: inline;
+  font-size: small;
+  text-align: right;
 }
 
-header h2
+#logoutForm
 {
-  margin: 0px;
-  font-size: large;
+  display: inline;
 }
 
 .Content
 {
+  clear: both;
   margin-top: 0px;
 }
 
@@ -43,34 +69,34 @@ header h2
   width: 180px;
 }
 
-.Sidebar nav h2
-{
-  font-size: large;
-  border-bottom: thin #25547B solid;
-}
+  .Sidebar nav h2
+  {
+    font-size: large;
+    border-bottom: thin #25547B solid;
+  }
 
-.Sidebar nav ul 
-{
-  padding-left: 0px;
-}
+  .Sidebar nav ul
+  {
+    padding-left: 0px;
+  }
 
-.Sidebar nav ul li
-{
-  font-size: small;
-  margin-top: 5px;
-  margin-bottom: 0px;
-  list-style-type: none;
-}
+    .Sidebar nav ul li
+    {
+      font-size: small;
+      margin-top: 5px;
+      margin-bottom: 0px;
+      list-style-type: none;
+    }
 
-.Sidebar a
-{
-  color: #25547B;
-}
+  .Sidebar a
+  {
+    color: #25547B;
+  }
 
-.Sidebar a:hover
-{
-  color: #043C6B;
-}
+    .Sidebar a:hover
+    {
+      color: #043C6B;
+    }
 
 
 .WorkArea
@@ -79,15 +105,15 @@ header h2
   min-height: 400px;
 }
 
-.WorkArea a
-{
-  color: #FFFFFF;
-}
+  .WorkArea a
+  {
+    color: #FFFFFF;
+  }
 
-.WorkArea a:hover
-{
-  color: #e0e0e0;
-}
+    .WorkArea a:hover
+    {
+      color: #e0e0e0;
+    }
 
 
 article
@@ -97,13 +123,13 @@ article
 }
 
 
-article h2
-{
-  margin: 0px;
-  font-size: large;
-}
+  article h2
+  {
+    margin: 0px;
+    font-size: large;
+  }
 
-article h3
-{
-  font-size: medium;
-}
+  article h3
+  {
+    font-size: medium;
+  }
