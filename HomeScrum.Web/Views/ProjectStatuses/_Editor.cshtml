@@ -4,21 +4,7 @@
 {
     @Html.ValidationSummary( true )
 
-    <fieldset>
-        <legend>ProjectStatus</legend>
-
-        <div class="formSingleLineEdit">
-            @Html.LabelFor( model => model.Name )
-            @Html.EditorFor( model => model.Name )
-            @Html.ValidationMessageFor( model => model.Name )
-        </div>
-
-        <div class="formLongText">
-            @Html.LabelFor( model => model.Description )
-            @Html.EditorFor( model => model.Description )
-            @Html.ValidationMessageFor( model => model.Description )
-        </div>
-    </fieldset>
+    @Html.Partial( "_DataObjectBaseEditor", Model )
 
     <fieldset>
         <legend>Properties</legend>
