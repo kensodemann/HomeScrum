@@ -148,12 +148,12 @@ article
     margin: 0px;
     margin-bottom: 10px;
     padding: 5px;
-    text-align:center;
+    text-align: center;
     font-size: large;
     color: white;
     background-color: #A66000;
     border-top-left-radius: 0.5em;
-    border-top-right-radius:0.5em;
+    border-top-right-radius: 0.5em;
   }
 
   article h3
@@ -180,6 +180,14 @@ fieldset
     margin: 0px;
     margin-bottom: 10px;
   }
+
+#loginForm fieldset .formDataLine label
+{
+  width: 6em;
+  float: left;
+  text-align: right;
+  margin-right: 0.5em;
+}
 
 /* validations */
 .field-validation-error
