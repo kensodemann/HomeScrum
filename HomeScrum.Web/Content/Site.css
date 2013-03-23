@@ -13,6 +13,11 @@ a
     color: #BF8330;
   }
 
+.endRegion
+{
+  clear: both;
+}
+
 body
 {
   font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
@@ -66,10 +71,6 @@ header
       margin: 0px;
     }
 
-  header div#endHeader
-  {
-    clear: both;
-  }
 
 #login
 {
@@ -119,7 +120,7 @@ header
 .WorkArea
 {
   margin-left: 200px;
-  min-height: 400px;
+  /*min-height: 400px;*/
 }
 
 article
@@ -139,3 +140,9 @@ article
   {
     font-size: medium;
   }
+
+footer div#copyright
+{
+  float: left;
+  font-size: xx-small;
+}

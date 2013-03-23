@@ -24,7 +24,7 @@
                 @Html.Partial( "_LoginPartial" )
             </section>
         </section>
-        <div id="endHeader"></div>
+        <div class="endRegion"></div>
     </header>
 
     <div class="Content">
@@ -59,13 +59,13 @@
                 @RenderBody()
             </article>
         </section>
+
+        <div class="endRegion"></div>
     </div>
 
     <footer>
-        <div class="content-wrapper">
-            <div class="float-left">
-                <p>&copy; @DateTime.Now.Year - Ken Sodemann</p>
-            </div>
+        <div id="copyright">
+            <p>&copy; @DateTime.Now.Year - Ken Sodemann</p>
         </div>
     </footer>
 
