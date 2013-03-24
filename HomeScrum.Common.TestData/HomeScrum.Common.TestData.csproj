@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AcceptanceCriteriaStatuses.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Projects.cs" />
     <Compile Include="ProjectStatuses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SprintStatuses.cs" />
