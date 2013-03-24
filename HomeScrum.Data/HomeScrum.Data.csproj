@@ -60,6 +60,8 @@
     </Compile>
     <Compile Include="Domain\AcceptanceCriteriaStatus.cs" />
     <Compile Include="Domain\DataObjectBase.cs" />
+    <Compile Include="Domain\Project.cs" />
+    <Compile Include="Domain\ProjectHistory.cs" />
     <Compile Include="Domain\ProjectStatus.cs" />
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SystemDataObject.cs" />
@@ -119,6 +121,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Mappings\User.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\Projects.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\ProjectHistory.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
