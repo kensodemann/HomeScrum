@@ -26,7 +26,6 @@ namespace HomeScrum.Common.TestData
       {
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="SBI",
             Description="Sprint Backlog Item",
             AllowUse=true,
@@ -35,7 +34,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="PBI",
             Description="Product BacklogItem",
             AllowUse=true,
@@ -44,7 +42,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="Bug",
             Description="A problem with the software or design",
             AllowUse=true,
@@ -53,7 +50,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="Issue",
             Description="A problem in the process that is blocking someone",
             AllowUse=true,
@@ -62,7 +58,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="Type 3",
             Description="Active, Not a Task, Predefined",
             AllowUse=true,
@@ -71,7 +66,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="Type 4",
             Description="Active, Task, Not Predefined",
             AllowUse=true,
@@ -80,7 +74,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemType ()
          {
-            Id=Guid.NewGuid(),
             Name="Type 5",
             Description="Not Active, Task, Predefined",
             AllowUse=true,

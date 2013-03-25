@@ -25,7 +25,6 @@ namespace HomeScrum.Common.TestData
       {
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Active",
             Description="Active Project",
             AllowUse=true,
@@ -34,7 +33,6 @@ namespace HomeScrum.Common.TestData
          },
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Inactive",
             Description="No longer active",
             AllowUse=true,
@@ -43,7 +41,6 @@ namespace HomeScrum.Common.TestData
          },
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Closed",
             Description="The project is closed",
             AllowUse=true,
@@ -52,7 +49,6 @@ namespace HomeScrum.Common.TestData
          },
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Active, Predefined",
             AllowUse=true,
@@ -61,7 +57,6 @@ namespace HomeScrum.Common.TestData
          },
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Active, Predefined",
             AllowUse=false,
@@ -70,7 +65,6 @@ namespace HomeScrum.Common.TestData
          },
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 3",
             Description="Active Status, Is Not Active, Predefined",
             AllowUse=true,
@@ -79,7 +73,6 @@ namespace HomeScrum.Common.TestData
          },
          new ProjectStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 4",
             Description="Active Status, Is Active, Not Predefined",
             AllowUse=true,

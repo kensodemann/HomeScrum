@@ -26,7 +26,6 @@ namespace HomeScrum.Common.TestData
       {
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="New",
             Description="The Item is brand new",
             AllowUse=true,
@@ -35,7 +34,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="In Process",
             Description="The Item is being worked on",
             AllowUse=true,
@@ -44,7 +42,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="On Hold",
             Description="The Item was started but cannot be worked on",
             AllowUse=true,
@@ -53,7 +50,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Ready for Test",
             Description="The Item is ready to be tested",
             AllowUse=true,
@@ -62,7 +58,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Complete",
             Description="The Item is done",
             AllowUse=true,
@@ -71,7 +66,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Open, Predefined",
             AllowUse=true,
@@ -80,7 +74,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Open, Predefined",
             AllowUse=false,
@@ -89,7 +82,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Not Open, Predefined",
             AllowUse=true,
@@ -98,7 +90,6 @@ namespace HomeScrum.Common.TestData
          },
          new WorkItemStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Open, Not Predefined",
             AllowUse=true,

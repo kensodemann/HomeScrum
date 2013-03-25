@@ -26,7 +26,6 @@ namespace HomeScrum.Common.TestData
       {
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Future",
             Description="The sprint is set up for the future",
             AllowUse=true,
@@ -35,7 +34,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Planning",
             Description="In Planning",
             AllowUse=true,
@@ -44,7 +42,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Active",
             Description="The sprint is the active one",
             AllowUse=true,
@@ -53,7 +50,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Complete",
             Description="The sprint is done",
             AllowUse=true,
@@ -62,7 +58,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Open, Predefined",
             AllowUse=true,
@@ -71,7 +66,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Open, Predefined",
             AllowUse=false,
@@ -80,7 +74,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Not Open, Predefined",
             AllowUse=true,
@@ -89,7 +82,6 @@ namespace HomeScrum.Common.TestData
          },
          new SprintStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Open, Not Predefined",
             AllowUse=true,

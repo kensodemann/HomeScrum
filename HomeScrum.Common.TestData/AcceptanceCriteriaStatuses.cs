@@ -26,7 +26,6 @@ namespace HomeScrum.Common.TestData
       {
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Unverified",
             Description="Not yet verified",
             AllowUse=true,
@@ -35,7 +34,6 @@ namespace HomeScrum.Common.TestData
          },
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Accepted",
             Description="Accepted",
             AllowUse=true,
@@ -44,7 +42,6 @@ namespace HomeScrum.Common.TestData
          },
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Rejected",
             Description="Rejected",
             AllowUse=true,
@@ -53,7 +50,6 @@ namespace HomeScrum.Common.TestData
          },
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 1",
             Description="Active Status, Is Accepted, Predefined",
             AllowUse=true,
@@ -62,7 +58,6 @@ namespace HomeScrum.Common.TestData
          },
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 2",
             Description="Inactive Status, Is Accepted, Predefined",
             AllowUse=false,
@@ -71,7 +66,6 @@ namespace HomeScrum.Common.TestData
          },
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 3",
             Description="Active Status, Is Not Accepted, Predefined",
             AllowUse=true,
@@ -80,7 +74,6 @@ namespace HomeScrum.Common.TestData
          },
          new AcceptanceCriteriaStatus ()
          {
-            Id=Guid.NewGuid(),
             Name="Status 4",
             Description="Active Status, Is Accepted, Not Predefined",
             AllowUse=true,
