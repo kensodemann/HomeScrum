@@ -28,7 +28,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Home Scrum",
             Description = "This project right here",
-            ProjectStatusRid=ProjectStatuses.ModelData[0].Id,
+            ProjectStatus = ProjectStatuses.ModelData[0],
             LastModifiedUserId ="admin"
          },
          new Project ()
@@ -36,7 +36,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="PRepS",
             Description = "An old problem reporting system",
-            ProjectStatusRid=ProjectStatuses.ModelData[2].Id,
+            ProjectStatus = ProjectStatuses.ModelData[2],
             LastModifiedUserId ="kws"
          },
          new Project ()
@@ -44,7 +44,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="MathWar",
             Description = "A flash card math learning game",
-            ProjectStatusRid=ProjectStatuses.ModelData[1].Id,
+            ProjectStatus = ProjectStatuses.ModelData[1],
             LastModifiedUserId ="ams"
          },
          new Project ()
@@ -52,7 +52,7 @@ namespace HomeScrum.Common.TestData
             Id=Guid.NewGuid(),
             Name="Sandwiches",
             Description = "Make them!",
-            ProjectStatusRid=ProjectStatuses.ModelData[0].Id,
+            ProjectStatus = ProjectStatuses.ModelData[0],
             LastModifiedUserId ="lls"
          }
       };

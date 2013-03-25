@@ -74,7 +74,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          {
             Name = "New Project",
             Description = "New one for Insert",
-            ProjectStatusRid = ProjectStatuses.ModelData[1].Id,
+            ProjectStatus = ProjectStatuses.ModelData[1],
             LastModifiedUserId = "Frank"
          };
 
@@ -121,8 +121,16 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.ProjectStatusRid, actual.ProjectStatusRid );
          Assert.AreEqual( expected.LastModifiedUserId, actual.LastModifiedUserId );
+         AssertProjectStatus( expected, actual );
+      }
+
+      private static void AssertProjectStatus( Project expected, Project actual )
+      {
+         Assert.AreNotSame( expected.ProjectStatus, actual.ProjectStatus );
+         Assert.AreEqual( expected.ProjectStatus.Id, actual.ProjectStatus.Id );
+         Assert.AreEqual( expected.ProjectStatus.Name, actual.ProjectStatus.Name );
+         Assert.AreEqual( expected.ProjectStatus.Description, actual.ProjectStatus.Description );
       }
    }
 }

@@ -10,7 +10,10 @@
     </id>
     <property name="Name"/>
     <property name="Description"/>
-    <property name="ProjectStatusRid"/>
+    <!--<property name="ProjectStatusRid"/>-->
+    <many-to-one name="ProjectStatus"
+                 column="ProjectStatusRid"
+                 lazy="false"/>
     <property name="LastModifiedUserId"/>
   </class>
 

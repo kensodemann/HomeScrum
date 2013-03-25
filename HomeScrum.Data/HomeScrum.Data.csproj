@@ -123,7 +123,9 @@
     <EmbeddedResource Include="Mappings\User.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\Projects.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Projects.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\ProjectHistory.hbm.xml" />
