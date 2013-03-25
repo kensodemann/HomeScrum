@@ -71,7 +71,7 @@ namespace HomeScrum.Common.TestData
          new ProjectStatus ()
          {
             Id=Guid.NewGuid(),
-            Name="Status 1",
+            Name="Status 3",
             Description="Active Status, Is Not Active, Predefined",
             AllowUse=true,
             IsActive=false,
@@ -80,7 +80,7 @@ namespace HomeScrum.Common.TestData
          new ProjectStatus ()
          {
             Id=Guid.NewGuid(),
-            Name="Status 1",
+            Name="Status 4",
             Description="Active Status, Is Active, Not Predefined",
             AllowUse=true,
             IsActive=true,
