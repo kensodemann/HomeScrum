@@ -3,13 +3,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HomeScrum.Common.Utility.UnitTest
 {
+   public class TestClassBase
+   {
+      public virtual string TestMethod() { return "something"; }
+      public virtual string TestMethod1Arg( string arg ) { return "something: " + arg; }
+      public string TestField = "test";
+      public virtual string TestProperty { get; set; }
+   }
+
+   public class TestClass : TestClassBase { }
+
+
    [TestClass]
    public class ClassHelperTest
    {
-      private string TestMethod() { return "something"; }
-      private string TestMethod1Arg( string arg ) { return "something: " + arg; }
-      private string TestField = "test";
-      private string TestProperty { get; set; }
+      
 
       [TestMethod]
       public void ExtractProperyName_ThrowsException_WhenNoMemberPassed()
@@ -31,9 +39,11 @@ namespace HomeScrum.Common.Utility.UnitTest
       [TestMethod]
       public void ExtractProperyName_ThrowsException_WhenPassedMemberIsField()
       {
+         var model = new TestClass();
+
          try
          {
-            ClassHelper.ExtractPropertyName( () => this.TestField );
+            ClassHelper.ExtractPropertyName( () => model.TestField );
          }
          catch (Exception e)
          {
@@ -48,9 +58,11 @@ namespace HomeScrum.Common.Utility.UnitTest
       [TestMethod]
       public void ExtractProperyName_ThrowsException_WhenPassedMemberIsMethod()
       {
+         var model = new TestClass();
+         
          try
          {
-            ClassHelper.ExtractPropertyName( () => this.TestMethod1Arg( "test" ) );
+            ClassHelper.ExtractPropertyName( () => model.TestMethod1Arg( "test" ) );
          }
          catch (Exception e)
          {
@@ -65,16 +77,20 @@ namespace HomeScrum.Common.Utility.UnitTest
       [TestMethod]
       public void ExtractPropertyName_ReturnsPropertyName()
       {
-         Assert.AreEqual( "TestProperty", ClassHelper.ExtractPropertyName( () => this.TestProperty ) );
+         var model = new TestClass();
+         
+         Assert.AreEqual( "TestProperty", ClassHelper.ExtractPropertyName( () => model.TestProperty ) );
       }
 
 
       [TestMethod]
       public void ExtractMethodName_ThrowsException_WhenPassedProperty()
       {
+         var model = new TestClass();
+         
          try
          {
-            ClassHelper.ExtractMethodName( () => this.TestProperty );
+            ClassHelper.ExtractMethodName( () => model.TestProperty );
          }
          catch (Exception e)
          {
@@ -89,9 +105,11 @@ namespace HomeScrum.Common.Utility.UnitTest
       [TestMethod]
       public void ExtractMethodName_ThrowsException_WhenPassedField()
       {
+         var model = new TestClass();
+         
          try
          {
-            ClassHelper.ExtractMethodName( () => this.TestField );
+            ClassHelper.ExtractMethodName( () => model.TestField );
          }
          catch (Exception e)
          {
@@ -106,31 +124,41 @@ namespace HomeScrum.Common.Utility.UnitTest
       [TestMethod]
       public void ExtractMethodName_ReturnsMethodName_NoArgs()
       {
-         Assert.AreEqual( "TestMethod", ClassHelper.ExtractMethodName( () => this.TestMethod() ) );
+         var model = new TestClass();
+         
+         Assert.AreEqual( "TestMethod", ClassHelper.ExtractMethodName( () => model.TestMethod() ) );
       }
 
       [TestMethod]
       public void ExtractMethodName_ReturnsMethodName_WithArgs()
       {
-         Assert.AreEqual( "TestMethod1Arg", ClassHelper.ExtractMethodName( () => this.TestMethod1Arg( "testit" ) ) );
+         var model = new TestClass();
+         
+         Assert.AreEqual( "TestMethod1Arg", ClassHelper.ExtractMethodName( () => model.TestMethod1Arg( "testit" ) ) );
       }
 
       [TestMethod]
       public void ExtractClassType_ReturnsClassType_ForMethod()
       {
-         Assert.AreEqual( typeof( ClassHelperTest ), ClassHelper.ExtractClassType( () => this.TestMethod() ) );
+         var model = new TestClass();
+         
+         Assert.AreEqual( typeof( TestClass ), ClassHelper.ExtractClassType( () => model.TestMethod() ) );
       }
 
       [TestMethod]
       public void ExtractClassType_ReturnsClassType_ForField()
       {
-         Assert.AreEqual( typeof( ClassHelperTest ), ClassHelper.ExtractClassType( () => this.TestField ) );
+         var model = new TestClass();
+
+         Assert.AreEqual( typeof( TestClass ), ClassHelper.ExtractClassType( () => model.TestField ) );
       }
 
       [TestMethod]
       public void ExtractClassType_ReturnsClassType_ForProperty()
       {
-         Assert.AreEqual( typeof( ClassHelperTest ), ClassHelper.ExtractClassType( () => this.TestProperty ) );
+         var model = new TestClass();
+
+         Assert.AreEqual( typeof( TestClass ), ClassHelper.ExtractClassType( () => model.TestProperty ) );
       }
    }
 }

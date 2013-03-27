@@ -33,10 +33,12 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void AllowUseName()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( SystemDataObject ), "AllowUse" );
+         var model = new SystemDataObject();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.AllowUse );
 
          Assert.IsNotNull( display );
-         Assert.AreEqual(typeof(DisplayStrings), display.ResourceType );
+         Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
          Assert.AreEqual( "AllowUse", display.Name );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.AllowUse ) );
       }

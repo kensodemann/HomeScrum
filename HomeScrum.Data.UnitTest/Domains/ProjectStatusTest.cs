@@ -11,7 +11,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsActiveDisplayName()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( ProjectStatus ), "IsActive" );
+         var model = new ProjectStatus();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.IsActive );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );

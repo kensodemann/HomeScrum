@@ -11,7 +11,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsOpenDisplayName()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( WorkItemStatus ), "IsOpenStatus" );
+         var model = new WorkItemStatus();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.IsOpenStatus );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );

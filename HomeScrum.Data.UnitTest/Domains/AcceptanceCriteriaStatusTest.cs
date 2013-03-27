@@ -11,7 +11,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsAcceptedDisplayName()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( AcceptanceCriteriaStatus ), "IsAccepted" );
+         var model = new AcceptanceCriteriaStatus();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.IsAccepted );
 
          Assert.IsNotNull( display, "Display attribute does not exist" );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );

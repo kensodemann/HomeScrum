@@ -11,10 +11,12 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void NameDisplayNameAndPrompt()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( DataObjectBase ), "Name" );
+         var model = new DataObjectBase();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.Name );
 
          Assert.IsNotNull( display );
-         Assert.AreEqual(typeof(DisplayStrings), display.ResourceType );
+         Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
          Assert.AreEqual( "Name", display.Name );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.Name ) );
          Assert.AreEqual( "NamePrompt", display.Prompt );
@@ -24,7 +26,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void NameIsRequired()
       {
-         var required = AttributeHelper.GetRequiredAttribute( typeof( DataObjectBase ), "Name" );
+         var model = new DataObjectBase();
+
+         var required = AttributeHelper.GetRequiredAttribute( () => model.Name );
 
          Assert.IsNotNull( required );
          Assert.AreEqual( "NameIsRequired", required.ErrorMessageResourceName );
@@ -35,7 +39,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void DescriptionDisplayNameAndPrompt()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( DataObjectBase ), "Description" );
+         var model = new DataObjectBase();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.Description );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );

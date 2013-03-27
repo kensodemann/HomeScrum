@@ -15,13 +15,13 @@ namespace HomeScrum.Common.Utility
          var methodExpression = expression.Body as MethodCallExpression;
          if (methodExpression != null)
          {
-            return methodExpression.Method.DeclaringType;
+            return methodExpression.Object.Type;
          }
 
          var memberExpression = expression.Body as MemberExpression;
          if (memberExpression != null)
          {
-            return memberExpression.Member.DeclaringType;
+            return memberExpression.Expression.Type;
          }
 
          return null;

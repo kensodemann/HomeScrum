@@ -11,7 +11,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsTaskDisplayName()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( WorkItemType ), "IsTask" );
+         var model = new WorkItemType();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.IsTask );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );

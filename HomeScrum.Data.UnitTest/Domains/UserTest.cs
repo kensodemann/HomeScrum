@@ -11,7 +11,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void UserIdDisplayNameAndPrompt()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( User ), "UserId" );
+         var model = new User();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.UserId );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
@@ -24,7 +26,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void UserIdIsRequired()
       {
-         var required = AttributeHelper.GetRequiredAttribute( typeof( User ), "UserId" );
+         var model = new User();
+
+         var required = AttributeHelper.GetRequiredAttribute( () => model.UserId );
 
          Assert.IsNotNull( required );
          Assert.AreEqual( "UserIdIsRequired", required.ErrorMessageResourceName );
@@ -35,7 +39,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void FirstNameDisplayNameAndPrompt()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( User ), "FirstName" );
+         var model = new User();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.FirstName );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
@@ -48,7 +54,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void FirstNameIsRequired()
       {
-         var required = AttributeHelper.GetRequiredAttribute( typeof( User ), "FirstName" );
+         var model = new User();
+
+         var required = AttributeHelper.GetRequiredAttribute( () => model.FirstName );
 
          Assert.IsNotNull( required );
          Assert.AreEqual( "FirstNameIsRequired", required.ErrorMessageResourceName );
@@ -59,7 +67,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void LastNameDisplayNameAndPrompt()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( User ), "LastName" );
+         var model = new User();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.LastName );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
@@ -71,7 +81,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void LastNameIsNotRequired()
       {
-         var required = AttributeHelper.GetRequiredAttribute( typeof( User ), "LastName" );
+         var model = new User();
+
+         var required = AttributeHelper.GetRequiredAttribute( () => model.LastName );
 
          Assert.IsNull( required );
       }
@@ -79,7 +91,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void MiddleNameDisplayNameAndPrompt()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( User ), "MiddleName" );
+         var model = new User();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.MiddleName );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
@@ -91,7 +105,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void MiddleNameIsNotRequired()
       {
-         var required = AttributeHelper.GetRequiredAttribute( typeof( User ), "MiddleName" );
+         var model = new User();
+
+         var required = AttributeHelper.GetRequiredAttribute( () => model.MiddleName );
 
          Assert.IsNull( required );
       }
@@ -121,7 +137,9 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsActiveName()
       {
-         var display = AttributeHelper.GetDisplayAttribute( typeof( User ), "IsActive" );
+         var model = new User();
+
+         var display = AttributeHelper.GetDisplayAttribute( () => model.IsActive );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );

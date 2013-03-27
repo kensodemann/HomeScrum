@@ -19,13 +19,17 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [TestMethod]
       public void Password_IsRequired()
       {
-         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( typeof( CreateUserViewModel ), "Password" ) );
+         var model = new CreateUserViewModel();
+
+         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( () => model.Password ) );
       }
 
       [TestMethod]
       public void ConfirmPassword_IsRequired()
       {
-         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( typeof( CreateUserViewModel ), "ConfirmPassword" ) );
+         var model = new CreateUserViewModel();
+
+         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( () => model.ConfirmPassword ) );
       }
    }
 }
