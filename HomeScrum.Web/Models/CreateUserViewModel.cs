@@ -16,6 +16,7 @@ namespace HomeScrum.Web.Models
          get { return true; }
       }
 
+      // TODO: Get the display strings from HomeScrum.Data.DisplayStrings
       [Required]
       [StringLength( 100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6 )]
       [Display( Name = "Password:" )]

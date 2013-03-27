@@ -8,6 +8,7 @@ using System.Web.Security;
 
 namespace HomeScrum.Web.Models
 {
+   // TODO: Get the display strings from HomeScrum.Data.DisplayStrings
    public class LocalPasswordModel
    {
       [Required]
