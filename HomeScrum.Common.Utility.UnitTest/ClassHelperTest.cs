@@ -8,7 +8,7 @@ namespace HomeScrum.Common.Utility.UnitTest
    {
       private string TestMethod() { return "something"; }
       private string TestMethod1Arg( string arg ) { return "something: " + arg; }
-      private string TestData = "test";
+      private string TestField = "test";
       private string TestProperty { get; set; }
 
       [TestMethod]
@@ -29,11 +29,28 @@ namespace HomeScrum.Common.Utility.UnitTest
       }
 
       [TestMethod]
-      public void ExtractProperyName_ThrowsException_WhenPassedMemberNotProperty()
+      public void ExtractProperyName_ThrowsException_WhenPassedMemberIsField()
       {
          try
          {
-            ClassHelper.ExtractPropertyName( () => this.TestData );
+            ClassHelper.ExtractPropertyName( () => this.TestField );
+         }
+         catch (Exception e)
+         {
+            var argEx = e as ArgumentException;
+            Assert.IsNotNull( argEx );
+            Assert.AreEqual( "expression", argEx.ParamName );
+            return;
+         }
+         Assert.Fail( "Should have thrown exception" );
+      }
+
+      [TestMethod]
+      public void ExtractProperyName_ThrowsException_WhenPassedMemberIsMethod()
+      {
+         try
+         {
+            ClassHelper.ExtractPropertyName( () => this.TestMethod1Arg( "test" ) );
          }
          catch (Exception e)
          {
@@ -51,8 +68,9 @@ namespace HomeScrum.Common.Utility.UnitTest
          Assert.AreEqual( "TestProperty", ClassHelper.ExtractPropertyName( () => this.TestProperty ) );
       }
 
+
       [TestMethod]
-      public void ExtractMethodName_ThrowsException_WhenPassedNonMethod()
+      public void ExtractMethodName_ThrowsException_WhenPassedProperty()
       {
          try
          {
@@ -66,6 +84,35 @@ namespace HomeScrum.Common.Utility.UnitTest
             return;
          }
          Assert.Fail( "Should have thrown exception" );
+      }
+
+      [TestMethod]
+      public void ExtractMethodName_ThrowsException_WhenPassedField()
+      {
+         try
+         {
+            ClassHelper.ExtractMethodName( () => this.TestField );
+         }
+         catch (Exception e)
+         {
+            var argEx = e as ArgumentException;
+            Assert.IsNotNull( argEx );
+            Assert.AreEqual( "expression", argEx.ParamName );
+            return;
+         }
+         Assert.Fail( "Should have thrown exception" );
+      }
+
+      [TestMethod]
+      public void ExtractMethodName_ReturnsMethodName_NoArgs()
+      {
+         Assert.AreEqual( "TestMethod", ClassHelper.ExtractMethodName( () => this.TestMethod() ) );
+      }
+
+      [TestMethod]
+      public void ExtractMethodName_ReturnsMethodName_WithArgs()
+      {
+         Assert.AreEqual( "TestMethod1Arg", ClassHelper.ExtractMethodName( () => this.TestMethod1Arg( "testit" ) ) );
       }
    }
 }

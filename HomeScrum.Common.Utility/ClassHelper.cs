@@ -35,7 +35,7 @@ namespace HomeScrum.Common.Utility
             throw new ArgumentException( "Expression does not access a method", "expression" );
          }
 
-         return "bill";
+         return methodExpression.Method.Name;
       }
    }
 }
