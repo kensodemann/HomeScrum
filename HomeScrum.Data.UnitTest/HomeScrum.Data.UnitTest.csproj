@@ -69,7 +69,6 @@
     <Compile Include="Domains\UserTest.cs" />
     <Compile Include="Domains\WorkItemStatusTest.cs" />
     <Compile Include="Domains\WorkItemTypeTest.cs" />
-    <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Repositories\ProjectStatusRepositoryTest.cs" />
     <Compile Include="Repositories\SprintStatusRepositoryTest.cs" />
     <Compile Include="Repositories\AcceptanceCriteriaStatusRepositoryTest.cs" />
@@ -98,6 +97,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Common.Test.Utility\HomeScrum.Common.Test.Utility.csproj">
+      <Project>{62c6e62f-a3a7-4a02-b6f3-72103851d9ac}</Project>
+      <Name>HomeScrum.Common.Test.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeScrum.Common.TestData\HomeScrum.Common.TestData.csproj">
       <Project>{bc28d6b5-11da-4311-9dbe-f08d3b8002d9}</Project>
       <Name>HomeScrum.Common.TestData</Name>

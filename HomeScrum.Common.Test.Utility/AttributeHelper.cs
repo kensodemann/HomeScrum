@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeScrum.Data.UnitTest.Helpers
+namespace HomeScrum.Data.Common.Test.Utility
 {
-   class AttributeHelper
+   public class AttributeHelper
    {
       public static DisplayAttribute GetDisplayAttribute( Type modelType, string propertyName )
       {

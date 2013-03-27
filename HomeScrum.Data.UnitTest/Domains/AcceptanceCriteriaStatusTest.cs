@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HomeScrum.Data.UnitTest.Helpers;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Common.Test.Utility;
 
 namespace HomeScrum.Data.UnitTest.Domains
 {

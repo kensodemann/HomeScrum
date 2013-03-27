@@ -14,5 +14,10 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.IsFalse( model.IsNewUser );
       }
+
+      [TestMethod]
+      public void Password_IsNotRequired()
+      {
+      }
    }
 }
