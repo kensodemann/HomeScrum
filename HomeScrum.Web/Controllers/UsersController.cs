@@ -1,19 +1,15 @@
-﻿using HomeScrum.Data.Domain;
+﻿using System;
+using System.Web.Mvc;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
-using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.WebPages;
 using HomeScrum.Web.Models;
+using Ninject;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class UsersController : Controller
+   public class UsersController : HomeScrumController
    {
       [Inject]
       public UsersController( IRepository<User, String> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
@@ -65,7 +61,7 @@ namespace HomeScrum.Web.Controllers
          {
             _userRepository.Add( viewModel.User );
             _securityRepository.ChangePassword( viewModel.User.UserId, "bogus", viewModel.Password );
-            return RedirectToAction( "Index" );
+            return RedirectToAction( () => this.Index() );
          }
 
          return View();
@@ -95,7 +91,7 @@ namespace HomeScrum.Web.Controllers
          {
             _userRepository.Update( viewModel.User );
 
-            return RedirectToAction( "Index" );
+            return RedirectToAction( () => this.Index() );
          }
          else
          {
