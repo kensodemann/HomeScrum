@@ -368,6 +368,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCallsSecurityRepositoryToSetPassword()
       {
          var model = CreateNewEditViewModel();
+         model.Password = "something";
+         model.ConfirmPassword = model.Password;
          
          _controller.Edit( model );
 

@@ -18,31 +18,5 @@ namespace HomeScrum.Web.Models
       {
          get { return false; }
       }
-
-
-
-      public override string Password
-      {
-         get
-         {
-            throw new NotImplementedException();
-         }
-         set
-         {
-            throw new NotImplementedException();
-         }
-      }
-
-      public override string ConfirmPassword
-      {
-         get
-         {
-            throw new NotImplementedException();
-         }
-         set
-         {
-            throw new NotImplementedException();
-         }
-      }
    }
 }

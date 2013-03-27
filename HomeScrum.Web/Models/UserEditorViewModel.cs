@@ -23,9 +23,9 @@ namespace HomeScrum.Web.Models
       public abstract bool IsNewUser { get; }
 
       [DataType( DataType.Password )]
-      public abstract string Password { get; set; }
+      public virtual string Password { get; set; }
 
       [DataType( DataType.Password )]
-      public abstract string ConfirmPassword { get; set; }
+      public virtual string ConfirmPassword { get; set; }
    }
 }
