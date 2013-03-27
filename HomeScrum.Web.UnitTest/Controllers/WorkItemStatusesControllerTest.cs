@@ -13,7 +13,7 @@ using HomeScrum.Data.Validators;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class WorkItemStatusesControllerTest : DataObjectBaseControllerTestBase<WorkItemStatus>
+   public class WorkItemStatusesControllerTest : SystemObjectControllerTestBase<WorkItemStatus>
    {
       protected override ICollection<WorkItemStatus> GetAllModels()
       {

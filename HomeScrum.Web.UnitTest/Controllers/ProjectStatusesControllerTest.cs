@@ -13,7 +13,7 @@ using HomeScrum.Data.Validators;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class ProjectStatusesControllerTest : DataObjectBaseControllerTestBase<ProjectStatus>
+   public class ProjectStatusesControllerTest : SystemObjectControllerTestBase<ProjectStatus>
    {
       protected override ICollection<ProjectStatus> GetAllModels()
       {

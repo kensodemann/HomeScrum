@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class SprintStatusesController : DataObjectBaseController<SprintStatus, Guid>
+   public class SprintStatusesController : SystemDataObjectController<SprintStatus, Guid>
    {
       [Inject]
       public SprintStatusesController( IRepository<SprintStatus, Guid> repository, IValidator<SprintStatus> validator )

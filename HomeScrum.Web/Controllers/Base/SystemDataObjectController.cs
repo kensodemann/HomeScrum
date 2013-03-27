@@ -10,9 +10,9 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DataObjectBaseController<T, KeyT> : HomeScrumController
+   public class SystemDataObjectController<T, KeyT> : HomeScrumController
    {
-      public DataObjectBaseController( IRepository<T, KeyT> repository, IValidator<T> validator )
+      public SystemDataObjectController( IRepository<T, KeyT> repository, IValidator<T> validator )
       {
          _repository = repository;
          _validator = validator;

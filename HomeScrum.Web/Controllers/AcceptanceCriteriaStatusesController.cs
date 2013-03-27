@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class AcceptanceCriteriaStatusesController : DataObjectBaseController<AcceptanceCriteriaStatus, Guid>
+   public class AcceptanceCriteriaStatusesController : SystemDataObjectController<AcceptanceCriteriaStatus, Guid>
    {
       [Inject]
       public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus, Guid> repository, IValidator<AcceptanceCriteriaStatus> validator )
