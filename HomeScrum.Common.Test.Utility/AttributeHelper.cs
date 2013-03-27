@@ -5,6 +5,11 @@ namespace HomeScrum.Data.Common.Test.Utility
 {
    public class AttributeHelper
    {
+      public static CompareAttribute GetCompareAttribute( Type modelType, string propertyName )
+      {
+         return GetAttribute( modelType, typeof( CompareAttribute ), propertyName ) as CompareAttribute;
+      }
+
       public static DisplayAttribute GetDisplayAttribute( Type modelType, string propertyName )
       {
          return GetAttribute( modelType, typeof( DisplayAttribute ), propertyName ) as DisplayAttribute;
