@@ -57,7 +57,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /AcceptanceCriteriaStatuses/Create
       [HttpPost]
-      public virtual ActionResult Create( UserEditorViewModel viewModel )
+      public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
          Validate( viewModel.User );
 
@@ -78,7 +78,7 @@ namespace HomeScrum.Web.Controllers
          var model = _userRepository.Get( id );
          if (model != null)
          {
-            return View( new UserEditorViewModel( model ) );
+            return View( new EditUserViewModel( model ) );
          }
 
          return HttpNotFound();
@@ -87,7 +87,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /AcceptanceCriteriaStatuses/Edit/5
       [HttpPost]
-      public virtual ActionResult Edit( UserEditorViewModel viewModel )
+      public virtual ActionResult Edit( EditUserViewModel viewModel )
       {
          Validate( viewModel.User );
 
@@ -99,7 +99,7 @@ namespace HomeScrum.Web.Controllers
          }
          else
          {
-            return View();
+            return View( viewModel );
          }
       }
 

@@ -21,7 +21,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IValidator<User>> _validator;
       private UsersController _controller;
 
-      private UserEditorViewModel CreateNewModel()
+      private EditUserViewModel CreateNewEditViewModel()
       {
          var user = new User()
          {
@@ -32,7 +32,24 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = true
          };
 
-         return new UserEditorViewModel( user );
+         return new EditUserViewModel( user );
+      }
+
+      private CreateUserViewModel CreateNewCreateViewModel()
+      {
+         var user = new User()
+         {
+            UserId = "ABC",
+            FirstName = "Abe",
+            MiddleName = "Bobby",
+            LastName = "Crabby",
+            IsActive = true
+         };
+
+         return new CreateUserViewModel()
+         {
+            User = user
+         };
       }
 
 
@@ -112,7 +129,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
       {
-         var model = CreateNewModel();
+         var model = CreateNewCreateViewModel();
 
          var result = _controller.Create( model );
 
@@ -122,7 +139,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
-         var model = CreateNewModel();
+         var model = CreateNewCreateViewModel();
 
          var result = _controller.Create( model ) as RedirectToRouteResult;
 
@@ -137,7 +154,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
       {
-         var model = CreateNewModel();
+         var model = CreateNewCreateViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( model );
@@ -148,7 +165,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
-         var model = CreateNewModel();
+         var model = CreateNewCreateViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( model ) as ViewResult;
@@ -159,7 +176,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesUserToValidator()
       {
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
+         var model = new CreateUserViewModel()
+         {
+            User = Users.ModelData.ToArray()[3]
+         };
 
          _controller.Create( model );
 
@@ -170,7 +190,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
+         var model = new CreateUserViewModel()
+         {
+            User = Users.ModelData.ToArray()[3]
+         };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
@@ -189,7 +212,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
+         var model = new CreateUserViewModel()
+         {
+            User = Users.ModelData.ToArray()[3]
+         };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );
@@ -204,7 +230,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsSecurityRepositoryToSetPassword()
       {
-         var model = CreateNewModel();
+         var model = CreateNewCreateViewModel();
          model.Password = "NewPassword";
 
          _controller.Create( model );
@@ -249,7 +275,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[2] );
 
          _controller.Edit( model );
 
@@ -259,7 +285,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[2] );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( model );
@@ -270,7 +296,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[2] );
 
          var result = _controller.Edit( model ) as RedirectToRouteResult;
 
@@ -285,7 +311,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[2] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[2] );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( model ) as ViewResult;
@@ -296,7 +322,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_PassesUserToValidator()
       {
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _controller.Edit( model );
 
@@ -307,7 +333,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
@@ -326,7 +352,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var model = new UserEditorViewModel( Users.ModelData.ToArray()[3] );
+         var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );
@@ -341,9 +367,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCallsSecurityRepositoryToSetPassword()
       {
-         var model = CreateNewModel();
-         model.Password = "NewPassword";
-
+         var model = CreateNewEditViewModel();
+         
          _controller.Edit( model );
 
          _securityRepository

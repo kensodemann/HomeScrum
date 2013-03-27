@@ -7,7 +7,7 @@ using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Web.Models
 {
-   public class UserEditorViewModel
+   public abstract class UserEditorViewModel
    {
       public UserEditorViewModel( User user )
       {
@@ -20,15 +20,12 @@ namespace HomeScrum.Web.Models
 
       public User User { get; set; }
 
-      [Required]
-      [StringLength( 100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6 )]
-      [DataType( DataType.Password )]
-      [Display( Name = "Password" )]
-      public string Password { get; set; }
+      public abstract bool IsNewUser { get; }
 
       [DataType( DataType.Password )]
-      [Display( Name = "Confirm password" )]
-      [Compare( "Password", ErrorMessage = "The new password and confirmation password do not match." )]
-      public string ConfirmPassword { get; set; }
+      public abstract string Password { get; set; }
+
+      [DataType( DataType.Password )]
+      public abstract string ConfirmPassword { get; set; }
    }
 }

@@ -95,7 +95,7 @@ namespace HomeScrum.Web.Controllers.Base
          }
          else
          {
-            return View();
+            return View( );
          }
       }
 

@@ -15,7 +15,7 @@
             </div>
 
             @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
-            @if (Model == null)
+            @if (Model == null || Model.IsNewUser)
             {
                 <div class="formSingleLineEdit">
                     @Html.LabelFor( model => model.Password )
