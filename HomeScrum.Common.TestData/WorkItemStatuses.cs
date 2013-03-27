@@ -12,6 +12,7 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
+         CreateTestModelData();
 
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
@@ -22,80 +23,85 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly WorkItemStatus[] ModelData = new[]
+      public static WorkItemStatus[] ModelData { get; private set; }
+
+      public static void CreateTestModelData()
       {
-         new WorkItemStatus ()
+         ModelData = new[]
          {
-            Name="New",
-            Description="The Item is brand new",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="In Process",
-            Description="The Item is being worked on",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="On Hold",
-            Description="The Item was started but cannot be worked on",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="Ready for Test",
-            Description="The Item is ready to be tested",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="Complete",
-            Description="The Item is done",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Open, Predefined",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="Status 2",
-            Description="Inactive Status, Is Open, Predefined",
-            AllowUse=false,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Not Open, Predefined",
-            AllowUse=true,
-            IsOpenStatus=false,
-            IsPredefined=true
-         },
-         new WorkItemStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Open, Not Predefined",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=false
-         }
-      };
+            new WorkItemStatus ()
+            {
+               Name="New",
+               Description="The Item is brand new",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="In Process",
+               Description="The Item is being worked on",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="On Hold",
+               Description="The Item was started but cannot be worked on",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="Ready for Test",
+               Description="The Item is ready to be tested",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="Complete",
+               Description="The Item is done",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="Status 1",
+               Description="Active Status, Is Open, Predefined",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="Status 2",
+               Description="Inactive Status, Is Open, Predefined",
+               AllowUse=false,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="Status 1",
+               Description="Active Status, Is Not Open, Predefined",
+               AllowUse=true,
+               IsOpenStatus=false,
+               IsPredefined=true
+            },
+            new WorkItemStatus ()
+            {
+               Name="Status 1",
+               Description="Active Status, Is Open, Not Predefined",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=false
+            }
+         };
+      }
    }
 }

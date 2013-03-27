@@ -39,6 +39,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
+         Users.CreateTestModelData();
+
          _userRepository = new Mock<IRepository<User, String>>();
          _securityRepository = new Mock<ISecurityRepository>();
          _validator = new Mock<IValidator<User>>();

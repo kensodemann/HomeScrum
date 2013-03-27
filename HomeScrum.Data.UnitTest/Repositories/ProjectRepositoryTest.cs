@@ -97,6 +97,20 @@ namespace HomeScrum.Data.UnitTest.Repositories
       }
 
       [TestMethod]
+      public void Update_ModifiesProjectStatus()
+      {
+         var activeStatus = ProjectStatuses.ModelData.First( x => x.Name == "Active" );
+         var inactiveStatus = ProjectStatuses.ModelData.First( x => x.Name == "Inactive" );
+         var project = Projects.ModelData.First( x => x.ProjectStatus.Id == activeStatus.Id );
+
+         project.ProjectStatus = new ProjectStatus() { Id = inactiveStatus.Id };
+         _repository.Update( project );
+         project = _repository.Get( project.Id );
+
+         Assert.AreEqual( "Inactive", project.ProjectStatus.Name );
+      }
+
+      [TestMethod]
       public void Delete_RevmovesItemFromDatabase()
       {
          var project = Projects.ModelData[2];

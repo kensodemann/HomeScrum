@@ -12,7 +12,7 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
-
+         CreateTestModelData();
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
          {
@@ -22,64 +22,69 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly AcceptanceCriteriaStatus[] ModelData = new[]
+      public static AcceptanceCriteriaStatus[] ModelData { get; private set; }
+
+      public static void CreateTestModelData()
       {
-         new AcceptanceCriteriaStatus ()
+         ModelData = new[]
          {
-            Name="Unverified",
-            Description="Not yet verified",
-            AllowUse=true,
-            IsAccepted=false,
-            IsPredefined=true
-         },
-         new AcceptanceCriteriaStatus ()
-         {
-            Name="Accepted",
-            Description="Accepted",
-            AllowUse=true,
-            IsAccepted=true,
-            IsPredefined=true
-         },
-         new AcceptanceCriteriaStatus ()
-         {
-            Name="Rejected",
-            Description="Rejected",
-            AllowUse=true,
-            IsAccepted=false,
-            IsPredefined=true
-         },
-         new AcceptanceCriteriaStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Accepted, Predefined",
-            AllowUse=true,
-            IsAccepted=true,
-            IsPredefined=true
-         },
-         new AcceptanceCriteriaStatus ()
-         {
-            Name="Status 2",
-            Description="Inactive Status, Is Accepted, Predefined",
-            AllowUse=false,
-            IsAccepted=true,
-            IsPredefined=true
-         },
-         new AcceptanceCriteriaStatus ()
-         {
-            Name="Status 3",
-            Description="Active Status, Is Not Accepted, Predefined",
-            AllowUse=true,
-            IsAccepted=false,
-            IsPredefined=true
-         },
-         new AcceptanceCriteriaStatus ()
-         {
-            Name="Status 4",
-            Description="Active Status, Is Accepted, Not Predefined",
-            AllowUse=true,
-            IsAccepted=true,
-            IsPredefined=false
-         }
-      };
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Unverified",
+               Description="Not yet verified",
+               AllowUse=true,
+               IsAccepted=false,
+               IsPredefined=true
+            }, 
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Accepted",
+               Description="Accepted",
+               AllowUse=true,
+               IsAccepted=true,
+               IsPredefined=true
+            },
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Rejected",
+               Description="Rejected",
+               AllowUse=true,
+               IsAccepted=false,
+               IsPredefined=true
+            },
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Status 1",
+               Description="Active Status, Is Accepted, Predefined",
+               AllowUse=true,
+               IsAccepted=true,
+               IsPredefined=true
+            },
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Status 2",
+               Description="Inactive Status, Is Accepted, Predefined",
+               AllowUse=false,
+               IsAccepted=true,
+               IsPredefined=true
+            },
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Status 3",
+               Description="Active Status, Is Not Accepted, Predefined",
+               AllowUse=true,
+               IsAccepted=false,
+               IsPredefined=true
+            },
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Status 4",
+               Description="Active Status, Is Accepted, Not Predefined",
+               AllowUse=true,
+               IsAccepted=true,
+               IsPredefined=false
+            }
+         };
+      }
    }
 }

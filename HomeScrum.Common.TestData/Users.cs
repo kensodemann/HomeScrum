@@ -12,6 +12,7 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
+         CreateTestModelData();
 
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
@@ -22,37 +23,42 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly User[] ModelData = new[]
+      public static User[] ModelData{get;private set;}
+
+      public static void CreateTestModelData()
       {
-         new User()
+         ModelData = new[]
          {
-            UserId = "kws",
-            LastName = "Smith",
-            FirstName = "Kevin",
-            MiddleName="William",
-            StatusCd = 'A'
-         },
-         new User()
-         {
-            UserId = "j_a",
-            LastName = "Anderson",
-            FirstName = "Judy",
-            StatusCd = 'A'
-         },
-         new User()
-         {
-            UserId = "q__",
-            FirstName = "Quintin",
-            StatusCd = 'A'
-         },
-         new User()
-         {
-            UserId = "iai",
-            FirstName = "I",
-            MiddleName = "Am",
-            LastName= "Inactive",
-            StatusCd = 'I'
-         }
-      };
+            new User()
+            {
+               UserId = "kws",
+               LastName = "Smith",
+               FirstName = "Kevin",
+               MiddleName="William",
+               StatusCd = 'A'
+            },
+            new User()
+            {
+               UserId = "j_a",
+               LastName = "Anderson",
+               FirstName = "Judy",
+               StatusCd = 'A'
+            },
+            new User()
+            {
+               UserId = "q__",
+               FirstName = "Quintin",
+               StatusCd = 'A'
+            },
+            new User()
+            {
+               UserId = "iai",
+               FirstName = "I",
+               MiddleName = "Am",
+               LastName= "Inactive",
+               StatusCd = 'I'
+            }
+         };
+      }
    }
 }

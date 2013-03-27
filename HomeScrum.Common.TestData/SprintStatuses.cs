@@ -12,6 +12,7 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
+         CreateTestModelData();
 
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
@@ -22,72 +23,77 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly SprintStatus[] ModelData = new[]
+      public static SprintStatus[] ModelData { get; private set; }
+
+      public static void CreateTestModelData()
       {
-         new SprintStatus ()
+         ModelData = new[]
          {
-            Name="Future",
-            Description="The sprint is set up for the future",
-            AllowUse=true,
-            IsOpenStatus=false,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Planning",
-            Description="In Planning",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Active",
-            Description="The sprint is the active one",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Complete",
-            Description="The sprint is done",
-            AllowUse=true,
-            IsOpenStatus=false,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Open, Predefined",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Status 2",
-            Description="Inactive Status, Is Open, Predefined",
-            AllowUse=false,
-            IsOpenStatus=true,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Not Open, Predefined",
-            AllowUse=true,
-            IsOpenStatus=false,
-            IsPredefined=true
-         },
-         new SprintStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Open, Not Predefined",
-            AllowUse=true,
-            IsOpenStatus=true,
-            IsPredefined=false
-         }
-      };
+            new SprintStatus ()
+            {
+               Name="Future",
+               Description="The sprint is set up for the future",
+               AllowUse=true,
+               IsOpenStatus=false,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Planning",
+               Description="In Planning",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Active",
+               Description="The sprint is the active one",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Complete",
+               Description="The sprint is done",
+               AllowUse=true,
+               IsOpenStatus=false,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Status 1",
+               Description="Active Status, Is Open, Predefined",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Status 2",
+               Description="Inactive Status, Is Open, Predefined",
+               AllowUse=false,
+               IsOpenStatus=true,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Status 3",
+               Description="Active Status, Is Not Open, Predefined",
+               AllowUse=true,
+               IsOpenStatus=false,
+               IsPredefined=true
+            },
+            new SprintStatus ()
+            {
+               Name="Status 4",
+               Description="Active Status, Is Open, Not Predefined",
+               AllowUse=true,
+               IsOpenStatus=true,
+               IsPredefined=false
+            }
+         };
+      }
    }
 }

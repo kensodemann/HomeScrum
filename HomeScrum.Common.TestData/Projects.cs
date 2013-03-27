@@ -12,6 +12,8 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
+         CreateTestModelData();
+
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
          {
@@ -21,36 +23,41 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly Project[] ModelData = new[]
+      public static Project[] ModelData { get; private set; }
+
+      public static void CreateTestModelData()
       {
-         new Project ()
+         ModelData = new[]
          {
-            Name="Home Scrum",
-            Description = "This project right here",
-            ProjectStatus = ProjectStatuses.ModelData[0],
-            LastModifiedUserId ="admin"
-         },
-         new Project ()
-         {
-            Name="PRepS",
-            Description = "An old problem reporting system",
-            ProjectStatus = ProjectStatuses.ModelData[2],
-            LastModifiedUserId ="kws"
-         },
-         new Project ()
-         {
-            Name="MathWar",
-            Description = "A flash card math learning game",
-            ProjectStatus = ProjectStatuses.ModelData[1],
-            LastModifiedUserId ="ams"
-         },
-         new Project ()
-         {
-            Name="Sandwiches",
-            Description = "Make them!",
-            ProjectStatus = ProjectStatuses.ModelData[0],
-            LastModifiedUserId ="lls"
-         }
-      };
+            new Project ()
+            {
+               Name="Home Scrum",
+               Description = "This project right here",
+               ProjectStatus = ProjectStatuses.ModelData[0],
+               LastModifiedUserId ="admin"
+            },
+            new Project ()
+            {
+               Name="PRepS",
+               Description = "An old problem reporting system",
+               ProjectStatus = ProjectStatuses.ModelData[2],
+               LastModifiedUserId ="kws"
+            },
+            new Project ()
+            {
+               Name="MathWar",
+               Description = "A flash card math learning game",
+               ProjectStatus = ProjectStatuses.ModelData[1],
+               LastModifiedUserId ="ams"
+            },
+            new Project ()
+            {
+               Name="Sandwiches",
+               Description = "Make them!",
+               ProjectStatus = ProjectStatuses.ModelData[0],
+               LastModifiedUserId ="lls"
+            }
+         };
+      }
    }
 }

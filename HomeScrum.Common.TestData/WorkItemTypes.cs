@@ -12,6 +12,7 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
+         CreateTestModelData();
 
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
@@ -22,64 +23,69 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly WorkItemType[] ModelData = new[]
+      public static WorkItemType[] ModelData { get; private set; }
+
+      public static void CreateTestModelData()
       {
-         new WorkItemType ()
+         ModelData = new[]
          {
-            Name="SBI",
-            Description="Sprint Backlog Item",
-            AllowUse=true,
-            IsTask=true,
-            IsPredefined=true
-         },
-         new WorkItemType ()
-         {
-            Name="PBI",
-            Description="Product BacklogItem",
-            AllowUse=true,
-            IsTask=false,
-            IsPredefined=true
-         },
-         new WorkItemType ()
-         {
-            Name="Bug",
-            Description="A problem with the software or design",
-            AllowUse=true,
-            IsTask=true,
-            IsPredefined=true
-         },
-         new WorkItemType ()
-         {
-            Name="Issue",
-            Description="A problem in the process that is blocking someone",
-            AllowUse=true,
-            IsTask=true,
-            IsPredefined=true
-         },
-         new WorkItemType ()
-         {
-            Name="Type 3",
-            Description="Active, Not a Task, Predefined",
-            AllowUse=true,
-            IsTask=false,
-            IsPredefined=true
-         },
-         new WorkItemType ()
-         {
-            Name="Type 4",
-            Description="Active, Task, Not Predefined",
-            AllowUse=true,
-            IsTask=true,
-            IsPredefined=false
-         },
-         new WorkItemType ()
-         {
-            Name="Type 5",
-            Description="Not Active, Task, Predefined",
-            AllowUse=true,
-            IsTask=true,
-            IsPredefined=true
-         }
-      };
+            new WorkItemType ()
+            {
+               Name="SBI",
+               Description="Sprint Backlog Item",
+               AllowUse=true,
+               IsTask=true,
+               IsPredefined=true
+            },
+            new WorkItemType ()
+            {
+               Name="PBI",
+               Description="Product BacklogItem",
+               AllowUse=true,
+               IsTask=false,
+               IsPredefined=true
+            },
+            new WorkItemType ()
+            {
+               Name="Bug",
+               Description="A problem with the software or design",
+               AllowUse=true,
+               IsTask=true,
+               IsPredefined=true
+            },
+            new WorkItemType ()
+            {
+               Name="Issue",
+               Description="A problem in the process that is blocking someone",
+               AllowUse=true,
+               IsTask=true,
+               IsPredefined=true
+            },
+            new WorkItemType ()
+            {
+               Name="Type 3",
+               Description="Active, Not a Task, Predefined",
+               AllowUse=true,
+               IsTask=false,
+               IsPredefined=true
+            },
+            new WorkItemType ()
+            {
+               Name="Type 4",
+               Description="Active, Task, Not Predefined",
+               AllowUse=true,
+               IsTask=true,
+               IsPredefined=false
+            },
+            new WorkItemType ()
+            {
+               Name="Type 5",
+               Description="Not Active, Task, Predefined",
+               AllowUse=true,
+               IsTask=true,
+               IsPredefined=true
+            }
+         };
+      }
    }
 }

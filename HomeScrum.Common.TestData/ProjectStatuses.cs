@@ -12,6 +12,8 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
+         CreateTestModelData();
+
          using (ISession session = Database.GetSession())
          using (ITransaction transaction = session.BeginTransaction())
          {
@@ -21,64 +23,69 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static readonly ProjectStatus[] ModelData = new[]
+      public static ProjectStatus[] ModelData { get; private set; }
+
+      public static void CreateTestModelData()
       {
-         new ProjectStatus ()
+         ModelData = new[]
          {
-            Name="Active",
-            Description="Active Project",
-            AllowUse=true,
-            IsActive=true,
-            IsPredefined=true
-         },
-         new ProjectStatus ()
-         {
-            Name="Inactive",
-            Description="No longer active",
-            AllowUse=true,
-            IsActive=false,
-            IsPredefined=true
-         },
-         new ProjectStatus ()
-         {
-            Name="Closed",
-            Description="The project is closed",
-            AllowUse=true,
-            IsActive=false,
-            IsPredefined=true
-         },
-         new ProjectStatus ()
-         {
-            Name="Status 1",
-            Description="Active Status, Is Active, Predefined",
-            AllowUse=true,
-            IsActive=true,
-            IsPredefined=true
-         },
-         new ProjectStatus ()
-         {
-            Name="Status 2",
-            Description="Inactive Status, Is Active, Predefined",
-            AllowUse=false,
-            IsActive=true,
-            IsPredefined=true
-         },
-         new ProjectStatus ()
-         {
-            Name="Status 3",
-            Description="Active Status, Is Not Active, Predefined",
-            AllowUse=true,
-            IsActive=false,
-            IsPredefined=true
-         },
-         new ProjectStatus ()
-         {
-            Name="Status 4",
-            Description="Active Status, Is Active, Not Predefined",
-            AllowUse=true,
-            IsActive=true,
-            IsPredefined=false
-         }
-      };
+            new ProjectStatus ()
+            {
+               Name="Active",
+               Description="Active Project",
+               AllowUse=true,
+               IsActive=true,
+               IsPredefined=true
+            },
+            new ProjectStatus ()
+            {
+               Name="Inactive",
+               Description="No longer active",
+               AllowUse=true,
+               IsActive=false,
+               IsPredefined=true
+            },
+            new ProjectStatus ()
+            {
+               Name="Closed",
+               Description="The project is closed",
+               AllowUse=true,
+               IsActive=false,
+               IsPredefined=true
+            },
+            new ProjectStatus ()
+            {
+               Name="Status 1",
+               Description="Active Status, Is Active, Predefined",
+               AllowUse=true,
+               IsActive=true,
+               IsPredefined=true
+            },
+            new ProjectStatus ()
+            {
+               Name="Status 2",
+               Description="Inactive Status, Is Active, Predefined",
+               AllowUse=false,
+               IsActive=true,
+               IsPredefined=true
+            },
+            new ProjectStatus ()
+            {
+               Name="Status 3",
+               Description="Active Status, Is Not Active, Predefined",
+               AllowUse=true,
+               IsActive=false,
+               IsPredefined=true
+            },
+            new ProjectStatus ()
+            {
+               Name="Status 4",
+               Description="Active Status, Is Active, Not Predefined",
+               AllowUse=true,
+               IsActive=true,
+               IsPredefined=false
+            }
+         };
+      }
    }
 }
