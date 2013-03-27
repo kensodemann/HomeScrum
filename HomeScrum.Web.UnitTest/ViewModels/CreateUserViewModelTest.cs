@@ -25,11 +25,53 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       }
 
       [TestMethod]
+      public void Password_MinStringLength()
+      {
+         var model = new CreateUserViewModel();
+         var stringLengthAttribute = AttributeHelper.GetStringLengthAttribute( () => model.Password );
+
+         Assert.IsNotNull( stringLengthAttribute );
+         Assert.AreEqual( 6, stringLengthAttribute.MinimumLength );
+         Assert.AreEqual( 100, stringLengthAttribute.MaximumLength );
+      }
+
+      [TestMethod]
+      public void Password_Display()
+      {
+         var model = new CreateUserViewModel();
+         var displayAttribute = AttributeHelper.GetDisplayAttribute( () => model.Password );
+
+         Assert.IsNotNull( displayAttribute );
+         Assert.AreEqual( "Password:", displayAttribute.Name );
+      }
+
+
+      [TestMethod]
       public void ConfirmPassword_IsRequired()
       {
          var model = new CreateUserViewModel();
 
          Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( () => model.ConfirmPassword ) );
+      }
+
+      [TestMethod]
+      public void ConfirmPassword_ComparedToPassword()
+      {
+         var model = new CreateUserViewModel();
+         var compareAttribute = AttributeHelper.GetCompareAttribute( () => model.ConfirmPassword );
+
+         Assert.IsNotNull( compareAttribute );
+         Assert.AreEqual( "Password", compareAttribute.OtherProperty );
+      }
+
+      [TestMethod]
+      public void ConfirmPassword_Display()
+      {
+         var model = new CreateUserViewModel();
+         var displayAttribute = AttributeHelper.GetDisplayAttribute( () => model.ConfirmPassword );
+
+         Assert.IsNotNull( displayAttribute );
+         Assert.AreEqual( "Confirm password:", displayAttribute.Name );
       }
    }
 }

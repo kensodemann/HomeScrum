@@ -22,6 +22,11 @@ namespace HomeScrum.Data.Common.Test.Utility
          return GetAttribute( typeof( RequiredAttribute ), propertyExpression ) as RequiredAttribute;
       }
 
+      public static StringLengthAttribute GetStringLengthAttribute<T>( Expression<Func<T>> propertyExpression )
+      {
+         return GetAttribute( typeof( StringLengthAttribute ), propertyExpression ) as StringLengthAttribute;
+      }
+
       private static Attribute GetAttribute<T>( Type attributeType, Expression<Func<T>> propertyExpression )
       {
          var type = ClassHelper.ExtractClassType( propertyExpression );
