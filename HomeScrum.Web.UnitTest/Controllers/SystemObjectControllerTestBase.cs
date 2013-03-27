@@ -18,7 +18,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected Mock<IRepository<T, Guid>> _repository;
       protected Mock<IValidator<T>> _validator;
-      protected SystemDataObjectController<T, Guid> _controller;
+      protected SystemDataObjectController<T> _controller;
 
       protected abstract ICollection<T> GetAllModels();
       protected abstract T CreateNewModel();

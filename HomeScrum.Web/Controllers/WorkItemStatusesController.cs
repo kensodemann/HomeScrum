@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemStatusesController : SystemDataObjectController<WorkItemStatus, Guid>
+   public class WorkItemStatusesController : SystemDataObjectController<WorkItemStatus>
    {
       [Inject]
       public WorkItemStatusesController( IRepository<WorkItemStatus, Guid> repository, IValidator<WorkItemStatus> validator )

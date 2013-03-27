@@ -10,16 +10,16 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class SystemDataObjectController<T, KeyT> : HomeScrumController
+   public class SystemDataObjectController<T> : HomeScrumController
    {
-      public SystemDataObjectController( IRepository<T, KeyT> repository, IValidator<T> validator )
+      public SystemDataObjectController( IRepository<T, Guid> repository, IValidator<T> validator )
       {
          _repository = repository;
          _validator = validator;
       }
 
-      private readonly IRepository<T, KeyT> _repository;
-      public IRepository<T, KeyT> Repository { get { return _repository; } }
+      private readonly IRepository<T, Guid> _repository;
+      public IRepository<T, Guid> Repository { get { return _repository; } }
 
       private readonly IValidator<T> _validator;
       public IValidator<T> Validator { get { return _validator; } }
@@ -33,7 +33,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /AcceptanceCriteriaStatuses/Details/5
-      public virtual ActionResult Details( KeyT id )
+      public virtual ActionResult Details( Guid id )
       {
          var model = _repository.Get( id );
 
@@ -69,7 +69,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /AcceptanceCriteriaStatuses/Edit/5
-      public virtual ActionResult Edit( KeyT id )
+      public virtual ActionResult Edit( Guid id )
       {
          var model = _repository.Get( id );
          if (model != null)
