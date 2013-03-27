@@ -144,6 +144,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Base\DataObjectBaseController.cs" />
+    <Compile Include="Controllers\Base\HomeScrumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectStatusesController.cs" />
     <Compile Include="Controllers\SprintStatusesController.cs" />
@@ -326,6 +327,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Common.Utility\HomeScrum.Common.Utility.csproj">
+      <Project>{bc5f0331-9795-4b3e-ae0b-7d78f8200686}</Project>
+      <Name>HomeScrum.Common.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeScrum.Data.SqlServer\HomeScrum.Data.SqlServer.csproj">
       <Project>{6b0b91f7-d752-4d5d-b3d2-bdc17c17a4a5}</Project>
       <Name>HomeScrum.Data.SqlServer</Name>

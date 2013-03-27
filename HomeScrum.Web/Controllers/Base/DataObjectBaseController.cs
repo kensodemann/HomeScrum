@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DataObjectBaseController<T, KeyT> : Controller
+   public class DataObjectBaseController<T, KeyT> : HomeScrumController
    {
       public DataObjectBaseController( IRepository<T, KeyT> repository, IValidator<T> validator )
       {
@@ -61,7 +61,7 @@ namespace HomeScrum.Web.Controllers.Base
          if (ModelState.IsValid)
          {
             _repository.Add( model );
-            return RedirectToAction( "Index" );
+            return RedirectToAction( () => this.Index() );
          }
 
          return View();
@@ -91,11 +91,11 @@ namespace HomeScrum.Web.Controllers.Base
          {
             _repository.Update( model );
 
-            return RedirectToAction( "Index" );
+            return RedirectToAction( () => this.Index() );
          }
          else
          {
-            return View( );
+            return View();
          }
       }
 
