@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models
 {
-   public class CreateUserViewModel:UserEditorViewModel
+   public class CreateUserViewModel : UserEditorViewModel
    {
       public CreateUserViewModel()
          : base() { }
@@ -21,7 +21,7 @@ namespace HomeScrum.Web.Models
       [Display( Name = "Password:" )]
       public override string Password { get; set; }
 
-      [DataType( DataType.Password )]
+      [Required]
       [Display( Name = "Confirm password:" )]
       [Compare( "Password", ErrorMessage = "The new password and confirmation password do not match." )]
       public override string ConfirmPassword { get; set; }

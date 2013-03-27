@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HomeScrum.Web.Models;
+using HomeScrum.Data.Common.Test.Utility;
 
 namespace HomeScrum.Web.UnitTest.ViewModels
 {
@@ -18,6 +19,12 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [TestMethod]
       public void Password_IsNotRequired()
       {
+         Assert.IsNull( AttributeHelper.GetRequiredAttribute( typeof( EditUserViewModel ), "Password" ) );
+      }
+
+      public void ConfirmPassword_IsNotRequired()
+      {
+         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( typeof( EditUserViewModel ), "ConfirmPassword" ) );
       }
    }
 }
