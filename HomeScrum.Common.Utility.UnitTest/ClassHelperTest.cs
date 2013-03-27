@@ -114,5 +114,23 @@ namespace HomeScrum.Common.Utility.UnitTest
       {
          Assert.AreEqual( "TestMethod1Arg", ClassHelper.ExtractMethodName( () => this.TestMethod1Arg( "testit" ) ) );
       }
+
+      [TestMethod]
+      public void ExtractClassType_ReturnsClassType_ForMethod()
+      {
+         Assert.AreEqual( typeof( ClassHelperTest ), ClassHelper.ExtractClassType( () => this.TestMethod() ) );
+      }
+
+      [TestMethod]
+      public void ExtractClassType_ReturnsClassType_ForField()
+      {
+         Assert.AreEqual( typeof( ClassHelperTest ), ClassHelper.ExtractClassType( () => this.TestField ) );
+      }
+
+      [TestMethod]
+      public void ExtractClassType_ReturnsClassType_ForProperty()
+      {
+         Assert.AreEqual( typeof( ClassHelperTest ), ClassHelper.ExtractClassType( () => this.TestProperty ) );
+      }
    }
 }

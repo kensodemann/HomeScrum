@@ -10,6 +10,23 @@ namespace HomeScrum.Common.Utility
 {
    public static class ClassHelper
    {
+      public static Type ExtractClassType<T>( Expression<Func<T>> expression )
+      {
+         var methodExpression = expression.Body as MethodCallExpression;
+         if (methodExpression != null)
+         {
+            return methodExpression.Method.DeclaringType;
+         }
+
+         var memberExpression = expression.Body as MemberExpression;
+         if (memberExpression != null)
+         {
+            return memberExpression.Member.DeclaringType;
+         }
+
+         return null;
+      }
+
       public static string ExtractPropertyName<T>( Expression<Func<T>> expression )
       {
          var memberExpression = expression.Body as MemberExpression;
