@@ -7,7 +7,8 @@ namespace HomeScrum.Common.Utility.UnitTest
    public class ClassHelperTest
    {
       private string TestMethod() { return "something"; }
-      private string TestData;
+      private string TestMethod1Arg( string arg ) { return "something: " + arg; }
+      private string TestData = "test";
       private string TestProperty { get; set; }
 
       [TestMethod]
@@ -21,7 +22,7 @@ namespace HomeScrum.Common.Utility.UnitTest
          {
             var argEx = e as ArgumentException;
             Assert.IsNotNull( argEx );
-            Assert.AreEqual( "propertyExpression", argEx.ParamName );
+            Assert.AreEqual( "expression", argEx.ParamName );
             return;
          }
          Assert.Fail( "Should have thrown exception" );
@@ -38,7 +39,7 @@ namespace HomeScrum.Common.Utility.UnitTest
          {
             var argEx = e as ArgumentException;
             Assert.IsNotNull( argEx );
-            Assert.AreEqual( "propertyExpression", argEx.ParamName );
+            Assert.AreEqual( "expression", argEx.ParamName );
             return;
          }
          Assert.Fail( "Should have thrown exception" );
@@ -48,6 +49,23 @@ namespace HomeScrum.Common.Utility.UnitTest
       public void ExtractPropertyName_ReturnsPropertyName()
       {
          Assert.AreEqual( "TestProperty", ClassHelper.ExtractPropertyName( () => this.TestProperty ) );
+      }
+
+      [TestMethod]
+      public void ExtractMethodName_ThrowsException_WhenPassedNonMethod()
+      {
+         try
+         {
+            ClassHelper.ExtractMethodName( () => this.TestProperty );
+         }
+         catch (Exception e)
+         {
+            var argEx = e as ArgumentException;
+            Assert.IsNotNull( argEx );
+            Assert.AreEqual( "expression", argEx.ParamName );
+            return;
+         }
+         Assert.Fail( "Should have thrown exception" );
       }
    }
 }
