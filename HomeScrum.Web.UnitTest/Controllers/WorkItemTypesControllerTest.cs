@@ -14,7 +14,7 @@ using HomeScrum.Data.Validators;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class WorkItemTypeesControllerTest : SystemObjectControllerTestBase<WorkItemType>
+   public class WorkItemTypeesControllerTest : DomainObjectControllerTestBase<WorkItemType>
    {
       protected override ICollection<WorkItemType> GetAllModels()
       {

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectStatusesController : SystemDataObjectController<ProjectStatus>
+   public class ProjectStatusesController : DomainObjectController<ProjectStatus>
    {
       [Inject]
       public ProjectStatusesController( IRepository<ProjectStatus, Guid> repository, IValidator<ProjectStatus> validator )

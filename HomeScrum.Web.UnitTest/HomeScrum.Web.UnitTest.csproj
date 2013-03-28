@@ -63,7 +63,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\AcceptanceCriteriaStatusesControllerTest.cs" />
-    <Compile Include="Controllers\SystemObjectControllerTestBase.cs" />
+    <Compile Include="Controllers\DomainObjectControllerTestBase.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemTypesController : SystemDataObjectController<WorkItemType>
+   public class WorkItemTypesController : DomainObjectController<WorkItemType>
    {
       [Inject]
       public WorkItemTypesController( IRepository<WorkItemType, Guid> repository, IValidator<WorkItemType> validator )

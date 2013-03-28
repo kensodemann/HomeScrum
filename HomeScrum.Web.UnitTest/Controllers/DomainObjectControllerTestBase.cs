@@ -14,11 +14,11 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
-   public abstract class SystemObjectControllerTestBase<T> where T : DataObjectBase
+   public abstract class DomainObjectControllerTestBase<T> where T : DataObjectBase
    {
       protected Mock<IRepository<T, Guid>> _repository;
       protected Mock<IValidator<T>> _validator;
-      protected SystemDataObjectController<T> _controller;
+      protected DomainObjectController<T> _controller;
 
       protected abstract ICollection<T> GetAllModels();
       protected abstract T CreateNewModel();
