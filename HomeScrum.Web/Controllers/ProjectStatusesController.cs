@@ -2,15 +2,13 @@
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Models;
 using Ninject;
 using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectStatusesController : DomainObjectController<ProjectStatus>
+   public class ProjectStatusesController : DomainObjectController<ProjectStatus, EditProjectStatusViewModel>
    {
       [Inject]
       public ProjectStatusesController( IRepository<ProjectStatus, Guid> repository, IValidator<ProjectStatus> validator )

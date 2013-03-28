@@ -2,15 +2,13 @@
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Models;
 using Ninject;
 using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemTypesController : DomainObjectController<WorkItemType>
+   public class WorkItemTypesController : DomainObjectController<WorkItemType, EditWorkItemTypeViewModel>
    {
       [Inject]
       public WorkItemTypesController( IRepository<WorkItemType, Guid> repository, IValidator<WorkItemType> validator )

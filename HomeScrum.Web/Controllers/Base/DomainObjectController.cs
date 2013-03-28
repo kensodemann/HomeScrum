@@ -1,6 +1,7 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
+using HomeScrum.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,19 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DomainObjectController<T> : HomeScrumController
+   public class DomainObjectController<ModelT, EditViewModelT> : HomeScrumController where EditViewModelT : IViewModel<ModelT>, new()
    {
-      public DomainObjectController( IRepository<T, Guid> repository, IValidator<T> validator )
+      public DomainObjectController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
       {
          _repository = repository;
          _validator = validator;
       }
 
-      private readonly IRepository<T, Guid> _repository;
-      public IRepository<T, Guid> Repository { get { return _repository; } }
+      private readonly IRepository<ModelT, Guid> _repository;
+      public IRepository<ModelT, Guid> Repository { get { return _repository; } }
 
-      private readonly IValidator<T> _validator;
-      public IValidator<T> Validator { get { return _validator; } }
+      private readonly IValidator<ModelT> _validator;
+      public IValidator<ModelT> Validator { get { return _validator; } }
 
       //
       // GET: /AcceptanceCriteriaStatuses/
@@ -54,13 +55,13 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /AcceptanceCriteriaStatuses/Create
       [HttpPost]
-      public virtual ActionResult Create( T model )
+      public virtual ActionResult Create( EditViewModelT viewModel )
       {
-         Validate( model );
+         Validate( viewModel.DomainModel );
 
          if (ModelState.IsValid)
          {
-            _repository.Add( model );
+            _repository.Add( viewModel.DomainModel );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -71,10 +72,14 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /AcceptanceCriteriaStatuses/Edit/5
       public virtual ActionResult Edit( Guid id )
       {
-         var model = _repository.Get( id );
-         if (model != null)
+         var viewModel = new EditViewModelT()
          {
-            return View( model );
+            DomainModel = _repository.Get( id )
+         };
+
+         if (viewModel.DomainModel != null)
+         {
+            return View( viewModel );
          }
 
          return HttpNotFound();
@@ -83,13 +88,13 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /AcceptanceCriteriaStatuses/Edit/5
       [HttpPost]
-      public virtual ActionResult Edit( T model )
+      public virtual ActionResult Edit( EditViewModelT viewModel )
       {
-         Validate( model );
+         Validate( viewModel.DomainModel );
 
          if (ModelState.IsValid)
          {
-            _repository.Update( model );
+            _repository.Update( viewModel.DomainModel );
 
             return RedirectToAction( () => this.Index() );
          }
@@ -100,7 +105,7 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
-      private void Validate( T model )
+      private void Validate( ModelT model )
       {
          if (!_validator.ModelIsValid( model ))
          {

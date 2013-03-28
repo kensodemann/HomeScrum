@@ -2,15 +2,13 @@
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Models;
 using Ninject;
 using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class AcceptanceCriteriaStatusesController : DomainObjectController<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusesController : DomainObjectController<AcceptanceCriteriaStatus, EditAcceptanceCriteriaStatusViewModel>
    {
       [Inject]
       public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus, Guid> repository, IValidator<AcceptanceCriteriaStatus> validator )

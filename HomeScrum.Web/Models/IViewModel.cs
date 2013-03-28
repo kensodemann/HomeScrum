@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Web.Models
 {
-   internal interface IViewModel<T>
+   public interface IViewModel<T>
    {
-      T DomainModel { get; }
+      T DomainModel { get; set; }
    }
 }

@@ -1,19 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Controllers;
-using HomeScrum.Common.TestData;
+using HomeScrum.Web.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Web.Mvc;
-using HomeScrum.Data.Validators;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class ProjectStatusesControllerTest : DomainObjectControllerTestBase<ProjectStatus>
+   public class ProjectStatusesControllerTest : DomainObjectControllerTestBase<ProjectStatus, EditProjectStatusViewModel>
    {
       protected override ICollection<ProjectStatus> GetAllModels()
       {
