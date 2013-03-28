@@ -48,7 +48,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          return new CreateUserViewModel()
          {
-            User = user
+            DomainModel = user
          };
       }
 
@@ -133,7 +133,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = _controller.Create( model );
 
-         _userRepository.Verify( x => x.Add( model.User ), Times.Once() );
+         _userRepository.Verify( x => x.Add( model.DomainModel ), Times.Once() );
       }
 
       [TestMethod]
@@ -178,12 +178,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = new CreateUserViewModel()
          {
-            User = Users.ModelData.ToArray()[3]
+            DomainModel = Users.ModelData.ToArray()[3]
          };
 
          _controller.Create( model );
 
-         _validator.Verify( x => x.ModelIsValid( model.User ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model.DomainModel ), Times.Once() );
       }
 
       [TestMethod]
@@ -192,11 +192,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var messages = CreateStockErrorMessages();
          var model = new CreateUserViewModel()
          {
-            User = Users.ModelData.ToArray()[3]
+            DomainModel = Users.ModelData.ToArray()[3]
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( false );
 
          var result = _controller.Create( model );
 
@@ -214,11 +214,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var messages = CreateStockErrorMessages();
          var model = new CreateUserViewModel()
          {
-            User = Users.ModelData.ToArray()[3]
+            DomainModel = Users.ModelData.ToArray()[3]
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( true );
 
          var result = _controller.Create( model );
 
@@ -236,7 +236,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( model );
 
          _securityRepository
-            .Verify( x => x.ChangePassword( model.User.UserId, "bogus", model.Password ), Times.Once() );
+            .Verify( x => x.ChangePassword( model.DomainModel.UserId, "bogus", model.Password ), Times.Once() );
       }
 
       [TestMethod]
@@ -259,7 +259,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var editorModel = result.Model as UserEditorViewModel;
          Assert.IsNotNull( editorModel );
-         Assert.AreEqual( user, editorModel.User );
+         Assert.AreEqual( user, editorModel.DomainModel );
       }
 
       [TestMethod]
@@ -279,7 +279,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _userRepository.Verify( x => x.Update( model.User ), Times.Once() );
+         _userRepository.Verify( x => x.Update( model.DomainModel ), Times.Once() );
       }
 
       [TestMethod]
@@ -326,7 +326,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _validator.Verify( x => x.ModelIsValid( model.User ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model.DomainModel ), Times.Once() );
       }
 
       [TestMethod]
@@ -336,7 +336,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( false );
 
          var result = _controller.Edit( model );
 
@@ -355,7 +355,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.User ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( true );
 
          var result = _controller.Edit( model );
 

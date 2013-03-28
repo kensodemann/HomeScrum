@@ -7,18 +7,18 @@ using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Web.Models
 {
-   public abstract class UserEditorViewModel
+   public abstract class UserEditorViewModel : IViewModel<User>
    {
       public UserEditorViewModel( User user )
       {
-         User = user;
+         DomainModel = user;
       }
 
       public UserEditorViewModel()
          : this( new User() ) { }
 
 
-      public User User { get; set; }
+      public User DomainModel { get; set; }
 
       public abstract bool IsNewUser { get; }
 
