@@ -11,7 +11,9 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DomainObjectController<ModelT, EditViewModelT> : HomeScrumController where EditViewModelT : IViewModel<ModelT>, new()
+   public class DomainObjectController<ModelT, EditViewModelT> : HomeScrumController
+      where ModelT : new()
+      where EditViewModelT : IViewModel<ModelT>, new()
    {
       public DomainObjectController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
       {
@@ -49,7 +51,11 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /AcceptanceCriteriaStatuses/Create
       public virtual ActionResult Create()
       {
-         return View();
+         var viewModel = new EditViewModelT()
+         {
+            DomainModel = new ModelT()
+         };
+         return View( viewModel );
       }
 
       //

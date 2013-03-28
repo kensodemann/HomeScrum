@@ -16,7 +16,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    public abstract class DomainObjectControllerTestBase<ModelT, EditViewModelT>
-      where ModelT : DataObjectBase
+      where ModelT : DataObjectBase, new()
       where EditViewModelT : IViewModel<ModelT>, new()
    {
       protected Mock<IRepository<ModelT, Guid>> _repository;
@@ -85,12 +85,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreateGet_ReturnsViewWithoutModel()
+      public void CreateGet_ReturnsViewWithViewModelEmptyDomainModel()
       {
          var result = _controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
-         Assert.IsNull( result.Model );
+         Assert.IsNotNull( result.Model );
+
+         var domainModel = ((EditViewModelT)result.Model).DomainModel;
+         Assert.IsNotNull( domainModel );
+         Assert.AreEqual( default( Guid ), domainModel.Id );
+         Assert.IsNull( domainModel.Name );
+         Assert.IsNull( domainModel.Description );
       }
 
       [TestMethod]

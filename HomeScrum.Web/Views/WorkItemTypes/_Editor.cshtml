@@ -1,24 +1,24 @@
-﻿@model HomeScrum.Data.Domain.WorkItemType
+﻿@model HomeScrum.Web.Models.EditWorkItemTypeViewModel
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary( true )
 
-    @Html.Partial( "_DataObjectBaseEditor", Model )
+    @Html.Partial( "_DataObjectBaseEditor", Model.DomainModel )
 
     <fieldset>
         <legend>Properties</legend>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.IsTask )
-            @Html.LabelFor( model => model.IsTask )
-            @Html.ValidationMessageFor( model => model.IsTask )
+            @Html.EditorFor( model => model.DomainModel.IsTask )
+            @Html.LabelFor( model => model.DomainModel.IsTask )
+            @Html.ValidationMessageFor( model => model.DomainModel.IsTask )
         </div>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.AllowUse )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
+            @Html.EditorFor( model => model.DomainModel.AllowUse )
+            @Html.LabelFor( model => model.DomainModel.AllowUse )
+            @Html.ValidationMessageFor( model => model.DomainModel.AllowUse )
         </div>
     </fieldset>
     

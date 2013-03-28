@@ -1,24 +1,24 @@
-﻿@model HomeScrum.Data.Domain.WorkItemStatus
+﻿@model HomeScrum.Web.Models.EditWorkItemStatusViewModel
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary( true )
 
-    @Html.Partial( "_DataObjectBaseEditor", Model )
+    @Html.Partial( "_DataObjectBaseEditor", Model.DomainModel )
 
     <fieldset>
         <legend>Properties</legend>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.IsOpenStatus )
-            @Html.LabelFor( model => model.IsOpenStatus )
-            @Html.ValidationMessageFor( model => model.IsOpenStatus )
+            @Html.EditorFor( model => model.DomainModel.IsOpenStatus )
+            @Html.LabelFor( model => model.DomainModel.IsOpenStatus )
+            @Html.ValidationMessageFor( model => model.DomainModel.IsOpenStatus )
         </div>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.AllowUse )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
+            @Html.EditorFor( model => model.DomainModel.AllowUse )
+            @Html.LabelFor( model => model.DomainModel.AllowUse )
+            @Html.ValidationMessageFor( model => model.DomainModel.AllowUse )
         </div>
     </fieldset>
  
