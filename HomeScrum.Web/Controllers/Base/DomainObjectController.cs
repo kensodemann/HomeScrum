@@ -28,15 +28,15 @@ namespace HomeScrum.Web.Controllers.Base
       public IValidator<ModelT> Validator { get { return _validator; } }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/
-      public virtual ActionResult Index()
+      // GET: /ModelTs/
+      public ActionResult Index()
       {
          return View( _repository.GetAll() );
       }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/Details/5
-      public virtual ActionResult Details( Guid id )
+      // GET: /ModelTs/Details/5
+      public ActionResult Details( Guid id )
       {
          var model = _repository.Get( id );
 
@@ -48,20 +48,17 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/Create
-      public virtual ActionResult Create()
+      // GET: /ModelTa/Create
+      public ActionResult Create()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = new ModelT()
-         };
+         var viewModel = CreateEditorViewModel( new ModelT() );
          return View( viewModel );
       }
 
       //
-      // POST: /AcceptanceCriteriaStatuses/Create
+      // POST: /ModelTs/Create
       [HttpPost]
-      public virtual ActionResult Create( EditViewModelT viewModel )
+      public ActionResult Create( EditViewModelT viewModel )
       {
          Validate( viewModel.DomainModel );
 
@@ -75,13 +72,10 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/Edit/5
-      public virtual ActionResult Edit( Guid id )
+      // GET: /ModelTs/Edit/5
+      public ActionResult Edit( Guid id )
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = _repository.Get( id )
-         };
+         var viewModel = CreateEditorViewModel( _repository.Get( id ) );
 
          if (viewModel.DomainModel != null)
          {
@@ -92,9 +86,9 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       //
-      // POST: /AcceptanceCriteriaStatuses/Edit/5
+      // POST: /ModelTs/Edit/5
       [HttpPost]
-      public virtual ActionResult Edit( EditViewModelT viewModel )
+      public ActionResult Edit( EditViewModelT viewModel )
       {
          Validate( viewModel.DomainModel );
 
@@ -108,6 +102,15 @@ namespace HomeScrum.Web.Controllers.Base
          {
             return View();
          }
+      }
+
+
+      protected virtual EditViewModelT CreateEditorViewModel( ModelT model )
+      {
+         return new EditViewModelT()
+         {
+            DomainModel = model
+         };
       }
 
 
