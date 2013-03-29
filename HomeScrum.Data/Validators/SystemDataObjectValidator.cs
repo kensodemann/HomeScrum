@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Validators
 {
+   // TODO: Look at adding a UniqueNameAttribute instead of all of this crap.
    public class SystemDataObjectValidator<DataObjectType> : IValidator<DataObjectType> where DataObjectType : SystemDataObject
    {
       [Inject]

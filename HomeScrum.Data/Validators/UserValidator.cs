@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Validators
 {
-   public class UserValidator:IValidator<User>
+   public class UserValidator : IValidator<User>
    {
+      // TODO: Add validation of UserId, but only if inserting...  hmmmm....
       private readonly IRepository<User, String> _repository;
 
       public UserValidator( IRepository<User, String> repository )
