@@ -156,8 +156,8 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateUserViewModel.cs" />
-    <Compile Include="Models\EditDomainObjectViewModel.cs" />
-    <Compile Include="Models\EditSystemObjectViewModels.cs" />
+    <Compile Include="Models\DomainObjectEditorViewModel.cs" />
+    <Compile Include="Models\SystemObjectEditorViewModels.cs" />
     <Compile Include="Models\EditUserViewModel.cs" />
     <Compile Include="Models\IViewModel.cs" />
     <Compile Include="Models\UserEditorViewModel.cs" />

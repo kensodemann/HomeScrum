@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models
 {
-   public class EditDomainObjectViewModel<T> : IViewModel<T>
+   public class DomainObjectEditorViewModel<T> : IViewModel<T>
    {
       public T DomainModel { get; set; }
    }

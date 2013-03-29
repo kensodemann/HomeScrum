@@ -8,7 +8,7 @@ using System;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class SprintStatusesController : DomainObjectController<SprintStatus, EditSprintStatusViewModel>
+   public class SprintStatusesController : DomainObjectController<SprintStatus, SprintStatusEditorViewModel>
    {
       [Inject]
       public SprintStatusesController( IRepository<SprintStatus, Guid> repository, IValidator<SprintStatus> validator )
