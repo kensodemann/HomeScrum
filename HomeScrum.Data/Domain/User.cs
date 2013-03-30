@@ -12,8 +12,8 @@ namespace HomeScrum.Data.Domain
    {
       public virtual Guid Id { get; set; }
 
-      [Required( ErrorMessageResourceName = "UserIdIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
-      [Display( Name = "UserId", Prompt = "UserIdPrompt", ResourceType = typeof( DisplayStrings ) )]
+      [Required( ErrorMessageResourceName = "UserNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
+      [Display( Name = "UserName", Prompt = "UserNamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string UserName { get; set; }
 
       [Required( ErrorMessageResourceName = "FirstNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]

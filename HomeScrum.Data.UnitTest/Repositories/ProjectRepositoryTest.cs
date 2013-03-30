@@ -23,6 +23,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       public void InitializeTest()
       {
          Database.Build();
+         Users.Load();
          ProjectStatuses.Load();
          Projects.Load();
          _repository = new Repository<Project, Guid>();
@@ -75,7 +76,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
             Name = "New Project",
             Description = "New one for Insert",
             ProjectStatus = ProjectStatuses.ModelData[1],
-            LastModifiedUserId = "Frank"
+            LastModifiedUserRid = Users.ModelData[0].Id
          };
 
          _repository.Add( project );
@@ -135,7 +136,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.LastModifiedUserId, actual.LastModifiedUserId );
+         Assert.AreEqual( expected.LastModifiedUserRid, actual.LastModifiedUserRid );
          AssertProjectStatus( expected, actual );
       }
 

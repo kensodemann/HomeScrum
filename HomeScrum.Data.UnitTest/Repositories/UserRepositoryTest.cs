@@ -50,7 +50,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       }
 
       [TestMethod]
-      public void GetNullUserId_ReturnsNull()
+      public void GetDefaultId_ReturnsNull()
       {
          var user = _repository.Get( default( Guid ) );
 

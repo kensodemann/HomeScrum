@@ -15,7 +15,7 @@
                  column="ProjectStatusRid"
                  lazy="false"
                  cascade="none"/>
-    <property name="LastModifiedUserId"/>
+    <property name="LastModifiedUserRid"/>
     <property name="HistoryTimestamp"/>
     <property name="SequenceNumber"/>
   </class>

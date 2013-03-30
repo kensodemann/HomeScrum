@@ -9,7 +9,7 @@ namespace HomeScrum.Data.UnitTest.Domains
    public class UserTest
    {
       [TestMethod]
-      public void UserIdDisplayNameAndPrompt()
+      public void UserNameDisplayNameAndPrompt()
       {
          var model = new User();
 
@@ -17,23 +17,23 @@ namespace HomeScrum.Data.UnitTest.Domains
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
-         Assert.AreEqual( "UserId", display.Name );
-         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.UserId ) );
-         Assert.AreEqual( "UserIdPrompt", display.Prompt );
-         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.UserIdPrompt ) );
+         Assert.AreEqual( "UserName", display.Name );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.UserName ) );
+         Assert.AreEqual( "UserNamePrompt", display.Prompt );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.UserNamePrompt ) );
       }
 
       [TestMethod]
-      public void UserIdIsRequired()
+      public void UserNameRequired()
       {
          var model = new User();
 
          var required = AttributeHelper.GetRequiredAttribute( () => model.UserName );
 
          Assert.IsNotNull( required );
-         Assert.AreEqual( "UserIdIsRequired", required.ErrorMessageResourceName );
+         Assert.AreEqual( "UserNameIsRequired", required.ErrorMessageResourceName );
          Assert.AreEqual( typeof( ErrorMessages ), required.ErrorMessageResourceType );
-         Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.UserIdIsRequired ) );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.UserNameIsRequired ) );
       }
 
       [TestMethod]

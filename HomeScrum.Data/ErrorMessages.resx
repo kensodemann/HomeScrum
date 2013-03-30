@@ -126,7 +126,7 @@
   <data name="NameIsRequired" xml:space="preserve">
     <value>Please enter a name.</value>
   </data>
-  <data name="UserIdIsRequired" xml:space="preserve">
-    <value>Please enter a user Id.</value>
+  <data name="UserNameIsRequired" xml:space="preserve">
+    <value>Please enter a username.</value>
   </data>
 </root>

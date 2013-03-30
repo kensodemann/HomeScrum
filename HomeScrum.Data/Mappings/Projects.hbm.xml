@@ -14,7 +14,7 @@
                  column="ProjectStatusRid"
                  lazy="false"
                  cascade="none"/>
-    <property name="LastModifiedUserId"/>
+    <property name="LastModifiedUserRid"/>
   </class>
 
 </hibernate-mapping>

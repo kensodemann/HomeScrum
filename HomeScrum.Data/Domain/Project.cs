@@ -11,6 +11,6 @@ namespace HomeScrum.Data.Domain
       //public virtual Guid ProjectStatusRid { get; set; }
       public virtual ProjectStatus ProjectStatus { get; set; }
 
-      public virtual string LastModifiedUserId { get; set; }
+      public virtual Guid LastModifiedUserRid { get; set; }
    }
 }

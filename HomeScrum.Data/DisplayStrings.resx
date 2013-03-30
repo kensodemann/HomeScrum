@@ -153,14 +153,14 @@
   <data name="SprintStatusIsOpenStatus" xml:space="preserve">
     <value>Sprints with this status are actively being worked on</value>
   </data>
-  <data name="UserId" xml:space="preserve">
-    <value>User Id:</value>
-  </data>
-  <data name="UserIdPrompt" xml:space="preserve">
-    <value>Enter a unique User Id</value>
-  </data>
   <data name="UserIsActive" xml:space="preserve">
     <value>User is active</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="UserNamePrompt" xml:space="preserve">
+    <value>Enter a unique Username</value>
   </data>
   <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
     <value>Work items with this status have not been completed</value>

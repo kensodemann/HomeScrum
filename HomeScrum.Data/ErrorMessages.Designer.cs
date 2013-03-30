@@ -88,11 +88,11 @@ namespace HomeScrum.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter a user Id..
+        ///   Looks up a localized string similar to Please enter a username..
         /// </summary>
-        public static string UserIdIsRequired {
+        public static string UserNameIsRequired {
             get {
-                return ResourceManager.GetString("UserIdIsRequired", resourceCulture);
+                return ResourceManager.GetString("UserNameIsRequired", resourceCulture);
             }
         }
     }
