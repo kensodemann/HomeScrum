@@ -55,7 +55,7 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
-         Validate( viewModel.DomainModel );
+         Validate( viewModel.DomainModel, TransactionType.Insert );
 
          if (ModelState.IsValid)
          {
@@ -85,7 +85,7 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Edit( EditUserViewModel viewModel )
       {
-         Validate( viewModel.DomainModel );
+         Validate( viewModel.DomainModel, TransactionType.Update );
 
          if (ModelState.IsValid)
          {
@@ -100,9 +100,9 @@ namespace HomeScrum.Web.Controllers
       }
 
 
-      private void Validate( User model )
+      private void Validate( User model, TransactionType transactionType )
       {
-         if (!_validator.ModelIsValid( model, TransactionType.All ))
+         if (!_validator.ModelIsValid( model, transactionType ))
          {
             foreach (var message in _validator.Messages)
             {

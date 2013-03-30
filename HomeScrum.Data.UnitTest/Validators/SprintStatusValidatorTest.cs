@@ -24,13 +24,31 @@ namespace HomeScrum.Data.UnitTest.Validators
 
 
       [TestMethod]
-      public void MessagesContainsUniqueNameMessage_IfNameNotUnique()
+      public void MessagesContainsUniqueNameMessage_IfNameNotUniqueOnInsert()
       {
          var model = new SprintStatus();
          model.Name = SprintStatuses.ModelData[1].Name;
          model.Id = SprintStatuses.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
+
+         Assert.IsFalse( result );
+         Assert.AreEqual( 1, _validator.Messages.Count );
+         foreach (var message in _validator.Messages)
+         {
+            Assert.AreEqual( "Name", message.Key );
+            Assert.AreEqual( String.Format( ErrorMessages.NameIsNotUnique, "Sprint Status", model.Name ), message.Value );
+         }
+      }
+
+      [TestMethod]
+      public void MessagesContainsUniqueNameMessage_IfNameNotUniqueOnUpdate()
+      {
+         var model = new SprintStatus();
+         model.Name = SprintStatuses.ModelData[1].Name;
+         model.Id = SprintStatuses.ModelData[0].Id;
+
+         var result = _validator.ModelIsValid( model, TransactionType.Update );
 
          Assert.IsFalse( result );
          Assert.AreEqual( 1, _validator.Messages.Count );

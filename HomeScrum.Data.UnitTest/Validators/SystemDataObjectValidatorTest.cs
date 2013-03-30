@@ -27,7 +27,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       public void ModelIsValid_GetsAllItemFromRepository()
       {
          var model = new WorkItemType();
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
 
          _repository.Verify( x => x.GetAll(), Times.Once() );
       }
@@ -37,30 +37,53 @@ namespace HomeScrum.Data.UnitTest.Validators
       public void ModelIsValidReturnsTrue_IfValueNameEmpty()
       {
          var model = new WorkItemType();
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
 
          Assert.IsTrue( result );
       }
 
       [TestMethod]
-      public void ModelIsValidReturnsFalse_IfNameOfNewObjectAlreadyExists()
+      public void ModelIsValidReturnsFalse_IfNameOfNewObjectAlreadyExists_OnInsert()
       {
          var model = new WorkItemType();
          model.Name = WorkItemTypes.ModelData[1].Name;
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
 
          Assert.IsFalse( result );
       }
 
       [TestMethod]
-      public void ModelIsValidReturnsFalse_IfNameExistsOnValueWithDifferentId()
+      public void ModelIsValidReturnsFalse_IfNameOfNewObjectAlreadyExists_OnUpdate()
+      {
+         var model = new WorkItemType();
+         model.Name = WorkItemTypes.ModelData[1].Name;
+
+         var result = _validator.ModelIsValid( model, TransactionType.Update );
+
+         Assert.IsFalse( result );
+      }
+
+      [TestMethod]
+      public void ModelIsValidReturnsFalse_IfNameExistsOnValueWithDifferentId_OnInsert()
       {
          var model = new WorkItemType();
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
+
+         Assert.IsFalse( result );
+      }
+
+      [TestMethod]
+      public void ModelIsValidReturnsFalse_IfNameExistsOnValueWithDifferentId_OnUpdate()
+      {
+         var model = new WorkItemType();
+         model.Name = WorkItemTypes.ModelData[1].Name;
+         model.Id = WorkItemTypes.ModelData[0].Id;
+
+         var result = _validator.ModelIsValid( model, TransactionType.Update );
 
          Assert.IsFalse( result );
       }
@@ -72,7 +95,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[1].Id;
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Update );
 
          Assert.IsTrue( result );
       }
@@ -82,7 +105,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       {
          var model = new WorkItemType();
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
 
          Assert.IsTrue( result );
          Assert.AreEqual( 0, _validator.Messages.Count );
@@ -95,7 +118,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
 
          Assert.AreEqual( 1, _validator.Messages.Count );
          foreach (var message in _validator.Messages)

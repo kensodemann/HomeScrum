@@ -24,13 +24,31 @@ namespace HomeScrum.Data.UnitTest.Validators
 
 
       [TestMethod]
-      public void MessagesContainsUniqueNameMessage_IfNameNotUnique()
+      public void MessagesContainsUniqueNameMessage_IfNameNotUniqueOnInsert()
       {
          var model = new ProjectStatus();
          model.Name = ProjectStatuses.ModelData[1].Name;
          model.Id = ProjectStatuses.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model, TransactionType.All );
+         var result = _validator.ModelIsValid( model, TransactionType.Insert );
+
+         Assert.IsFalse( result );
+         Assert.AreEqual( 1, _validator.Messages.Count );
+         foreach (var message in _validator.Messages)
+         {
+            Assert.AreEqual( "Name", message.Key );
+            Assert.AreEqual( String.Format( ErrorMessages.NameIsNotUnique, "Project Status", model.Name ), message.Value );
+         }
+      }
+
+      [TestMethod]
+      public void MessagesContainsUniqueNameMessage_IfNameNotUniqueOnUpdate()
+      {
+         var model = new ProjectStatus();
+         model.Name = ProjectStatuses.ModelData[1].Name;
+         model.Id = ProjectStatuses.ModelData[0].Id;
+
+         var result = _validator.ModelIsValid( model, TransactionType.Update );
 
          Assert.IsFalse( result );
          Assert.AreEqual( 1, _validator.Messages.Count );
