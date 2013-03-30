@@ -24,7 +24,7 @@ namespace HomeScrum.Data.Validators
 
       public virtual ICollection<KeyValuePair<string, string>> Messages { get; private set; }
 
-      public virtual bool ModelIsValid( DataObjectType model )
+      public virtual bool ModelIsValid( DataObjectType model, TransactionType forTransaction )
       {
          Messages.Clear();
 

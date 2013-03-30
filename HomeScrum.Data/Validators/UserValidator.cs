@@ -19,7 +19,7 @@ namespace HomeScrum.Data.Validators
       }
 
 
-      public bool ModelIsValid( User model )
+      public bool ModelIsValid( User model, TransactionType forTransaction )
       {
          return true;
       }

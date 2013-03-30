@@ -9,7 +9,7 @@ namespace HomeScrum.Data.Validators
 {
    public interface IValidator<T>
    {
-      bool ModelIsValid( T model );
+      bool ModelIsValid( T model, TransactionType forTransaction );
       ICollection<KeyValuePair<string, string>> Messages { get; }
    }
 }

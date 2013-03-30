@@ -83,6 +83,7 @@
     <Compile Include="Validators\NullValidator.cs" />
     <Compile Include="Validators\SprintStatusValidator.cs" />
     <Compile Include="Validators\SystemDataObjectValidator.cs" />
+    <Compile Include="Validators\TransactionType.cs" />
     <Compile Include="Validators\UserValidator.cs" />
     <Compile Include="Validators\WorkItemStatusValidator.cs" />
     <Compile Include="Validators\WorkItemTypeValidator.cs" />

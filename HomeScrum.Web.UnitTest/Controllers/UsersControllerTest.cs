@@ -62,7 +62,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _securityRepository = new Mock<ISecurityRepository>();
          _validator = new Mock<IValidator<User>>();
 
-         _validator.Setup( x => x.ModelIsValid( It.IsAny<User>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( It.IsAny<User>(), It.IsAny<TransactionType>() ) ).Returns( true );
 
          _controller = new UsersController( _userRepository.Object, _securityRepository.Object, _validator.Object );
       }
@@ -183,7 +183,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( model );
 
-         _validator.Verify( x => x.ModelIsValid( model.DomainModel ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model.DomainModel, TransactionType.All ), Times.Once() );
       }
 
       [TestMethod]
@@ -196,7 +196,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel, TransactionType.All ) ).Returns( false );
 
          var result = _controller.Create( model );
 
@@ -218,7 +218,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel, TransactionType.All ) ).Returns( true );
 
          var result = _controller.Create( model );
 
@@ -326,7 +326,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _validator.Verify( x => x.ModelIsValid( model.DomainModel ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model.DomainModel, TransactionType.All ), Times.Once() );
       }
 
       [TestMethod]
@@ -336,7 +336,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel, TransactionType.All ) ).Returns( false );
 
          var result = _controller.Edit( model );
 
@@ -355,7 +355,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model.DomainModel, TransactionType.All ) ).Returns( true );
 
          var result = _controller.Edit( model );
 
@@ -370,7 +370,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = CreateNewEditViewModel();
          model.Password = "something";
          model.ConfirmPassword = model.Password;
-         
+
          _controller.Edit( model );
 
          _securityRepository

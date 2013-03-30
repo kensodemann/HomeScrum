@@ -116,7 +116,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       private void Validate( ModelT model )
       {
-         if (!_validator.ModelIsValid( model ))
+         if (!_validator.ModelIsValid( model, TransactionType.All ))
          {
             foreach (var message in _validator.Messages)
             {

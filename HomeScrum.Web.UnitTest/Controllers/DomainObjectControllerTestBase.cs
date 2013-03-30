@@ -31,7 +31,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _repository = new Mock<IRepository<ModelT, Guid>>();
          _validator = new Mock<IValidator<ModelT>>();
 
-         _validator.Setup( x => x.ModelIsValid( It.IsAny<ModelT>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( It.IsAny<ModelT>(), It.IsAny<TransactionType>() ) ).Returns( true );
       }
 
 
@@ -168,7 +168,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel );
 
-         _validator.Verify( x => x.ModelIsValid( viewModel.DomainModel ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.All ), Times.Once() );
       }
 
       [TestMethod]
@@ -181,7 +181,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.All ) ).Returns( false );
 
          var result = _controller.Create( viewModel );
 
@@ -203,7 +203,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.All ) ).Returns( true );
 
          var result = _controller.Create( viewModel );
 
@@ -313,7 +313,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel );
 
-         _validator.Verify( x => x.ModelIsValid( viewModel.DomainModel ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.All ), Times.Once() );
       }
 
       [TestMethod]
@@ -326,7 +326,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.All ) ).Returns( false );
 
          var result = _controller.Edit( viewModel );
 
@@ -348,7 +348,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.All ) ).Returns( true );
 
          var result = _controller.Edit( viewModel );
 

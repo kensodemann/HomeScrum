@@ -30,7 +30,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.IsFalse( result );
          Assert.AreEqual( 1, _validator.Messages.Count );

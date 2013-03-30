@@ -27,7 +27,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       public void ModelIsValid_GetsAllItemFromRepository()
       {
          var model = new WorkItemType();
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          _repository.Verify( x => x.GetAll(), Times.Once() );
       }
@@ -37,7 +37,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       public void ModelIsValidReturnsTrue_IfValueNameEmpty()
       {
          var model = new WorkItemType();
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.IsTrue( result );
       }
@@ -48,7 +48,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          var model = new WorkItemType();
          model.Name = WorkItemTypes.ModelData[1].Name;
 
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.IsFalse( result );
       }
@@ -60,7 +60,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.IsFalse( result );
       }
@@ -72,7 +72,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[1].Id;
 
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.IsTrue( result );
       }
@@ -82,7 +82,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       {
          var model = new WorkItemType();
 
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.IsTrue( result );
          Assert.AreEqual( 0, _validator.Messages.Count );
@@ -95,7 +95,7 @@ namespace HomeScrum.Data.UnitTest.Validators
          model.Name = WorkItemTypes.ModelData[1].Name;
          model.Id = WorkItemTypes.ModelData[0].Id;
 
-         var result = _validator.ModelIsValid( model );
+         var result = _validator.ModelIsValid( model, TransactionType.All );
 
          Assert.AreEqual( 1, _validator.Messages.Count );
          foreach (var message in _validator.Messages)
