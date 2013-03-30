@@ -13,7 +13,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       {
          var model = new User();
 
-         var display = AttributeHelper.GetDisplayAttribute( () => model.UserId );
+         var display = AttributeHelper.GetDisplayAttribute( () => model.UserName );
 
          Assert.IsNotNull( display );
          Assert.AreEqual( typeof( DisplayStrings ), display.ResourceType );
@@ -28,7 +28,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       {
          var model = new User();
 
-         var required = AttributeHelper.GetRequiredAttribute( () => model.UserId );
+         var required = AttributeHelper.GetRequiredAttribute( () => model.UserName );
 
          Assert.IsNotNull( required );
          Assert.AreEqual( "UserIdIsRequired", required.ErrorMessageResourceName );

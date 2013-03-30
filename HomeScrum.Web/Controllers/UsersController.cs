@@ -12,14 +12,14 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : HomeScrumController
    {
       [Inject]
-      public UsersController( IRepository<User, String> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
+      public UsersController( IRepository<User, Guid> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
       {
          _userRepository = userRepository;
          _securityRepository = securityRepository;
          _validator = validator;
       }
 
-      private readonly IRepository<User, String> _userRepository;
+      private readonly IRepository<User, Guid> _userRepository;
       private readonly ISecurityRepository _securityRepository;
       private readonly IValidator<User> _validator;
 
@@ -32,7 +32,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /AcceptanceCriteriaStatuses/Details/5
-      public virtual ActionResult Details( string id )
+      public virtual ActionResult Details( Guid id )
       {
          var model = _userRepository.Get( id );
 
@@ -60,7 +60,7 @@ namespace HomeScrum.Web.Controllers
          if (ModelState.IsValid)
          {
             _userRepository.Add( viewModel.DomainModel );
-            _securityRepository.ChangePassword( viewModel.DomainModel.UserId, "bogus", viewModel.Password );
+            _securityRepository.ChangePassword( viewModel.DomainModel.UserName, "bogus", viewModel.Password );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -69,7 +69,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /AcceptanceCriteriaStatuses/Edit/5
-      public virtual ActionResult Edit( string id )
+      public virtual ActionResult Edit( Guid id )
       {
          var model = _userRepository.Get( id );
          if (model != null)

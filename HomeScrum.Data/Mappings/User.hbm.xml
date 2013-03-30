@@ -5,7 +5,10 @@
 
   <class name="User"
          table="Users">
-    <id name="UserId"/>
+    <id name="Id">
+      <generator class="guid"></generator>
+    </id>
+    <property name="UserName"/>
     <property name="FirstName"/>
     <property name="MiddleName"/>
     <property name="LastName"/>

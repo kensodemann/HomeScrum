@@ -31,7 +31,7 @@ namespace HomeScrum.Common.TestData
          {
             new User()
             {
-               UserId = "kws",
+               UserName = "kws",
                LastName = "Smith",
                FirstName = "Kevin",
                MiddleName="William",
@@ -39,20 +39,20 @@ namespace HomeScrum.Common.TestData
             },
             new User()
             {
-               UserId = "j_a",
+               UserName = "j_a",
                LastName = "Anderson",
                FirstName = "Judy",
                StatusCd = 'A'
             },
             new User()
             {
-               UserId = "q__",
+               UserName = "q__",
                FirstName = "Quintin",
                StatusCd = 'A'
             },
             new User()
             {
-               UserId = "iai",
+               UserName = "iai",
                FirstName = "I",
                MiddleName = "Am",
                LastName= "Inactive",

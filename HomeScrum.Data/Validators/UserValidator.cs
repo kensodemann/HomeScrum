@@ -10,10 +10,10 @@ namespace HomeScrum.Data.Validators
 {
    public class UserValidator : IValidator<User>
    {
-      // TODO: Add validation of UserId, but only if inserting...  hmmmm....
-      private readonly IRepository<User, String> _repository;
+      // TODO: Add validation of UserName
+      private readonly IRepository<User, Guid> _repository;
 
-      public UserValidator( IRepository<User, String> repository )
+      public UserValidator( IRepository<User, Guid> repository )
       {
          _repository = repository;
       }

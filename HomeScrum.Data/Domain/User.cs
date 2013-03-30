@@ -10,9 +10,11 @@ namespace HomeScrum.Data.Domain
 {
    public class User
    {
+      public virtual Guid Id { get; set; }
+
       [Required( ErrorMessageResourceName = "UserIdIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
       [Display( Name = "UserId", Prompt = "UserIdPrompt", ResourceType = typeof( DisplayStrings ) )]
-      public virtual string UserId { get; set; }
+      public virtual string UserName { get; set; }
 
       [Required( ErrorMessageResourceName = "FirstNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
       [Display( Name = "FirstName", Prompt = "FirstNamePrompt", ResourceType = typeof( DisplayStrings ) )]

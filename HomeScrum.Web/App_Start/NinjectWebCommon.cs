@@ -68,7 +68,7 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IRepository<SprintStatus, Guid>>().ToConstant( new Repository<SprintStatus, Guid>() );
          kernel.Bind<IRepository<WorkItemStatus, Guid>>().ToConstant( new Repository<WorkItemStatus, Guid>() );
          kernel.Bind<IRepository<WorkItemType, Guid>>().ToConstant( new Repository<WorkItemType, Guid>() );
-         kernel.Bind<IRepository<User, String>>().ToConstant( new Repository<User, String>() );
+         kernel.Bind<IRepository<User, Guid>>().ToConstant( new Repository<User, Guid>() );
 
          kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
       }

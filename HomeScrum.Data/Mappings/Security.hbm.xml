@@ -12,6 +12,6 @@
            end + users.firstName as formattedName
       from users
      where password = HashBytes( 'SHA1', cast( :password as varchar(4000) ) )
-       and userId = :userId
+       and userName = :userName
   </sql-query>
 </hibernate-mapping>

@@ -9,9 +9,9 @@
             <legend>User</legend>
 
             <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.DomainModel.UserId )
-                @Html.EditorFor( model => model.DomainModel.UserId )
-                @Html.ValidationMessageFor( model => model.DomainModel.UserId )
+                @Html.LabelFor( model => model.DomainModel.UserName )
+                @Html.EditorFor( model => model.DomainModel.UserName )
+                @Html.ValidationMessageFor( model => model.DomainModel.UserName )
             </div>
 
             @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@

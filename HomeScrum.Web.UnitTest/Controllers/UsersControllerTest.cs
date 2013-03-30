@@ -16,7 +16,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class UsersControllerTest
    {
-      private Mock<IRepository<User, String>> _userRepository;
+      private Mock<IRepository<User, Guid>> _userRepository;
       private Mock<ISecurityRepository> _securityRepository;
       private Mock<IValidator<User>> _validator;
       private UsersController _controller;
@@ -25,7 +25,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var user = new User()
          {
-            UserId = "ABC",
+            Id = Guid.NewGuid(),
+            UserName = "ABC",
             FirstName = "Abe",
             MiddleName = "Bobby",
             LastName = "Crabby",
@@ -39,7 +40,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var user = new User()
          {
-            UserId = "ABC",
+            UserName = "ABC",
             FirstName = "Abe",
             MiddleName = "Bobby",
             LastName = "Crabby",
@@ -58,7 +59,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Users.CreateTestModelData();
 
-         _userRepository = new Mock<IRepository<User, String>>();
+         _userRepository = new Mock<IRepository<User, Guid>>();
          _securityRepository = new Mock<ISecurityRepository>();
          _validator = new Mock<IValidator<User>>();
 
@@ -93,12 +94,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = Users.ModelData.ToArray()[2];
 
-         _userRepository.Setup( x => x.Get( model.UserId ) )
+         _userRepository.Setup( x => x.Get( model.Id ) )
             .Returns( model );
 
-         var view = _controller.Details( model.UserId ) as ViewResult;
+         var view = _controller.Details( model.Id ) as ViewResult;
 
-         _userRepository.Verify( x => x.Get( model.UserId ), Times.Once() );
+         _userRepository.Verify( x => x.Get( model.Id ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -108,11 +109,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Details_ReturnsHttpNotFoundIfNoModel()
       {
-         var userId = "test";
+         var id = Guid.NewGuid();
 
-         _userRepository.Setup( x => x.Get( userId ) ).Returns( null as User );
+         _userRepository.Setup( x => x.Get( id ) ).Returns( null as User );
 
-         var result = _controller.Details( userId ) as HttpNotFoundResult;
+         var result = _controller.Details( id ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
@@ -236,25 +237,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( model );
 
          _securityRepository
-            .Verify( x => x.ChangePassword( model.DomainModel.UserId, "bogus", model.Password ), Times.Once() );
+            .Verify( x => x.ChangePassword( model.DomainModel.UserName, "bogus", model.Password ), Times.Once() );
       }
 
       [TestMethod]
       public void EditGet_CallsRepositoryGet()
       {
-         var userId = "test";
-         _controller.Edit( userId );
+         var id = Guid.NewGuid();
+         _controller.Edit( id );
 
-         _userRepository.Verify( x => x.Get( userId ), Times.Once() );
+         _userRepository.Verify( x => x.Get( id ), Times.Once() );
       }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithEditorModel()
       {
          var user = Users.ModelData.ToArray()[3];
-         _userRepository.Setup( x => x.Get( user.UserId ) ).Returns( user );
+         _userRepository.Setup( x => x.Get( user.Id ) ).Returns( user );
 
-         var result = _controller.Edit( user.UserId ) as ViewResult;
+         var result = _controller.Edit( user.Id ) as ViewResult;
          Assert.IsNotNull( result );
 
          var editorModel = result.Model as UserEditorViewModel;
@@ -265,9 +266,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfUserNotFoundInRepository()
       {
-         _userRepository.Setup( x => x.Get( It.IsAny<String>() ) ).Returns( null as User );
+         _userRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as User );
 
-         var result = _controller.Edit( "random" ) as HttpNotFoundResult;
+         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }

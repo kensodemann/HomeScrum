@@ -11,12 +11,12 @@ namespace HomeScrum.Data.SqlServer
 {
    public class SecurityRepository : ISecurityRepository
    {
-      public bool IsValidLogin( string userId, string password )
+      public bool IsValidLogin( string userName, string password )
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
             var result = session.GetNamedQuery( "ValidateUser" )
-               .SetString( "userId", userId )
+               .SetString( "userName", userName )
                .SetString( "password", password )
                .List();
 
@@ -24,9 +24,9 @@ namespace HomeScrum.Data.SqlServer
          }
       }
 
-      public bool ChangePassword( string userId, string oldPassword, string newPassword )
+      public bool ChangePassword( string userName, string oldPassword, string newPassword )
       {
-         if (!IsValidLogin( userId, oldPassword ))
+         if (!IsValidLogin( userName, oldPassword ))
          {
             return false;
          }
@@ -37,8 +37,8 @@ namespace HomeScrum.Data.SqlServer
             {
                session.CreateSQLQuery( "update users " +
                                           "set password = hashbytes('SHA1', cast(:newPass as varchar(4000))) " +
-                                        "where userId = :userId" )
-                  .SetString( "userId", userId )
+                                        "where userName = :userName" )
+                  .SetString( "userName", userName )
                   .SetString( "newPass", newPassword )
                   .ExecuteUpdate();
                transaction.Commit();

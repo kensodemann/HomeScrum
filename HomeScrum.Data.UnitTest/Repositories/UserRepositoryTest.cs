@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          Users.Load();
-         _repository = new Repository<User, String>();
+         _repository = new Repository<User, Guid>();
       }
 
-      private IRepository<User, String> _repository;
+      private IRepository<User, Guid> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllUseres()
@@ -44,7 +44,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       [TestMethod]
       public void GetNonExistentUser_ReturnsNull()
       {
-         var user = _repository.Get( "IDontExist" );
+         var user = _repository.Get( Guid.NewGuid() );
 
          Assert.IsNull( user );
       }
@@ -52,7 +52,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       [TestMethod]
       public void GetNullUserId_ReturnsNull()
       {
-         var user = _repository.Get( null );
+         var user = _repository.Get( default( Guid ) );
 
          Assert.IsNull( user );
       }
@@ -60,7 +60,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       [TestMethod]
       public void Get_ReturnsUser()
       {
-         var user = _repository.Get( Users.ModelData[2].UserId );
+         var user = _repository.Get( Users.ModelData[2].Id );
 
          AssertUsersAreEqual( Users.ModelData[2], user );
       }
@@ -70,8 +70,8 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          var user = new User()
          {
-            UserId = "new",
-            FirstName ="Nathan",
+            UserName = "new",
+            FirstName = "Nathan",
             MiddleName = "Edward",
             LastName = "Wilkes",
             IsActive = true
@@ -92,7 +92,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          _repository.Update( user );
 
          Assert.AreEqual( Users.ModelData.GetLength( 0 ), _repository.GetAll().Count );
-         AssertUsersAreEqual( user, _repository.Get( user.UserId ) );
+         AssertUsersAreEqual( user, _repository.Get( user.Id ) );
       }
 
       [TestMethod]
@@ -103,13 +103,13 @@ namespace HomeScrum.Data.UnitTest.Repositories
          _repository.Delete( user );
 
          Assert.AreEqual( Users.ModelData.GetLength( 0 ) - 1, _repository.GetAll().Count );
-         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.UserId == user.UserId ) );
+         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.UserName == user.UserName ) );
       }
 
 
       private void AssertCollectionContainsUser( ICollection<User> users, User user )
       {
-         var userFromCollection = users.FirstOrDefault( x => x.UserId == user.UserId );
+         var userFromCollection = users.FirstOrDefault( x => x.UserName == user.UserName );
 
          Assert.IsNotNull( userFromCollection );
          AssertUsersAreEqual( user, userFromCollection );
@@ -118,7 +118,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       private static void AssertUsersAreEqual( User expected, User actual )
       {
          Assert.AreNotSame( expected, actual );
-         Assert.AreEqual( expected.UserId, actual.UserId );
+         Assert.AreEqual( expected.UserName, actual.UserName );
          Assert.AreEqual( expected.FirstName, actual.FirstName );
          Assert.AreEqual( expected.LastName, actual.LastName );
          Assert.AreEqual( expected.MiddleName, actual.MiddleName );
