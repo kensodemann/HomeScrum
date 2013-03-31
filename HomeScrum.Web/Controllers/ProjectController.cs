@@ -17,12 +17,12 @@ namespace HomeScrum.Web.Controllers
 
       protected override ProjectEditorViewModel CreateViewModel( Project model )
       {
-         return new ProjectEditorViewModel();//model );
+         return new ProjectEditorViewModel( model );
       }
 
       protected override Project CreateNewModel( Project viewModel )
       {
-         return new Project(); // viewModel);
+         return new Project( viewModel );
       }
    }
 }

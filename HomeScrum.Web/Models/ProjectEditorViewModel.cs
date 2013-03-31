@@ -9,6 +9,12 @@ namespace HomeScrum.Web.Models
 {
    public class ProjectEditorViewModel : Project
    {
+      public ProjectEditorViewModel()
+         : base() { }
+
+      public ProjectEditorViewModel( Project model )
+         : base( model ) { }
+
       public IEnumerable<SelectListItem> ProjectStatuses { get; set; }
    }
 }
