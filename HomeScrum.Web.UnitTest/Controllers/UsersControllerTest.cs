@@ -38,18 +38,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private CreateUserViewModel CreateNewCreateViewModel()
       {
-         var user = new User()
+         return new CreateUserViewModel()
          {
             UserName = "ABC",
             FirstName = "Abe",
             MiddleName = "Bobby",
             LastName = "Crabby",
             IsActive = true
-         };
-
-         return new CreateUserViewModel()
-         {
-            DomainModel = user
          };
       }
 
@@ -134,7 +129,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = _controller.Create( model );
 
-         _userRepository.Verify( x => x.Add( model.DomainModel ), Times.Once() );
+         _userRepository.Verify( x => x.Add( It.Is<User>( user => user.UserName == model.UserName ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -177,27 +172,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesUserToValidator()
       {
-         var model = new CreateUserViewModel()
-         {
-            DomainModel = Users.ModelData.ToArray()[3]
-         };
+         var model = new CreateUserViewModel();
 
          _controller.Create( model );
 
-         _validator.Verify( x => x.ModelIsValid( model.DomainModel, TransactionType.Insert ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Insert ), Times.Once() );
       }
 
       [TestMethod]
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model = new CreateUserViewModel()
-         {
-            DomainModel = Users.ModelData.ToArray()[3]
-         };
+         var model = new CreateUserViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel, It.IsAny<TransactionType>() ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
 
          var result = _controller.Create( model );
 
@@ -213,13 +202,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var model = new CreateUserViewModel()
-         {
-            DomainModel = Users.ModelData.ToArray()[3]
-         };
+         var model = new CreateUserViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel, It.IsAny<TransactionType>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
 
          var result = _controller.Create( model );
 
@@ -232,12 +218,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_CallsSecurityRepositoryToSetPassword()
       {
          var model = CreateNewCreateViewModel();
-         model.Password = "NewPassword";
+         model.NewPassword = "NewPassword";
 
          _controller.Create( model );
 
          _securityRepository
-            .Verify( x => x.ChangePassword( model.DomainModel.UserName, "bogus", model.Password ), Times.Once() );
+            .Verify( x => x.ChangePassword( model.UserName, "bogus", model.NewPassword ), Times.Once() );
       }
 
       [TestMethod]
@@ -260,7 +246,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var editorModel = result.Model as UserEditorViewModel;
          Assert.IsNotNull( editorModel );
-         Assert.AreEqual( user, editorModel.DomainModel );
+         Assert.AreEqual( user.Id, editorModel.Id );
       }
 
       [TestMethod]
@@ -280,7 +266,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _userRepository.Verify( x => x.Update( model.DomainModel ), Times.Once() );
+         _userRepository.Verify( x => x.Update( It.Is<User>( user => user.UserName == model.UserName ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -327,7 +313,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _validator.Verify( x => x.ModelIsValid( model.DomainModel, TransactionType.Update ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Update ), Times.Once() );
       }
 
       [TestMethod]
@@ -337,7 +323,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel, It.IsAny<TransactionType>() ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
 
          var result = _controller.Edit( model );
 
@@ -356,7 +342,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = new EditUserViewModel( Users.ModelData.ToArray()[3] );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model.DomainModel, It.IsAny<TransactionType>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
 
          var result = _controller.Edit( model );
 
@@ -369,8 +355,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCallsSecurityRepositoryToSetPassword()
       {
          var model = CreateNewEditViewModel();
-         model.Password = "something";
-         model.ConfirmPassword = model.Password;
+         model.NewPassword = "something";
+         model.ConfirmPassword = model.NewPassword;
 
          _controller.Edit( model );
 

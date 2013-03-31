@@ -21,14 +21,14 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       {
          var model = new CreateUserViewModel();
 
-         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( () => model.Password ) );
+         Assert.IsNotNull( AttributeHelper.GetRequiredAttribute( () => model.NewPassword ) );
       }
 
       [TestMethod]
       public void Password_MinStringLength()
       {
          var model = new CreateUserViewModel();
-         var stringLengthAttribute = AttributeHelper.GetStringLengthAttribute( () => model.Password );
+         var stringLengthAttribute = AttributeHelper.GetStringLengthAttribute( () => model.NewPassword );
 
          Assert.IsNotNull( stringLengthAttribute );
          Assert.AreEqual( 6, stringLengthAttribute.MinimumLength );
@@ -39,7 +39,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void Password_Display()
       {
          var model = new CreateUserViewModel();
-         var displayAttribute = AttributeHelper.GetDisplayAttribute( () => model.Password );
+         var displayAttribute = AttributeHelper.GetDisplayAttribute( () => model.NewPassword );
 
          Assert.IsNotNull( displayAttribute );
          Assert.AreEqual( "Password:", displayAttribute.Name );
@@ -61,7 +61,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var compareAttribute = AttributeHelper.GetCompareAttribute( () => model.ConfirmPassword );
 
          Assert.IsNotNull( compareAttribute );
-         Assert.AreEqual( "Password", compareAttribute.OtherProperty );
+         Assert.AreEqual( "NewPassword", compareAttribute.OtherProperty );
       }
 
       [TestMethod]

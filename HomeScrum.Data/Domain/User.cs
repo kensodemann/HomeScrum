@@ -10,6 +10,18 @@ namespace HomeScrum.Data.Domain
 {
    public class User
    {
+      public User() { }
+
+      public User( User user )
+      {
+         this.Id = user.Id;
+         this.UserName = user.UserName;
+         this.FirstName = user.FirstName;
+         this.MiddleName = user.MiddleName;
+         this.LastName = user.LastName;
+         this.StatusCd = user.StatusCd;
+      }
+     
       public virtual Guid Id { get; set; }
 
       [Required( ErrorMessageResourceName = "UserNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
@@ -45,5 +57,10 @@ namespace HomeScrum.Data.Domain
          get { return StatusCd == 'A'; }
          set { StatusCd = value ? 'A' : 'I'; }
       }
+
+      //public virtual User ShallowCopy()
+      //{
+      //   return (User)this.MemberwiseClone();
+      //}
    }
 }

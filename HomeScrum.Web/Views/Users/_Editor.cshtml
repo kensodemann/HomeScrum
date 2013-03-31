@@ -9,18 +9,18 @@
             <legend>User</legend>
 
             <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.DomainModel.UserName )
-                @Html.EditorFor( model => model.DomainModel.UserName )
-                @Html.ValidationMessageFor( model => model.DomainModel.UserName )
+                @Html.LabelFor( model => model.UserName )
+                @Html.EditorFor( model => model.UserName )
+                @Html.ValidationMessageFor( model => model.UserName )
             </div>
 
             @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
             @if (Model == null || Model.IsNewUser)
             {
                 <div class="formSingleLineEdit">
-                    @Html.LabelFor( model => model.Password )
-                    @Html.EditorFor( model => model.Password )
-                    @Html.ValidationMessageFor( model => model.Password )
+                    @Html.LabelFor( model => model.NewPassword )
+                    @Html.EditorFor( model => model.NewPassword )
+                    @Html.ValidationMessageFor( model => model.NewPassword )
                 </div>
             
                 <div class="formSingleLineEdit">
@@ -31,27 +31,27 @@
             }
 
             <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.DomainModel.FirstName )
-                @Html.EditorFor( model => model.DomainModel.FirstName )
-                @Html.ValidationMessageFor( model => model.DomainModel.FirstName )
+                @Html.LabelFor( model => model.FirstName )
+                @Html.EditorFor( model => model.FirstName )
+                @Html.ValidationMessageFor( model => model.FirstName )
             </div>
 
             <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.DomainModel.MiddleName )
-                @Html.EditorFor( model => model.DomainModel.MiddleName )
-                @Html.ValidationMessageFor( model => model.DomainModel.MiddleName )
+                @Html.LabelFor( model => model.MiddleName )
+                @Html.EditorFor( model => model.MiddleName )
+                @Html.ValidationMessageFor( model => model.MiddleName )
             </div>
 
             <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.DomainModel.LastName )
-                @Html.EditorFor( model => model.DomainModel.LastName )
-                @Html.ValidationMessageFor( model => model.DomainModel.LastName )
+                @Html.LabelFor( model => model.LastName )
+                @Html.EditorFor( model => model.LastName )
+                @Html.ValidationMessageFor( model => model.LastName )
             </div>
 
             <div class="formBooleanOption">
-                @Html.EditorFor( model => model.DomainModel.IsActive )
-                @Html.LabelFor( model => model.DomainModel.IsActive )
-                @Html.ValidationMessageFor( model => model.DomainModel.IsActive )
+                @Html.EditorFor( model => model.IsActive )
+                @Html.LabelFor( model => model.IsActive )
+                @Html.ValidationMessageFor( model => model.IsActive )
             </div>
         </fieldset>
     

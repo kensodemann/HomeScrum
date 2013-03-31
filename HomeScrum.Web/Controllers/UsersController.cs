@@ -55,12 +55,12 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
-         Validate( viewModel.DomainModel, TransactionType.Insert );
+         Validate( viewModel, TransactionType.Insert );
 
          if (ModelState.IsValid)
          {
-            _userRepository.Add( viewModel.DomainModel );
-            _securityRepository.ChangePassword( viewModel.DomainModel.UserName, "bogus", viewModel.Password );
+            _userRepository.Add( new User( viewModel ) );
+            _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -85,11 +85,12 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Edit( EditUserViewModel viewModel )
       {
-         Validate( viewModel.DomainModel, TransactionType.Update );
+         Validate( viewModel, TransactionType.Update );
 
          if (ModelState.IsValid)
          {
-            _userRepository.Update( viewModel.DomainModel );
+            User model = new User( viewModel );
+            _userRepository.Update( model );
 
             return RedirectToAction( () => this.Index() );
          }

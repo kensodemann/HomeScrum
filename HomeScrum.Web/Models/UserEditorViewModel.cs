@@ -7,23 +7,18 @@ using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Web.Models
 {
-   public abstract class UserEditorViewModel : IViewModel<User>
+   public abstract class UserEditorViewModel : User
    {
       public UserEditorViewModel( User user )
-      {
-         DomainModel = user;
-      }
+         : base( user ) { }
 
       public UserEditorViewModel()
          : this( new User() ) { }
 
-
-      public User DomainModel { get; set; }
-
       public abstract bool IsNewUser { get; }
 
       [DataType( DataType.Password )]
-      public virtual string Password { get; set; }
+      public virtual string NewPassword { get; set; }
 
       [DataType( DataType.Password )]
       public virtual string ConfirmPassword { get; set; }

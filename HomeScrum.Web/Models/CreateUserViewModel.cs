@@ -20,11 +20,11 @@ namespace HomeScrum.Web.Models
       [Required]
       [StringLength( 100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6 )]
       [Display( Name = "Password:" )]
-      public override string Password { get; set; }
+      public override string NewPassword { get; set; }
 
       [Required]
       [Display( Name = "Confirm password:" )]
-      [Compare( "Password", ErrorMessage = "The new password and confirmation password do not match." )]
+      [Compare( "NewPassword", ErrorMessage = "The password and confirmation password do not match." )]
       public override string ConfirmPassword { get; set; }
    }
 }

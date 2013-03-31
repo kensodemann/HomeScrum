@@ -21,7 +21,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       {
          var model = new EditUserViewModel();
 
-         Assert.IsNull( AttributeHelper.GetRequiredAttribute( () => model.Password ) );
+         Assert.IsNull( AttributeHelper.GetRequiredAttribute( () => model.NewPassword ) );
       }
 
       public void ConfirmPassword_IsNotRequired()
