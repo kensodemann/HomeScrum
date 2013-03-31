@@ -8,6 +8,18 @@ namespace HomeScrum.Data.Domain
 {
    public class ProjectHistory : Project
    {
+      public ProjectHistory()
+         : base() { }
+
+      public ProjectHistory( ProjectHistory model )
+         : base( model )
+      {
+         this.ProjectRid = model.ProjectRid;
+         this.HistoryTimestamp = model.HistoryTimestamp;
+         this.SequenceNumber = model.SequenceNumber;
+      }
+
+
       public virtual Guid ProjectRid { get; set; }
 
       public virtual DateTime HistoryTimestamp { get; set; }

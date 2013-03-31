@@ -6,8 +6,19 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class Project:DataObjectBase
+   public class Project : DataObjectBase
    {
+      public Project()
+         : base() { }
+
+      public Project( Project model )
+         : base( model )
+      {
+         this.LastModifiedUserRid = model.LastModifiedUserRid;
+         this.ProjectStatus = new ProjectStatus( model.ProjectStatus );
+      }
+
+
       public virtual ProjectStatus ProjectStatus { get; set; }
 
       public virtual Guid LastModifiedUserRid { get; set; }

@@ -66,6 +66,8 @@
     <Compile Include="Domains\AcceptanceCriteriaStatusTest.cs" />
     <Compile Include="Domains\ProjectStatusTest.cs" />
     <Compile Include="Domains\SprintStatusTest.cs" />
+    <Compile Include="Domains\ProjectTest.cs" />
+    <Compile Include="Domains\ProjectHistoryTest.cs" />
     <Compile Include="Domains\UserTest.cs" />
     <Compile Include="Domains\WorkItemStatusTest.cs" />
     <Compile Include="Domains\WorkItemTypeTest.cs" />
