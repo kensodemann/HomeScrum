@@ -25,7 +25,8 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/
       public virtual ActionResult Index()
       {
-         return View( _repository.GetAll() );
+         var items = _repository.GetAll();
+         return View( items );
       }
 
       //

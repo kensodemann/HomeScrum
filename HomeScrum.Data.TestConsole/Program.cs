@@ -12,18 +12,20 @@ namespace HomeScrum.Data.TestConsole
    {
       static void Main( string[] args )
       {
-         PrintAllWorkItemTypes();
-         PrintAllWorkItemStatuses();
-         PrintAllSprintStatuses();
-         PrintAllProjectStatuses();
-         PrintAllAcceptanceCriteriaStatuses();
+         //PrintAllWorkItemTypes();
+         //PrintAllWorkItemStatuses();
+         //PrintAllSprintStatuses();
+         //PrintAllProjectStatuses();
+         //PrintAllAcceptanceCriteriaStatuses();
 
-         var repository = new SecurityRepository();
-         Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
-         repository.ChangePassword( "admin", "admin", "something" );
-         Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
-         repository.ChangePassword( "admin", "something", "admin" );
-         Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
+         PrintAllProjects();
+
+         //var repository = new SecurityRepository();
+         //Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
+         //repository.ChangePassword( "admin", "admin", "something" );
+         //Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
+         //repository.ChangePassword( "admin", "something", "admin" );
+         //Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
       }
 
       private static void PrintAllWorkItemTypes()
@@ -91,6 +93,19 @@ namespace HomeScrum.Data.TestConsole
          }
       }
 
+      private static void PrintAllProjects()
+      {
+         var repository = new Repository<Project, Guid>();
+         var projects = repository.GetAll();
+
+         Console.WriteLine( "Projects: " + projects.Count().ToString() );
+
+         foreach (var project in projects)
+         {
+            PrintProject( project );
+         }
+      }
+
       static void PrintWorkItemType( WorkItemType workItemType )
       {
          Console.WriteLine( "\nWorkItemType\n" );
@@ -144,6 +159,14 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tStatusCd: " + status.AllowUse.ToString() );
          Console.WriteLine( "\tIsAccepted: " + status.IsAccepted );
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
+      }
+
+      static void PrintProject( Project project )
+      {
+         Console.WriteLine( "\nProject\n" );
+         Console.WriteLine( "\tId: " + project.Id.ToString() );
+         Console.WriteLine( "\tName: " + project.Name );
+         Console.WriteLine( "\tDescription: " + project.Description );
       }
    }
 }

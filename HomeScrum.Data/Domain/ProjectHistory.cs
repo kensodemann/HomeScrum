@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class ProjectHistory : Project
+   public class ProjectHistory : DataObjectBase
    {
       public ProjectHistory()
          : base() { }
@@ -14,11 +14,17 @@ namespace HomeScrum.Data.Domain
       public ProjectHistory( ProjectHistory model )
          : base( model )
       {
+         this.LastModifiedUserRid = model.LastModifiedUserRid;
          this.ProjectRid = model.ProjectRid;
          this.HistoryTimestamp = model.HistoryTimestamp;
          this.SequenceNumber = model.SequenceNumber;
+
+         this.ProjectStatus = new ProjectStatus( model.ProjectStatus );
       }
 
+      public virtual Guid LastModifiedUserRid { get; set; }
+
+      public virtual ProjectStatus ProjectStatus { get; set; }
 
       public virtual Guid ProjectRid { get; set; }
 

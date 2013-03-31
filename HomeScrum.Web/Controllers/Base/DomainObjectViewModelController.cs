@@ -15,10 +15,11 @@ namespace HomeScrum.Web.Controllers.Base
 
       public override System.Web.Mvc.ActionResult Edit( Guid id )
       {
-         var viewModel = CreateViewModel( Repository.Get( id ) );
-
-         if (viewModel != null)
+         var model = Repository.Get( id );
+         
+         if (model != null)
          {
+            var viewModel = CreateViewModel( model );
             return View( viewModel );
          }
 

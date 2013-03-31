@@ -1,0 +1,9 @@
+﻿@model IEnumerable<HomeScrum.Data.Domain.Project>
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial( "_DataObjectList", Model )

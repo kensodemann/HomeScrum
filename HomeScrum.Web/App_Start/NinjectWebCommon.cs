@@ -63,14 +63,21 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         kernel.Bind<IRepository<AcceptanceCriteriaStatus, Guid>>().ToConstant( new Repository<AcceptanceCriteriaStatus, Guid>() );
-         kernel.Bind<IRepository<ProjectStatus, Guid>>().ToConstant( new Repository<ProjectStatus, Guid>() );
-         kernel.Bind<IRepository<SprintStatus, Guid>>().ToConstant( new Repository<SprintStatus, Guid>() );
-         kernel.Bind<IRepository<WorkItemStatus, Guid>>().ToConstant( new Repository<WorkItemStatus, Guid>() );
-         kernel.Bind<IRepository<WorkItemType, Guid>>().ToConstant( new Repository<WorkItemType, Guid>() );
-         kernel.Bind<IRepository<User, Guid>>().ToConstant( new Repository<User, Guid>() );
+         BindRepository<AcceptanceCriteriaStatus>( kernel );
+         BindRepository<ProjectStatus>( kernel );
+         BindRepository<SprintStatus>( kernel );
+         BindRepository<WorkItemStatus>( kernel );
+         BindRepository<WorkItemType>( kernel );
+
+         BindRepository<Project>( kernel );
+         BindRepository<User>( kernel );
 
          kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
+      }
+
+      private static void BindRepository<T>( IKernel kernel )
+      {
+         kernel.Bind<IRepository<T, Guid>>().ToConstant( new Repository<T, Guid>() );
       }
 
       private static void RegisterValidators( IKernel kernel )
