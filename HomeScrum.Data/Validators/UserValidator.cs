@@ -16,10 +16,22 @@ namespace HomeScrum.Data.Validators
       public UserValidator( IRepository<User, Guid> repository )
       {
          _repository = repository;
+         Messages = new List<KeyValuePair<string, string>>();
       }
 
 
       public bool ModelIsValid( User model, TransactionType forTransaction )
+      {
+         if (!UsernameIsUnique( model ))
+         {
+            AddMessage( "UserName", ErrorMessages.UsernameIsNotUnique, model );
+            return false;
+         }
+
+         return true;
+      }
+
+      private bool UsernameIsUnique( User model )
       {
          var user = _repository
             .GetAll()
@@ -28,9 +40,12 @@ namespace HomeScrum.Data.Validators
          return (user == null);
       }
 
-      public ICollection<KeyValuePair<string, string>> Messages
+      private void AddMessage( string key, string message, User user )
       {
-         get { return new List<KeyValuePair<string, string>>(); }
+         var newMessage = new KeyValuePair<string, string>( key, String.Format( message, user.UserName ) );
+         Messages.Add( newMessage );
       }
+
+      public ICollection<KeyValuePair<string, string>> Messages { get; private set; }
    }
 }
