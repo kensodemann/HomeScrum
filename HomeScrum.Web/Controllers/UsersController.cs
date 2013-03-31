@@ -24,14 +24,14 @@ namespace HomeScrum.Web.Controllers
       private readonly IValidator<User> _validator;
 
       //
-      // GET: /AcceptanceCriteriaStatuses/
+      // GET: /Users/
       public virtual ActionResult Index()
       {
          return View( _userRepository.GetAll() );
       }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/Details/5
+      // GET: /Users/Details/5
       public virtual ActionResult Details( Guid id )
       {
          var model = _userRepository.Get( id );
@@ -44,14 +44,14 @@ namespace HomeScrum.Web.Controllers
       }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/Create
+      // GET: /Users/Create
       public virtual ActionResult Create()
       {
          return View();
       }
 
       //
-      // POST: /AcceptanceCriteriaStatuses/Create
+      // POST: /Users/Create
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
@@ -68,7 +68,7 @@ namespace HomeScrum.Web.Controllers
       }
 
       //
-      // GET: /AcceptanceCriteriaStatuses/Edit/5
+      // GET: /Users/Edit/5
       public virtual ActionResult Edit( Guid id )
       {
          var model = _userRepository.Get( id );
@@ -81,7 +81,7 @@ namespace HomeScrum.Web.Controllers
       }
 
       //
-      // POST: /AcceptanceCriteriaStatuses/Edit/5
+      // POST: /Users/Edit/5
       [HttpPost]
       public virtual ActionResult Edit( EditUserViewModel viewModel )
       {
