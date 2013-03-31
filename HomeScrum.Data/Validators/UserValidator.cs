@@ -21,7 +21,11 @@ namespace HomeScrum.Data.Validators
 
       public bool ModelIsValid( User model, TransactionType forTransaction )
       {
-         return true;
+         var user = _repository
+            .GetAll()
+            .FirstOrDefault( x => x.UserName == model.UserName && x.Id != model.Id );
+
+         return (user == null);
       }
 
       public ICollection<KeyValuePair<string, string>> Messages
