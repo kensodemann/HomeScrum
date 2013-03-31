@@ -23,14 +23,14 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/
-      public ActionResult Index()
+      public virtual ActionResult Index()
       {
          return View( _repository.GetAll() );
       }
 
       //
       // GET: /ModelTs/Details/5
-      public ActionResult Details( Guid id )
+      public virtual ActionResult Details( Guid id )
       {
          var model = _repository.Get( id );
 
@@ -42,8 +42,8 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       //
-      // GET: /ModelTa/Create
-      public ActionResult Create()
+      // GET: /ModelTs/Create
+      public virtual ActionResult Create()
       {
          return View();
       }
@@ -51,7 +51,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      public ActionResult Create( ModelT model )
+      public virtual ActionResult Create( ModelT model )
       {
          Validate( model, TransactionType.Insert );
 
@@ -66,7 +66,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Edit/5
-      public ActionResult Edit( Guid id )
+      public virtual ActionResult Edit( Guid id )
       {
          var model = _repository.Get( id );
 
@@ -81,7 +81,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/5
       [HttpPost]
-      public ActionResult Edit( ModelT model )
+      public virtual ActionResult Edit( ModelT model )
       {
          Validate( model, TransactionType.Update );
 
