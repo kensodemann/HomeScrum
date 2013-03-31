@@ -320,6 +320,10 @@
     <Content Include="Views\Shared\_CreateTemplate.cshtml" />
     <Content Include="Views\Shared\_DataObjectBaseEditor.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Projects\_Editor.cshtml" />
+    <Content Include="Views\Projects\Create.cshtml" />
+    <Content Include="Views\Projects\Details.cshtml" />
+    <Content Include="Views\Projects\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
