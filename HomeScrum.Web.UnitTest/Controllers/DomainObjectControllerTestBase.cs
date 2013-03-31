@@ -1,16 +1,12 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Controllers.Base;
-using HomeScrum.Web.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -120,10 +116,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
       {
-         var viewModel = new ModelT();
+         var model = new ModelT();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel );
+         var result = _controller.Create( model );
 
          _repository.Verify( x => x.Add( It.IsAny<ModelT>() ), Times.Never() );
       }
@@ -131,10 +127,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
-         var viewModel = new ModelT();
+         var model = new ModelT();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel ) as ViewResult;
+         var result = _controller.Create( model ) as ViewResult;
 
          Assert.IsNotNull( result );
       }
@@ -142,11 +138,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
-         var viewModel = new ModelT();
+         var model = new ModelT();
 
-         _controller.Create( viewModel );
+         _controller.Create( model );
 
-         _validator.Verify( x => x.ModelIsValid( viewModel, TransactionType.Insert ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Insert ), Times.Once() );
       }
 
       [TestMethod]
@@ -296,12 +292,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = GetAllModels().ToArray()[3];
+         var model = GetAllModels().ToArray()[3];
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel, It.IsAny<TransactionType>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Edit( viewModel );
+         var result = _controller.Edit( model );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
