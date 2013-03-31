@@ -50,5 +50,23 @@ namespace HomeScrum.Data.UnitTest.Domains
          Assert.AreEqual( "DescriptionPrompt", display.Prompt );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.DescriptionPrompt ) );
       }
+
+      [TestMethod]
+      public void CopyConstructor_CopiesAllProperties()
+      {
+         var model = new DataObjectBase()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Name",
+            Description = "New Description"
+         };
+
+         var newModel = new DataObjectBase( model );
+
+         Assert.AreNotSame( model, newModel );
+         Assert.AreEqual( model.Id, newModel.Id );
+         Assert.AreEqual( model.Name, newModel.Name );
+         Assert.AreEqual( model.Description, newModel.Description );
+      }
    }
 }

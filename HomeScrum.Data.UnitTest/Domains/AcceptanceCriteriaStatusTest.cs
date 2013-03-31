@@ -20,5 +20,29 @@ namespace HomeScrum.Data.UnitTest.Domains
          Assert.AreEqual( "AcceptanceCriteriaStatusIsAccepted", display.Name );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.AcceptanceCriteriaStatusIsAccepted ) );
       }
+
+      [TestMethod]
+      public void CopyConstructor_CopiesAllProperties()
+      {
+         var model = new AcceptanceCriteriaStatus()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Name",
+            Description = "New Description",
+            IsPredefined = true,
+            AllowUse = true,
+            IsAccepted = true
+         };
+
+         var newModel = new AcceptanceCriteriaStatus( model );
+
+         Assert.AreNotSame( model, newModel );
+         Assert.AreEqual( model.Id, newModel.Id );
+         Assert.AreEqual( model.Name, newModel.Name );
+         Assert.AreEqual( model.Description, newModel.Description );
+         Assert.AreEqual( model.StatusCd, newModel.StatusCd );
+         Assert.AreEqual( model.IsPredefined, newModel.IsPredefined );
+         Assert.AreEqual( model.IsAccepted, newModel.IsAccepted );
+      }
    }
 }

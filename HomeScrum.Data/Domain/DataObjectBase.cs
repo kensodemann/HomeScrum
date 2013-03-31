@@ -9,6 +9,15 @@ namespace HomeScrum.Data.Domain
 {
    public class DataObjectBase
    {
+      public DataObjectBase() { }
+
+      public DataObjectBase( DataObjectBase model )
+      {
+         this.Id = model.Id;
+         this.Name = model.Name;
+         this.Description = model.Description;
+      }
+
       public virtual Guid Id { get; set; }
 
       [Display( Name = "Name", Prompt = "NamePrompt", ResourceType = typeof( DisplayStrings ) )]

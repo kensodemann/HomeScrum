@@ -5,6 +5,15 @@ namespace HomeScrum.Data.Domain
 {
    public class WorkItemStatus : SystemDataObject
    {
+      public WorkItemStatus()
+         : base() { }
+
+      public WorkItemStatus( WorkItemStatus model )
+         : base( model )
+      {
+         this.IsOpenStatus = model.IsOpenStatus;
+      }
+
       [Display( Name = "WorkItemStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsOpenStatus { get; set; }
    }

@@ -9,6 +9,16 @@ namespace HomeScrum.Data.Domain
 {
    public class SystemDataObject : DataObjectBase
    {
+      public SystemDataObject()
+         : base() { }
+
+      public SystemDataObject( SystemDataObject model )
+         : base( model )
+      {
+         this.StatusCd = model.StatusCd;
+         this.IsPredefined = model.IsPredefined;
+      }
+
       public virtual char StatusCd { get; private set; }
 
       [Display( Name = "AllowUse", ResourceType = typeof( DisplayStrings ) )]

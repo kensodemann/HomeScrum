@@ -9,6 +9,16 @@ namespace HomeScrum.Data.Domain
 {
    public class ProjectStatus : SystemDataObject
    {
+      public ProjectStatus()
+         : base() { }
+
+      public ProjectStatus( ProjectStatus model )
+         : base( model )
+      {
+         this.IsActive = model.IsActive;
+      }
+
+
       [Display( Name = "ProjectStatusIsActive", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsActive { get; set; }
    }

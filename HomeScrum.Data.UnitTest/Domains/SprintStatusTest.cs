@@ -20,5 +20,29 @@ namespace HomeScrum.Data.UnitTest.Domains
          Assert.AreEqual( "SprintStatusIsOpenStatus", display.Name );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.SprintStatusIsOpenStatus ) );
       }
+
+      [TestMethod]
+      public void CopyConstructor_CopiesAllProperties()
+      {
+         var model = new SprintStatus()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Name",
+            Description = "New Description",
+            IsPredefined = true,
+            AllowUse = true,
+            IsOpenStatus = true
+         };
+
+         var newModel = new SprintStatus( model );
+
+         Assert.AreNotSame( model, newModel );
+         Assert.AreEqual( model.Id, newModel.Id );
+         Assert.AreEqual( model.Name, newModel.Name );
+         Assert.AreEqual( model.Description, newModel.Description );
+         Assert.AreEqual( model.StatusCd, newModel.StatusCd );
+         Assert.AreEqual( model.IsPredefined, newModel.IsPredefined );
+         Assert.AreEqual( model.IsOpenStatus, newModel.IsOpenStatus );
+      }
    }
 }

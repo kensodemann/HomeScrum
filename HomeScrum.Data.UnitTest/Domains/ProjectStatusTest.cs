@@ -20,5 +20,29 @@ namespace HomeScrum.Data.UnitTest.Domains
          Assert.AreEqual( "ProjectStatusIsActive", display.Name );
          Assert.IsFalse( String.IsNullOrWhiteSpace( DisplayStrings.ProjectStatusIsActive ) );
       }
+
+      [TestMethod]
+      public void CopyConstructor_CopiesAllProperties()
+      {
+         var model = new ProjectStatus()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Name",
+            Description = "New Description",
+            IsPredefined = true,
+            AllowUse = true,
+            IsActive = true
+         };
+
+         var newModel = new ProjectStatus( model );
+
+         Assert.AreNotSame( model, newModel );
+         Assert.AreEqual( model.Id, newModel.Id );
+         Assert.AreEqual( model.Name, newModel.Name );
+         Assert.AreEqual( model.Description, newModel.Description );
+         Assert.AreEqual( model.StatusCd, newModel.StatusCd );
+         Assert.AreEqual( model.IsPredefined, newModel.IsPredefined );
+         Assert.AreEqual( model.IsActive, newModel.IsActive );
+      }
    }
 }

@@ -8,7 +8,6 @@ namespace HomeScrum.Data.Domain
 {
    public class Project:DataObjectBase
    {
-      //public virtual Guid ProjectStatusRid { get; set; }
       public virtual ProjectStatus ProjectStatus { get; set; }
 
       public virtual Guid LastModifiedUserRid { get; set; }
