@@ -16,10 +16,10 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       private readonly IRepository<ModelT, Guid> _repository;
-      public IRepository<ModelT, Guid> Repository { get { return _repository; } }
+      protected IRepository<ModelT, Guid> Repository { get { return _repository; } }
 
       private readonly IValidator<ModelT> _validator;
-      public IValidator<ModelT> Validator { get { return _validator; } }
+      protected IValidator<ModelT> Validator { get { return _validator; } }
 
       //
       // GET: /ModelTs/
