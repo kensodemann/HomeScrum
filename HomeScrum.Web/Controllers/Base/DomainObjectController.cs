@@ -1,19 +1,13 @@
-﻿using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
+﻿using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Web.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DomainObjectController<ModelT, EditViewModelT> : HomeScrumController
+   public class DomainObjectController<ModelT> : HomeScrumController
       where ModelT : new()
-      where EditViewModelT : IViewModel<ModelT>, new()
    {
       public DomainObjectController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
       {
@@ -51,20 +45,19 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTa/Create
       public ActionResult Create()
       {
-         var viewModel = CreateEditorViewModel( new ModelT() );
-         return View( viewModel );
+         return View();
       }
 
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      public ActionResult Create( EditViewModelT viewModel )
+      public ActionResult Create( ModelT model )
       {
-         Validate( viewModel.DomainModel, TransactionType.Insert );
+         Validate( model, TransactionType.Insert );
 
          if (ModelState.IsValid)
          {
-            _repository.Add( viewModel.DomainModel );
+            _repository.Add( model );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -75,11 +68,11 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Edit/5
       public ActionResult Edit( Guid id )
       {
-         var viewModel = CreateEditorViewModel( _repository.Get( id ) );
+         var model = _repository.Get( id );
 
-         if (viewModel.DomainModel != null)
+         if (model != null)
          {
-            return View( viewModel );
+            return View( model );
          }
 
          return HttpNotFound();
@@ -88,13 +81,13 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/5
       [HttpPost]
-      public ActionResult Edit( EditViewModelT viewModel )
+      public ActionResult Edit( ModelT model )
       {
-         Validate( viewModel.DomainModel, TransactionType.Update );
+         Validate( model, TransactionType.Update );
 
          if (ModelState.IsValid)
          {
-            _repository.Update( viewModel.DomainModel );
+            _repository.Update( model );
 
             return RedirectToAction( () => this.Index() );
          }
@@ -102,15 +95,6 @@ namespace HomeScrum.Web.Controllers.Base
          {
             return View();
          }
-      }
-
-
-      protected virtual EditViewModelT CreateEditorViewModel( ModelT model )
-      {
-         return new EditViewModelT()
-         {
-            DomainModel = model
-         };
       }
 
 

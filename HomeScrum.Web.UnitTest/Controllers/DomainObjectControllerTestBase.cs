@@ -15,13 +15,12 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
-   public abstract class DomainObjectControllerTestBase<ModelT, EditViewModelT>
+   public abstract class DomainObjectControllerTestBase<ModelT>
       where ModelT : DataObjectBase, new()
-      where EditViewModelT : IViewModel<ModelT>, new()
    {
       protected Mock<IRepository<ModelT, Guid>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
-      protected DomainObjectController<ModelT, EditViewModelT> _controller;
+      protected DomainObjectController<ModelT> _controller;
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
@@ -85,42 +84,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreateGet_ReturnsViewWithViewModelEmptyDomainModel()
+      public void CreateGet_ReturnsViewWithViewWithoutModel()
       {
          var result = _controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
-         Assert.IsNotNull( result.Model );
-
-         var domainModel = ((EditViewModelT)result.Model).DomainModel;
-         Assert.IsNotNull( domainModel );
-         Assert.AreEqual( default( Guid ), domainModel.Id );
-         Assert.IsNull( domainModel.Name );
-         Assert.IsNull( domainModel.Description );
+         Assert.IsNull( result.Model );
       }
 
       [TestMethod]
       public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = CreateNewModel()
-         };
+         var model = new ModelT();
 
-         var result = _controller.Create( viewModel );
+         var result = _controller.Create( model );
 
-         _repository.Verify( x => x.Add( viewModel.DomainModel ), Times.Once() );
+         _repository.Verify( x => x.Add( model ), Times.Once() );
       }
 
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = CreateNewModel()
-         };
+         var model = new ModelT();
 
-         var result = _controller.Create( viewModel ) as RedirectToRouteResult;
+         var result = _controller.Create( model ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -133,10 +120,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = CreateNewModel()
-         };
+         var viewModel = new ModelT();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel );
@@ -147,10 +131,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = CreateNewModel()
-         };
+         var viewModel = new ModelT();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel ) as ViewResult;
@@ -161,29 +142,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[3]
-         };
+         var viewModel = new ModelT();
 
          _controller.Create( viewModel );
 
-         _validator.Verify( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.Insert ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( viewModel, TransactionType.Insert ), Times.Once() );
       }
 
       [TestMethod]
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[3]
-         };
+         var model = new ModelT();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, It.IsAny<TransactionType>() ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Create( viewModel );
+         var result = _controller.Create( model );
 
          Assert.AreEqual( messages.Count, _controller.ModelState.Count );
          foreach (var message in messages)
@@ -197,15 +172,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[3]
-         };
+         var model = new ModelT();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, It.IsAny<TransactionType>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Create( viewModel );
+         var result = _controller.Create( model );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
@@ -231,7 +203,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( result );
          Assert.IsNotNull( result.Model );
-         Assert.AreEqual( model, ((EditViewModelT)result.Model).DomainModel );
+         Assert.AreEqual( model, result.Model );
       }
 
       [TestMethod]
@@ -247,26 +219,20 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[2]
-         };
+         var model = GetAllModels().ToArray()[2];
 
-         _controller.Edit( viewModel );
+         _controller.Edit( model );
 
-         _repository.Verify( x => x.Update( viewModel.DomainModel ), Times.Once() );
+         _repository.Verify( x => x.Update( model ), Times.Once() );
       }
 
       [TestMethod]
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[2]
-         };
+         var model = GetAllModels().ToArray()[2];
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         _controller.Edit( viewModel );
+         _controller.Edit( model );
 
          _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }
@@ -274,12 +240,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[2]
-         };
+         var model = GetAllModels().ToArray()[2];
 
-         var result = _controller.Edit( viewModel ) as RedirectToRouteResult;
+         var result = _controller.Edit( model ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -292,13 +255,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[2]
-         };
+         var model = GetAllModels().ToArray()[2];
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel ) as ViewResult;
+         var result = _controller.Edit( model ) as ViewResult;
 
          Assert.IsNotNull( result );
       }
@@ -306,29 +266,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_PassesModelToValidator()
       {
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[3]
-         };
+         var model = GetAllModels().ToArray()[3];
 
-         _controller.Edit( viewModel );
+         _controller.Edit( model );
 
-         _validator.Verify( x => x.ModelIsValid( viewModel.DomainModel, TransactionType.Update ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Update ), Times.Once() );
       }
 
       [TestMethod]
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[3]
-         };
+         var model =GetAllModels().ToArray()[3];
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, It.IsAny<TransactionType>() ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Edit( viewModel );
+         var result = _controller.Edit( model );
 
          Assert.AreEqual( messages.Count, _controller.ModelState.Count );
          foreach (var message in messages)
@@ -342,13 +296,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new EditViewModelT()
-         {
-            DomainModel = GetAllModels().ToArray()[3]
-         };
+         var viewModel = GetAllModels().ToArray()[3];
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( viewModel.DomainModel, It.IsAny<TransactionType>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( viewModel, It.IsAny<TransactionType>() ) ).Returns( true );
 
          var result = _controller.Edit( viewModel );
 

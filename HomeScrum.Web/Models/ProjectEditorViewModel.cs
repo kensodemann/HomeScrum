@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Models
 {
-   public class ProjectEditorViewModel : DomainObjectEditorViewModel<Project>
+   public class ProjectEditorViewModel : Project
    {
       public IEnumerable<SelectListItem> ProjectStatuses { get; set; }
    }

@@ -8,7 +8,7 @@ using System;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemTypesController : DomainObjectController<WorkItemType, WorkItemTypeEditorViewModel>
+   public class WorkItemTypesController : DomainObjectController<WorkItemType>
    {
       [Inject]
       public WorkItemTypesController( IRepository<WorkItemType, Guid> repository, IValidator<WorkItemType> validator )
