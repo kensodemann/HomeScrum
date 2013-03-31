@@ -1,23 +1,23 @@
-﻿@model HomeScrum.Web.Models.AcceptanceCriteriaStatusEditorViewModel
+﻿@model HomeScrum.Data.Domain.AcceptanceCriteriaStatus
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary( true )
 
-    @Html.Partial( "_DataObjectBaseEditor", Model.DomainModel );
+    @Html.Partial( "_DataObjectBaseEditor", Model );
 
     <fieldset>
         <legend>Properties</legend>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.DomainModel.IsAccepted )
-            @Html.LabelFor( model => model.DomainModel.IsAccepted )
-            @Html.ValidationMessageFor( model => model.DomainModel.IsAccepted )
+            @Html.EditorFor( model => model.IsAccepted )
+            @Html.LabelFor( model => model.IsAccepted )
+            @Html.ValidationMessageFor( model => model.IsAccepted )
         </div>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.DomainModel.AllowUse )
-            @Html.LabelFor( model => model.DomainModel.AllowUse )
-            @Html.ValidationMessageFor( model => model.DomainModel.AllowUse )
+            @Html.EditorFor( model => model.AllowUse )
+            @Html.LabelFor( model => model.AllowUse )
+            @Html.ValidationMessageFor( model => model.AllowUse )
         </div>
     </fieldset>
     

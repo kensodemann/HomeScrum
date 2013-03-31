@@ -1,23 +1,23 @@
-﻿@model HomeScrum.Web.Models.ProjectStatusEditorViewModel
+﻿@model HomeScrum.Data.Domain.ProjectStatus
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary( true )
 
-    @Html.Partial( "_DataObjectBaseEditor", Model.DomainModel )
+    @Html.Partial( "_DataObjectBaseEditor", Model )
 
     <fieldset>
         <legend>Properties</legend>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.DomainModel.IsActive )
-            @Html.LabelFor( model => model.DomainModel.IsActive )
-            @Html.ValidationMessageFor( model => model.DomainModel.IsActive )
+            @Html.EditorFor( model => model.IsActive )
+            @Html.LabelFor( model => model.IsActive )
+            @Html.ValidationMessageFor( model => model.IsActive )
         </div>
 
         <div class="formBooleanOption">
-            @Html.EditorFor( model => model.DomainModel.AllowUse )
-            @Html.LabelFor( model => model.DomainModel.AllowUse )
-            @Html.ValidationMessageFor( model => model.DomainModel.AllowUse )
+            @Html.EditorFor( model => model.AllowUse )
+            @Html.LabelFor( model => model.AllowUse )
+            @Html.ValidationMessageFor( model => model.AllowUse )
         </div>
 
         <p>
