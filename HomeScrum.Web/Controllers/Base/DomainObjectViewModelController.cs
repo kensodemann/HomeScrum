@@ -26,19 +26,6 @@ namespace HomeScrum.Web.Controllers.Base
          return HttpNotFound();
       }
 
-      public override System.Web.Mvc.ActionResult Edit( ModelT viewModel )
-      {
-         var model = CreateNewModel( viewModel );
-         return base.Edit( model );
-      }
-
-      public override System.Web.Mvc.ActionResult Create( ModelT viewModel )
-      {
-         var model = CreateNewModel( viewModel );
-         return base.Create( model );
-      }
-
       protected abstract ViewModelT CreateViewModel( ModelT model );
-      protected abstract ModelT CreateNewModel( ModelT viewModel );
    }
 }

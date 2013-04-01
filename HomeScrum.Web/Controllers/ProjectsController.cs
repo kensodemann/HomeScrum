@@ -19,10 +19,5 @@ namespace HomeScrum.Web.Controllers
       {
          return new ProjectEditorViewModel( model );
       }
-
-      protected override Project CreateNewModel( Project viewModel )
-      {
-         return new Project( viewModel );
-      }
    }
 }

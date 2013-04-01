@@ -15,7 +15,11 @@ namespace HomeScrum.Data.Domain
          : base( model )
       {
          this.LastModifiedUserRid = model.LastModifiedUserRid;
-         this.ProjectStatus = new ProjectStatus( model.ProjectStatus );
+
+         if (model.ProjectStatus != null)
+         {
+            this.ProjectStatus = new ProjectStatus( model.ProjectStatus );
+         }
       }
 
 

@@ -9,6 +9,10 @@
     <fieldset>
         <legend>Properties</legend>
 
+        @Html.HiddenFor( model => model.LastModifiedUserRid )
+        @Html.HiddenFor( model => model.ProjectStatus.Id )
+        @Html.HiddenFor( model => model.ProjectStatus.Name )
+
         <p>
             <input type="submit" value="@ViewBag.EditorButtonLabel" />
         </p>
