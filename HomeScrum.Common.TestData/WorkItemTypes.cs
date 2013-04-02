@@ -63,7 +63,7 @@ namespace HomeScrum.Common.TestData
             },
             new WorkItemType ()
             {
-               Name="Type 3",
+               Name="type 3",
                Description="Active, Not a Task, Predefined",
                AllowUse=true,
                IsTask=false,
@@ -79,8 +79,16 @@ namespace HomeScrum.Common.TestData
             },
             new WorkItemType ()
             {
-               Name="Type 5",
+               Name="tYPe 5",
                Description="Not Active, Task, Predefined",
+               AllowUse=false,
+               IsTask=true,
+               IsPredefined=true
+            },
+            new WorkItemType ()
+            {
+               Name="TYPE 6",
+               Description="Not Active, Task, Predefined - second one line this",
                AllowUse=false,
                IsTask=true,
                IsPredefined=true
