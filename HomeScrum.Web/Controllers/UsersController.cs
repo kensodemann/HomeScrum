@@ -23,33 +23,6 @@ namespace HomeScrum.Web.Controllers
       private readonly IValidator<User> _validator;
 
       //
-      // GET: /Users/
-      public virtual ActionResult Index()
-      {
-         return View( Repository.GetAll() );
-      }
-
-      //
-      // GET: /Users/Details/5
-      public virtual ActionResult Details( Guid id )
-      {
-         var model = Repository.Get( id );
-
-         if (model == null)
-         {
-            return HttpNotFound();
-         }
-         return View( model );
-      }
-
-      //
-      // GET: /Users/Create
-      public virtual ActionResult Create()
-      {
-         return View();
-      }
-
-      //
       // POST: /Users/Create
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
@@ -67,7 +40,7 @@ namespace HomeScrum.Web.Controllers
       }
 
       //
-      // GET: /Users/Edit/5
+      // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id )
       {
          var model = Repository.Get( id );

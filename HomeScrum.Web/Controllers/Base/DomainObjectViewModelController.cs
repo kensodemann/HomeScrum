@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
@@ -13,7 +14,7 @@ namespace HomeScrum.Web.Controllers.Base
       public DomainObjectViewModelController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
          : base( repository, validator ) { }
 
-      public override System.Web.Mvc.ActionResult Edit( Guid id )
+      public override ActionResult Edit( Guid id )
       {
          var model = Repository.Get( id );
          
