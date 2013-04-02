@@ -27,5 +27,18 @@ namespace HomeScrum.Web.UnitTest.Extensions
             Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => x.Id.ToString() == item.Value ) );
          }
       }
+
+      [TestMethod]
+      public void ToSelectList_OrdersItemsByName()
+      {
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( default( Guid ) );
+
+         string previousName = null;
+         foreach (var item in selectList)
+         {
+            Assert.IsTrue( previousName == null ? true : String.Compare( previousName, item.Text, StringComparison.OrdinalIgnoreCase ) <= 0 );
+            previousName = item.Text;
+         }
+      }
    }
 }
