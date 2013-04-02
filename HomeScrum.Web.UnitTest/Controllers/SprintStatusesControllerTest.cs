@@ -32,7 +32,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          base.InitializeTest();
-         SprintStatuses.CreateTestModelData();
+         SprintStatuses.CreateTestModelData( initializeIds: true );
          _controller = new SprintStatusesController( _repository.Object, _validator.Object );
       }
    }

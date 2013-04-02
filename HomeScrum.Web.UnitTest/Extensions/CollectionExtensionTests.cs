@@ -12,11 +12,7 @@ namespace HomeScrum.Web.UnitTest.Extensions
       [TestInitialize]
       public void InitializeTest()
       {
-         WorkItemTypes.CreateTestModelData();
-         foreach (var workItemType in WorkItemTypes.ModelData)
-         {
-            workItemType.Id = Guid.NewGuid();
-         }
+         WorkItemTypes.CreateTestModelData( initializeIds: true );
       }
 
       [TestMethod]

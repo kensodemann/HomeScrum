@@ -32,7 +32,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          base.InitializeTest();
-         WorkItemTypes.CreateTestModelData();
+         WorkItemTypes.CreateTestModelData( initializeIds: true );
          _controller = new WorkItemTypesController( _repository.Object, _validator.Object );
       }
 

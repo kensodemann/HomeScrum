@@ -23,9 +23,9 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static User[] ModelData{get;private set;}
+      public static User[] ModelData { get; private set; }
 
-      public static void CreateTestModelData()
+      public static void CreateTestModelData( bool initializeIds = false )
       {
          ModelData = new[]
          {
@@ -59,6 +59,19 @@ namespace HomeScrum.Common.TestData
                StatusCd = 'I'
             }
          };
+
+         if (initializeIds)
+         {
+            InitializeIds();
+         }
+      }
+
+      private static void InitializeIds()
+      {
+         foreach (var model in ModelData)
+         {
+            model.Id = Guid.NewGuid();
+         }
       }
    }
 }
