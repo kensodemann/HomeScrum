@@ -13,8 +13,11 @@ namespace HomeScrum.Web.UnitTest.Extensions
       public void InitializeTest()
       {
          WorkItemTypes.CreateTestModelData();
+         foreach (var workItemType in WorkItemTypes.ModelData)
+         {
+            workItemType.Id = Guid.NewGuid();
+         }
       }
-
 
       [TestMethod]
       public void ToSelectList_ReturnsActiveItems()
@@ -24,7 +27,7 @@ namespace HomeScrum.Web.UnitTest.Extensions
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), selectList.Count() );
          foreach (var item in selectList)
          {
-            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => x.Id.ToString() == item.Value ) );
+            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => x.StatusCd == 'A' && x.Id.ToString() == item.Value ) );
          }
       }
 
@@ -49,6 +52,20 @@ namespace HomeScrum.Web.UnitTest.Extensions
 
          foreach (var item in selectList)
          {
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void ToSelectedList_IncludesInactiveItemIfSelected()
+      {
+         var selected = WorkItemTypes.ModelData.First( x => x.StatusCd == 'I' );
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( selected.Id );
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ) + 1, selectList.Count() );
+         foreach (var item in selectList)
+         {
+            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
          }
       }

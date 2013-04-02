@@ -22,7 +22,7 @@ namespace HomeScrum.Web.Extensions
       {
          return collection
             .OrderBy( x => x.Name, new CaseInsensitiveComparer() )
-            .Where( x => x.StatusCd == 'A' )
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
             .Select( item => new SelectListItem()
                              {
                                 Value = item.Id.ToString(),
