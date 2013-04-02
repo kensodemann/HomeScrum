@@ -9,17 +9,16 @@ using Ninject;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class UsersController : HomeScrumController
+   public class UsersController : HomeScrumController<User>
    {
       [Inject]
       public UsersController( IRepository<User, Guid> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
+         :base(userRepository)
       {
-         _userRepository = userRepository;
          _securityRepository = securityRepository;
          _validator = validator;
       }
 
-      private readonly IRepository<User, Guid> _userRepository;
       private readonly ISecurityRepository _securityRepository;
       private readonly IValidator<User> _validator;
 
@@ -27,14 +26,14 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/
       public virtual ActionResult Index()
       {
-         return View( _userRepository.GetAll() );
+         return View( Repository.GetAll() );
       }
 
       //
       // GET: /Users/Details/5
       public virtual ActionResult Details( Guid id )
       {
-         var model = _userRepository.Get( id );
+         var model = Repository.Get( id );
 
          if (model == null)
          {
@@ -59,7 +58,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
-            _userRepository.Add( new User( viewModel ) );
+            Repository.Add( new User( viewModel ) );
             _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
             return RedirectToAction( () => this.Index() );
          }
@@ -71,7 +70,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Edit/5
       public virtual ActionResult Edit( Guid id )
       {
-         var model = _userRepository.Get( id );
+         var model = Repository.Get( id );
          if (model != null)
          {
             return View( new EditUserViewModel( model ) );
@@ -90,7 +89,7 @@ namespace HomeScrum.Web.Controllers
          if (ModelState.IsValid)
          {
             User model = new User( viewModel );
-            _userRepository.Update( model );
+            Repository.Update( model );
 
             return RedirectToAction( () => this.Index() );
          }

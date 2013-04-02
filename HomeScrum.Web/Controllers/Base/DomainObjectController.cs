@@ -6,17 +6,14 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DomainObjectController<ModelT> : HomeScrumController
+   public class DomainObjectController<ModelT> : HomeScrumController<ModelT>
       where ModelT : new()
    {
       public DomainObjectController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
+         : base( repository )
       {
-         _repository = repository;
          _validator = validator;
       }
-
-      private readonly IRepository<ModelT, Guid> _repository;
-      protected IRepository<ModelT, Guid> Repository { get { return _repository; } }
 
       private readonly IValidator<ModelT> _validator;
       protected IValidator<ModelT> Validator { get { return _validator; } }
@@ -25,7 +22,7 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/
       public virtual ActionResult Index()
       {
-         var items = _repository.GetAll();
+         var items = Repository.GetAll();
          return View( items );
       }
 
@@ -33,7 +30,7 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Details/5
       public virtual ActionResult Details( Guid id )
       {
-         var model = _repository.Get( id );
+         var model = Repository.Get( id );
 
          if (model == null)
          {
@@ -58,7 +55,7 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (ModelState.IsValid)
          {
-            _repository.Add( model );
+            Repository.Add( model );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -69,7 +66,7 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Edit/5
       public virtual ActionResult Edit( Guid id )
       {
-         var model = _repository.Get( id );
+         var model = Repository.Get( id );
 
          if (model != null)
          {
@@ -88,7 +85,7 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (ModelState.IsValid)
          {
-            _repository.Update( model );
+            Repository.Update( model );
 
             return RedirectToAction( () => this.Index() );
          }
@@ -101,7 +98,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       private void Validate( ModelT model, TransactionType transactionType )
       {
-         if (!_validator.ModelIsValid( model, transactionType ))
+         if (!Validator.ModelIsValid( model, transactionType ))
          {
             foreach (var message in _validator.Messages)
             {

@@ -4,7 +4,7 @@ using NHibernate.Cfg;
 
 namespace HomeScrum.Data.SqlServer.Helpers
 {
-   public  class NHibernateHelper
+   public class NHibernateHelper
    {
       private static ISessionFactory _sessionFactory;
 
