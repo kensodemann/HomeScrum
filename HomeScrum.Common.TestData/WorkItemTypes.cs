@@ -81,7 +81,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Type 5",
                Description="Not Active, Task, Predefined",
-               AllowUse=true,
+               AllowUse=false,
                IsTask=true,
                IsPredefined=true
             }
