@@ -10,14 +10,9 @@ using HomeScrum.Data.Validators;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectsController : DomainObjectViewModelController<Project, ProjectEditorViewModel>
+   public class ProjectsController : HomeScrumController<Project>
    {
       public ProjectsController( IRepository<Project, Guid> repository, IValidator<Project> validator )
-         : base( repository, validator ) { }
-
-      protected override ProjectEditorViewModel CreateViewModel( Project model )
-      {
-         return new ProjectEditorViewModel( model );
-      }
+         : base( repository ) { }
    }
 }
