@@ -40,5 +40,17 @@ namespace HomeScrum.Web.UnitTest.Extensions
             previousName = item.Text;
          }
       }
+
+      [TestMethod]
+      public void ToSelectedList_MarksItemSelected()
+      {
+         var selected = WorkItemTypes.ModelData.Where( x => x.StatusCd == 'A' ).ToArray()[2];
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( selected.Id );
+
+         foreach (var item in selectList)
+         {
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
    }
 }

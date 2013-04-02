@@ -26,7 +26,8 @@ namespace HomeScrum.Web.Extensions
             .Select( item => new SelectListItem()
                              {
                                 Value = item.Id.ToString(),
-                                Text = item.Name
+                                Text = item.Name,
+                                Selected = item.Id == selectedId
                              } );
       }
    }
