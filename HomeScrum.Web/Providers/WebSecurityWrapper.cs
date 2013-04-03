@@ -6,7 +6,7 @@ using WebMatrix.WebData;
 
 namespace HomeScrum.Web.Providers
 {
-   public class WebSecurityWrapper:IWebSecurity
+   public class WebSecurityWrapper : IWebSecurity
    {
       public bool Login( string userName, string password, bool persistCookie = false )
       {

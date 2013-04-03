@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class ProjectControllerTest
+   public class ProjectsControllerTest
    {
    }
 }

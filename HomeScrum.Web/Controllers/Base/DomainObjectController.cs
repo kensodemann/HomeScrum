@@ -6,17 +6,11 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.Controllers.Base
 {
    [Authorize]
-   public class DomainObjectController<ModelT> : HomeScrumController<ModelT>
+   public class DomainObjectController<ModelT> : ValidatingController<ModelT>
       where ModelT : new()
    {
       public DomainObjectController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
-         : base( repository )
-      {
-         _validator = validator;
-      }
-
-      private readonly IValidator<ModelT> _validator;
-      protected IValidator<ModelT> Validator { get { return _validator; } }
+         : base( repository, validator ) { }
 
       //
       // POST: /ModelTs/Create
@@ -50,18 +44,6 @@ namespace HomeScrum.Web.Controllers.Base
          else
          {
             return View();
-         }
-      }
-
-
-      private void Validate( ModelT model, TransactionType transactionType )
-      {
-         if (!Validator.ModelIsValid( model, transactionType ))
-         {
-            foreach (var message in _validator.Messages)
-            {
-               ModelState.AddModelError( message.Key, message.Value );
-            }
          }
       }
    }

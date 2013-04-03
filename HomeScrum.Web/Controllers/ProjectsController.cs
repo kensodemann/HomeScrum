@@ -13,6 +13,13 @@ namespace HomeScrum.Web.Controllers
    public class ProjectsController : HomeScrumController<Project>
    {
       public ProjectsController( IRepository<Project, Guid> repository, IValidator<Project> validator )
-         : base( repository ) { }
+         : base( repository )
+      {
+         _validator = validator;
+      }
+
+      private IValidator<Project> _validator;
+
+
    }
 }

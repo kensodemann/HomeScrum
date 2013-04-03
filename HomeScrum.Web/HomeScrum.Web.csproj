@@ -145,6 +145,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Base\DomainObjectController.cs" />
     <Compile Include="Controllers\Base\HomeScrumController.cs" />
+    <Compile Include="Controllers\Base\ValidatingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\ProjectStatusesController.cs" />
