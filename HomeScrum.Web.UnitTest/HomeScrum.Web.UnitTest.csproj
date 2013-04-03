@@ -65,7 +65,7 @@
     <Compile Include="Controllers\AcceptanceCriteriaStatusesControllerTest.cs" />
     <Compile Include="Controllers\DomainObjectControllerTestBase.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
-    <Compile Include="Controllers\ProjectControllerTest.cs" />
+    <Compile Include="Controllers\ProjectsControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />
     <Compile Include="Extensions\CollectionExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
