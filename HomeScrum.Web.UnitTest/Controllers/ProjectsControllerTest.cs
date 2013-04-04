@@ -30,8 +30,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _projectRepository = new Mock<IRepository<Project, Guid>>();
          _projectStatusRepository = new Mock<IRepository<ProjectStatus, Guid>>();
-         _validator = new Mock<IValidator<Project>>();
+         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
+         _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
 
+         _validator = new Mock<IValidator<Project>>();
          _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
 
          _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _validator.Object );
@@ -94,6 +96,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          var model = result.Model as ProjectEditorViewModel;
          Assert.IsNotNull( model );
+      }
+
+      [TestMethod]
+      public void CreateGet_InitializesProjectStatusList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as ProjectEditorViewModel;
+
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), model.ProjectStatuses.Count() );
+         foreach (var item in model.ProjectStatuses)
+         {
+            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsFalse( item.Selected );
+         }
       }
    }
 }

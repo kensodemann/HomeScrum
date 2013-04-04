@@ -8,6 +8,7 @@ using HomeScrum.Web.Models;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using System.Web.Mvc;
+using HomeScrum.Web.Extensions;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -24,6 +25,8 @@ namespace HomeScrum.Web.Controllers
       public override ActionResult Create()
       {
          var model = new ProjectEditorViewModel();
+
+         model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( default( Guid ) );
 
          return View( model );
       }
