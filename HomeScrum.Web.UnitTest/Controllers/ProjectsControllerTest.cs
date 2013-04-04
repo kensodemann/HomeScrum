@@ -171,6 +171,26 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( model ) as ViewResult;
 
          Assert.IsNotNull( result );
+         Assert.AreEqual( model, result.Model );
+      }
+
+      [TestMethod]
+      public void CreatePost_InitializesProjectStatusList_NothingSelected()
+      {
+         var model = new ProjectEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( model ) as ViewResult;
+
+         var returnedModel = result.Model as ProjectEditorViewModel;
+
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), returnedModel.ProjectStatuses.Count() );
+         foreach (var item in returnedModel.ProjectStatuses)
+         {
+            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsFalse( item.Selected );
+         }
       }
 
       [TestMethod]

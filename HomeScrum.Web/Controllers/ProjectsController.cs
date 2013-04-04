@@ -37,14 +37,15 @@ namespace HomeScrum.Web.Controllers
       public virtual ActionResult Create( ProjectEditorViewModel model )
       {
          Validate( model, TransactionType.Insert );
-         
+
          if (ModelState.IsValid)
          {
             Repository.Add( model );
             return RedirectToAction( () => this.Index() );
          }
 
-         return View();
+         model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
+         return View( model );
       }
    }
 }
