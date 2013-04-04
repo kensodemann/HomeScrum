@@ -17,7 +17,7 @@ namespace HomeScrum.Web.Extensions
          }
       }
 
-      public static IEnumerable<SelectListItem> ToSelectList<ModelT>( this IEnumerable<ModelT> collection, Guid selectedId )
+      public static IEnumerable<SelectListItem> ToSelectList<ModelT>( this IEnumerable<ModelT> collection, Guid selectedId = default( Guid ) )
          where ModelT : SystemDataObject
       {
          return collection

@@ -26,7 +26,7 @@ namespace HomeScrum.Web.Controllers
       {
          var model = new ProjectEditorViewModel();
 
-         model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( default( Guid ) );
+         model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
 
          return View( model );
       }
