@@ -256,8 +256,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model.Id ) as ViewResult;
 
          Assert.IsNotNull( result );
-         Assert.IsNotNull( result.Model );
-         Assert.AreEqual( model, result.Model );
+         var returnedModel = result.Model as ProjectEditorViewModel;
+         Assert.IsNotNull( returnedModel );
+         Assert.AreEqual( model.Id, returnedModel.Id );
+      }
+
+      [TestMethod]
+      public void EditGet_InitializesProjectStatuses_ProjectStatusSelected()
+      {
+         var model = Projects.ModelData[0];
+         _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as ProjectEditorViewModel;
+
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), viewModel.ProjectStatuses.Count() );
+         foreach (var item in viewModel.ProjectStatuses)
+         {
+            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsTrue( (model.ProjectStatus.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.ProjectStatus.Id.ToString() == item.Value && item.Selected) );
+         }
       }
 
       [TestMethod]

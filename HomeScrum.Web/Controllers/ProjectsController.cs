@@ -54,7 +54,16 @@ namespace HomeScrum.Web.Controllers
       // GET: /Projects/Edit/Guid
       public override ActionResult Edit( Guid id )
       {
-         return base.Edit( id );
+         var model = Repository.Get( id );
+
+         if (model != null)
+         {
+            var viewModel = new ProjectEditorViewModel( model );
+            viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( viewModel.ProjectStatus.Id );
+            return View( viewModel );
+         }
+
+         return HttpNotFound();
       }
    }
 }
