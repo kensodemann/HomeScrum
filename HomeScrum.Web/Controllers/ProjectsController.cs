@@ -22,6 +22,8 @@ namespace HomeScrum.Web.Controllers
 
       private IRepository<ProjectStatus, Guid> _projectStatusRepository;
 
+      //
+      // GET: /Projects/Create
       public override ActionResult Create()
       {
          var model = new ProjectEditorViewModel();
@@ -46,6 +48,13 @@ namespace HomeScrum.Web.Controllers
 
          model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
          return View( model );
+      }
+
+      //
+      // GET: /Projects/Edit/Guid
+      public override ActionResult Edit( Guid id )
+      {
+         return base.Edit( id );
       }
    }
 }

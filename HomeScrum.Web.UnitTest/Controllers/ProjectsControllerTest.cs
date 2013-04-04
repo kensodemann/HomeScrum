@@ -237,5 +237,37 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
       }
+
+      [TestMethod]
+      public void EditGet_CallsRepositoryGet()
+      {
+         Guid id = Guid.NewGuid();
+         _controller.Edit( id );
+
+         _projectRepository.Verify( x => x.Get( id ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditGet_ReturnsViewWithModel()
+      {
+         var model = Projects.ModelData[3];
+         _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.IsNotNull( result.Model );
+         Assert.AreEqual( model, result.Model );
+      }
+
+      [TestMethod]
+      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      {
+         _projectRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as Project );
+
+         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
    }
 }
