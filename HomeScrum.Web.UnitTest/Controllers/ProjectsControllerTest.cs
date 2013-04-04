@@ -24,22 +24,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         Users.CreateTestModelData( initializeIds: true );
-         ProjectStatuses.CreateTestModelData( initializeIds: true );
-         Projects.CreateTestModelData( initializeIds: true );
-
-         _projectRepository = new Mock<IRepository<Project, Guid>>();
-         _projectStatusRepository = new Mock<IRepository<ProjectStatus, Guid>>();
-         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-         _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
-
-         _validator = new Mock<IValidator<Project>>();
-         _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
+         InitializeTestData();
+         CreateRepositories();
+         CreateValidator();
 
          _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _validator.Object );
       }
 
       #region private helpers
+      private void CreateValidator()
+      {
+         _validator = new Mock<IValidator<Project>>();
+         _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
+      }
+
+      private void CreateRepositories()
+      {
+         _projectRepository = new Mock<IRepository<Project, Guid>>();
+         _projectStatusRepository = new Mock<IRepository<ProjectStatus, Guid>>();
+         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
+         _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
+      }
+
+      private static void InitializeTestData()
+      {
+         Users.CreateTestModelData( initializeIds: true );
+         ProjectStatuses.CreateTestModelData( initializeIds: true );
+         Projects.CreateTestModelData( initializeIds: true );
+      }
+
       ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
       {
          var messages = new List<KeyValuePair<string, string>>();
@@ -288,6 +301,99 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void EditPost_CallRepositoryUpdateIfModelValid()
+      {
+         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+
+         _controller.Edit( model );
+
+         _projectRepository.Verify( x => x.Update( model ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
+      {
+         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         _controller.Edit( model );
+
+         _projectRepository.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToIndexIfModelIsValid()
+      {
+         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+
+         var result = _controller.Edit( model ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_ReturnsViewIfModelIsNotValid()
+      {
+         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( model ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( result.Model, model );
+      }
+
+      [TestMethod]
+      public void EditPost_PassesModelToValidator()
+      {
+         var model = new ProjectEditorViewModel( Projects.ModelData[3] );
+
+         _controller.Edit( model );
+
+         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Update ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = new ProjectEditorViewModel( Projects.ModelData[3] );
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
+
+         var result = _controller.Edit( model );
+
+         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         foreach (var message in messages)
+         {
+            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+         }
+         Assert.IsTrue( result is ViewResult );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = new ProjectEditorViewModel( Projects.ModelData[3] );
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
+
+         var result = _controller.Edit( model );
+
+         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.IsNotNull( result );
+         Assert.IsTrue( result is RedirectToRouteResult );
       }
    }
 }

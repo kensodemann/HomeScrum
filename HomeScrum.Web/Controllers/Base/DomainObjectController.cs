@@ -29,7 +29,7 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       //
-      // POST: /ModelTs/Edit/5
+      // POST: /ModelTs/Edit/Guid
       [HttpPost]
       public virtual ActionResult Edit( ModelT model )
       {

@@ -65,5 +65,21 @@ namespace HomeScrum.Web.Controllers
 
          return HttpNotFound();
       }
+
+      //
+      // POST: /Projects/Edit/Guid
+      [HttpPost]
+      public virtual ActionResult Edit( ProjectEditorViewModel model )
+      {
+         Validate( model, TransactionType.Update );
+
+         if (ModelState.IsValid)
+         {
+            Repository.Update( model );
+            return RedirectToAction( () => this.Index() );
+         }
+
+         return View( model );
+      }
    }
 }
