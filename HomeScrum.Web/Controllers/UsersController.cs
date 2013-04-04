@@ -41,7 +41,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /ModelTs/Edit/Guid
-      public virtual ActionResult Edit( Guid id )
+      public override ActionResult Edit( Guid id )
       {
          var model = Repository.Get( id );
          if (model != null)

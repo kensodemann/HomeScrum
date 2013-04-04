@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Moq;
 using HomeScrum.Data.Validators;
 using HomeScrum.Data.Repositories;
+using HomeScrum.Web.Models;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -33,7 +34,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         _controller = new ProjectsController( _projectRepository.Object, _validator.Object );
+         _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _validator.Object );
       }
 
       [TestMethod]
@@ -86,12 +87,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreateGet_ReturnsViewWithViewWithoutModel()
+      public void CreateGet_ReturnsViewWithViewWithModel()
       {
          var result = _controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
-         Assert.IsNull( result.Model );
+         var model = result.Model as ProjectEditorViewModel;
+         Assert.IsNotNull( model );
       }
    }
 }
