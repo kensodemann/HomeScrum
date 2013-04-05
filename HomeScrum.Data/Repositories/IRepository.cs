@@ -16,4 +16,6 @@ namespace HomeScrum.Data.Repositories
       void Update( T dataObject );
       void Delete( T dataObject );
    }
+
+   public interface IRepository<T> : IRepository<T, Guid> { }
 }

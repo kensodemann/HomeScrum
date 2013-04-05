@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace HomeScrum.Data.SqlServer
 {
+   public class Repository<T> : Repository<T, Guid>, IRepository<T> { }
+   
    public class Repository<T, KeyT> : IRepository<T, KeyT>
    {
       public ICollection<T> GetAll()
