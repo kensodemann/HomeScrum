@@ -42,7 +42,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
-            Repository.Add( model );
+            Repository.Add( new Project( model ) );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -75,7 +75,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
-            Repository.Update( model );
+            Repository.Update( new Project( model ) );
             return RedirectToAction( () => this.Index() );
          }
 

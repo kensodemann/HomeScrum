@@ -146,7 +146,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = _controller.Create( model );
 
-         _projectRepository.Verify( x => x.Add( model ), Times.Once() );
+         _projectRepository.Verify( x => x.Add( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -310,7 +310,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _projectRepository.Verify( x => x.Update( model ), Times.Once() );
+         _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
       }
 
       [TestMethod]
