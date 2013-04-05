@@ -12,7 +12,7 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : HomeScrumController<User>
    {
       [Inject]
-      public UsersController( IRepository<User, Guid> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
+      public UsersController( IRepository<User> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
          :base(userRepository)
       {
          _securityRepository = securityRepository;

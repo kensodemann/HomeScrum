@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemTypesController : DomainObjectController<WorkItemType>
    {
       [Inject]
-      public WorkItemTypesController( IRepository<WorkItemType, Guid> repository, IValidator<WorkItemType> validator )
+      public WorkItemTypesController( IRepository<WorkItemType> repository, IValidator<WorkItemType> validator )
          : base( repository, validator ) { }
    }
 }

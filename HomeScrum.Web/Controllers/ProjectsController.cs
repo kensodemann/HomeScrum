@@ -14,13 +14,13 @@ namespace HomeScrum.Web.Controllers
 {
    public class ProjectsController : ValidatingController<Project>
    {
-      public ProjectsController( IRepository<Project, Guid> repository, IRepository<ProjectStatus, Guid> projectStatusRepository, IValidator<Project> validator )
+      public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IValidator<Project> validator )
          : base( repository, validator )
       {
          _projectStatusRepository = projectStatusRepository;
       }
 
-      private IRepository<ProjectStatus, Guid> _projectStatusRepository;
+      private IRepository<ProjectStatus> _projectStatusRepository;
 
       //
       // GET: /Projects/Create

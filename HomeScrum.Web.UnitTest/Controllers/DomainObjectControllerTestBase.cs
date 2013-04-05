@@ -14,7 +14,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public abstract class DomainObjectControllerTestBase<ModelT>
       where ModelT : DataObjectBase, new()
    {
-      protected Mock<IRepository<ModelT, Guid>> _repository;
+      protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
       protected DomainObjectController<ModelT> _controller;
 
@@ -23,7 +23,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public virtual void InitializeTest()
       {
-         _repository = new Mock<IRepository<ModelT, Guid>>();
+         _repository = new Mock<IRepository<ModelT>>();
          _validator = new Mock<IValidator<ModelT>>();
 
          _validator.Setup( x => x.ModelIsValid( It.IsAny<ModelT>(), It.IsAny<TransactionType>() ) ).Returns( true );

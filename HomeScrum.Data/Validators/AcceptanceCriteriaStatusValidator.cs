@@ -10,7 +10,7 @@ namespace HomeScrum.Data.Validators
 {
    public class AcceptanceCriteriaStatusValidator : SystemDataObjectValidator<AcceptanceCriteriaStatus>
    {
-      public AcceptanceCriteriaStatusValidator( IRepository<AcceptanceCriteriaStatus, Guid> repository )
+      public AcceptanceCriteriaStatusValidator( IRepository<AcceptanceCriteriaStatus> repository )
          : base( repository ) { }
 
 

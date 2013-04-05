@@ -10,7 +10,7 @@ namespace HomeScrum.Data.Validators
 {
    public class ProjectStatusValidator : SystemDataObjectValidator<ProjectStatus>
    {
-      public ProjectStatusValidator( IRepository<ProjectStatus, Guid> repository )
+      public ProjectStatusValidator( IRepository<ProjectStatus> repository )
          : base( repository ) { }
 
       protected override string ObjectName { get { return "Project Status"; } }

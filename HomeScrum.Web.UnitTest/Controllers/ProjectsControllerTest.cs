@@ -16,8 +16,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class ProjectsControllerTest
    {
-      private Mock<IRepository<Project, Guid>> _projectRepository;
-      private Mock<IRepository<ProjectStatus, Guid>> _projectStatusRepository;
+      private Mock<IRepository<Project>> _projectRepository;
+      private Mock<IRepository<ProjectStatus>> _projectStatusRepository;
       private Mock<IValidator<Project>> _validator;
       private ProjectsController _controller;
 
@@ -40,8 +40,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateRepositories()
       {
-         _projectRepository = new Mock<IRepository<Project, Guid>>();
-         _projectStatusRepository = new Mock<IRepository<ProjectStatus, Guid>>();
+         _projectRepository = new Mock<IRepository<Project>>();
+         _projectStatusRepository = new Mock<IRepository<ProjectStatus>>();
          _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
          _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
       }

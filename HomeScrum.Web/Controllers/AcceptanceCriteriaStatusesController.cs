@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class AcceptanceCriteriaStatusesController : DomainObjectController<AcceptanceCriteriaStatus>
    {
       [Inject]
-      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus, Guid> repository, IValidator<AcceptanceCriteriaStatus> validator )
+      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )
          : base( repository, validator ) { }
    }
 }

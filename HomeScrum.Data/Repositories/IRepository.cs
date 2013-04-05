@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Repositories
 {
+   public interface IRepository<T> : IRepository<T, Guid> { }
+
    public interface IRepository<T, KeyT>
    {
       ICollection<T> GetAll();
@@ -16,6 +18,4 @@ namespace HomeScrum.Data.Repositories
       void Update( T dataObject );
       void Delete( T dataObject );
    }
-
-   public interface IRepository<T> : IRepository<T, Guid> { }
 }

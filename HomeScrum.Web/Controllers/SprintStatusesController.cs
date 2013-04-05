@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class SprintStatusesController : DomainObjectController<SprintStatus>
    {
       [Inject]
-      public SprintStatusesController( IRepository<SprintStatus, Guid> repository, IValidator<SprintStatus> validator )
+      public SprintStatusesController( IRepository<SprintStatus> repository, IValidator<SprintStatus> validator )
          : base( repository, validator ) { }
    }
 }

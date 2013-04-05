@@ -11,13 +11,13 @@ namespace HomeScrum.Data.UnitTest.Validators
    [TestClass]
    public class AcceptanceCriteriaStatusValidatorTest
    {
-      private Mock<IRepository<AcceptanceCriteriaStatus, Guid>> _repository;
+      private Mock<IRepository<AcceptanceCriteriaStatus>> _repository;
       private AcceptanceCriteriaStatusValidator _validator;
 
       [TestInitialize]
       public void InitializeTest()
       {
-         _repository = new Mock<IRepository<AcceptanceCriteriaStatus, Guid>>();
+         _repository = new Mock<IRepository<AcceptanceCriteriaStatus>>();
          _repository.Setup( x => x.GetAll() ).Returns( AcceptanceCriteriaStatuses.ModelData );
          _validator = new AcceptanceCriteriaStatusValidator( _repository.Object );
       }

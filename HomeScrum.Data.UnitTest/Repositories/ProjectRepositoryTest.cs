@@ -26,10 +26,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Users.Load();
          ProjectStatuses.Load();
          Projects.Load();
-         _repository = new Repository<Project, Guid>();
+         _repository = new Repository<Project>();
       }
 
-      private IRepository<Project, Guid> _repository;
+      private IRepository<Project> _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllProjects()

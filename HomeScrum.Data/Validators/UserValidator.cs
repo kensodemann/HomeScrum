@@ -10,10 +10,9 @@ namespace HomeScrum.Data.Validators
 {
    public class UserValidator : IValidator<User>
    {
-      // TODO: Add validation of UserName
-      private readonly IRepository<User, Guid> _repository;
+      private readonly IRepository<User> _repository;
 
-      public UserValidator( IRepository<User, Guid> repository )
+      public UserValidator( IRepository<User> repository )
       {
          _repository = repository;
          Messages = new List<KeyValuePair<string, string>>();

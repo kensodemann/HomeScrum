@@ -77,7 +77,7 @@ namespace HomeScrum.Web.App_Start
 
       private static void BindRepository<T>( IKernel kernel )
       {
-         kernel.Bind<IRepository<T, Guid>>().ToConstant( new Repository<T, Guid>() );
+         kernel.Bind<IRepository<T>>().ToConstant( new Repository<T>() );
       }
 
       private static void RegisterValidators( IKernel kernel )
@@ -88,7 +88,7 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
          kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
 
-         kernel.Bind<IValidator<Project>>().To( typeof( NullValidator<Project, Guid> ) );
+         kernel.Bind<IValidator<Project>>().To( typeof( NullValidator<Project> ) );
 
          kernel.Bind<IValidator<User>>().To( typeof( UserValidator ) );
       }

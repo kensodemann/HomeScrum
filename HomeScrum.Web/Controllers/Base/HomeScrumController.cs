@@ -11,10 +11,10 @@ namespace HomeScrum.Web.Controllers.Base
 {
    public class HomeScrumController<ModelT> : Controller
    {
-      private readonly IRepository<ModelT, Guid> _repository;
-      protected IRepository<ModelT, Guid> Repository { get { return _repository; } }
+      private readonly IRepository<ModelT> _repository;
+      protected IRepository<ModelT> Repository { get { return _repository; } }
 
-      public HomeScrumController( IRepository<ModelT, Guid> repository )
+      public HomeScrumController( IRepository<ModelT> repository )
       {
          _repository = repository;
       }

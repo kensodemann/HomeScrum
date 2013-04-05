@@ -9,7 +9,7 @@ namespace HomeScrum.Web.Controllers.Base
 {
    public class ValidatingController<ModelT> : HomeScrumController<ModelT>
    {
-      public ValidatingController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
+      public ValidatingController( IRepository<ModelT> repository, IValidator<ModelT> validator )
          : base( repository )
       {
          _validator = validator;

@@ -9,7 +9,7 @@ namespace HomeScrum.Web.Controllers.Base
    public class DomainObjectController<ModelT> : ValidatingController<ModelT>
       where ModelT : new()
    {
-      public DomainObjectController( IRepository<ModelT, Guid> repository, IValidator<ModelT> validator )
+      public DomainObjectController( IRepository<ModelT> repository, IValidator<ModelT> validator )
          : base( repository, validator ) { }
 
       //

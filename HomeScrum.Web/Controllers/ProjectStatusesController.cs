@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class ProjectStatusesController : DomainObjectController<ProjectStatus>
    {
       [Inject]
-      public ProjectStatusesController( IRepository<ProjectStatus, Guid> repository, IValidator<ProjectStatus> validator )
+      public ProjectStatusesController( IRepository<ProjectStatus> repository, IValidator<ProjectStatus> validator )
          : base( repository, validator ) { }
    }
 }

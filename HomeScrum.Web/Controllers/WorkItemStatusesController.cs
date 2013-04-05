@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemStatusesController : DomainObjectController<WorkItemStatus>
    {
       [Inject]
-      public WorkItemStatusesController( IRepository<WorkItemStatus, Guid> repository, IValidator<WorkItemStatus> validator )
+      public WorkItemStatusesController( IRepository<WorkItemStatus> repository, IValidator<WorkItemStatus> validator )
          : base( repository, validator ) { }
    }
 }
