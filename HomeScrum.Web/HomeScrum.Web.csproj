@@ -158,6 +158,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Base\DisplayViewModelBase.cs" />
+    <Compile Include="Models\Base\EditorViewModelBase.cs" />
     <Compile Include="Models\CreateUserViewModel.cs" />
     <Compile Include="Models\ProjectEditorViewModel.cs" />
     <Compile Include="Models\EditUserViewModel.cs" />
