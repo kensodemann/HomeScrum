@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace HomeScrum.Data.Domain
          }
       }
 
-
+      [Required]
       public virtual ProjectStatus ProjectStatus { get; set; }
 
       public virtual Guid LastModifiedUserRid { get; set; }
