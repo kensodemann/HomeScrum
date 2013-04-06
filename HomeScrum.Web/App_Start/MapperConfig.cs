@@ -23,6 +23,14 @@ namespace HomeScrum.Web
 
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>();
 
+         Mapper.CreateMap<DomainObjectBase, DomainObjectEditorViewModel>()
+            .Include<SystemDomainObject, SystemDomainObjectEditorViewModel>();
+         Mapper.CreateMap<SystemDomainObject, SystemDomainObjectEditorViewModel>()
+            .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+
+         Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>();
+
          //
          // View Model to Domain mapping
          Mapper.CreateMap<DomainObjectViewModel, DomainObjectBase>()
@@ -32,6 +40,14 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>();
+
+         Mapper.CreateMap<DomainObjectEditorViewModel, DomainObjectBase>()
+            .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>();
+         Mapper.CreateMap<SystemDomainObjectEditorViewModel, SystemDomainObject>()
+            .Include<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorStatusCodeResolver>() );
+
+         Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>();
       }
 
 
@@ -47,6 +63,14 @@ namespace HomeScrum.Web
       public class StatusCodeResolver : ValueResolver<SystemDomainObjectViewModel, char>
       {
          protected override char ResolveCore( SystemDomainObjectViewModel source )
+         {
+            return source.AllowUse ? 'A' : 'I';
+         }
+      }
+
+      public class EditorStatusCodeResolver : ValueResolver<SystemDomainObjectEditorViewModel, char>
+      {
+         protected override char ResolveCore( SystemDomainObjectEditorViewModel source )
          {
             return source.AllowUse ? 'A' : 'I';
          }

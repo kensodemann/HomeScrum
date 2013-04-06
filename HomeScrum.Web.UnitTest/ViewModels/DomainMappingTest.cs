@@ -53,5 +53,33 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsInstanceOfType( domainModel, typeof(AcceptanceCriteriaStatus) );
          Assert.AreEqual( 'I', ((AcceptanceCriteriaStatus)domainModel).StatusCd );
       }
+
+      [TestMethod]
+      public void CanMapAcceptanceCriteriaStatus_DomainToEditorViewModel()
+      {
+         var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriteriaStatusEditorViewModel ) );
+         Assert.IsFalse( ((AcceptanceCriteriaStatusEditorViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapAcceptanceCriteriaStatus_EditorViewModelToDomain()
+      {
+         var viewModel = new AcceptanceCriteriaStatusEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsAccepted = true,
+            IsPredefined = false,
+            AllowUse = true
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriteriaStatus ) );
+         Assert.AreEqual( 'A', ((AcceptanceCriteriaStatus)domainModel).StatusCd );
+      }
    }
 }
