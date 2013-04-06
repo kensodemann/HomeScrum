@@ -64,7 +64,7 @@
     <Compile Include="Domain\ProjectHistory.cs" />
     <Compile Include="Domain\ProjectStatus.cs" />
     <Compile Include="Domain\SprintStatus.cs" />
-    <Compile Include="Domain\SystemDataObject.cs" />
+    <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
     <Compile Include="Domain\WorkItemType.cs" />
