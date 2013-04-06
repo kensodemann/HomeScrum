@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.Base
 {
-   public class SystemDomainObjectEditorViewModelBase
+   public class SystemDomainObjectEditorViewModel
    {
       [Display( Name = "AllowUse", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool AllowUse { get; set; }
