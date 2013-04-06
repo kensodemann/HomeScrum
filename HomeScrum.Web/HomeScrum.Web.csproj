@@ -178,7 +178,15 @@
     <Compile Include="Models\CreateUserViewModel.cs" />
     <Compile Include="Models\ProjectEditorViewModel.cs" />
     <Compile Include="Models\EditUserViewModel.cs" />
+    <Compile Include="Models\ProjectStatusEditorViewModel.cs" />
+    <Compile Include="Models\ProjectStatusViewModel.cs" />
+    <Compile Include="Models\SprintStatusEditorViewModel.cs" />
+    <Compile Include="Models\SprintStatusViewModel.cs" />
     <Compile Include="Models\UserEditorViewModel.cs" />
+    <Compile Include="Models\WorkItemStatusEditorViewModel.cs" />
+    <Compile Include="Models\WorkItemStatusViewModel.cs" />
+    <Compile Include="Models\WorkItemTypeEditorViewModel.cs" />
+    <Compile Include="Models\WorkItemTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\HomeScrumMembershipProvider.cs" />
     <Compile Include="Providers\HomeScrumRoleProvider.cs" />
