@@ -157,12 +157,19 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WorkItemStatusesController.cs" />
     <Compile Include="Controllers\WorkItemTypesController.cs" />
+    <Compile Include="DisplayStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DisplayStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Base\DisplayViewModelBase.cs" />
+    <Compile Include="Models\Base\DomainObjectEditorViewModelBase.cs" />
+    <Compile Include="Models\Base\DomainObjectViewModelBase.cs" />
     <Compile Include="Models\Base\EditorViewModelBase.cs" />
     <Compile Include="Models\CreateUserViewModel.cs" />
     <Compile Include="Models\ProjectEditorViewModel.cs" />
@@ -354,6 +361,12 @@
       <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
       <Name>HomeScrum.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DisplayStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DisplayStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

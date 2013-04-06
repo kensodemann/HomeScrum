@@ -59,7 +59,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Domain\AcceptanceCriteriaStatus.cs" />
-    <Compile Include="Domain\DataObjectBase.cs" />
+    <Compile Include="Domain\DomainObjectBase.cs" />
     <Compile Include="Domain\Project.cs" />
     <Compile Include="Domain\ProjectHistory.cs" />
     <Compile Include="Domain\ProjectStatus.cs" />

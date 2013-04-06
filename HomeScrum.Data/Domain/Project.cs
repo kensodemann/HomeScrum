@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class Project : DataObjectBase
+   public class Project : DomainObjectBase
    {
       public Project()
          : base() { }

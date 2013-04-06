@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    public abstract class DomainObjectControllerTestBase<ModelT>
-      where ModelT : DataObjectBase, new()
+      where ModelT : DomainObjectBase, new()
    {
       protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
@@ -21,6 +21,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
 
+      [ClassInitialize]
+      public void InitiailizeTestClass( TestContext context )
+      {
+         MapperConfig.RegisterMappings();
+      }
+      
       public virtual void InitializeTest()
       {
          _repository = new Mock<IRepository<ModelT>>();

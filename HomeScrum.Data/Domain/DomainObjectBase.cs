@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class DataObjectBase
+   public class DomainObjectBase
    {
-      public DataObjectBase() { }
+      public DomainObjectBase() { }
 
-      public DataObjectBase( DataObjectBase model )
+      public DomainObjectBase( DomainObjectBase model )
       {
          this.Id = model.Id;
          this.Name = model.Name;

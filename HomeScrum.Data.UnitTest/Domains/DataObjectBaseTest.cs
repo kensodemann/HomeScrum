@@ -11,7 +11,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void NameDisplayNameAndPrompt()
       {
-         var model = new DataObjectBase();
+         var model = new DomainObjectBase();
 
          var display = AttributeHelper.GetDisplayAttribute( () => model.Name );
 
@@ -26,7 +26,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void NameIsRequired()
       {
-         var model = new DataObjectBase();
+         var model = new DomainObjectBase();
 
          var required = AttributeHelper.GetRequiredAttribute( () => model.Name );
 
@@ -39,7 +39,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void DescriptionDisplayNameAndPrompt()
       {
-         var model = new DataObjectBase();
+         var model = new DomainObjectBase();
 
          var display = AttributeHelper.GetDisplayAttribute( () => model.Description );
 
@@ -54,14 +54,14 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void CopyConstructor_CopiesAllProperties()
       {
-         var model = new DataObjectBase()
+         var model = new DomainObjectBase()
          {
             Id = Guid.NewGuid(),
             Name = "New Name",
             Description = "New Description"
          };
 
-         var newModel = new DataObjectBase( model );
+         var newModel = new DomainObjectBase( model );
 
          Assert.AreNotSame( model, newModel );
          Assert.AreEqual( model.Id, newModel.Id );
