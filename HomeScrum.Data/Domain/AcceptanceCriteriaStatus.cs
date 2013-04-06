@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class AcceptanceCriteriaStatus : SystemDataObject
+   public class AcceptanceCriteriaStatus : SystemDomainObject
    {
       public AcceptanceCriteriaStatus()
          : base() { }

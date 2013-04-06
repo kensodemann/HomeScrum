@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomeScrum.Data.Domain
 {
-   public class WorkItemStatus : SystemDataObject
+   public class WorkItemStatus : SystemDomainObject
    {
       public WorkItemStatus()
          : base() { }

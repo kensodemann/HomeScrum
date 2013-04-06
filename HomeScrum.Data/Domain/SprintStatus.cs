@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class SprintStatus : SystemDataObject
+   public class SprintStatus : SystemDomainObject
    {
       public SprintStatus()
          : base() { }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Validators
 {
-   public class SystemDataObjectValidator<DataObjectType> : IValidator<DataObjectType> where DataObjectType : SystemDataObject
+   public class SystemDataObjectValidator<DataObjectType> : IValidator<DataObjectType> where DataObjectType : SystemDomainObject
    {
       [Inject]
       public SystemDataObjectValidator( IRepository<DataObjectType> repository )

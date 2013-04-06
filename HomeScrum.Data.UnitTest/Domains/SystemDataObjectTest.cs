@@ -11,7 +11,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void StatusCdIsI_IfNotAllowUse()
       {
-         var model = new SystemDataObject();
+         var model = new SystemDomainObject();
 
          model.AllowUse = false;
 
@@ -22,7 +22,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void StatusCdIsA_IfAllowUse()
       {
-         var model = new SystemDataObject();
+         var model = new SystemDomainObject();
 
          model.AllowUse = true;
 
@@ -33,7 +33,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void AllowUseName()
       {
-         var model = new SystemDataObject();
+         var model = new SystemDomainObject();
 
          var display = AttributeHelper.GetDisplayAttribute( () => model.AllowUse );
 
@@ -46,7 +46,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void CopyConstructor_CopiesAllProperties()
       {
-         var model = new SystemDataObject()
+         var model = new SystemDomainObject()
          {
             Id = Guid.NewGuid(),
             Name = "New Name",
@@ -55,7 +55,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             IsPredefined = true
          };
 
-         var newModel = new SystemDataObject( model );
+         var newModel = new SystemDomainObject( model );
 
          Assert.AreNotSame( model, newModel );
          Assert.AreEqual( model.Id, newModel.Id );

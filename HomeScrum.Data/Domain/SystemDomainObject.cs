@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class SystemDataObject : DomainObjectBase
+   public class SystemDomainObject : DomainObjectBase
    {
-      public SystemDataObject()
+      public SystemDomainObject()
          : base() { }
 
-      public SystemDataObject( SystemDataObject model )
+      public SystemDomainObject( SystemDomainObject model )
          : base( model )
       {
          this.StatusCd = model.StatusCd;

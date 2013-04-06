@@ -18,7 +18,7 @@ namespace HomeScrum.Web.Extensions
       }
 
       public static IEnumerable<SelectListItem> ToSelectList<ModelT>( this IEnumerable<ModelT> collection, Guid selectedId = default( Guid ) )
-         where ModelT : SystemDataObject
+         where ModelT : SystemDomainObject
       {
          return collection
             .OrderBy( x => x.Name, new CaseInsensitiveComparer() )
