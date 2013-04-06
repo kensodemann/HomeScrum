@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
@@ -76,6 +79,7 @@
     <Compile Include="Providers\HomeScrumMembershipProviderTest.cs" />
     <Compile Include="ViewModels\EditUserViewModelTest.cs" />
     <Compile Include="ViewModels\CreateUserViewModelTest.cs" />
+    <Compile Include="ViewModels\DomainMappingTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.Test.Utility\HomeScrum.Common.Test.Utility.csproj">

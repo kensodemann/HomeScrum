@@ -22,7 +22,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected abstract ModelT CreateNewModel();
 
       [ClassInitialize]
-      public void InitiailizeTestClass( TestContext context )
+      public static void InitiailizeTestClass( TestContext context )
       {
          MapperConfig.RegisterMappings();
       }
