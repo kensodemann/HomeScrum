@@ -166,13 +166,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AcceptanceCriteriaStatusEditorViewModel.cs" />
+    <Compile Include="Models\AcceptanceCriteriaStatusViewModel.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Base\DisplayViewModelBase.cs" />
-    <Compile Include="Models\Base\DomainObjectEditorViewModelBase.cs" />
-    <Compile Include="Models\Base\DomainObjectViewModelBase.cs" />
-    <Compile Include="Models\Base\EditorViewModelBase.cs" />
-    <Compile Include="Models\Base\SystemDomainObjectEditorViewModelBase.cs" />
-    <Compile Include="Models\Base\SystemDomainObjectViewModelBase.cs" />
+    <Compile Include="Models\Base\DisplayViewModel.cs" />
+    <Compile Include="Models\Base\DomainObjectEditorViewModel.cs" />
+    <Compile Include="Models\Base\DomainObjectViewModel.cs" />
+    <Compile Include="Models\Base\EditorViewModel.cs" />
+    <Compile Include="Models\Base\SystemDomainObjectEditorViewModel.cs" />
+    <Compile Include="Models\Base\SystemDomainObjectViewModel.cs" />
     <Compile Include="Models\CreateUserViewModel.cs" />
     <Compile Include="Models\ProjectEditorViewModel.cs" />
     <Compile Include="Models\EditUserViewModel.cs" />
