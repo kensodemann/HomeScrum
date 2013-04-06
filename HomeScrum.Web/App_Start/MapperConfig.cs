@@ -27,9 +27,11 @@ namespace HomeScrum.Web
             .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>();
          Mapper.CreateMap<SystemDomainObjectEditorViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
+            .Include<ProjectStatusEditorViewModel, ProjectStatus>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorStatusCodeResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>();
+         Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>();
       }
 
       private static void MapViewModelsToDomainObjects()
@@ -38,9 +40,11 @@ namespace HomeScrum.Web
             .Include<SystemDomainObjectViewModel, SystemDomainObject>();
          Mapper.CreateMap<SystemDomainObjectViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>()
+            .Include<ProjectStatusViewModel, ProjectStatus>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>();
+         Mapper.CreateMap<ProjectStatusViewModel, ProjectStatus>();
       }
 
       private static void MapDomainObjectsToEditorViewModels()
@@ -49,9 +53,11 @@ namespace HomeScrum.Web
             .Include<SystemDomainObject, SystemDomainObjectEditorViewModel>();
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectEditorViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
+            .Include<ProjectStatus, ProjectStatusEditorViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>();
+         Mapper.CreateMap<ProjectStatus, ProjectStatusEditorViewModel>();
       }
 
       private static void MapDomainObjectsToViewModels()
@@ -60,9 +66,11 @@ namespace HomeScrum.Web
             .Include<SystemDomainObject, SystemDomainObjectViewModel>();
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>()
+            .Include<ProjectStatus, ProjectStatusViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>();
+         Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>();
       }
 
 
