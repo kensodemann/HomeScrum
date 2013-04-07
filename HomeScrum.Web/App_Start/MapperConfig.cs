@@ -28,10 +28,16 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SystemDomainObjectEditorViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
             .Include<ProjectStatusEditorViewModel, ProjectStatus>()
+            .Include<SprintStatusEditorViewModel, SprintStatus>()
+            .Include<WorkItemStatusEditorViewModel, WorkItemStatus>()
+            .Include<WorkItemTypeEditorViewModel, WorkItemType>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorStatusCodeResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>();
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>();
+         Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>();
+         Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>();
+         Mapper.CreateMap<WorkItemTypeEditorViewModel, WorkItemType>();
       }
 
       private static void MapViewModelsToDomainObjects()
@@ -41,10 +47,16 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SystemDomainObjectViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>()
             .Include<ProjectStatusViewModel, ProjectStatus>()
+            .Include<SprintStatusViewModel, SprintStatus>()
+            .Include<WorkItemStatusViewModel, WorkItemStatus>()
+            .Include<WorkItemTypeViewModel, WorkItemType>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>();
          Mapper.CreateMap<ProjectStatusViewModel, ProjectStatus>();
+         Mapper.CreateMap<SprintStatusViewModel, SprintStatus>();
+         Mapper.CreateMap<WorkItemStatusViewModel, WorkItemStatus>();
+         Mapper.CreateMap<WorkItemTypeViewModel, WorkItemType>();
       }
 
       private static void MapDomainObjectsToEditorViewModels()
@@ -54,10 +66,16 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectEditorViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
             .Include<ProjectStatus, ProjectStatusEditorViewModel>()
+            .Include<SprintStatus, SprintStatusEditorViewModel>()
+            .Include<WorkItemStatus, WorkItemStatusEditorViewModel>()
+            .Include<WorkItemType, WorkItemTypeEditorViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>();
          Mapper.CreateMap<ProjectStatus, ProjectStatusEditorViewModel>();
+         Mapper.CreateMap<SprintStatus, SprintStatusEditorViewModel>();
+         Mapper.CreateMap<WorkItemStatus, WorkItemStatusEditorViewModel>();
+         Mapper.CreateMap<WorkItemType, WorkItemTypeEditorViewModel>();
       }
 
       private static void MapDomainObjectsToViewModels()
@@ -67,10 +85,16 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>()
             .Include<ProjectStatus, ProjectStatusViewModel>()
+            .Include<SprintStatus, SprintStatusViewModel>()
+            .Include<WorkItemStatus, WorkItemStatusViewModel>()
+            .Include<WorkItemType, WorkItemTypeViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>();
          Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>();
+         Mapper.CreateMap<SprintStatus, SprintStatusViewModel>();
+         Mapper.CreateMap<WorkItemStatus, WorkItemStatusViewModel>();
+         Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
       }
 
 

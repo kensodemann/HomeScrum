@@ -12,6 +12,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
    [TestClass]
    public class DomainMappingTest
    {
+      #region Initialization
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
       {
@@ -29,7 +30,9 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       {
          Mapper.AssertConfigurationIsValid();
       }
+      #endregion
 
+      #region Acceptance Criteria Status
       [TestMethod]
       public void CanMapAcceptanceCriteriaStatus_DomainToViewModel()
       {
@@ -54,7 +57,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          };
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
 
-         Assert.IsInstanceOfType( domainModel, typeof(AcceptanceCriteriaStatus) );
+         Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriteriaStatus ) );
          Assert.AreEqual( 'I', ((AcceptanceCriteriaStatus)domainModel).StatusCd );
       }
 
@@ -85,7 +88,9 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriteriaStatus ) );
          Assert.AreEqual( 'A', ((AcceptanceCriteriaStatus)domainModel).StatusCd );
       }
+      #endregion
 
+      #region Project Status
       [TestMethod]
       public void CanMapProjectStatus_DomainToViewModel()
       {
@@ -141,5 +146,180 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsInstanceOfType( domainModel, typeof( ProjectStatus ) );
          Assert.AreEqual( 'A', ((ProjectStatus)domainModel).StatusCd );
       }
+      #endregion
+
+      #region Sprint Status
+      [TestMethod]
+      public void CanMapSprintStatus_DomainToViewModel()
+      {
+         var domainModel = SprintStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( SprintStatusViewModel ) );
+         Assert.IsTrue( ((SprintStatusViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapSprintStatus_ViewModelToDomain()
+      {
+         var viewModel = new SprintStatusViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsOpenStatus = true,
+            IsPredefined = false,
+            AllowUse = false
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( SprintStatus ) );
+         Assert.AreEqual( 'I', ((SprintStatus)domainModel).StatusCd );
+      }
+
+      [TestMethod]
+      public void CanMapSprintStatus_DomainToEditorViewModel()
+      {
+         var domainModel = SprintStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( SprintStatusEditorViewModel ) );
+         Assert.IsFalse( ((SprintStatusEditorViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapSprintStatus_EditorViewModelToDomain()
+      {
+         var viewModel = new SprintStatusEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsOpenStatus = true,
+            IsPredefined = false,
+            AllowUse = true
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( SprintStatus ) );
+         Assert.AreEqual( 'A', ((SprintStatus)domainModel).StatusCd );
+      }
+      #endregion
+
+      #region Work Item Status
+      [TestMethod]
+      public void CanMapWorkItemStatus_DomainToViewModel()
+      {
+         var domainModel = WorkItemStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( WorkItemStatusViewModel ) );
+         Assert.IsTrue( ((WorkItemStatusViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapWorkItemStatus_ViewModelToDomain()
+      {
+         var viewModel = new WorkItemStatusViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsOpenStatus = true,
+            IsPredefined = false,
+            AllowUse = false
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( WorkItemStatus ) );
+         Assert.AreEqual( 'I', ((WorkItemStatus)domainModel).StatusCd );
+      }
+
+      [TestMethod]
+      public void CanMapWorkItemStatus_DomainToEditorViewModel()
+      {
+         var domainModel = WorkItemStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( WorkItemStatusEditorViewModel ) );
+         Assert.IsFalse( ((WorkItemStatusEditorViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapWorkItemStatus_EditorViewModelToDomain()
+      {
+         var viewModel = new WorkItemStatusEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsOpenStatus = true,
+            IsPredefined = false,
+            AllowUse = true
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( WorkItemStatus ) );
+         Assert.AreEqual( 'A', ((WorkItemStatus)domainModel).StatusCd );
+      }
+      #endregion
+
+      #region Work Item Type
+      [TestMethod]
+      public void CanMapWorkItemType_DomainToViewModel()
+      {
+         var domainModel = WorkItemTypes.ModelData.ToArray().First( x => x.StatusCd == 'A' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( WorkItemTypeViewModel ) );
+         Assert.IsTrue( ((WorkItemTypeViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapWorkItemType_ViewModelToDomain()
+      {
+         var viewModel = new WorkItemTypeViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsTask = true,
+            IsPredefined = false,
+            AllowUse = false
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( WorkItemType ) );
+         Assert.AreEqual( 'I', ((WorkItemType)domainModel).StatusCd );
+      }
+
+      [TestMethod]
+      public void CanMapWorkItemType_DomainToEditorViewModel()
+      {
+         var domainModel = WorkItemTypes.ModelData.ToArray().First( x => x.StatusCd == 'I' );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( WorkItemTypeEditorViewModel ) );
+         Assert.IsFalse( ((WorkItemTypeEditorViewModel)viewModel).AllowUse );
+      }
+
+      [TestMethod]
+      public void CanMapWorkItemType_EditorViewModelToDomain()
+      {
+         var viewModel = new WorkItemTypeEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            IsTask = true,
+            IsPredefined = false,
+            AllowUse = true
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( WorkItemType ) );
+         Assert.AreEqual( 'A', ((WorkItemType)domainModel).StatusCd );
+      }
+      #endregion
    }
 }
