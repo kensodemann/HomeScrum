@@ -6,6 +6,11 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Web.Models;
 using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using HomeScrum.Data.Repositories;
+using Ninject;
+using Ninject.MockingKernel.Moq;
+using Ninject.MockingKernel;
 
 namespace HomeScrum.Web.UnitTest.ViewModels
 {
@@ -16,7 +21,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
       {
-         MapperConfig.RegisterMappings();
          AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
          ProjectStatuses.CreateTestModelData( initializeIds: true );
          SprintStatuses.CreateTestModelData( initializeIds: true );
@@ -25,7 +29,17 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Projects.CreateTestModelData( initializeIds: true );
          Users.CreateTestModelData( initializeIds: true );
+
+         _iocKernel = new MoqMockingKernel();
+         _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
+
+         Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
+         MapperConfig.RegisterMappings();
       }
+
+      private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
+      private static MoqMockingKernel _iocKernel;
+      #endregion
 
 
       [TestMethod]
@@ -33,7 +47,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       {
          Mapper.AssertConfigurationIsValid();
       }
-      #endregion
 
       #region Acceptance Criteria Status
       [TestMethod]
@@ -360,6 +373,11 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             LastModifiedUserId = Users.ModelData[0].Id,
             ProjectStatusId = ProjectStatuses.ModelData[0].Id
          };
+         _projectStatusRepository
+            .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
+            .Returns( ProjectStatuses.ModelData[0] )
+            .Verifiable();
+
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( Project ) );

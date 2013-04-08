@@ -13,6 +13,7 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Data.SqlServer;
    using HomeScrum.Data.Validators;
    using HomeScrum.Web.Providers;
+   using AutoMapper;
 
    public static class NinjectWebCommon
    {
@@ -59,6 +60,8 @@ namespace HomeScrum.Web.App_Start
          RegisterRepositories( kernel );
          RegisterValidators( kernel );
          RegisterProviders( kernel );
+
+         Mapper.Initialize( map => map.ConstructServicesUsing( x => kernel.Get( x ) ) );
       }
 
       private static void RegisterRepositories( IKernel kernel )

@@ -8,6 +8,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer;
 using HomeScrum.Web.Models;
 using HomeScrum.Web.Models.Base;
+using Ninject;
 
 namespace HomeScrum.Web
 {
@@ -15,18 +16,18 @@ namespace HomeScrum.Web
    {
       public static void RegisterMappings()
       {
-         MapDomainObjectsToViewModels();
+         MapDomainsToViewModels();
+         MapDomainsToEditorViewModels();
 
          // TODO: Strongly consider removing these.  We really should have no reason to map in this direction.
          //       If we find ourselves mapping in this direction, we need to ask why.
-         MapDomainObjectsToEditorViewModels();
-
          MapViewModelsToDomainObjects();
-         MapEditorViewModelsToDomainObjects();
+         
+         MapEditorViewModelsToDomains();
       }
 
 
-      private static void MapEditorViewModelsToDomainObjects()
+      private static void MapEditorViewModelsToDomains()
       {
          Mapper.CreateMap<DomainObjectEditorViewModel, DomainObjectBase>()
             .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>()
@@ -46,7 +47,9 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemTypeEditorViewModel, WorkItemType>();
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
-            .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) );
+            .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
+            .ForMember( dest => dest.ProjectStatus, opt => opt.ResolveUsing<ProjectStatusResolver>() )
+            .ConstructUsingServiceLocator();
       }
 
       private static void MapViewModelsToDomainObjects()
@@ -68,10 +71,11 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemTypeViewModel, WorkItemType>();
       }
 
-      private static void MapDomainObjectsToEditorViewModels()
+      private static void MapDomainsToEditorViewModels()
       {
          Mapper.CreateMap<DomainObjectBase, DomainObjectEditorViewModel>()
-            .Include<SystemDomainObject, SystemDomainObjectEditorViewModel>();
+            .Include<SystemDomainObject, SystemDomainObjectEditorViewModel>()
+            .Include<Project, ProjectEditorViewModel>();
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectEditorViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
             .Include<ProjectStatus, ProjectStatusEditorViewModel>()
@@ -85,12 +89,17 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusEditorViewModel>();
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusEditorViewModel>();
          Mapper.CreateMap<WorkItemType, WorkItemTypeEditorViewModel>();
+
+         Mapper.CreateMap<Project, ProjectEditorViewModel>()
+            .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
+            .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
       }
 
-      private static void MapDomainObjectsToViewModels()
+      private static void MapDomainsToViewModels()
       {
          Mapper.CreateMap<DomainObjectBase, DomainObjectViewModel>()
-            .Include<SystemDomainObject, SystemDomainObjectViewModel>();
+            .Include<SystemDomainObject, SystemDomainObjectViewModel>()
+            .Include<Project, ProjectViewModel>();
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>()
             .Include<ProjectStatus, ProjectStatusViewModel>()
@@ -104,6 +113,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>();
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusViewModel>();
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
+
+         Mapper.CreateMap<Project, ProjectViewModel>();
       }
 
 
@@ -139,11 +150,17 @@ namespace HomeScrum.Web
 
       public class ProjectStatusResolver : ValueResolver<ProjectEditorViewModel, ProjectStatus>
       {
+         [Inject]
+         public ProjectStatusResolver( IRepository<ProjectStatus> repository )
+         {
+            _projectStatusRepository = repository;
+         }
+         private readonly IRepository<ProjectStatus> _projectStatusRepository;
+
+
          protected override ProjectStatus ResolveCore( ProjectEditorViewModel source )
          {
-            // TODO: Configure the mapper to use Ninject and inject the repo.
-            // http://stackoverflow.com/questions/4074609/how-do-i-use-automapper-with-ninject-web-mvc
-            return MapperConfig.ProjectStatusRepository.Get( source.Id );
+            return _projectStatusRepository.Get( source.ProjectStatusId );
          }
       }
       #endregion
