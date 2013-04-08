@@ -22,6 +22,9 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          SprintStatuses.CreateTestModelData( initializeIds: true );
          WorkItemStatuses.CreateTestModelData( initializeIds: true );
          WorkItemTypes.CreateTestModelData( initializeIds: true );
+
+         Projects.CreateTestModelData( initializeIds: true );
+         Users.CreateTestModelData( initializeIds: true );
       }
 
 
@@ -319,6 +322,48 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.IsInstanceOfType( domainModel, typeof( WorkItemType ) );
          Assert.AreEqual( 'A', ((WorkItemType)domainModel).StatusCd );
+      }
+      #endregion
+
+
+      #region Project
+      [TestMethod]
+      public void CanMapProject_DomainToViewModel()
+      {
+         var domainModel = Projects.ModelData[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( ProjectViewModel ) );
+         Assert.AreEqual( domainModel.ProjectStatus.Name, ((ProjectViewModel)viewModel).ProjectStatusName );
+      }
+
+
+      [TestMethod]
+      public void CanMapProject_DomainToEditorViewModel()
+      {
+         var domainModel = Projects.ModelData.ToArray()[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( ProjectEditorViewModel ) );
+         Assert.AreEqual( domainModel.ProjectStatus.Id, ((ProjectEditorViewModel)viewModel).ProjectStatusId );
+         Assert.AreEqual( domainModel.ProjectStatus.Name, ((ProjectEditorViewModel)viewModel).ProjectStatusName );
+      }
+
+      [TestMethod]
+      public void CanMapProject_EditorViewModelToDomain()
+      {
+         var viewModel = new ProjectEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test",
+            LastModifiedUserId = Users.ModelData[0].Id,
+            ProjectStatusId = ProjectStatuses.ModelData[0].Id
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+
+         Assert.IsInstanceOfType( domainModel, typeof( Project ) );
+         Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).ProjectStatus );
       }
       #endregion
    }

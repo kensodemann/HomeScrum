@@ -7,13 +7,12 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Models
 {
-   public class ProjectEditorViewModel : Project
+   public class ProjectEditorViewModel : Base.DomainObjectEditorViewModel
    {
-      public ProjectEditorViewModel()
-         : base() { }
+      public Guid LastModifiedUserId { get; set; }
 
-      public ProjectEditorViewModel( Project model )
-         : base( model ) { }
+      public Guid ProjectStatusId { get; set; }
+      public string ProjectStatusName { get; set; }
 
       public IEnumerable<SelectListItem> ProjectStatuses { get; set; }
    }

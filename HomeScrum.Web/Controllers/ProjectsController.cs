@@ -33,53 +33,53 @@ namespace HomeScrum.Web.Controllers
          return View( model );
       }
 
-      //
-      // POST: /Projects/Create
-      [HttpPost]
-      public virtual ActionResult Create( ProjectEditorViewModel model )
-      {
-         Validate( model, TransactionType.Insert );
+      ////
+      //// POST: /Projects/Create
+      //[HttpPost]
+      //public virtual ActionResult Create( ProjectEditorViewModel model )
+      //{
+      //   Validate( model, TransactionType.Insert );
 
-         if (ModelState.IsValid)
-         {
-            Repository.Add( new Project( model ) );
-            return RedirectToAction( () => this.Index() );
-         }
+      //   if (ModelState.IsValid)
+      //   {
+      //      Repository.Add( new Project( model ) );
+      //      return RedirectToAction( () => this.Index() );
+      //   }
 
-         model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
-         return View( model );
-      }
+      //   model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
+      //   return View( model );
+      //}
 
-      //
-      // GET: /Projects/Edit/Guid
-      public override ActionResult Edit( Guid id )
-      {
-         var model = Repository.Get( id );
+      ////
+      //// GET: /Projects/Edit/Guid
+      //public override ActionResult Edit( Guid id )
+      //{
+      //   var model = Repository.Get( id );
 
-         if (model != null)
-         {
-            var viewModel = new ProjectEditorViewModel( model );
-            viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( viewModel.ProjectStatus.Id );
-            return View( viewModel );
-         }
+      //   if (model != null)
+      //   {
+      //      var viewModel = new ProjectEditorViewModel( model );
+      //      viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( viewModel.ProjectStatus.Id );
+      //      return View( viewModel );
+      //   }
 
-         return HttpNotFound();
-      }
+      //   return HttpNotFound();
+      //}
 
-      //
-      // POST: /Projects/Edit/Guid
-      [HttpPost]
-      public virtual ActionResult Edit( ProjectEditorViewModel model )
-      {
-         Validate( model, TransactionType.Update );
+      ////
+      //// POST: /Projects/Edit/Guid
+      //[HttpPost]
+      //public virtual ActionResult Edit( ProjectEditorViewModel model )
+      //{
+      //   Validate( model, TransactionType.Update );
 
-         if (ModelState.IsValid)
-         {
-            Repository.Update( new Project( model ) );
-            return RedirectToAction( () => this.Index() );
-         }
+      //   if (ModelState.IsValid)
+      //   {
+      //      Repository.Update( new Project( model ) );
+      //      return RedirectToAction( () => this.Index() );
+      //   }
 
-         return View( model );
-      }
+      //   return View( model );
+      //}
    }
 }

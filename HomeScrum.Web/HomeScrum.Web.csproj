@@ -180,6 +180,7 @@
     <Compile Include="Models\EditUserViewModel.cs" />
     <Compile Include="Models\ProjectStatusEditorViewModel.cs" />
     <Compile Include="Models\ProjectStatusViewModel.cs" />
+    <Compile Include="Models\ProjectViewModel.cs" />
     <Compile Include="Models\SprintStatusEditorViewModel.cs" />
     <Compile Include="Models\SprintStatusViewModel.cs" />
     <Compile Include="Models\UserEditorViewModel.cs" />

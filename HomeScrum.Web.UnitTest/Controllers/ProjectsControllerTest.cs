@@ -139,261 +139,261 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
 
-      [TestMethod]
-      public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
-      {
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
+      //{
+      //   var model = new ProjectEditorViewModel();
 
-         var result = _controller.Create( model );
+      //   var result = _controller.Create( model );
 
-         _projectRepository.Verify( x => x.Add( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
-      }
+      //   _projectRepository.Verify( x => x.Add( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
-      {
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_RedirectsToIndexIfModelIsValid()
+      //{
+      //   var model = new ProjectEditorViewModel();
 
-         var result = _controller.Create( model ) as RedirectToRouteResult;
+      //   var result = _controller.Create( model ) as RedirectToRouteResult;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
+      //   Assert.IsNotNull( result );
+      //   Assert.AreEqual( 1, result.RouteValues.Count );
 
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
-      }
+      //   object value;
+      //   result.RouteValues.TryGetValue( "action", out value );
+      //   Assert.AreEqual( "Index", value.ToString() );
+      //}
 
-      [TestMethod]
-      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
-      {
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      //{
+      //   var model = new ProjectEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model );
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( model );
 
-         _projectRepository.Verify( x => x.Add( It.IsAny<Project>() ), Times.Never() );
-      }
+      //   _projectRepository.Verify( x => x.Add( It.IsAny<Project>() ), Times.Never() );
+      //}
 
-      [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
-      {
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_ReturnsViewIfModelIsNotValid()
+      //{
+      //   var model = new ProjectEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model ) as ViewResult;
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( model ) as ViewResult;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( model, result.Model );
-      }
+      //   Assert.IsNotNull( result );
+      //   Assert.AreEqual( model, result.Model );
+      //}
 
-      [TestMethod]
-      public void CreatePost_InitializesProjectStatusList_NothingSelected()
-      {
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_InitializesProjectStatusList_NothingSelected()
+      //{
+      //   var model = new ProjectEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model ) as ViewResult;
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( model ) as ViewResult;
 
-         var returnedModel = result.Model as ProjectEditorViewModel;
+      //   var returnedModel = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), returnedModel.ProjectStatuses.Count() );
-         foreach (var item in returnedModel.ProjectStatuses)
-         {
-            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
-            Assert.AreEqual( status.Name, item.Text );
-            Assert.IsFalse( item.Selected );
-         }
-      }
+      //   Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), returnedModel.ProjectStatuses.Count() );
+      //   foreach (var item in returnedModel.ProjectStatuses)
+      //   {
+      //      var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+      //      Assert.AreEqual( status.Name, item.Text );
+      //      Assert.IsFalse( item.Selected );
+      //   }
+      //}
 
-      [TestMethod]
-      public void CreatePost_PassesModelToValidator()
-      {
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_PassesModelToValidator()
+      //{
+      //   var model = new ProjectEditorViewModel();
 
-         _controller.Create( model );
+      //   _controller.Create( model );
 
-         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Insert ), Times.Once() );
-      }
+      //   _validator.Verify( x => x.ModelIsValid( model, TransactionType.Insert ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
-      {
-         var messages = CreateStockErrorMessages();
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      //{
+      //   var messages = CreateStockErrorMessages();
+      //   var model = new ProjectEditorViewModel();
 
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
+      //   _validator.SetupGet( x => x.Messages ).Returns( messages );
+      //   _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Create( model );
+      //   var result = _controller.Create( model );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
-         foreach (var message in messages)
-         {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
-         }
-         Assert.IsTrue( result is ViewResult );
-      }
+      //   Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+      //   foreach (var message in messages)
+      //   {
+      //      Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+      //   }
+      //   Assert.IsTrue( result is ViewResult );
+      //}
 
-      [TestMethod]
-      public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
-      {
-         var messages = CreateStockErrorMessages();
-         var model = new ProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      //{
+      //   var messages = CreateStockErrorMessages();
+      //   var model = new ProjectEditorViewModel();
 
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
+      //   _validator.SetupGet( x => x.Messages ).Returns( messages );
+      //   _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Create( model );
+      //   var result = _controller.Create( model );
 
-         Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
-      }
+      //   Assert.AreEqual( 0, _controller.ModelState.Count );
+      //   Assert.IsNotNull( result );
+      //   Assert.IsTrue( result is RedirectToRouteResult );
+      //}
 
-      [TestMethod]
-      public void EditGet_CallsRepositoryGet()
-      {
-         Guid id = Guid.NewGuid();
-         _controller.Edit( id );
+      //[TestMethod]
+      //public void EditGet_CallsRepositoryGet()
+      //{
+      //   Guid id = Guid.NewGuid();
+      //   _controller.Edit( id );
 
-         _projectRepository.Verify( x => x.Get( id ), Times.Once() );
-      }
+      //   _projectRepository.Verify( x => x.Get( id ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void EditGet_ReturnsViewWithModel()
-      {
-         var model = Projects.ModelData[3];
-         _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+      //[TestMethod]
+      //public void EditGet_ReturnsViewWithModel()
+      //{
+      //   var model = Projects.ModelData[3];
+      //   _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+      //   var result = _controller.Edit( model.Id ) as ViewResult;
 
-         Assert.IsNotNull( result );
-         var returnedModel = result.Model as ProjectEditorViewModel;
-         Assert.IsNotNull( returnedModel );
-         Assert.AreEqual( model.Id, returnedModel.Id );
-      }
+      //   Assert.IsNotNull( result );
+      //   var returnedModel = result.Model as ProjectEditorViewModel;
+      //   Assert.IsNotNull( returnedModel );
+      //   Assert.AreEqual( model.Id, returnedModel.Id );
+      //}
 
-      [TestMethod]
-      public void EditGet_InitializesProjectStatuses_ProjectStatusSelected()
-      {
-         var model = Projects.ModelData[0];
-         _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+      //[TestMethod]
+      //public void EditGet_InitializesProjectStatuses_ProjectStatusSelected()
+      //{
+      //   var model = Projects.ModelData[0];
+      //   _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
-         var viewModel = result.Model as ProjectEditorViewModel;
+      //   var result = _controller.Edit( model.Id ) as ViewResult;
+      //   var viewModel = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), viewModel.ProjectStatuses.Count() );
-         foreach (var item in viewModel.ProjectStatuses)
-         {
-            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
-            Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (model.ProjectStatus.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.ProjectStatus.Id.ToString() == item.Value && item.Selected) );
-         }
-      }
+      //   Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), viewModel.ProjectStatuses.Count() );
+      //   foreach (var item in viewModel.ProjectStatuses)
+      //   {
+      //      var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+      //      Assert.AreEqual( status.Name, item.Text );
+      //      Assert.IsTrue( (model.ProjectStatus.Id.ToString() != item.Value && !item.Selected) ||
+      //                     (model.ProjectStatus.Id.ToString() == item.Value && item.Selected) );
+      //   }
+      //}
 
-      [TestMethod]
-      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
-      {
-         _projectRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as Project );
+      //[TestMethod]
+      //public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      //{
+      //   _projectRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as Project );
 
-         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+      //   var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
-         Assert.IsNotNull( result );
-      }
+      //   Assert.IsNotNull( result );
+      //}
 
-      [TestMethod]
-      public void EditPost_CallRepositoryUpdateIfModelValid()
-      {
-         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+      //[TestMethod]
+      //public void EditPost_CallRepositoryUpdateIfModelValid()
+      //{
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[2] );
 
-         _controller.Edit( model );
+      //   _controller.Edit( model );
 
-         _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
-      }
+      //   _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
-      {
-         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+      //[TestMethod]
+      //public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
+      //{
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[2] );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         _controller.Edit( model );
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   _controller.Edit( model );
 
-         _projectRepository.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
-      }
+      //   _projectRepository.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
+      //}
 
-      [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
-      {
-         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+      //[TestMethod]
+      //public void EditPost_RedirectsToIndexIfModelIsValid()
+      //{
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[2] );
 
-         var result = _controller.Edit( model ) as RedirectToRouteResult;
+      //   var result = _controller.Edit( model ) as RedirectToRouteResult;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
+      //   Assert.IsNotNull( result );
+      //   Assert.AreEqual( 1, result.RouteValues.Count );
 
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
-      }
+      //   object value;
+      //   result.RouteValues.TryGetValue( "action", out value );
+      //   Assert.AreEqual( "Index", value.ToString() );
+      //}
 
-      [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
-      {
-         var model = new ProjectEditorViewModel( Projects.ModelData[2] );
+      //[TestMethod]
+      //public void EditPost_ReturnsViewIfModelIsNotValid()
+      //{
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[2] );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( model ) as ViewResult;
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Edit( model ) as ViewResult;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( result.Model, model );
-      }
+      //   Assert.IsNotNull( result );
+      //   Assert.AreEqual( result.Model, model );
+      //}
 
-      [TestMethod]
-      public void EditPost_PassesModelToValidator()
-      {
-         var model = new ProjectEditorViewModel( Projects.ModelData[3] );
+      //[TestMethod]
+      //public void EditPost_PassesModelToValidator()
+      //{
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[3] );
 
-         _controller.Edit( model );
+      //   _controller.Edit( model );
 
-         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Update ), Times.Once() );
-      }
+      //   _validator.Verify( x => x.ModelIsValid( model, TransactionType.Update ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
-      {
-         var messages = CreateStockErrorMessages();
-         var model = new ProjectEditorViewModel( Projects.ModelData[3] );
+      //[TestMethod]
+      //public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      //{
+      //   var messages = CreateStockErrorMessages();
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[3] );
 
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
+      //   _validator.SetupGet( x => x.Messages ).Returns( messages );
+      //   _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Edit( model );
+      //   var result = _controller.Edit( model );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
-         foreach (var message in messages)
-         {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
-         }
-         Assert.IsTrue( result is ViewResult );
-      }
+      //   Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+      //   foreach (var message in messages)
+      //   {
+      //      Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+      //   }
+      //   Assert.IsTrue( result is ViewResult );
+      //}
 
-      [TestMethod]
-      public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
-      {
-         var messages = CreateStockErrorMessages();
-         var model = new ProjectEditorViewModel( Projects.ModelData[3] );
+      //[TestMethod]
+      //public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      //{
+      //   var messages = CreateStockErrorMessages();
+      //   var model = new ProjectEditorViewModel( Projects.ModelData[3] );
 
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
+      //   _validator.SetupGet( x => x.Messages ).Returns( messages );
+      //   _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Edit( model );
+      //   var result = _controller.Edit( model );
 
-         Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
-      }
+      //   Assert.AreEqual( 0, _controller.ModelState.Count );
+      //   Assert.IsNotNull( result );
+      //   Assert.IsTrue( result is RedirectToRouteResult );
+      //}
    }
 }

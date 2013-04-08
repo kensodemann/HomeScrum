@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using AutoMapper;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Repositories;
+using HomeScrum.Data.SqlServer;
 using HomeScrum.Web.Models;
 using HomeScrum.Web.Models.Base;
 
@@ -14,6 +16,9 @@ namespace HomeScrum.Web
       public static void RegisterMappings()
       {
          MapDomainObjectsToViewModels();
+
+         // TODO: Strongly consider removing these.  We really should have no reason to map in this direction.
+         //       If we find ourselves mapping in this direction, we need to ask why.
          MapDomainObjectsToEditorViewModels();
 
          MapViewModelsToDomainObjects();
@@ -24,7 +29,8 @@ namespace HomeScrum.Web
       private static void MapEditorViewModelsToDomainObjects()
       {
          Mapper.CreateMap<DomainObjectEditorViewModel, DomainObjectBase>()
-            .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>();
+            .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>()
+            .Include<ProjectEditorViewModel,Project>();
          Mapper.CreateMap<SystemDomainObjectEditorViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
             .Include<ProjectStatusEditorViewModel, ProjectStatus>()
@@ -38,6 +44,9 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>();
          Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>();
          Mapper.CreateMap<WorkItemTypeEditorViewModel, WorkItemType>();
+
+         Mapper.CreateMap<ProjectEditorViewModel, Project>()
+            .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) );
       }
 
       private static void MapViewModelsToDomainObjects()
@@ -98,6 +107,11 @@ namespace HomeScrum.Web
       }
 
 
+      #region Data Repositories
+      public static IRepository<ProjectStatus> ProjectStatusRepository = new Repository<ProjectStatus>();
+      #endregion
+
+
       #region Resolvers
       public class AllowUseResolver : ValueResolver<SystemDomainObject, bool>
       {
@@ -120,6 +134,16 @@ namespace HomeScrum.Web
          protected override char ResolveCore( SystemDomainObjectEditorViewModel source )
          {
             return source.AllowUse ? 'A' : 'I';
+         }
+      }
+
+      public class ProjectStatusResolver : ValueResolver<ProjectEditorViewModel, ProjectStatus>
+      {
+         protected override ProjectStatus ResolveCore( ProjectEditorViewModel source )
+         {
+            // TODO: Configure the mapper to use Ninject and inject the repo.
+            // http://stackoverflow.com/questions/4074609/how-do-i-use-automapper-with-ninject-web-mvc
+            return MapperConfig.ProjectStatusRepository.Get( source.Id );
          }
       }
       #endregion
