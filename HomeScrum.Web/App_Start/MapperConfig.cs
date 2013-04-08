@@ -129,7 +129,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
-         // TODO: Need a UserViewModel
+         Mapper.CreateMap<User, UserViewModel>();
       }
 
 

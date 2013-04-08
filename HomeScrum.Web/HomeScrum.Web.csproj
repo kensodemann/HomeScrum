@@ -184,6 +184,7 @@
     <Compile Include="Models\SprintStatusEditorViewModel.cs" />
     <Compile Include="Models\SprintStatusViewModel.cs" />
     <Compile Include="Models\UserEditorViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\WorkItemStatusEditorViewModel.cs" />
     <Compile Include="Models\WorkItemStatusViewModel.cs" />
     <Compile Include="Models\WorkItemTypeEditorViewModel.cs" />
