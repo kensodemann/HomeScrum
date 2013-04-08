@@ -22,7 +22,7 @@ namespace HomeScrum.Web
          // TODO: Strongly consider removing these.  We really should have no reason to map in this direction.
          //       If we find ourselves mapping in this direction, we need to ask why.
          MapViewModelsToDomainObjects();
-         
+
          MapEditorViewModelsToDomains();
       }
 
@@ -31,7 +31,7 @@ namespace HomeScrum.Web
       {
          Mapper.CreateMap<DomainObjectEditorViewModel, DomainObjectBase>()
             .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>()
-            .Include<ProjectEditorViewModel,Project>();
+            .Include<ProjectEditorViewModel, Project>();
          Mapper.CreateMap<SystemDomainObjectEditorViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
             .Include<ProjectStatusEditorViewModel, ProjectStatus>()
@@ -50,8 +50,16 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
             .ForMember( dest => dest.ProjectStatus, opt => opt.ResolveUsing<ProjectStatusResolver>() )
             .ConstructUsingServiceLocator();
+
+         Mapper.CreateMap<UserEditorViewModel, User>()
+            .Include<CreateUserViewModel, User>()
+            .Include<EditUserViewModel, User>()
+            .ForMember( dest => dest.StatusCd, opt => opt.Ignore() );
+         Mapper.CreateMap<CreateUserViewModel, User>();
+         Mapper.CreateMap<EditUserViewModel, User>();
       }
 
+      // TODO: Look at getting rid of this...
       private static void MapViewModelsToDomainObjects()
       {
          Mapper.CreateMap<DomainObjectViewModel, DomainObjectBase>()
@@ -93,6 +101,12 @@ namespace HomeScrum.Web
          Mapper.CreateMap<Project, ProjectEditorViewModel>()
             .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
+         Mapper.CreateMap<User, CreateUserViewModel>()
+            .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
+            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() );
+         Mapper.CreateMap<User, EditUserViewModel>()
+            .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
+            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() );
       }
 
       private static void MapDomainsToViewModels()
@@ -115,6 +129,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
+         // TODO: Need a UserViewModel
       }
 
 

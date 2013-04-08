@@ -8,12 +8,6 @@ namespace HomeScrum.Web.Models
 {
    public class EditUserViewModel : UserEditorViewModel
    {
-      public EditUserViewModel( User user )
-         : base( user ) { }
-
-      public EditUserViewModel()
-         : base() { }
-
       public override bool IsNewUser
       {
          get { return false; }

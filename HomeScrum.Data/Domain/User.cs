@@ -57,10 +57,5 @@ namespace HomeScrum.Data.Domain
          get { return StatusCd == 'A'; }
          set { StatusCd = value ? 'A' : 'I'; }
       }
-
-      //public virtual User ShallowCopy()
-      //{
-      //   return (User)this.MemberwiseClone();
-      //}
    }
 }

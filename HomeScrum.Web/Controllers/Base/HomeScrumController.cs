@@ -9,6 +9,9 @@ using HomeScrum.Data.Repositories;
 
 namespace HomeScrum.Web.Controllers.Base
 {
+   // TODOS:
+   //   1 - Rename to ReadOnlyController or some such thing
+   //   2 - Move anything that is not associated with a read-only operation up the tree
    public class HomeScrumController<ModelT> : Controller
    {
       private readonly IRepository<ModelT> _repository;

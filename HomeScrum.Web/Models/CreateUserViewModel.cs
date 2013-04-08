@@ -8,9 +8,6 @@ namespace HomeScrum.Web.Models
 {
    public class CreateUserViewModel : UserEditorViewModel
    {
-      public CreateUserViewModel()
-         : base() { }
-
       public override bool IsNewUser
       {
          get { return true; }

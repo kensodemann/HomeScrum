@@ -24,53 +24,53 @@ namespace HomeScrum.Web.Controllers
 
       //
       // POST: /Users/Create
-      [HttpPost]
-      public virtual ActionResult Create( CreateUserViewModel viewModel )
-      {
-         Validate( viewModel, TransactionType.Insert );
+      //[HttpPost]
+      //public virtual ActionResult Create( CreateUserViewModel viewModel )
+      //{
+      //   Validate( viewModel, TransactionType.Insert );
 
-         if (ModelState.IsValid)
-         {
-            Repository.Add( new User( viewModel ) );
-            _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
-            return RedirectToAction( () => this.Index() );
-         }
+      //   if (ModelState.IsValid)
+      //   {+
+      //      Repository.Add( new User( viewModel ) );
+      //      _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
+      //      return RedirectToAction( () => this.Index() );
+      //   }
 
-         return View();
-      }
+      //   return View();
+      //}
 
-      //
-      // GET: /ModelTs/Edit/Guid
-      public override ActionResult Edit( Guid id )
-      {
-         var model = Repository.Get( id );
-         if (model != null)
-         {
-            return View( new EditUserViewModel( model ) );
-         }
+      ////
+      //// GET: /ModelTs/Edit/Guid
+      //public override ActionResult Edit( Guid id )
+      //{
+      //   var model = Repository.Get( id );
+      //   if (model != null)
+      //   {
+      //      return View( new EditUserViewModel( model ) );
+      //   }
 
-         return HttpNotFound();
-      }
+      //   return HttpNotFound();
+      //}
 
-      //
-      // POST: /Users/Edit/5
-      [HttpPost]
-      public virtual ActionResult Edit( EditUserViewModel viewModel )
-      {
-         Validate( viewModel, TransactionType.Update );
+      ////
+      //// POST: /Users/Edit/5
+      //[HttpPost]
+      //public virtual ActionResult Edit( EditUserViewModel viewModel )
+      //{
+      //   Validate( viewModel, TransactionType.Update );
 
-         if (ModelState.IsValid)
-         {
-            User model = new User( viewModel );
-            Repository.Update( model );
+      //   if (ModelState.IsValid)
+      //   {
+      //      User model = new User( viewModel );
+      //      Repository.Update( model );
 
-            return RedirectToAction( () => this.Index() );
-         }
-         else
-         {
-            return View( viewModel );
-         }
-      }
+      //      return RedirectToAction( () => this.Index() );
+      //   }
+      //   else
+      //   {
+      //      return View( viewModel );
+      //   }
+      //}
 
 
       private void Validate( User model, TransactionType transactionType )
