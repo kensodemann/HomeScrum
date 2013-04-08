@@ -19,10 +19,6 @@ namespace HomeScrum.Web
          MapDomainsToViewModels();
          MapDomainsToEditorViewModels();
 
-         // TODO: Strongly consider removing these.  We really should have no reason to map in this direction.
-         //       If we find ourselves mapping in this direction, we need to ask why.
-         MapViewModelsToDomainObjects();
-
          MapEditorViewModelsToDomains();
       }
 
@@ -59,25 +55,6 @@ namespace HomeScrum.Web
          Mapper.CreateMap<EditUserViewModel, User>();
       }
 
-      // TODO: Look at getting rid of this...
-      private static void MapViewModelsToDomainObjects()
-      {
-         Mapper.CreateMap<DomainObjectViewModel, DomainObjectBase>()
-            .Include<SystemDomainObjectViewModel, SystemDomainObject>();
-         Mapper.CreateMap<SystemDomainObjectViewModel, SystemDomainObject>()
-            .Include<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>()
-            .Include<ProjectStatusViewModel, ProjectStatus>()
-            .Include<SprintStatusViewModel, SprintStatus>()
-            .Include<WorkItemStatusViewModel, WorkItemStatus>()
-            .Include<WorkItemTypeViewModel, WorkItemType>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
-
-         Mapper.CreateMap<AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatus>();
-         Mapper.CreateMap<ProjectStatusViewModel, ProjectStatus>();
-         Mapper.CreateMap<SprintStatusViewModel, SprintStatus>();
-         Mapper.CreateMap<WorkItemStatusViewModel, WorkItemStatus>();
-         Mapper.CreateMap<WorkItemTypeViewModel, WorkItemType>();
-      }
 
       private static void MapDomainsToEditorViewModels()
       {
