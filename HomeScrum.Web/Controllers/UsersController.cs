@@ -1,18 +1,18 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using AutoMapper;
+using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models;
 using Ninject;
-using HomeScrum.Common.Utility;
-using System.Linq.Expressions;
-using AutoMapper;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
+   [Authorize]
    public class UsersController : Controller
    {
       [Inject]
