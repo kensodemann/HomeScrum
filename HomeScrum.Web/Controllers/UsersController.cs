@@ -6,71 +6,104 @@ using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models;
 using Ninject;
+using HomeScrum.Common.Utility;
+using System.Linq.Expressions;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class UsersController : HomeScrumController<User>
+   public class UsersController : Controller
    {
       [Inject]
       public UsersController( IRepository<User> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
-         :base(userRepository)
       {
+         _userRepository = userRepository;
          _securityRepository = securityRepository;
          _validator = validator;
       }
 
+      private readonly IRepository<User> _userRepository;
       private readonly ISecurityRepository _securityRepository;
       private readonly IValidator<User> _validator;
 
       //
+      // GET: /Users/
+      public ActionResult Index()
+      {
+         var items = _userRepository.GetAll();
+         return View( Mapper.Map<ICollection<User>, IEnumerable<UserViewModel>>( items ) );
+      }
+
+      //
+      // GET: /Users/Details/Guid
+      public ActionResult Details( Guid id )
+      {
+         var model = _userRepository.Get( id );
+
+         if (model == null)
+         {
+            return HttpNotFound();
+         }
+         return View( Mapper.Map<UserViewModel>( model ) );
+      }
+
+      //
+      // GET: /Users/Create
+      public ActionResult Create()
+      {
+         return View();
+      }
+
+      //
       // POST: /Users/Create
-      //[HttpPost]
-      //public virtual ActionResult Create( CreateUserViewModel viewModel )
-      //{
-      //   Validate( viewModel, TransactionType.Insert );
+      [HttpPost]
+      public virtual ActionResult Create( CreateUserViewModel viewModel )
+      {
+         //Validate( viewModel, TransactionType.Insert );
 
-      //   if (ModelState.IsValid)
-      //   {+
-      //      Repository.Add( new User( viewModel ) );
-      //      _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
-      //      return RedirectToAction( () => this.Index() );
-      //   }
+         //if (ModelState.IsValid)
+         //{
+         //   Repository.Add( new User( viewModel ) );
+         //   _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
+         //   return RedirectToAction( () => this.Index() );
+         //}
 
-      //   return View();
-      //}
+         return View();
+      }
 
-      ////
-      //// GET: /ModelTs/Edit/Guid
-      //public override ActionResult Edit( Guid id )
-      //{
-      //   var model = Repository.Get( id );
-      //   if (model != null)
-      //   {
-      //      return View( new EditUserViewModel( model ) );
-      //   }
+      //
+      // GET: /Users/Edit/Guid
+      public ActionResult Edit( Guid id )
+      {
+         var model = _userRepository.Get( id );
+         if (model != null)
+         {
+            return View( Mapper.Map<EditUserViewModel>( model ) );
+         }
 
-      //   return HttpNotFound();
-      //}
+         return HttpNotFound();
+      }
 
-      ////
-      //// POST: /Users/Edit/5
-      //[HttpPost]
-      //public virtual ActionResult Edit( EditUserViewModel viewModel )
-      //{
-      //   Validate( viewModel, TransactionType.Update );
+      //
+      // POST: /Users/Edit/5
+      [HttpPost]
+      public ActionResult Edit( EditUserViewModel viewModel )
+      {
+         //Validate( viewModel, TransactionType.Update );
 
-      //   if (ModelState.IsValid)
-      //   {
-      //      User model = new User( viewModel );
-      //      Repository.Update( model );
+         if (ModelState.IsValid)
+         {
+            //User model = new User( viewModel );
+            //Repository.Update( model );
 
-      //      return RedirectToAction( () => this.Index() );
-      //   }
-      //   else
-      //   {
-      //      return View( viewModel );
-      //   }
-      //}
+            return RedirectToAction( () => this.Index() );
+         }
+         else
+         {
+            return View( viewModel );
+         }
+      }
 
 
       private void Validate( User model, TransactionType transactionType )
@@ -82,6 +115,12 @@ namespace HomeScrum.Web.Controllers
                ModelState.AddModelError( message.Key, message.Value );
             }
          }
+      }
+
+      protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
+      {
+         var actionName = ClassHelper.ExtractMethodName( expression );
+         return this.RedirectToAction( actionName );
       }
    }
 }
