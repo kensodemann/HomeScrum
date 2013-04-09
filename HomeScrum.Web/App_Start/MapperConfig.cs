@@ -35,7 +35,6 @@ namespace HomeScrum.Web
             .Include<WorkItemStatusEditorViewModel, WorkItemStatus>()
             .Include<WorkItemTypeEditorViewModel, WorkItemType>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorStatusCodeResolver>() );
-
          Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>();
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>();
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>();
@@ -47,17 +46,17 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.ProjectStatus, opt => opt.ResolveUsing<ProjectStatusResolver>() )
             .ConstructUsingServiceLocator();
 
-         Mapper.CreateMap<UserEditorViewModel, User>()
-            .Include<CreateUserViewModel, User>()
-            .Include<EditUserViewModel, User>()
+         Mapper.CreateMap<CreateUserViewModel, User>()
             .ForMember( dest => dest.StatusCd, opt => opt.Ignore() );
-         Mapper.CreateMap<CreateUserViewModel, User>();
-         Mapper.CreateMap<EditUserViewModel, User>();
+         Mapper.CreateMap<EditUserViewModel, User>()
+            .ForMember( dest => dest.StatusCd, opt => opt.Ignore() );
       }
 
 
       private static void MapDomainsToEditorViewModels()
       {
+         Mapper.CreateMap<DomainObjectBase, EditorViewModel>()
+            .Include<DomainObjectBase, DomainObjectEditorViewModel>();
          Mapper.CreateMap<DomainObjectBase, DomainObjectEditorViewModel>()
             .Include<SystemDomainObject, SystemDomainObjectEditorViewModel>()
             .Include<Project, ProjectEditorViewModel>();
@@ -78,6 +77,9 @@ namespace HomeScrum.Web
          Mapper.CreateMap<Project, ProjectEditorViewModel>()
             .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
+         Mapper.CreateMap<User, EditorViewModel>()
+            .Include<User, CreateUserViewModel>()
+            .Include<User, EditUserViewModel>();
          Mapper.CreateMap<User, CreateUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
@@ -90,6 +92,8 @@ namespace HomeScrum.Web
 
       private static void MapDomainsToViewModels()
       {
+         Mapper.CreateMap<DomainObjectBase, DisplayViewModel>()
+            .Include<DomainObjectBase, DomainObjectViewModel>();
          Mapper.CreateMap<DomainObjectBase, DomainObjectViewModel>()
             .Include<SystemDomainObject, SystemDomainObjectViewModel>()
             .Include<Project, ProjectViewModel>();
@@ -108,14 +112,11 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
+         Mapper.CreateMap<User, DisplayViewModel>()
+            .Include<User, UserViewModel>();
          Mapper.CreateMap<User, UserViewModel>()
             .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
       }
-
-
-      #region Data Repositories
-      public static IRepository<ProjectStatus> ProjectStatusRepository = new Repository<ProjectStatus>();
-      #endregion
 
 
       #region Resolvers

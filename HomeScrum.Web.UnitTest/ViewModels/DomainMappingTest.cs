@@ -84,6 +84,9 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriteriaStatus ) );
+         Assert.AreEqual( viewModel.Id, ((AcceptanceCriteriaStatus)domainModel).Id );
+         Assert.AreEqual( viewModel.Name, ((AcceptanceCriteriaStatus)domainModel).Name );
+         Assert.AreEqual( viewModel.Description, ((AcceptanceCriteriaStatus)domainModel).Description );
          Assert.AreEqual( 'A', ((AcceptanceCriteriaStatus)domainModel).StatusCd );
       }
       #endregion

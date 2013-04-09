@@ -6,10 +6,8 @@ using System.Web;
 
 namespace HomeScrum.Web.Models
 {
-   public class UserViewModel
+   public class UserViewModel : Base.DisplayViewModel
    {
-      public Guid Id { get; set; }
-
       [Display( Name = "UserName", Prompt = "UserNamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public string UserName { get; set; }
 
