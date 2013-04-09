@@ -10,32 +10,16 @@ namespace HomeScrum.Data.Domain
 {
    public class User
    {
-      public User() { }
-
-      public User( User user )
-      {
-         this.Id = user.Id;
-         this.UserName = user.UserName;
-         this.FirstName = user.FirstName;
-         this.MiddleName = user.MiddleName;
-         this.LastName = user.LastName;
-         this.StatusCd = user.StatusCd;
-      }
-     
       public virtual Guid Id { get; set; }
 
       [Required( ErrorMessageResourceName = "UserNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
-      [Display( Name = "UserName", Prompt = "UserNamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string UserName { get; set; }
 
       [Required( ErrorMessageResourceName = "FirstNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
-      [Display( Name = "FirstName", Prompt = "FirstNamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string FirstName { get; set; }
 
-      [Display( Name = "MiddleName", ResourceType = typeof( DisplayStrings ) )]
       public virtual string MiddleName { get; set; }
 
-      [Display( Name = "LastName", ResourceType = typeof( DisplayStrings ) )]
       public virtual string LastName { get; set; }
 
       public virtual char StatusCd { get; set; }
@@ -49,13 +33,6 @@ namespace HomeScrum.Data.Domain
             return sha1.ComputeHash( Encoding.Default.GetBytes( "bogus" ) );
          }
          set { _password = value; }
-      }
-
-      [Display( Name = "UserIsActive", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsActive
-      {
-         get { return StatusCd == 'A'; }
-         set { StatusCd = value ? 'A' : 'I'; }
       }
    }
 }

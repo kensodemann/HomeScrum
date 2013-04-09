@@ -65,7 +65,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
-            _userRepository.Add( new User( model ) );
+            _userRepository.Add( model );
             _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
             return RedirectToAction( () => this.Index() );
          }

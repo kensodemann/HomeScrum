@@ -74,7 +74,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
             FirstName = "Nathan",
             MiddleName = "Edward",
             LastName = "Wilkes",
-            IsActive = true
+            StatusCd = 'A'
          };
 
          _repository.Add( user );
@@ -122,7 +122,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.FirstName, actual.FirstName );
          Assert.AreEqual( expected.LastName, actual.LastName );
          Assert.AreEqual( expected.MiddleName, actual.MiddleName );
-         Assert.AreEqual( expected.IsActive, actual.IsActive );
+         Assert.AreEqual( expected.StatusCd, actual.StatusCd );
       }
    }
 }

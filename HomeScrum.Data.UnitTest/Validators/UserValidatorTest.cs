@@ -24,8 +24,7 @@ namespace HomeScrum.Data.UnitTest.Validators
             FirstName = "I",
             MiddleName = "Am",
             LastName = "Unique",
-            StatusCd = 'A',
-            IsActive = true
+            StatusCd = 'A'
          };
       }
 
@@ -38,7 +37,6 @@ namespace HomeScrum.Data.UnitTest.Validators
             FirstName = user.FirstName,
             MiddleName = user.MiddleName,
             LastName = user.LastName,
-            IsActive = user.IsActive,
             StatusCd = user.StatusCd
          };
       }

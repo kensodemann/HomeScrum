@@ -80,10 +80,12 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
          Mapper.CreateMap<User, CreateUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() );
+            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
          Mapper.CreateMap<User, EditUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() );
+            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
       }
 
       private static void MapDomainsToViewModels()
@@ -106,7 +108,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
-         Mapper.CreateMap<User, UserViewModel>();
+         Mapper.CreateMap<User, UserViewModel>()
+            .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
       }
 
 
