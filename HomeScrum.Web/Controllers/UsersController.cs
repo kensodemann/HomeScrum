@@ -60,14 +60,15 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
-         //Validate( viewModel, TransactionType.Insert );
+         var model = Mapper.Map<User>( viewModel );
+         Validate( model, TransactionType.Insert );
 
-         //if (ModelState.IsValid)
-         //{
-         //   Repository.Add( new User( viewModel ) );
-         //   _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
-         //   return RedirectToAction( () => this.Index() );
-         //}
+         if (ModelState.IsValid)
+         {
+            _userRepository.Add( new User( model ) );
+            _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
+            return RedirectToAction( () => this.Index() );
+         }
 
          return View();
       }
