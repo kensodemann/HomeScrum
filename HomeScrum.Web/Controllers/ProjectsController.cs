@@ -12,7 +12,7 @@ using HomeScrum.Web.Extensions;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectsController : ValidatingController<Project>
+   public class ProjectsController : ReadWriteController<Project>
    {
       public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IValidator<Project> validator )
          : base( repository, validator )

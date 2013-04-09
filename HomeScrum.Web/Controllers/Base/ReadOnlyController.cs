@@ -9,24 +9,27 @@ using HomeScrum.Data.Repositories;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   // TODOS:
-   //   1 - Rename to ReadOnlyController or some such thing
-   //   2 - Move anything that is not associated with a read-only operation up the tree
-   public class HomeScrumController<ModelT> : Controller
+   /// <summary>
+   /// The ReadOnlyController is the base class for any contoller in the system that only supports
+   /// the GET operations.  The only actions for this type of controller are Index and Details.
+   /// </summary>
+   /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
+   [Authorize]
+   public class ReadOnlyController<ModelT> : Controller
    {
       private readonly IRepository<ModelT> _repository;
-      protected IRepository<ModelT> Repository { get { return _repository; } }
+      protected IRepository<ModelT> MainRepository { get { return _repository; } }
 
-      public HomeScrumController( IRepository<ModelT> repository )
+      public ReadOnlyController( IRepository<ModelT> mainRepository )
       {
-         _repository = repository;
+         _repository = mainRepository;
       }
 
       //
       // GET: /ModelTs/
       public virtual ActionResult Index()
       {
-         var items = Repository.GetAll();
+         var items = MainRepository.GetAll();
          return View( items );
       }
 
@@ -34,34 +37,13 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Details/Guid
       public virtual ActionResult Details( Guid id )
       {
-         var model = Repository.Get( id );
+         var model = MainRepository.Get( id );
 
          if (model == null)
          {
             return HttpNotFound();
          }
          return View( model );
-      }
-
-      //
-      // GET: /ModelTs/Create
-      public virtual ActionResult Create()
-      {
-         return View();
-      }
-
-      //
-      // GET: /ModelTs/Edit/Guid
-      public virtual ActionResult Edit( Guid id )
-      {
-         var model = Repository.Get( id );
-
-         if (model != null)
-         {
-            return View( model );
-         }
-
-         return HttpNotFound();
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )

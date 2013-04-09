@@ -8,7 +8,7 @@ using System;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class AcceptanceCriteriaStatusesController : DomainObjectController<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusesController : ReadWriteController<AcceptanceCriteriaStatus>
    {
       [Inject]
       public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )

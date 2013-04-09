@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class AcceptanceCriteriaStatusesControllerTest : DomainObjectControllerTestBase<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusesControllerTest : ReadWriteControllerTestBase<AcceptanceCriteriaStatus>
    {
       protected override ICollection<AcceptanceCriteriaStatus> GetAllModels()
       {
@@ -35,8 +35,5 @@ namespace HomeScrum.Web.UnitTest.Controllers
          AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
          _controller = new AcceptanceCriteriaStatusesController( _repository.Object, _validator.Object );
       }
-
-
-
    }
 }

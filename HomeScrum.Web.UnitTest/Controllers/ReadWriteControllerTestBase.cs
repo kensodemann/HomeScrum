@@ -11,12 +11,12 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
-   public abstract class DomainObjectControllerTestBase<ModelT>
+   public abstract class ReadWriteControllerTestBase<ModelT>
       where ModelT : DomainObjectBase, new()
    {
       protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
-      protected DomainObjectController<ModelT> _controller;
+      protected ReadWriteController<ModelT> _controller;
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();

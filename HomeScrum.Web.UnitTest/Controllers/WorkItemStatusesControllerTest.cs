@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class WorkItemStatusesControllerTest : DomainObjectControllerTestBase<WorkItemStatus>
+   public class WorkItemStatusesControllerTest : ReadWriteControllerTestBase<WorkItemStatus>
    {
       protected override ICollection<WorkItemStatus> GetAllModels()
       {

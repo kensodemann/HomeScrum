@@ -147,9 +147,8 @@
     <Compile Include="Controllers\AcceptanceCriteriaStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\Base\DomainObjectController.cs" />
-    <Compile Include="Controllers\Base\HomeScrumController.cs" />
-    <Compile Include="Controllers\Base\ValidatingController.cs" />
+    <Compile Include="Controllers\Base\ReadOnlyController.cs" />
+    <Compile Include="Controllers\Base\ReadWriteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\ProjectStatusesController.cs" />
@@ -260,6 +259,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Controllers\Controllers.cd" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />

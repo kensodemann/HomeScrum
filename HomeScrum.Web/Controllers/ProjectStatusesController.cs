@@ -8,7 +8,7 @@ using System;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectStatusesController : DomainObjectController<ProjectStatus>
+   public class ProjectStatusesController : ReadWriteController<ProjectStatus>
    {
       [Inject]
       public ProjectStatusesController( IRepository<ProjectStatus> repository, IValidator<ProjectStatus> validator )
