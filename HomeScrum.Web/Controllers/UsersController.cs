@@ -91,13 +91,12 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public ActionResult Edit( EditUserViewModel viewModel )
       {
-         //Validate( viewModel, TransactionType.Update );
+         var model = Mapper.Map<User>( viewModel );
+         Validate( model, TransactionType.Update );
 
          if (ModelState.IsValid)
          {
-            //User model = new User( viewModel );
-            //Repository.Update( model );
-
+            _userRepository.Update( model );
             return RedirectToAction( () => this.Index() );
          }
          else
