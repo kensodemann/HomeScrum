@@ -73,7 +73,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          {
             Name = "New Project Status",
             Description = "New one for Insert",
-            AllowUse = true,
+            StatusCd = 'A',
             IsActive = true,
             IsPredefined = true
          };
@@ -122,7 +122,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.AllowUse, actual.AllowUse );
+         Assert.AreEqual( expected.StatusCd, actual.StatusCd );
          Assert.AreEqual( expected.IsActive, actual.IsActive );
          Assert.AreEqual( expected.IsPredefined, actual.IsPredefined );
       }

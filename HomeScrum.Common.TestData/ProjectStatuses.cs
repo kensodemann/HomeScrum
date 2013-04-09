@@ -33,7 +33,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Active",
                Description="Active Project",
-               AllowUse=true,
+               StatusCd='A',
                IsActive=true,
                IsPredefined=true
             },
@@ -41,7 +41,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Inactive",
                Description="No longer active",
-               AllowUse=true,
+               StatusCd='A',
                IsActive=false,
                IsPredefined=true
             },
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Closed",
                Description="The project is closed",
-               AllowUse=true,
+               StatusCd='A',
                IsActive=false,
                IsPredefined=true
             },
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 1",
                Description="Active Status, Is Active, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsActive=true,
                IsPredefined=true
             },
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 2",
                Description="Inactive Status, Is Active, Predefined",
-               AllowUse=false,
+               StatusCd='I',
                IsActive=true,
                IsPredefined=true
             },
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 3",
                Description="Active Status, Is Not Active, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsActive=false,
                IsPredefined=true
             },
@@ -81,7 +81,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 4",
                Description="Active Status, Is Active, Not Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsActive=true,
                IsPredefined=false
             }

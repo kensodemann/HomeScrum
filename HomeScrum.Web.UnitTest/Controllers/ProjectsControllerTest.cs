@@ -130,7 +130,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.AllowUse ), model.ProjectStatuses.Count() );
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.ProjectStatuses.Count() );
          foreach (var item in model.ProjectStatuses)
          {
             var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );

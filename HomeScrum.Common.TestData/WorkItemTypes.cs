@@ -33,7 +33,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="SBI",
                Description="Sprint Backlog Item",
-               AllowUse=true,
+               StatusCd='A',
                IsTask=true,
                IsPredefined=true
             },
@@ -41,7 +41,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="PBI",
                Description="Product BacklogItem",
-               AllowUse=true,
+               StatusCd='A',
                IsTask=false,
                IsPredefined=true
             },
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Bug",
                Description="A problem with the software or design",
-               AllowUse=true,
+               StatusCd='A',
                IsTask=true,
                IsPredefined=true
             },
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Issue",
                Description="A problem in the process that is blocking someone",
-               AllowUse=true,
+               StatusCd='A',
                IsTask=true,
                IsPredefined=true
             },
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="type 3",
                Description="Active, Not a Task, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsTask=false,
                IsPredefined=true
             },
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Type 4",
                Description="Active, Task, Not Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsTask=true,
                IsPredefined=false
             },
@@ -81,7 +81,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="tYPe 5",
                Description="Not Active, Task, Predefined",
-               AllowUse=false,
+               StatusCd='I',
                IsTask=true,
                IsPredefined=true
             },
@@ -89,7 +89,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="TYPE 6",
                Description="Not Active, Task, Predefined - second one line this",
-               AllowUse=false,
+               StatusCd='I',
                IsTask=true,
                IsPredefined=true
             }

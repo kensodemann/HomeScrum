@@ -9,20 +9,6 @@ namespace HomeScrum.Data.Domain
 {
    public class Project : DomainObjectBase
    {
-      public Project()
-         : base() { }
-
-      public Project( Project model )
-         : base( model )
-      {
-         this.LastModifiedUserRid = model.LastModifiedUserRid;
-
-         if (model.ProjectStatus != null)
-         {
-            this.ProjectStatus = new ProjectStatus( model.ProjectStatus );
-         }
-      }
-
       [Required]
       public virtual ProjectStatus ProjectStatus { get; set; }
 

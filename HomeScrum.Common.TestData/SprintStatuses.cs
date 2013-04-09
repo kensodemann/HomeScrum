@@ -33,7 +33,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Future",
                Description="The sprint is set up for the future",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=false,
                IsPredefined=true
             },
@@ -41,7 +41,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Planning",
                Description="In Planning",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Active",
                Description="The sprint is the active one",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Complete",
                Description="The sprint is done",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=false,
                IsPredefined=true
             },
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 1",
                Description="Active Status, Is Open, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 2",
                Description="Inactive Status, Is Open, Predefined",
-               AllowUse=false,
+               StatusCd='I',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -81,7 +81,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 3",
                Description="Active Status, Is Not Open, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=false,
                IsPredefined=true
             },
@@ -89,7 +89,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 4",
                Description="Active Status, Is Open, Not Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=false
             }

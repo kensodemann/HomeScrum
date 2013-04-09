@@ -9,23 +9,11 @@ namespace HomeScrum.Data.Domain
 {
    public class DomainObjectBase
    {
-      public DomainObjectBase() { }
-
-      public DomainObjectBase( DomainObjectBase model )
-      {
-         this.Id = model.Id;
-         this.Name = model.Name;
-         this.Description = model.Description;
-      }
-
       public virtual Guid Id { get; set; }
 
-      [Display( Name = "Name", Prompt = "NamePrompt", ResourceType = typeof( DisplayStrings ) )]
       [Required( ErrorMessageResourceName = "NameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
       public virtual string Name { get; set; }
 
-      [Display( Name = "Description", Prompt = "DescriptionPrompt", ResourceType = typeof( DisplayStrings ) )]
-      [UIHint( "MultilineText" )]
       public virtual string Description { get; set; }
    }
 }

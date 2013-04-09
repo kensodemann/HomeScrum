@@ -32,7 +32,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Unverified",
                Description="Not yet verified",
-               AllowUse=true,
+               StatusCd='A',
                IsAccepted=false,
                IsPredefined=true
             }, 
@@ -40,7 +40,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Accepted",
                Description="Accepted",
-               AllowUse=true,
+               StatusCd='A',
                IsAccepted=true,
                IsPredefined=true
             },
@@ -48,7 +48,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Rejected",
                Description="Rejected",
-               AllowUse=true,
+               StatusCd='A',
                IsAccepted=false,
                IsPredefined=true
             },
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 1",
                Description="Active Status, Is Accepted, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsAccepted=true,
                IsPredefined=true
             },
@@ -64,7 +64,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 2",
                Description="Inactive Status, Is Accepted, Predefined",
-               AllowUse=false,
+               StatusCd='I',
                IsAccepted=true,
                IsPredefined=true
             },
@@ -72,7 +72,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 3",
                Description="Active Status, Is Not Accepted, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsAccepted=false,
                IsPredefined=true
             },
@@ -80,7 +80,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 4",
                Description="Active Status, Is Accepted, Not Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsAccepted=true,
                IsPredefined=false
             }

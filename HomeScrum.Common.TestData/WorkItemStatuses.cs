@@ -33,7 +33,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="New",
                Description="The Item is brand new",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -41,7 +41,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="In Process",
                Description="The Item is being worked on",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="On Hold",
                Description="The Item was started but cannot be worked on",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -57,7 +57,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Ready for Test",
                Description="The Item is ready to be tested",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Complete",
                Description="The Item is done",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 1",
                Description="Active Status, Is Open, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -81,7 +81,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 2",
                Description="Inactive Status, Is Open, Predefined",
-               AllowUse=false,
+               StatusCd='I',
                IsOpenStatus=true,
                IsPredefined=true
             },
@@ -89,7 +89,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 1",
                Description="Active Status, Is Not Open, Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=false,
                IsPredefined=true
             },
@@ -97,7 +97,7 @@ namespace HomeScrum.Common.TestData
             {
                Name="Status 1",
                Description="Active Status, Is Open, Not Predefined",
-               AllowUse=true,
+               StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=false
             }

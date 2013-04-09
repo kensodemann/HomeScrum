@@ -24,7 +24,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Description = "New Acceptance Criteria Status",
             IsPredefined = false,
             IsAccepted = true,
-            AllowUse = true
+            StatusCd = 'A'
          };
       }
 

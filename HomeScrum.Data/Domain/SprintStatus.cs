@@ -9,16 +9,6 @@ namespace HomeScrum.Data.Domain
 {
    public class SprintStatus : SystemDomainObject
    {
-      public SprintStatus()
-         : base() { }
-
-      public SprintStatus( SprintStatus model )
-         : base( model )
-      {
-         this.IsOpenStatus = model.IsOpenStatus;
-      }
-
-      [Display( Name = "SprintStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsOpenStatus { get; set; }
+     public virtual bool IsOpenStatus { get; set; }
    }
 }

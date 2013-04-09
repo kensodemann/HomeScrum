@@ -24,7 +24,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Description = "New Sprint Status",
             IsPredefined = false,
             IsOpenStatus = true,
-            AllowUse = true
+            StatusCd = 'A'
          };
       }
 

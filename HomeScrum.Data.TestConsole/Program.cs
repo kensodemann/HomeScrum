@@ -112,7 +112,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tId: " + workItemType.Id.ToString() );
          Console.WriteLine( "\tName: " + workItemType.Name );
          Console.WriteLine( "\tDescription: " + workItemType.Description );
-         Console.WriteLine( "\tStatusCd: " + workItemType.AllowUse.ToString() );
+         Console.WriteLine( "\tStatusCd: " + workItemType.StatusCd );
          Console.WriteLine( "\tIsTask: " + workItemType.IsTask );
          Console.WriteLine( "\tIsPredefined: " + workItemType.IsPredefined );
       }
@@ -123,7 +123,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tId: " + status.Id.ToString() );
          Console.WriteLine( "\tName: " + status.Name );
          Console.WriteLine( "\tDescription: " + status.Description );
-         Console.WriteLine( "\tStatusCd: " + status.AllowUse.ToString() );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
          Console.WriteLine( "\tIsOpenStatus: " + status.IsOpenStatus );
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
@@ -134,7 +134,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tId: " + status.Id.ToString() );
          Console.WriteLine( "\tName: " + status.Name );
          Console.WriteLine( "\tDescription: " + status.Description );
-         Console.WriteLine( "\tStatusCd: " + status.AllowUse.ToString() );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
          Console.WriteLine( "\tIsOpenStatus: " + status.IsOpenStatus );
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
@@ -145,7 +145,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tId: " + status.Id.ToString() );
          Console.WriteLine( "\tName: " + status.Name );
          Console.WriteLine( "\tDescription: " + status.Description );
-         Console.WriteLine( "\tStatusCd: " + status.AllowUse.ToString() );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
          Console.WriteLine( "\tIsActive: " + status.IsActive );
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
@@ -156,7 +156,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tId: " + status.Id.ToString() );
          Console.WriteLine( "\tName: " + status.Name );
          Console.WriteLine( "\tDescription: " + status.Description );
-         Console.WriteLine( "\tStatusCd: " + status.AllowUse.ToString() );
+         Console.WriteLine( "\tStatusCd: " + status.StatusCd );
          Console.WriteLine( "\tIsAccepted: " + status.IsAccepted );
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
