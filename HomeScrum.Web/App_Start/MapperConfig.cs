@@ -67,7 +67,6 @@ namespace HomeScrum.Web
             .Include<WorkItemStatus, WorkItemStatusEditorViewModel>()
             .Include<WorkItemType, WorkItemTypeEditorViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
-
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>();
          Mapper.CreateMap<ProjectStatus, ProjectStatusEditorViewModel>();
          Mapper.CreateMap<SprintStatus, SprintStatusEditorViewModel>();
@@ -77,6 +76,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<Project, ProjectEditorViewModel>()
             .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
+
          Mapper.CreateMap<User, EditorViewModel>()
             .Include<User, CreateUserViewModel>()
             .Include<User, EditUserViewModel>();
@@ -104,7 +104,6 @@ namespace HomeScrum.Web
             .Include<WorkItemStatus, WorkItemStatusViewModel>()
             .Include<WorkItemType, WorkItemTypeViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
-
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>();
          Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>();
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>();
@@ -112,6 +111,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
+
          Mapper.CreateMap<User, DisplayViewModel>()
             .Include<User, UserViewModel>();
          Mapper.CreateMap<User, UserViewModel>()
