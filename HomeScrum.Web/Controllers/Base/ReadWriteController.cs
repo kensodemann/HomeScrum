@@ -1,5 +1,7 @@
-﻿using HomeScrum.Data.Repositories;
+﻿using AutoMapper;
+using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
+using HomeScrum.Web.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +32,9 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      public virtual ActionResult Create( ModelT model )
+      public virtual ActionResult Create( EditorViewModel  viewModel )
       {
+         var model = Mapper.Map<ModelT>( viewModel );
          Validate( model, TransactionType.Insert );
 
          if (ModelState.IsValid)
