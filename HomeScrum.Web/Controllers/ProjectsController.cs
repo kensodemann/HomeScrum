@@ -5,6 +5,7 @@ using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -27,7 +28,7 @@ namespace HomeScrum.Web.Controllers
          var items = MainRepository.GetAll();
          return View( Mapper.Map<ICollection<Project>, IEnumerable<ProjectViewModel>>( items ) );
       }
-      
+
       //
       // GET: /Projects/Create
       public override ActionResult Create()
@@ -39,53 +40,55 @@ namespace HomeScrum.Web.Controllers
          return View( model );
       }
 
-      ////
-      //// POST: /Projects/Create
-      //[HttpPost]
-      //public virtual ActionResult Create( ProjectEditorViewModel model )
-      //{
-      //   Validate( model, TransactionType.Insert );
+      //
+      // POST: /Projects/Create
+      [HttpPost]
+      public virtual ActionResult Create( ProjectEditorViewModel viewModel )
+      {
+         var model = Mapper.Map<Project>( viewModel );
+         Validate( model, TransactionType.Insert );
 
-      //   if (ModelState.IsValid)
-      //   {
-      //      Repository.Add( new Project( model ) );
-      //      return RedirectToAction( () => this.Index() );
-      //   }
+         if (ModelState.IsValid)
+         {
+            MainRepository.Add( model );
+            return RedirectToAction( () => this.Index() );
+         }
 
-      //   model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
-      //   return View( model );
-      //}
+         viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
+         return View( viewModel );
+      }
 
-      ////
-      //// GET: /Projects/Edit/Guid
-      //public override ActionResult Edit( Guid id )
-      //{
-      //   var model = Repository.Get( id );
+      //
+      // GET: /Projects/Edit/Guid
+      public override ActionResult Edit( Guid id )
+      {
+         var model = MainRepository.Get( id );
 
-      //   if (model != null)
-      //   {
-      //      var viewModel = new ProjectEditorViewModel( model );
-      //      viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( viewModel.ProjectStatus.Id );
-      //      return View( viewModel );
-      //   }
+         if (model != null)
+         {
+            var viewModel = Mapper.Map<ProjectEditorViewModel>( model );
+            viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( model.ProjectStatus.Id );
+            return View( viewModel );
+         }
 
-      //   return HttpNotFound();
-      //}
+         return HttpNotFound();
+      }
 
-      ////
-      //// POST: /Projects/Edit/Guid
-      //[HttpPost]
-      //public virtual ActionResult Edit( ProjectEditorViewModel model )
-      //{
-      //   Validate( model, TransactionType.Update );
+      //
+      // POST: /Projects/Edit/Guid
+      [HttpPost]
+      public virtual ActionResult Edit( ProjectEditorViewModel viewModel )
+      {
+         var model = Mapper.Map<Project>( viewModel );
+         Validate( model, TransactionType.Update );
 
-      //   if (ModelState.IsValid)
-      //   {
-      //      Repository.Update( new Project( model ) );
-      //      return RedirectToAction( () => this.Index() );
-      //   }
+         if (ModelState.IsValid)
+         {
+            MainRepository.Update( model );
+            return RedirectToAction( () => this.Index() );
+         }
 
-      //   return View( model );
-      //}
+         return View( viewModel );
+      }
    }
 }
