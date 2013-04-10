@@ -10,7 +10,8 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public abstract class ReadWriteController<ModelT> : ReadOnlyController<ModelT>
+   public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
+      : ReadOnlyController<ModelT, ViewModelT>
    {
       public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator )
          : base( mainRepository )
@@ -32,7 +33,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      public virtual ActionResult Create( EditorViewModel  viewModel )
+      public virtual ActionResult Create( EditorViewModelT viewModel )
       {
          var model = Mapper.Map<ModelT>( viewModel );
          Validate( model, TransactionType.Insert );
@@ -54,7 +55,7 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (model != null)
          {
-            var viewModel = Mapper.Map<EditorViewModel>( model );
+            var viewModel = Mapper.Map<EditorViewModelT>( model );
             return View( viewModel );
          }
 
@@ -64,7 +65,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
-      public virtual ActionResult Edit( EditorViewModel viewModel )
+      public virtual ActionResult Edit( EditorViewModelT viewModel )
       {
          var model = Mapper.Map<ModelT>( viewModel );
          Validate( model, TransactionType.Update );

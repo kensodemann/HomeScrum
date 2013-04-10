@@ -10,18 +10,10 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class AcceptanceCriteriaStatusesController : ReadWriteController<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusesController : ReadWriteController<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
    {
       [Inject]
       public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator )
          : base( repository, validator ) { }
-
-      //
-      // GET: /AcceptanceCriteriaStatuses/
-      public override ActionResult Index()
-      {
-         var items = MainRepository.GetAll();
-         return View( Mapper.Map<ICollection<AcceptanceCriteriaStatus>, IEnumerable<AcceptanceCriteriaStatusViewModel>>( items ) );
-      }
    }
 }

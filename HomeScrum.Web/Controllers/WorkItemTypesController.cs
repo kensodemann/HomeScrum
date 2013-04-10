@@ -10,18 +10,10 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemTypesController : ReadWriteController<WorkItemType>
+   public class WorkItemTypesController : ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel>
    {
       [Inject]
       public WorkItemTypesController( IRepository<WorkItemType> repository, IValidator<WorkItemType> validator )
          : base( repository, validator ) { }
-
-      //
-      // GET: /WorkItemTypes/
-      public override ActionResult Index()
-      {
-         var items = MainRepository.GetAll();
-         return View( Mapper.Map<ICollection<WorkItemType>, IEnumerable<WorkItemTypeViewModel>>( items ) );
-      }
    }
 }

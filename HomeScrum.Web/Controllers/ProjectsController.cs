@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectsController : ReadWriteController<Project>
+   public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
       public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IValidator<Project> validator )
          : base( repository, validator )
@@ -20,14 +20,6 @@ namespace HomeScrum.Web.Controllers
       }
 
       private IRepository<ProjectStatus> _projectStatusRepository;
-
-      //
-      // GET: /Projects/
-      public override ActionResult Index()
-      {
-         var items = MainRepository.GetAll();
-         return View( Mapper.Map<ICollection<Project>, IEnumerable<ProjectViewModel>>( items ) );
-      }
 
       //
       // GET: /Projects/Create
@@ -43,7 +35,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Projects/Create
       [HttpPost]
-      public virtual ActionResult Create( ProjectEditorViewModel viewModel )
+      public override ActionResult Create( ProjectEditorViewModel viewModel )
       {
          var model = Mapper.Map<Project>( viewModel );
          Validate( model, TransactionType.Insert );
@@ -77,7 +69,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Projects/Edit/Guid
       [HttpPost]
-      public virtual ActionResult Edit( ProjectEditorViewModel viewModel )
+      public override ActionResult Edit( ProjectEditorViewModel viewModel )
       {
          var model = Mapper.Map<Project>( viewModel );
          Validate( model, TransactionType.Update );

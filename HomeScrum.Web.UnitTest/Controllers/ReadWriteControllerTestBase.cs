@@ -19,7 +19,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
-      protected ReadWriteController<ModelT> _controller;
+      protected ReadWriteController<ModelT, ViewModelT, EditorViewModelT> _controller;
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();

@@ -16,8 +16,9 @@ namespace HomeScrum.Web.Controllers.Base
    /// the GET operations.  The only actions for this type of controller are Index and Details.
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
+   /// <typeparam name="ViewModelT">The View Model Type for display views</typeparam>
    [Authorize]
-   public abstract class ReadOnlyController<ModelT> : Controller
+   public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
    {
       private readonly IRepository<ModelT> _repository;
       protected IRepository<ModelT> MainRepository { get { return _repository; } }
@@ -29,7 +30,11 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/
-      public abstract ActionResult Index();
+      public virtual ActionResult Index()
+      {
+         var items = MainRepository.GetAll();
+         return View( Mapper.Map<ICollection<ModelT>, IEnumerable<ViewModelT>>( items ) );
+      }
 
       //
       // GET: /ModelTs/Details/Guid
@@ -41,7 +46,7 @@ namespace HomeScrum.Web.Controllers.Base
          {
             return HttpNotFound();
          }
-         return View( Mapper.Map<DisplayViewModel>( model ) );
+         return View( Mapper.Map<ViewModelT>( model ) );
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
