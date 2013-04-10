@@ -54,7 +54,8 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (model != null)
          {
-            return View( model );
+            var viewModel = Mapper.Map<EditorViewModel>( model );
+            return View( viewModel );
          }
 
          return HttpNotFound();

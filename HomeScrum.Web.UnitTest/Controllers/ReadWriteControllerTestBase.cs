@@ -217,7 +217,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReturnsViewWithModel()
+      public void EditGet_ReturnsViewWithViewModel()
       {
          var model = GetAllModels().ToArray()[3];
          _repository.Setup( x => x.Get( model.Id ) ).Returns( model );
@@ -226,7 +226,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( result );
          Assert.IsNotNull( result.Model );
-         Assert.AreEqual( model, result.Model );
+         Assert.IsInstanceOfType( result.Model, typeof( EditorViewModelT ) );
+         Assert.AreEqual( model.Id, ((EditorViewModelT)result.Model).Id );
+         Assert.AreEqual( model.Name, ((EditorViewModelT)result.Model).Name );
+         Assert.AreEqual( model.Description, ((EditorViewModelT)result.Model).Description );
       }
 
       [TestMethod]
