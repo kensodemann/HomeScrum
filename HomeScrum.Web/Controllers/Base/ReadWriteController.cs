@@ -64,8 +64,9 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
-      public virtual ActionResult Edit( ModelT model )
+      public virtual ActionResult Edit( EditorViewModel viewModel )
       {
+         var model = Mapper.Map<ModelT>( viewModel );
          Validate( model, TransactionType.Update );
 
          if (ModelState.IsValid)

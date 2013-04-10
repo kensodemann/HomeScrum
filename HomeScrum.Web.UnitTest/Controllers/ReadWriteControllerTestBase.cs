@@ -246,19 +246,31 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
          var model = GetAllModels().ToArray()[2];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
-         _controller.Edit( model );
+         _controller.Edit( viewModel );
 
-         _repository.Verify( x => x.Update( model ), Times.Once() );
+         _repository.Verify( x => x.Update( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ) ), Times.Once() );
       }
 
       [TestMethod]
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
          var model = GetAllModels().ToArray()[2];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         _controller.Edit( model );
+         _controller.Edit( viewModel );
 
          _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }
@@ -267,8 +279,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
          var model = GetAllModels().ToArray()[2];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
-         var result = _controller.Edit( model ) as RedirectToRouteResult;
+         var result = _controller.Edit( viewModel ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -282,9 +300,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
          var model = GetAllModels().ToArray()[2];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( model ) as ViewResult;
+         var result = _controller.Edit( viewModel ) as ViewResult;
 
          Assert.IsNotNull( result );
       }
@@ -293,10 +317,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_PassesModelToValidator()
       {
          var model = GetAllModels().ToArray()[3];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
-         _controller.Edit( model );
+         _controller.Edit( viewModel );
 
-         _validator.Verify( x => x.ModelIsValid( model, TransactionType.Update ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), TransactionType.Update ), Times.Once() );
       }
 
       [TestMethod]
@@ -304,11 +334,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
+         _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Edit( model );
+         var result = _controller.Edit( viewModel );
 
          Assert.AreEqual( messages.Count, _controller.ModelState.Count );
          foreach (var message in messages)
@@ -323,11 +359,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
+         var viewModel = new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( true );
+         _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Edit( model );
+         var result = _controller.Edit( viewModel );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
