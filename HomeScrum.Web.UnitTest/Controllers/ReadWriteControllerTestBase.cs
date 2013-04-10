@@ -2,6 +2,7 @@
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -13,6 +14,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 {
    public abstract class ReadWriteControllerTestBase<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : DomainObjectBase, new()
+      where ViewModelT : DomainObjectViewModel
+      where EditorViewModelT : EditorViewModel
    {
       protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
@@ -20,7 +23,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
-      
+
       public virtual void InitializeTest()
       {
          _repository = new Mock<IRepository<ModelT>>();
@@ -66,6 +69,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
          Assert.IsInstanceOfType( view.Model, typeof( ViewModelT ) );
+         Assert.AreEqual( model.Id, ((ViewModelT)view.Model).Id );
+         Assert.AreEqual( model.Name, ((ViewModelT)view.Model).Name );
+         Assert.AreEqual( model.Description, ((ViewModelT)view.Model).Description );
       }
 
       [TestMethod]
@@ -274,7 +280,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var model =GetAllModels().ToArray()[3];
+         var model = GetAllModels().ToArray()[3];
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( model, It.IsAny<TransactionType>() ) ).Returns( false );
