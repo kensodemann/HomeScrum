@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Repositories;
+using AutoMapper;
+using HomeScrum.Web.Models.Base;
 
 namespace HomeScrum.Web.Controllers.Base
 {
@@ -15,7 +17,7 @@ namespace HomeScrum.Web.Controllers.Base
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
    [Authorize]
-   public class ReadOnlyController<ModelT> : Controller
+   public abstract class ReadOnlyController<ModelT> : Controller
    {
       private readonly IRepository<ModelT> _repository;
       protected IRepository<ModelT> MainRepository { get { return _repository; } }
@@ -27,11 +29,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/
-      public virtual ActionResult Index()
-      {
-         var items = MainRepository.GetAll();
-         return View( items );
-      }
+      public abstract ActionResult Index();
 
       //
       // GET: /ModelTs/Details/Guid
@@ -43,7 +41,7 @@ namespace HomeScrum.Web.Controllers.Base
          {
             return HttpNotFound();
          }
-         return View( model );
+         return View( Mapper.Map<DisplayViewModel>( model ) );
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )

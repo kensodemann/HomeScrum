@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class ProjectStatusesControllerTest : ReadWriteControllerTestBase<ProjectStatus>
+   public class ProjectStatusesControllerTest : ReadWriteControllerTestBase<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
    {
       protected override ICollection<ProjectStatus> GetAllModels()
       {
@@ -26,6 +26,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = true,
             StatusCd = 'A'
          };
+      }
+
+      [ClassInitialize]
+      public static void InitiailizeTestClass( TestContext context )
+      {
+         MapperConfig.RegisterMappings();
       }
 
       [TestInitialize]

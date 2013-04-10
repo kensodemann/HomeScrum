@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class SprintStatusesControllerTest : ReadWriteControllerTestBase<SprintStatus>
+   public class SprintStatusesControllerTest : ReadWriteControllerTestBase<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel>
    {
       protected override ICollection<SprintStatus> GetAllModels()
       {
@@ -26,6 +26,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsOpenStatus = true,
             StatusCd = 'A'
          };
+      }
+
+      [ClassInitialize]
+      public static void InitiailizeTestClass( TestContext context )
+      {
+         MapperConfig.RegisterMappings();
       }
 
       [TestInitialize]

@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
-   public abstract class ReadWriteControllerTestBase<ModelT>
+   public abstract class ReadWriteControllerTestBase<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : DomainObjectBase, new()
    {
       protected Mock<IRepository<ModelT>> _repository;
@@ -20,12 +20,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
-
-      [ClassInitialize]
-      public static void InitiailizeTestClass( TestContext context )
-      {
-         MapperConfig.RegisterMappings();
-      }
       
       public virtual void InitializeTest()
       {
@@ -46,6 +40,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
+         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<ViewModelT> ) );
       }
 
       [TestMethod]
@@ -70,7 +65,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
-         Assert.AreEqual( model, view.Model );
+         Assert.IsInstanceOfType( view.Model, typeof( ViewModelT ) );
       }
 
       [TestMethod]

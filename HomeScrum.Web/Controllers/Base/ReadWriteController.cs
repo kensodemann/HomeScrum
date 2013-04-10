@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public class ReadWriteController<ModelT> : ReadOnlyController<ModelT>
+   public abstract class ReadWriteController<ModelT> : ReadOnlyController<ModelT>
    {
       public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator )
          : base( mainRepository )

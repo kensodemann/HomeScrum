@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class WorkItemTypeesControllerTest : ReadWriteControllerTestBase<WorkItemType>
+   public class WorkItemTypeesControllerTest : ReadWriteControllerTestBase<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel>
    {
       protected override ICollection<WorkItemType> GetAllModels()
       {
@@ -26,6 +26,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsTask = false,
             StatusCd = 'A'
          };
+      }
+
+      [ClassInitialize]
+      public static void InitiailizeTestClass( TestContext context )
+      {
+         MapperConfig.RegisterMappings();
       }
 
       [TestInitialize]

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class AcceptanceCriteriaStatusesControllerTest : ReadWriteControllerTestBase<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusesControllerTest : ReadWriteControllerTestBase<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
    {
       protected override ICollection<AcceptanceCriteriaStatus> GetAllModels()
       {
@@ -26,6 +26,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsAccepted = true,
             StatusCd = 'A'
          };
+      }
+
+      [ClassInitialize]
+      public static void InitiailizeTestClass( TestContext context )
+      {
+         MapperConfig.RegisterMappings();
       }
 
       [TestInitialize]

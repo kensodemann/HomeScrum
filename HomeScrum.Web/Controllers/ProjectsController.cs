@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using HomeScrum.Web.Controllers.Base;
+﻿using AutoMapper;
 using HomeScrum.Data.Domain;
-using HomeScrum.Web.Models;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using System.Web.Mvc;
+using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
+using HomeScrum.Web.Models;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -22,6 +20,14 @@ namespace HomeScrum.Web.Controllers
 
       private IRepository<ProjectStatus> _projectStatusRepository;
 
+      //
+      // GET: /Projects/
+      public override ActionResult Index()
+      {
+         var items = MainRepository.GetAll();
+         return View( Mapper.Map<ICollection<Project>, IEnumerable<ProjectViewModel>>( items ) );
+      }
+      
       //
       // GET: /Projects/Create
       public override ActionResult Create()
