@@ -24,10 +24,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          Users.Load();
-         _repository = new Repository<User>();
+         _repository = new UserRepository();
       }
 
-      private IRepository<User> _repository;
+      private IUserRepository _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllUseres()
@@ -63,6 +63,30 @@ namespace HomeScrum.Data.UnitTest.Repositories
          var user = _repository.Get( Users.ModelData[2].Id );
 
          AssertUsersAreEqual( Users.ModelData[2], user );
+      }
+
+      [TestMethod]
+      public void GetNonExistentUserName_ReturnsNull()
+      {
+         var user = _repository.Get( "I Do Not Exist" );
+
+         Assert.IsNull( user );
+      }
+
+      [TestMethod]
+      public void GetEmptyUserName_ReturnsNull()
+      {
+         var user = _repository.Get( "" );
+
+         Assert.IsNull( user );
+      }
+
+      [TestMethod]
+      public void GetUserName_ReturnsUser()
+      {
+         var user = _repository.Get( Users.ModelData[3].UserName );
+
+         AssertUsersAreEqual( Users.ModelData[3], user );
       }
 
       [TestMethod]

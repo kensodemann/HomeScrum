@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace HomeScrum.Data.SqlServer
 {
    public class Repository<T> : Repository<T, Guid>, IRepository<T> { }
-   
+
    public class Repository<T, KeyT> : IRepository<T, KeyT>
    {
       public ICollection<T> GetAll()
@@ -16,7 +16,7 @@ namespace HomeScrum.Data.SqlServer
          using (ISession session = NHibernateHelper.OpenSession())
          {
             return session
-               .CreateCriteria( typeof( T ).ToString() )
+               .CreateCriteria( typeof( T ) )
                .List<T>();
          }
       }
@@ -25,13 +25,13 @@ namespace HomeScrum.Data.SqlServer
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return AreEqual(id,default( KeyT )) ? default( T ) : session.Get<T>( id );
+            return AreEqual( id, default( KeyT ) ) ? default( T ) : session.Get<T>( id );
          }
       }
 
-      private bool AreEqual( KeyT x, KeyT y)
+      private bool AreEqual( KeyT x, KeyT y )
       {
-         return EqualityComparer<KeyT>.Default.Equals(x, y);
+         return EqualityComparer<KeyT>.Default.Equals( x, y );
       }
 
       public void Add( T dataObject )
