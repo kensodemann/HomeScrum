@@ -12,7 +12,6 @@ using HomeScrum.Web.Providers;
 namespace HomeScrum.Web.Controllers
 {
    [Authorize]
-   //[InitializeSimpleMembership]
    public class AccountController : Controller
    {
       private readonly IWebSecurity WebSecurity;

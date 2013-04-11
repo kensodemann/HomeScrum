@@ -13,7 +13,9 @@
         @Html.HiddenFor( model => model.ProjectStatusId )
         @Html.HiddenFor( model => model.ProjectStatusName )
 
-        @Html.DropDownList( "ProjectStatusId", Model.ProjectStatuses )
+        @Html.LabelFor( model => model.ProjectStatuses )
+        @Html.DropDownListFor( model => model.ProjectStatusId, Model.ProjectStatuses )
+
 
         <p>
             <input type="submit" value="@ViewBag.EditorButtonLabel" />
