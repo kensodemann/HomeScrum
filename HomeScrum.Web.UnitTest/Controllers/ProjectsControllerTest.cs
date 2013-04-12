@@ -26,7 +26,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IValidator<Project>> _validator;
       private Mock<IRepository<Project>> _projectRepository;
       private ProjectsController _controller;
-      private IPrincipal _fakeUser;
+      private Mock<IPrincipal> _currentUser;
+      private Mock<IIdentity> _userIdentity;
 
 
       [ClassInitialize]
@@ -41,7 +42,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         _fakeUser = new GenericPrincipal( new GenericIdentity( Users.ModelData[1].UserName, "Forms" ), null );
+         _userIdentitiy = new Mock<IPricipal>();
+         _currentUser = new Mock<IPrincipal>();
+         _currentUser.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
+         
          _validator = new Mock<IValidator<Project>>();
          _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
 
@@ -84,6 +88,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          messages.Add( new KeyValuePair<string, string>( "SomethingElse", "Another Message" ) );
 
          return messages;
+      }
+      
+      private ProjectEditorViewModel CreateProjectEditorViewModel()
+      {
+         return new ProjectEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Project",
+            Description = "This is a test",
+            LastModifiedUserId = default( Guid ),
+            ProjectStatusId = ProjectStatuses.ModelData[0].Id,
+            ProjectStatusName = ProjectStatuses.ModelData[0].Name
+         };
+      }
+      
+      private ProjectEditorViewModel CreateProjectEditorViewModel( Project project )
+      {
+         return new ProjectEditorViewModel()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description,
+            LastModifiedUserId = model.LastModifiedUserRid,
+            ProjectStatusId = model.ProjectStatus.Id,
+            ProjectStatusName = model.ProjectStatus.Name
+         };
       }
       #endregion
 
@@ -169,9 +199,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
       {
-         var model = new ProjectEditorViewModel();
+         var model = CreateProjectEditorViewModel();
 
-         var result = _controller.Create( model, _fakeUser );
+         var result = _controller.Create( model, _currentUser );
 
          _projectRepository.Verify( x => x.Add( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
       }
@@ -179,9 +209,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
-         var model = new ProjectEditorViewModel();
+         var model = CreateProjectEditorViewModel();
 
-         var result = _controller.Create( model, _fakeUser ) as RedirectToRouteResult;
+         var result = _controller.Create( model, _currentUser ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -194,10 +224,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
       {
-         var model = new ProjectEditorViewModel();
+         var model = CreateProjectEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model, _fakeUser );
+         var result = _controller.Create( model, _currentUser );
 
          _projectRepository.Verify( x => x.Add( It.IsAny<Project>() ), Times.Never() );
       }
@@ -205,10 +235,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
-         var model = new ProjectEditorViewModel();
+         var model = CreateProjectEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model, _fakeUser ) as ViewResult;
+         var result = _controller.Create( model, _currentUser ) as ViewResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( model, result.Model );
@@ -217,10 +247,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_InitializesProjectStatusList_NothingSelected()
       {
-         var model = new ProjectEditorViewModel();
+         var model = CreateProjectEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model, _fakeUser ) as ViewResult;
+         var result = _controller.Create( model, _currentUser ) as ViewResult;
 
          var returnedModel = result.Model as ProjectEditorViewModel;
 
@@ -236,9 +266,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
-         var viewModel = new ProjectEditorViewModel();
+         var viewModel = CreateProjectEditorViewModel();
 
-         _controller.Create( viewModel, _fakeUser );
+         _controller.Create( viewModel, _currentUser );
 
          _validator.Verify( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
       }
@@ -247,12 +277,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new ProjectEditorViewModel();
+         var viewModel = CreateProjectEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Create( viewModel, _fakeUser );
+         var result = _controller.Create( viewModel, _currentUser );
 
          Assert.AreEqual( messages.Count, _controller.ModelState.Count );
          foreach (var message in messages)
@@ -266,16 +296,39 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new ProjectEditorViewModel();
+         var viewModel = CreateProjectEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Create( viewModel, _fakeUser );
+         var result = _controller.Create( viewModel, _currentUser );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
+      }
+      
+      [TestMethod]
+      public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
+      {
+         var viewModel = CreateProjectEditorViewModel();
+
+         var user = new User()
+         {
+            Id = Guid.NewGuid(),
+            UserName = "test",
+            FirstName = "Fred"
+         };
+         _userRepository
+            .Setup( x => x.Get( "test" ) )
+            .Returns( user );
+         _userIdentity
+            .SetupGet( x => x.Name )
+            .Returns( "test" );
+         
+         _controller.Create( viewModel, _currentUser );
+
+         _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == user.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -334,17 +387,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
          var model = Projects.ModelData[2];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
-         };
+         var viewModel = CreateProjectEditorViewModel( model );
 
-         _controller.Edit( viewModel, _fakeUser );
+         _controller.Edit( viewModel, _currentUser );
 
          _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
       }
@@ -353,18 +398,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
          var model = Projects.ModelData[2];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
-         };
+         var viewModel = CreateProjectEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         _controller.Edit( viewModel, _fakeUser );
+         _controller.Edit( viewModel, _currentUser );
 
          _projectRepository.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
       }
@@ -373,17 +410,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
          var model = Projects.ModelData[2];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
-         };
+         var viewModel = CreateProjectEditorViewModel( model );
 
-         var result = _controller.Edit( viewModel, _fakeUser ) as RedirectToRouteResult;
+         var result = _controller.Edit( viewModel, _currentUser ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -397,18 +426,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
          var model = Projects.ModelData[2];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
-         };
+         var viewModel = CreateProjectEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _fakeUser ) as ViewResult;
+         var result = _controller.Edit( viewModel, _currentUser ) as ViewResult;
 
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result.Model, typeof( ProjectEditorViewModel ) );
@@ -421,17 +442,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_PassesModelToValidator()
       {
          var model = Projects.ModelData[3];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
-         };
+         var viewModel = CreateProjectEditorViewModel( model );
 
-         _controller.Edit( viewModel, _fakeUser );
+         _controller.Edit( viewModel, _currentUser );
 
          _validator.Verify( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Update ), Times.Once() );
       }
@@ -441,20 +454,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var messages = CreateStockErrorMessages();
          var model = Projects.ModelData[3];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
-         };
+         var viewModel = CreateProjectEditorViewModel( model );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Edit( viewModel, _fakeUser );
+         var result = _controller.Edit( viewModel, _currentUser );
 
          Assert.AreEqual( messages.Count, _controller.ModelState.Count );
          foreach (var message in messages)
@@ -482,11 +487,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Edit( viewModel, _fakeUser );
+         var result = _controller.Edit( viewModel, _currentUser );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
+      }
+      
+      [TestMethod]
+      public void EditPost_SetsLastModifiedUserId()
+      {
+         var model = Projects.ModelData[3];
+         var viewModel = new CreateProjectEditorViewModel( model );
+         
+         var user = new User()
+         {
+            Id = Guid.NewGuid(),
+            UserName = "test",
+            FirstName = "Fred"
+         };
+         _userRepository
+            .Setup( x => x.Get( "test" ) )
+            .Returns( user );
+         _userIdentity
+            .SetupGet( x => x.Name )
+            .Returns( "test" );
+         
+         _controller.Edit( viewModel, _currentUser );
+
+         _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == user.Id ) ), Times.Once() );
       }
    }
 }
