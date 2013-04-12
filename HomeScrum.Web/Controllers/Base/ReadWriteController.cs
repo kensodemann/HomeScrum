@@ -5,6 +5,7 @@ using HomeScrum.Web.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 
@@ -33,7 +34,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      public virtual ActionResult Create( EditorViewModelT viewModel )
+      public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
          var model = Mapper.Map<ModelT>( viewModel );
          Validate( model, TransactionType.Insert );
@@ -65,7 +66,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
-      public virtual ActionResult Edit( EditorViewModelT viewModel )
+      public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
          var model = Mapper.Map<ModelT>( viewModel );
          Validate( model, TransactionType.Update );

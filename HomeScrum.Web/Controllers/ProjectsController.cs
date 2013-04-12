@@ -7,6 +7,7 @@ using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
@@ -35,7 +36,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Projects/Create
       [HttpPost]
-      public override ActionResult Create( ProjectEditorViewModel viewModel )
+      public override ActionResult Create( ProjectEditorViewModel viewModel, IPrincipal user )
       {
          var model = Mapper.Map<Project>( viewModel );
          Validate( model, TransactionType.Insert );
@@ -69,7 +70,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Projects/Edit/Guid
       [HttpPost]
-      public override ActionResult Edit( ProjectEditorViewModel viewModel )
+      public override ActionResult Edit( ProjectEditorViewModel viewModel, IPrincipal user )
       {
          var model = Mapper.Map<Project>( viewModel );
          Validate( model, TransactionType.Update );
