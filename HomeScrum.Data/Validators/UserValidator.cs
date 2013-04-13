@@ -10,9 +10,9 @@ namespace HomeScrum.Data.Validators
 {
    public class UserValidator : IValidator<User>
    {
-      private readonly IRepository<User> _repository;
+      private readonly IUserRepository _repository;
 
-      public UserValidator( IRepository<User> repository )
+      public UserValidator( IUserRepository repository )
       {
          _repository = repository;
          Messages = new List<KeyValuePair<string, string>>();

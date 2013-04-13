@@ -12,7 +12,7 @@ namespace HomeScrum.Data.UnitTest.Validators
    [TestClass]
    public class UserValidatorTest
    {
-      private Mock<IRepository<User>> _userRepository;
+      private Mock<IUserRepository> _userRepository;
       private UserValidator _validator;
 
       private User CreateNewUser()
@@ -44,7 +44,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       [TestInitialize]
       public void InitializeTest()
       {
-         _userRepository = new Mock<IRepository<User>>();
+         _userRepository = new Mock<IUserRepository>();
          Users.Load();
          _userRepository
             .Setup( x => x.GetAll() )

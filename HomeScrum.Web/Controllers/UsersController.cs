@@ -16,14 +16,14 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( IRepository<User> userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
+      public UsersController( IUserRepository userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
       {
          _userRepository = userRepository;
          _securityRepository = securityRepository;
          _validator = validator;
       }
 
-      private readonly IRepository<User> _userRepository;
+      private readonly IUserRepository _userRepository;
       private readonly ISecurityRepository _securityRepository;
       private readonly IValidator<User> _validator;
 

@@ -16,7 +16,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class UsersControllerTest
    {
-      private Mock<IRepository<User>> _userRepository;
+      private Mock<IUserRepository> _userRepository;
       private Mock<ISecurityRepository> _securityRepository;
       private Mock<IValidator<User>> _validator;
       private UsersController _controller;
@@ -59,7 +59,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Users.CreateTestModelData();
 
-         _userRepository = new Mock<IRepository<User>>();
+         _userRepository = new Mock<IUserRepository>();
          _securityRepository = new Mock<ISecurityRepository>();
          _validator = new Mock<IValidator<User>>();
 
