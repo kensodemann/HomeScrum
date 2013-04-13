@@ -151,6 +151,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project Status:.
+        /// </summary>
+        public static string ProjectStatus {
+            get {
+                return ResourceManager.GetString("ProjectStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Projects of this status are active.
         /// </summary>
         public static string ProjectStatusIsActive {

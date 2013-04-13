@@ -1,6 +1,7 @@
 ﻿using HomeScrum.Data.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +12,7 @@ namespace HomeScrum.Web.Models
    {
       public Guid LastModifiedUserId { get; set; }
 
+      [Display( Name = "ProjectStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid ProjectStatusId { get; set; }
       public string ProjectStatusName { get; set; }
 
