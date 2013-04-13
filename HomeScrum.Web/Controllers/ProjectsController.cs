@@ -14,13 +14,15 @@ namespace HomeScrum.Web.Controllers
 {
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
-      public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IValidator<Project> validator )
+      public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IUserRepository userRepository, IValidator<Project> validator )
          : base( repository, validator )
       {
          _projectStatusRepository = projectStatusRepository;
+         _userRepository = userRepository;
       }
 
-      private IRepository<ProjectStatus> _projectStatusRepository;
+      private readonly IRepository<ProjectStatus> _projectStatusRepository;
+      private readonly IUserRepository _userRepository;
 
       //
       // GET: /Projects/Create
@@ -43,6 +45,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
+            model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
             MainRepository.Add( model );
             return RedirectToAction( () => this.Index() );
          }
@@ -77,6 +80,7 @@ namespace HomeScrum.Web.Controllers
 
          if (ModelState.IsValid)
          {
+            model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
             MainRepository.Update( model );
             return RedirectToAction( () => this.Index() );
          }
