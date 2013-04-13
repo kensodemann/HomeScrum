@@ -447,6 +447,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
          _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
+         foreach (var model in ProjectStatuses.ModelData)
+         {
+            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
       }
 
       private static void InitializeTestData()
@@ -516,6 +520,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object );
+         _controller.ControllerContext = new ControllerContext();
       }
 
       private void SetupProjectRepository()
@@ -529,7 +534,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator = new Mock<IValidator<Project>>();
          _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
       }
-
       #endregion
    }
 }

@@ -66,6 +66,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.Setup( x => x.ModelIsValid( It.IsAny<User>(), It.IsAny<TransactionType>() ) ).Returns( true );
 
          _controller = new UsersController( _userRepository.Object, _securityRepository.Object, _validator.Object );
+         _controller.ControllerContext = new ControllerContext();
       }
 
       [TestMethod]

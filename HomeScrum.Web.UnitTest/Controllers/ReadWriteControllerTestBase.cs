@@ -26,6 +26,26 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
 
+      protected virtual EditorViewModelT CreateEditorViewModel( ModelT model )
+      {
+         return new EditorViewModelT()
+         {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description
+         };
+      }
+
+      protected virtual EditorViewModelT CreateEditorViewModel()
+      {
+         return new EditorViewModelT()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Item",
+            Description = "A new description"
+         };
+      }
+
       public virtual void InitializeTest()
       {
          _repository = new Mock<IRepository<ModelT>>();
@@ -100,12 +120,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsRepositoryAddIfNewViewModelIsValid()
       {
-         var viewModel = new EditorViewModelT()
-         {
-            Id = Guid.NewGuid(),
-            Name = "New Item",
-            Description = "A new description"
-         };
+         var viewModel = CreateEditorViewModel();
 
          var result = _controller.Create( viewModel, FakeUser );
 
@@ -115,7 +130,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
-         var viewModel = new EditorViewModelT();
+         var viewModel = CreateEditorViewModel();
 
          var result = _controller.Create( viewModel, FakeUser ) as RedirectToRouteResult;
 
@@ -130,7 +145,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
       {
-         var model = new EditorViewModelT();
+         var model = CreateEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( model, FakeUser );
@@ -141,23 +156,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
-         var model = new EditorViewModelT();
+         var model = CreateEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model, FakeUser ) as ViewResult;
+         var result = _controller.Create( model, FakeUser );
 
          Assert.IsNotNull( result );
+         Assert.IsInstanceOfType( result, typeof( ViewResult ) );
       }
 
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
-         var viewModel = new EditorViewModelT()
-         {
-            Id = Guid.NewGuid(),
-            Name = "New Item",
-            Description = "A new description"
-         };
+         var viewModel = CreateEditorViewModel();
 
          _controller.Create( viewModel, FakeUser );
 
@@ -168,12 +179,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new EditorViewModelT()
-         {
-            Id = Guid.NewGuid(),
-            Name = "New Item",
-            Description = "A new description"
-         };
+         var viewModel = CreateEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id ), It.IsAny<TransactionType>() ) ).Returns( false );
@@ -192,12 +198,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
          var messages = CreateStockErrorMessages();
-         var viewModel = new EditorViewModelT()
-         {
-            Id = Guid.NewGuid(),
-            Name = "New Item",
-            Description = "A new description"
-         };
+         var viewModel = CreateEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id ), It.IsAny<TransactionType>() ) ).Returns( true );
@@ -248,12 +249,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
          var model = GetAllModels().ToArray()[2];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          _controller.Edit( viewModel, FakeUser );
 
@@ -264,12 +260,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
          var model = GetAllModels().ToArray()[2];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( viewModel, FakeUser );
@@ -281,12 +272,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
          var model = GetAllModels().ToArray()[2];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          var result = _controller.Edit( viewModel, FakeUser ) as RedirectToRouteResult;
 
@@ -302,12 +288,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
          var model = GetAllModels().ToArray()[2];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, FakeUser ) as ViewResult;
@@ -319,12 +300,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_PassesModelToValidator()
       {
          var model = GetAllModels().ToArray()[3];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          _controller.Edit( viewModel, FakeUser );
 
@@ -336,12 +312,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
@@ -361,12 +332,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
-         var viewModel = new EditorViewModelT()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description
-         };
+         var viewModel = CreateEditorViewModel( model );
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
@@ -375,7 +341,26 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
          Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
+         Assert.IsInstanceOfType( result, typeof( RedirectToRouteResult ) );
+      }
+
+      [TestMethod]
+      public void EditPost_PerformsDomainValidations()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = GetAllModels().ToArray()[3];
+         var viewModel = CreateEditorViewModel( model );
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
+
+         // Name is required in all Domain objects
+         viewModel.Name = "";
+
+         var result = _controller.Edit( viewModel, FakeUser );
+
+         Assert.AreEqual( 1, _controller.ModelState.Count );
+         Assert.IsInstanceOfType( result, typeof( ViewResult ) );
       }
 
 

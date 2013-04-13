@@ -84,8 +84,21 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
+      protected virtual void PerformModelValidations( ModelT model )
+      {
+         ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForType( () => model, typeof( ModelT ) );
+
+         foreach (ModelValidationResult validationResult in ModelValidator.GetModelValidator( metadata, this.ControllerContext ).Validate( null ))
+         {
+            // TODO: Look into a way to use the auto-map data to map the member name to the appropriate view model name if possible
+            ModelState.AddModelError( validationResult.MemberName, validationResult.Message );
+         }
+      }
+
       protected void Validate( ModelT model, TransactionType transactionType )
       {
+         PerformModelValidations( model );
+
          if (!Validator.ModelIsValid( model, transactionType ))
          {
             foreach (var message in _validator.Messages)

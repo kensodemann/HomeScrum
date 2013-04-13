@@ -4,6 +4,7 @@ using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -40,6 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          base.InitializeTest();
          WorkItemTypes.CreateTestModelData( initializeIds: true );
          _controller = new WorkItemTypesController( _repository.Object, _validator.Object );
+         _controller.ControllerContext = new ControllerContext();
       }
 
    }
