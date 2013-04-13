@@ -9,9 +9,10 @@
     <fieldset>
         <legend>Properties</legend>
 
-
-        @Html.LabelFor( model => model.ProjectStatusId )
-        @Html.DropDownListFor( model => model.ProjectStatusId, Model.ProjectStatuses )
+        <div class="formSelectList">
+            @Html.LabelFor( model => model.ProjectStatusId )
+            @Html.DropDownListFor( model => model.ProjectStatusId, Model.ProjectStatuses )
+        </div>
 
         <p>
             <input type="submit" value="@ViewBag.EditorButtonLabel" />

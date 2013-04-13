@@ -193,9 +193,28 @@ fieldset
       width: 26em;
     }
 
+  fieldset .formSelectList
+  {
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+    fieldset .formSelectList label
+    {
+      width: 8em;
+      float: left;
+    }
+
+    fieldset .formSelectList select
+    {
+      width: 24em;
+    }
+
   fieldset .formLongText
   {
     display: table;
+    margin: 0px;
+    margin-bottom: 10px;
   }
 
     fieldset .formLongText label
