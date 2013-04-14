@@ -1,15 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using HomeScrum.Common.TestData;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
-using System.Web.Mvc;
-using HomeScrum.Common.TestData;
+using HomeScrum.Web.Models.Admin;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using HomeScrum.Web.Models;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {

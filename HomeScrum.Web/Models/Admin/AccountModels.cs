@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
 
-namespace HomeScrum.Web.Models
+namespace HomeScrum.Web.Models.Admin
 {
    // TODO: Get the display strings from HomeScrum.Data.DisplayStrings
    public class LocalPasswordModel

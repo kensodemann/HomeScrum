@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace HomeScrum.Web.Models
+namespace HomeScrum.Web.Models.Admin
 {
-   public class WorkItemTypeViewModel : Base.SystemDomainObjectViewModel
+   public class WorkItemTypeEditorViewModel : Base.SystemDomainObjectEditorViewModel
    {
       [Display( Name = "WorkItemTypeIsTask", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsTask { get; set; }

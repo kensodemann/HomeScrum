@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace HomeScrum.Web.Models
+namespace HomeScrum.Web.Models.Admin
 {
-   public class ProjectStatusViewModel : Base.SystemDomainObjectViewModel
+   public class ProjectStatusEditorViewModel : Base.SystemDomainObjectEditorViewModel
    {
       [Display( Name = "ProjectStatusIsActive", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsActive { get; set; }

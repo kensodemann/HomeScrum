@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.SqlServer;
-using HomeScrum.Web.Models;
+using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
 using Ninject;
 

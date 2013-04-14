@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using HomeScrum.Data.Domain;
+﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
-using HomeScrum.Web.Models;
+using HomeScrum.Web.Models.Admin;
 using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {

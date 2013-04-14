@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace HomeScrum.Web.Models
+namespace HomeScrum.Web.Models.Admin
 {
-   public class SprintStatusEditorViewModel : Base.SystemDomainObjectEditorViewModel
+   public class SprintStatusViewModel : Base.SystemDomainObjectViewModel
    {
       [Display( Name = "SprintStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsOpenStatus { get; set; }

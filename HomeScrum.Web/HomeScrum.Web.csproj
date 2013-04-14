@@ -14,7 +14,7 @@
     <RootNamespace>HomeScrum.Web</RootNamespace>
     <AssemblyName>HomeScrum.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -166,29 +166,29 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AcceptanceCriteriaStatusEditorViewModel.cs" />
-    <Compile Include="Models\AcceptanceCriteriaStatusViewModel.cs" />
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Admin\AcceptanceCriteriaStatusEditorViewModel.cs" />
+    <Compile Include="Models\Admin\AcceptanceCriteriaStatusViewModel.cs" />
+    <Compile Include="Models\Admin\AccountModels.cs" />
     <Compile Include="Models\Base\DisplayViewModel.cs" />
     <Compile Include="Models\Base\DomainObjectEditorViewModel.cs" />
     <Compile Include="Models\Base\DomainObjectViewModel.cs" />
     <Compile Include="Models\Base\EditorViewModel.cs" />
     <Compile Include="Models\Base\SystemDomainObjectEditorViewModel.cs" />
     <Compile Include="Models\Base\SystemDomainObjectViewModel.cs" />
-    <Compile Include="Models\CreateUserViewModel.cs" />
-    <Compile Include="Models\ProjectEditorViewModel.cs" />
-    <Compile Include="Models\EditUserViewModel.cs" />
-    <Compile Include="Models\ProjectStatusEditorViewModel.cs" />
-    <Compile Include="Models\ProjectStatusViewModel.cs" />
-    <Compile Include="Models\ProjectViewModel.cs" />
-    <Compile Include="Models\SprintStatusEditorViewModel.cs" />
-    <Compile Include="Models\SprintStatusViewModel.cs" />
-    <Compile Include="Models\UserEditorViewModel.cs" />
-    <Compile Include="Models\UserViewModel.cs" />
-    <Compile Include="Models\WorkItemStatusEditorViewModel.cs" />
-    <Compile Include="Models\WorkItemStatusViewModel.cs" />
-    <Compile Include="Models\WorkItemTypeEditorViewModel.cs" />
-    <Compile Include="Models\WorkItemTypeViewModel.cs" />
+    <Compile Include="Models\Admin\CreateUserViewModel.cs" />
+    <Compile Include="Models\Admin\ProjectEditorViewModel.cs" />
+    <Compile Include="Models\Admin\EditUserViewModel.cs" />
+    <Compile Include="Models\Admin\ProjectStatusEditorViewModel.cs" />
+    <Compile Include="Models\Admin\ProjectStatusViewModel.cs" />
+    <Compile Include="Models\Admin\ProjectViewModel.cs" />
+    <Compile Include="Models\Admin\SprintStatusEditorViewModel.cs" />
+    <Compile Include="Models\Admin\SprintStatusViewModel.cs" />
+    <Compile Include="Models\Admin\UserEditorViewModel.cs" />
+    <Compile Include="Models\Admin\UserViewModel.cs" />
+    <Compile Include="Models\Admin\WorkItemStatusEditorViewModel.cs" />
+    <Compile Include="Models\Admin\WorkItemStatusViewModel.cs" />
+    <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
+    <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\HomeScrumMembershipProvider.cs" />
     <Compile Include="Providers\HomeScrumRoleProvider.cs" />
@@ -399,7 +399,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>49860</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:55569/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

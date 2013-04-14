@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using HomeScrum.Data.Domain;
 
-namespace HomeScrum.Web.Models
+namespace HomeScrum.Web.Models.Admin
 {
    public abstract class UserEditorViewModel : Base.EditorViewModel
    {

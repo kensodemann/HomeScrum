@@ -4,9 +4,8 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
-using HomeScrum.Web.Models;
+using HomeScrum.Web.Models.Admin;
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.Mvc;
 

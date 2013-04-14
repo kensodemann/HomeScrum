@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Transactions;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using WebMatrix.WebData;
-using HomeScrum.Web.Models;
+﻿using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Providers;
+using System;
+using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace HomeScrum.Web.Controllers
 {

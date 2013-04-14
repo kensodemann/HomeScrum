@@ -1,7 +1,7 @@
 ﻿using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
-using HomeScrum.Web.Models;
+using HomeScrum.Web.Models.Admin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Web.Mvc;

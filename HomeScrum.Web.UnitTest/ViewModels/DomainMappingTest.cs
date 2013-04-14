@@ -1,16 +1,15 @@
-﻿using System;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
-using HomeScrum.Web.Models;
+using HomeScrum.Data.Repositories;
+using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using HomeScrum.Data.Repositories;
 using Ninject;
 using Ninject.MockingKernel.Moq;
-using Ninject.MockingKernel;
+using System;
+using System.Linq;
 
 namespace HomeScrum.Web.UnitTest.ViewModels
 {

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using HomeScrum.Data.Common.Test.Utility;
+using HomeScrum.Web.Models.Admin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HomeScrum.Web.Models;
-using HomeScrum.Data.Common.Test.Utility;
 
 namespace HomeScrum.Web.UnitTest.ViewModels
 {

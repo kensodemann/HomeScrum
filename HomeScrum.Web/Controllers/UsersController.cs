@@ -3,7 +3,7 @@ using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Web.Models;
+using HomeScrum.Web.Models.Admin;
 using Ninject;
 using System;
 using System.Collections.Generic;
