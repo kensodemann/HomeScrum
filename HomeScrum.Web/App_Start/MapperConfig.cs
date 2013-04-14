@@ -38,7 +38,7 @@ namespace HomeScrum.Web
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
-            .ForMember( dest => dest.ProjectStatus, opt => opt.ResolveUsing<ProjectStatusResolver>() )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<ProjectStatusResolver>() )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
@@ -151,7 +151,7 @@ namespace HomeScrum.Web
 
          protected override ProjectStatus ResolveCore( ProjectEditorViewModel source )
          {
-            return _projectStatusRepository.Get( source.ProjectStatusId );
+            return _projectStatusRepository.Get( source.StatusId );
          }
       }
       #endregion

@@ -10,7 +10,8 @@
     </id>
     <property name="Name"/>
     <property name="Description"/>
-    <many-to-one name="ProjectStatus"
+    <many-to-one name="Status"
+                 class ="ProjectStatus"
                  column="ProjectStatusRid"
                  lazy="false"
                  cascade="none"/>

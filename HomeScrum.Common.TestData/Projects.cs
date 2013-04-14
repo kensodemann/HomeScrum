@@ -33,28 +33,28 @@ namespace HomeScrum.Common.TestData
             {
                Name="Home Scrum",
                Description = "This project right here",
-               ProjectStatus = ProjectStatuses.ModelData[0],
+               Status = ProjectStatuses.ModelData[0],
                LastModifiedUserRid = Users.ModelData[0].Id
             },
             new Project ()
             {
                Name="PRepS",
                Description = "An old problem reporting system",
-               ProjectStatus = ProjectStatuses.ModelData[2],
+               Status = ProjectStatuses.ModelData[2],
                LastModifiedUserRid = Users.ModelData[1].Id
             },
             new Project ()
             {
                Name="MathWar",
                Description = "A flash card math learning game",
-               ProjectStatus = ProjectStatuses.ModelData[1],
+               Status = ProjectStatuses.ModelData[1],
                LastModifiedUserRid = Users.ModelData[2].Id
             },
             new Project ()
             {
                Name="Sandwiches",
                Description = "Make them!",
-               ProjectStatus = ProjectStatuses.ModelData[0],
+               Status = ProjectStatuses.ModelData[0],
                LastModifiedUserRid = Users.ModelData[0].Id
             }
          };

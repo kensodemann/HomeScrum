@@ -75,7 +75,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          {
             Name = "New Project",
             Description = "New one for Insert",
-            ProjectStatus = ProjectStatuses.ModelData[1],
+            Status = ProjectStatuses.ModelData[1],
             LastModifiedUserRid = Users.ModelData[0].Id
          };
 
@@ -102,13 +102,13 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          var activeStatus = ProjectStatuses.ModelData.First( x => x.Name == "Active" );
          var inactiveStatus = ProjectStatuses.ModelData.First( x => x.Name == "Inactive" );
-         var project = Projects.ModelData.First( x => x.ProjectStatus.Id == activeStatus.Id );
+         var project = Projects.ModelData.First( x => x.Status.Id == activeStatus.Id );
 
-         project.ProjectStatus = new ProjectStatus() { Id = inactiveStatus.Id };
+         project.Status = new ProjectStatus() { Id = inactiveStatus.Id };
          _repository.Update( project );
          project = _repository.Get( project.Id );
 
-         Assert.AreEqual( "Inactive", project.ProjectStatus.Name );
+         Assert.AreEqual( "Inactive", project.Status.Name );
       }
 
       [TestMethod]
@@ -142,10 +142,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
 
       private static void AssertProjectStatus( Project expected, Project actual )
       {
-         Assert.AreNotSame( expected.ProjectStatus, actual.ProjectStatus );
-         Assert.AreEqual( expected.ProjectStatus.Id, actual.ProjectStatus.Id );
-         Assert.AreEqual( expected.ProjectStatus.Name, actual.ProjectStatus.Name );
-         Assert.AreEqual( expected.ProjectStatus.Description, actual.ProjectStatus.Description );
+         Assert.AreNotSame( expected.Status, actual.Status );
+         Assert.AreEqual( expected.Status.Id, actual.Status.Id );
+         Assert.AreEqual( expected.Status.Name, actual.Status.Name );
+         Assert.AreEqual( expected.Status.Description, actual.Status.Description );
       }
    }
 }

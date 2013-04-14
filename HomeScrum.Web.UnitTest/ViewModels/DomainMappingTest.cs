@@ -259,7 +259,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( ProjectViewModel ) );
-         Assert.AreEqual( domainModel.ProjectStatus.Name, ((ProjectViewModel)viewModel).ProjectStatusName );
+         Assert.AreEqual( domainModel.Status.Name, ((ProjectViewModel)viewModel).StatusName );
       }
 
 
@@ -270,8 +270,8 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( ProjectEditorViewModel ) );
-         Assert.AreEqual( domainModel.ProjectStatus.Id, ((ProjectEditorViewModel)viewModel).ProjectStatusId );
-         Assert.AreEqual( domainModel.ProjectStatus.Name, ((ProjectEditorViewModel)viewModel).ProjectStatusName );
+         Assert.AreEqual( domainModel.Status.Id, ((ProjectEditorViewModel)viewModel).StatusId );
+         Assert.AreEqual( domainModel.Status.Name, ((ProjectEditorViewModel)viewModel).StatusName );
       }
 
       [TestMethod]
@@ -283,7 +283,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Name = "Test Me",
             Description = "This is a test",
             LastModifiedUserId = Users.ModelData[0].Id,
-            ProjectStatusId = ProjectStatuses.ModelData[0].Id
+            StatusId = ProjectStatuses.ModelData[0].Id
          };
          _projectStatusRepository
             .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
@@ -293,7 +293,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( Project ) );
-         Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).ProjectStatus );
+         Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
       }
       #endregion
    }

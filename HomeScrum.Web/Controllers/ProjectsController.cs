@@ -62,7 +62,7 @@ namespace HomeScrum.Web.Controllers
          if (model != null)
          {
             var viewModel = Mapper.Map<ProjectEditorViewModel>( model );
-            viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( model.ProjectStatus.Id );
+            viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( model.Status.Id );
             return View( viewModel );
          }
 

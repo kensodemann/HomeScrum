@@ -10,7 +10,7 @@ namespace HomeScrum.Data.Domain
    public class Project : DomainObjectBase
    {
       [Required]
-      public virtual ProjectStatus ProjectStatus { get; set; }
+      public virtual ProjectStatus Status { get; set; }
 
       public virtual Guid LastModifiedUserRid { get; set; }
    }

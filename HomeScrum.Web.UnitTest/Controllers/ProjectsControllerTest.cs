@@ -292,8 +292,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (model.ProjectStatus.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.ProjectStatus.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.Status.Id.ToString() == item.Value && item.Selected) );
          }
       }
 
@@ -404,8 +404,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Name = model.Name,
             Description = model.Description,
             LastModifiedUserId = model.LastModifiedUserRid,
-            ProjectStatusId = model.ProjectStatus.Id,
-            ProjectStatusName = model.ProjectStatus.Name
+            StatusId = model.Status.Id,
+            StatusName = model.Status.Name
          };
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
@@ -478,8 +478,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Name = "New Project",
             Description = "This is a test",
             LastModifiedUserId = default( Guid ),
-            ProjectStatusId = ProjectStatuses.ModelData[0].Id,
-            ProjectStatusName = ProjectStatuses.ModelData[0].Name
+            StatusId = ProjectStatuses.ModelData[0].Id,
+            StatusName = ProjectStatuses.ModelData[0].Name
          };
       }
 
@@ -491,8 +491,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Name = project.Name,
             Description = project.Description,
             LastModifiedUserId = project.LastModifiedUserRid,
-            ProjectStatusId = project.ProjectStatus.Id,
-            ProjectStatusName = project.ProjectStatus.Name
+            StatusId = project.Status.Id,
+            StatusName = project.Status.Name
          };
       }
 

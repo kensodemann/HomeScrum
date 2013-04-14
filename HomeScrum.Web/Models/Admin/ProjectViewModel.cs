@@ -8,6 +8,6 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class ProjectViewModel : Base.DomainObjectViewModel
    {
-      public string ProjectStatusName { get; set; }
+      public string StatusName { get; set; }
    }
 }

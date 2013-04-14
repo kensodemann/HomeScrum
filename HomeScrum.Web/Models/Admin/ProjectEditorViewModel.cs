@@ -13,8 +13,8 @@ namespace HomeScrum.Web.Models.Admin
       public Guid LastModifiedUserId { get; set; }
 
       [Display( Name = "ProjectStatus", ResourceType = typeof( DisplayStrings ) )]
-      public Guid ProjectStatusId { get; set; }
-      public string ProjectStatusName { get; set; }
+      public Guid StatusId { get; set; }
+      public string StatusName { get; set; }
 
       public IEnumerable<SelectListItem> ProjectStatuses { get; set; }
    }
