@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<class name="WorkItem"
+       table="WorkItems">
+  <id name="Id">
+    <generator class="guid"></generator>
+  </id>
+  <property name="Name"/>
+  <property name="Description"/>
+  <many-to-one name="Status"
+               class ="WorkItemStatus"
+               column="WorkItemStatusRid"
+               lazy="false"
+               cascade="none"/>
+  <many-to-one name="WorkItemType"
+               class="WorkItemType"
+               column="WorkItemTypeRid"
+               lazy="false"
+               cascade="none"/>
+  <many-to-one name="WorkItemType"
+               class="WorkItemType"
+               column="WorkItemTypeRid"
+               lazy="false"
+               cascade="none"/>
+  <many-to-one name="Project"
+               class="Project"
+               column="ProjectRid"
+               lazy="false"
+               cascade="none"/>
+  <many-to-one name="ParentWorkItem"
+               class="WorkItem"
+               column="ParentWorkItemRid"
+               lazy="false"
+               cascade="none"/>
+  <!--<many-to-one name="Sprint"
+               class="Sprint"
+               column="SprintRid"
+               lazy="false"
+               cascade="none"/>-->
+  <property name="LastModifiedUserRid"/>
+  <property name="CreatedByUserRid"/>
+  <property name="AssignedToUserRid"/>
+</class>

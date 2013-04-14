@@ -61,6 +61,7 @@
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\WorkItem.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
     <Compile Include="Domain\WorkItemType.cs" />
     <Compile Include="ErrorMessages.Designer.cs">
@@ -90,13 +91,13 @@
       <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mappings\WorkStatus.hbm.xml" />
+    <EmbeddedResource Include="Mappings\WorkItemStatus.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\WorkType.hbm.xml" />
+    <EmbeddedResource Include="Mappings\WorkItemType.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\ProjectStatus.hbm.xml" />
@@ -116,12 +117,16 @@
     <EmbeddedResource Include="Mappings\User.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\Projects.hbm.xml">
+    <EmbeddedResource Include="Mappings\Project.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\ProjectHistory.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Mappings\AcceptanceCriteria.hbm.xml" />
+    <Content Include="Mappings\WorkItem.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
