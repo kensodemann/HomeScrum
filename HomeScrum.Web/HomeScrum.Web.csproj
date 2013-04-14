@@ -189,6 +189,7 @@
     <Compile Include="Models\Admin\WorkItemStatusViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
+    <Compile Include="Models\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\HomeScrumMembershipProvider.cs" />
     <Compile Include="Providers\HomeScrumRoleProvider.cs" />
@@ -356,6 +357,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Sprints\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
