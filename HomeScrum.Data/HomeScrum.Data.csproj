@@ -126,7 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mappings\AcceptanceCriteria.hbm.xml" />
-    <Content Include="Mappings\WorkItem.hbm.xml" />
+    <Content Include="Mappings\WorkItem.hbm.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

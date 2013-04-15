@@ -39,4 +39,11 @@
   <property name="LastModifiedUserRid"/>
   <property name="CreatedByUserRid"/>
   <property name="AssignedToUserRid"/>
-</class>
+
+  <set name="AcceptanceCriteria"
+       inverse="true"
+       cascade="all-delete-orphan">
+    <key column="WorkItemRid"/>
+    <one-to-many class="AcceptanceCriteria"/>inverse="true" cascade="all-delete-orphan"
+  </set>
+</class> 

@@ -11,5 +11,8 @@ namespace HomeScrum.Data.Domain
    {
       [Required]
       public virtual AcceptanceCriteriaStatus Status { get; set; }
+
+      [Required]
+      public virtual WorkItem WorkItem { get; set; }
    }
 }
