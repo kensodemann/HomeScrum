@@ -1,49 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<class name="WorkItem"
-       table="WorkItems">
-  <id name="Id">
-    <generator class="guid"></generator>
-  </id>
-  <property name="Name"/>
-  <property name="Description"/>
-  <many-to-one name="Status"
-               class ="WorkItemStatus"
-               column="WorkItemStatusRid"
-               lazy="false"
-               cascade="none"/>
-  <many-to-one name="WorkItemType"
-               class="WorkItemType"
-               column="WorkItemTypeRid"
-               lazy="false"
-               cascade="none"/>
-  <many-to-one name="WorkItemType"
-               class="WorkItemType"
-               column="WorkItemTypeRid"
-               lazy="false"
-               cascade="none"/>
-  <many-to-one name="Project"
-               class="Project"
-               column="ProjectRid"
-               lazy="false"
-               cascade="none"/>
-  <many-to-one name="ParentWorkItem"
-               class="WorkItem"
-               column="ParentWorkItemRid"
-               lazy="false"
-               cascade="none"/>
-  <!--<many-to-one name="Sprint"
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="HomeScrum.Data"
+                   namespace="HomeScrum.Data.Domain">
+
+  <class name="WorkItem"
+         table="WorkItems">
+    <id name="Id">
+      <generator class="guid"></generator>
+    </id>
+    <property name="Name"/>
+    <property name="Description"/>
+    <many-to-one name="Status"
+                 class ="WorkItemStatus"
+                 column="WorkItemStatusRid"
+                 lazy="false"
+                 cascade="none"/>
+    <many-to-one name="WorkItemType"
+                 class="WorkItemType"
+                 column="WorkItemTypeRid"
+                 lazy="false"
+                 cascade="none"/>
+    <many-to-one name="Project"
+                 class="Project"
+                 column="ProjectRid"
+                 lazy="false"
+                 cascade="none"/>
+    <many-to-one name="ParentWorkItem"
+                 class="WorkItem"
+                 column="ParentWorkItemRid"
+                 lazy="false"
+                 cascade="none"/>
+    <!--<many-to-one name="Sprint"
                class="Sprint"
                column="SprintRid"
                lazy="false"
                cascade="none"/>-->
-  <property name="LastModifiedUserRid"/>
-  <property name="CreatedByUserRid"/>
-  <property name="AssignedToUserRid"/>
+    <property name="LastModifiedUserRid"/>
+    <property name="CreatedByUserRid"/>
+    <property name="AssignedToUserRid"/>
 
-  <set name="AcceptanceCriteria"
-       inverse="true"
-       cascade="all-delete-orphan">
-    <key column="WorkItemRid"/>
-    <one-to-many class="AcceptanceCriteria"/>inverse="true" cascade="all-delete-orphan"
-  </set>
-</class> 
+    <set name="AcceptanceCriteria"
+         inverse="true"
+         cascade="all-delete-orphan">
+      <key column="WorkItemRid"/>
+      <one-to-many class="AcceptanceCriteria"/>
+    </set>
+  </class>
+</hibernate-mapping>
