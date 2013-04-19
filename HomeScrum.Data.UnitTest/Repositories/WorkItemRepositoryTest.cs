@@ -49,29 +49,29 @@ namespace HomeScrum.Data.UnitTest.Repositories
          }
       }
 
-      //[TestMethod]
-      //public void GetNonExistentWorkItemStatus_ReturnsNull()
-      //{
-      //   var status = _repository.Get( Guid.NewGuid() );
+      [TestMethod]
+      public void GetNonExistentWorkItem_ReturnsNull()
+      {
+         var workItem = _repository.Get( Guid.NewGuid() );
 
-      //   Assert.IsNull( status );
-      //}
+         Assert.IsNull( workItem );
+      }
 
-      //[TestMethod]
-      //public void GetUsingDefaultGuid_ReturnsNull()
-      //{
-      //   var status = _repository.Get( Guid.NewGuid() );
+      [TestMethod]
+      public void GetUsingDefaultGuid_ReturnsNull()
+      {
+         var workItem = _repository.Get( Guid.NewGuid() );
 
-      //   Assert.IsNull( status );
-      //}
+         Assert.IsNull( workItem );
+      }
 
-      //[TestMethod]
-      //public void Get_ReturnsWorkItemStatus()
-      //{
-      //   var status = _repository.Get( WorkItemStatuses.ModelData[2].Id );
+      [TestMethod]
+      public void Get_ReturnsWorkItem()
+      {
+         var workItem = _repository.Get( WorkItems.ModelData[2].Id );
 
-      //   AssertStatusesAreEqual( WorkItemStatuses.ModelData[2], status );
-      //}
+         AssertWorkItemsAreEqual( WorkItems.ModelData[2], workItem );
+      }
 
 
       //[TestMethod]
@@ -130,7 +130,21 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         // TODO: Add stuff
+         Assert.AreEqual( expected.AssignedToUserRid, actual.AssignedToUserRid );
+         Assert.AreEqual( expected.CreatedByUserRid, actual.CreatedByUserRid );
+         Assert.AreEqual( expected.LastModifiedUserRid, actual.LastModifiedUserRid );
+         Assert.AreEqual( expected.Status.Id, actual.Status.Id );
+         Assert.AreEqual( expected.WorkItemType.Id, actual.WorkItemType.Id );
+         Assert.AreEqual( expected.Project.Id, actual.Project.Id );
+
+         if (expected.AcceptanceCriteria == null)
+         {
+            Assert.AreEqual( 0, actual.AcceptanceCriteria.Count() );
+         }
+         else
+         {
+            Assert.AreEqual( expected.AcceptanceCriteria.Count(), actual.AcceptanceCriteria.Count() );
+         }
       }
    }
 }

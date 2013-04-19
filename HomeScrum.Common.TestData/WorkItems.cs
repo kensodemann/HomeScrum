@@ -128,21 +128,21 @@ namespace HomeScrum.Common.TestData
             new AcceptanceCriteria()
             {
                Name = "Criteria #1",
-               Description = "This is item #1",
+               Description = "This is criteria #1",
                Status = AcceptanceCriteriaStatuses.ModelData[0],
                WorkItem = ModelData[3]
             },
             new AcceptanceCriteria()
             {
                Name = "Criteria #2",
-               Description = "This is item #2",
+               Description = "This is criteria #2",
                Status = AcceptanceCriteriaStatuses.ModelData[2],
                WorkItem = ModelData[3]
             },
             new AcceptanceCriteria()
             {
                Name = "Criteria #3",
-               Description = "This is item #3",
+               Description = "This is criteria #3",
                Status = AcceptanceCriteriaStatuses.ModelData[0],
                WorkItem = ModelData[3]
             }
@@ -153,14 +153,14 @@ namespace HomeScrum.Common.TestData
             new AcceptanceCriteria()
             {
                Name = "Criteria #1",
-               Description = "This is item #1",
+               Description = "This is criteria #1",
                Status = AcceptanceCriteriaStatuses.ModelData[1],
                WorkItem = ModelData[5]
             },
             new AcceptanceCriteria()
             {
                Name = "Criteria #2",
-               Description = "This is item #2",
+               Description = "This is criteria #2",
                Status = AcceptanceCriteriaStatuses.ModelData[0],
                WorkItem = ModelData[5]
             }

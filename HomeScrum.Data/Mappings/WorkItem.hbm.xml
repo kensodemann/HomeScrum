@@ -41,7 +41,8 @@
 
     <set name="AcceptanceCriteria"
          inverse="true"
-         cascade="all-delete-orphan">
+         cascade="all-delete-orphan"
+         lazy="false">
       <key column="WorkItemRid"/>
       <one-to-many class="AcceptanceCriteria"/>
     </set>
