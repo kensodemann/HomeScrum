@@ -52,7 +52,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapAcceptanceCriteriaStatus_DomainToViewModel()
       {
          var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map<DisplayViewModel>( domainModel );
+         var viewModel = Mapper.Map<AcceptanceCriteriaStatusViewModel>( domainModel );
 
          Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriteriaStatusViewModel ) );
          Assert.IsTrue( ((AcceptanceCriteriaStatusViewModel)viewModel).AllowUse );

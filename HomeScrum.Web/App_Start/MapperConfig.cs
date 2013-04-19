@@ -20,9 +20,6 @@ namespace HomeScrum.Web
 
       private static void MapEditorViewModelsToDomains()
       {
-         Mapper.CreateMap<DomainObjectEditorViewModel, DomainObjectBase>()
-            .Include<SystemDomainObjectEditorViewModel, SystemDomainObject>()
-            .Include<ProjectEditorViewModel, Project>();
          Mapper.CreateMap<SystemDomainObjectEditorViewModel, SystemDomainObject>()
             .Include<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
             .Include<ProjectStatusEditorViewModel, ProjectStatus>()
@@ -42,19 +39,14 @@ namespace HomeScrum.Web
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
-            .ForMember( dest => dest.StatusCd, opt => opt.Ignore() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorUserStatusResolver>() );
          Mapper.CreateMap<EditUserViewModel, User>()
-            .ForMember( dest => dest.StatusCd, opt => opt.Ignore() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorUserStatusResolver>() );
       }
 
 
       private static void MapDomainsToEditorViewModels()
       {
-         Mapper.CreateMap<DomainObjectBase, EditorViewModel>()
-            .Include<DomainObjectBase, DomainObjectEditorViewModel>();
-         Mapper.CreateMap<DomainObjectBase, DomainObjectEditorViewModel>()
-            .Include<SystemDomainObject, SystemDomainObjectEditorViewModel>()
-            .Include<Project, ProjectEditorViewModel>();
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectEditorViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
             .Include<ProjectStatus, ProjectStatusEditorViewModel>()
@@ -72,26 +64,18 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
 
-         Mapper.CreateMap<User, EditorViewModel>()
-            .Include<User, CreateUserViewModel>()
-            .Include<User, EditUserViewModel>();
          Mapper.CreateMap<User, CreateUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
+            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
          Mapper.CreateMap<User, EditUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
+            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
       }
 
       private static void MapDomainsToViewModels()
       {
-         Mapper.CreateMap<DomainObjectBase, DisplayViewModel>()
-            .Include<DomainObjectBase, DomainObjectViewModel>();
-         Mapper.CreateMap<DomainObjectBase, DomainObjectViewModel>()
-            .Include<SystemDomainObject, SystemDomainObjectViewModel>()
-            .Include<Project, ProjectViewModel>();
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectViewModel>()
             .Include<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>()
             .Include<ProjectStatus, ProjectStatusViewModel>()
@@ -110,7 +94,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<User, DisplayViewModel>()
             .Include<User, UserViewModel>();
          Mapper.CreateMap<User, UserViewModel>()
-            .ForMember( dest => dest.IsActive, opt => opt.Ignore() );
+            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
       }
 
 
@@ -123,19 +107,27 @@ namespace HomeScrum.Web
          }
       }
 
-      public class StatusCodeResolver : ValueResolver<SystemDomainObjectViewModel, char>
-      {
-         protected override char ResolveCore( SystemDomainObjectViewModel source )
-         {
-            return source.AllowUse ? 'A' : 'I';
-         }
-      }
-
       public class EditorStatusCodeResolver : ValueResolver<SystemDomainObjectEditorViewModel, char>
       {
          protected override char ResolveCore( SystemDomainObjectEditorViewModel source )
          {
             return source.AllowUse ? 'A' : 'I';
+         }
+      }
+
+      public class IsActiveUserResolver : ValueResolver<User, bool>
+      {
+         protected override bool ResolveCore( User source )
+         {
+            return source.StatusCd == 'A';
+         }
+      }
+
+      public class EditorUserStatusResolver : ValueResolver<UserEditorViewModel, char>
+      {
+         protected override char ResolveCore( UserEditorViewModel source )
+         {
+            return source.IsActive ? 'A' : 'I';
          }
       }
 
