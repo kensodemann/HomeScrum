@@ -74,46 +74,58 @@ namespace HomeScrum.Data.UnitTest.Repositories
       }
 
 
-      //[TestMethod]
-      //public void Add_AddsWorkItemStatusToDatabase()
-      //{
-      //   var status = new WorkItemStatus()
-      //   {
-      //      Name = "New WorkItem Status",
-      //      Description = "New one for Insert",
-      //      StatusCd = 'A',
-      //      IsOpenStatus = true,
-      //      IsPredefined = true
-      //   };
+      [TestMethod]
+      public void Add_AddsWorkItemToDatabase()
+      {
+         var workItem = new WorkItem()
+         {
+            Name = "New Work Item",
+            Description = "New one for Insert",
+            Status = WorkItemStatuses.ModelData[1],
+            Project = Projects.ModelData[0],
+            WorkItemType = WorkItemTypes.ModelData[1],
+            CreatedByUserRid = Users.ModelData[0].Id,
+            LastModifiedUserRid = Users.ModelData[0].Id
+         };
+         workItem.AcceptanceCriteria = new[]
+         {
+            new AcceptanceCriteria()
+            {
+               Name = "It is accepted",
+               Description = "It must be accepted in order to be accepted.",
+               Status = AcceptanceCriteriaStatuses.ModelData[0],
+               WorkItem = workItem
+            }
+         };
 
-      //   _repository.Add( status );
-      //   Assert.AreEqual( WorkItemStatuses.ModelData.GetLength( 0 ) + 1, _repository.GetAll().Count );
-      //   AssertCollectionContainsStatus( _repository.GetAll(), status );
-      //}
+         _repository.Add( workItem );
+         Assert.AreEqual( WorkItems.ModelData.GetLength( 0 ) + 1, _repository.GetAll().Count );
+         AssertCollectionContainsWorkItem( _repository.GetAll(), workItem );
+      }
 
-      //[TestMethod]
-      //public void Update_ModifiesNameInDatabase()
-      //{
-      //   var status = WorkItemStatuses.ModelData[3];
+      [TestMethod]
+      public void Update_ModifiesNameInDatabase()
+      {
+         var workItem = WorkItems.ModelData[3];
 
-      //   status.Name += "Modified";
+         workItem.Name += "Modified";
 
-      //   _repository.Update( status );
+         _repository.Update( workItem );
 
-      //   Assert.AreEqual( WorkItemStatuses.ModelData.GetLength( 0 ), _repository.GetAll().Count );
-      //   AssertStatusesAreEqual( status, _repository.Get( status.Id ) );
-      //}
+         Assert.AreEqual( WorkItems.ModelData.GetLength( 0 ), _repository.GetAll().Count );
+         AssertWorkItemsAreEqual( workItem, _repository.Get( workItem.Id ) );
+      }
 
-      //[TestMethod]
-      //public void Delete_RevmovesItemFromDatabase()
-      //{
-      //   var status = WorkItemStatuses.ModelData[2];
+      [TestMethod]
+      public void Delete_RevmovesItemFromDatabase()
+      {
+         var workItem = WorkItems.ModelData[2];
 
-      //   _repository.Delete( status );
+         _repository.Delete( workItem );
 
-      //   Assert.AreEqual( WorkItemStatuses.ModelData.GetLength( 0 ) - 1, _repository.GetAll().Count );
-      //   Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == status.Id ) );
-      //}
+         Assert.AreEqual( WorkItems.ModelData.GetLength( 0 ) - 1, _repository.GetAll().Count );
+         Assert.IsNull( _repository.GetAll().FirstOrDefault( x => x.Id == workItem.Id ) );
+      }
 
 
       private void AssertCollectionContainsWorkItem( ICollection<WorkItem> workItems, WorkItem workItem )
@@ -136,6 +148,15 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Status.Id, actual.Status.Id );
          Assert.AreEqual( expected.WorkItemType.Id, actual.WorkItemType.Id );
          Assert.AreEqual( expected.Project.Id, actual.Project.Id );
+
+         if (expected.ParentWorkItem == null)
+         {
+            Assert.IsTrue( actual.ParentWorkItem == null || actual.ParentWorkItem.Id == default( Guid ) );
+         }
+         else
+         {
+            Assert.AreEqual( expected.ParentWorkItem.Id, actual.ParentWorkItem.Id );
+         }
 
          if (expected.AcceptanceCriteria == null)
          {
