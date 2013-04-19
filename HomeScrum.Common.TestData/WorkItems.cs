@@ -27,6 +27,17 @@ namespace HomeScrum.Common.TestData
 
       public static void CreateTestModelData( bool initializeIds = false )
       {
+         BuildBaseWorkItems();
+         AddAcceptanceCriteria();
+
+         if (initializeIds)
+         {
+            InitializeIds();
+         }
+      }
+
+      private static void BuildBaseWorkItems()
+      {
          ModelData = new[]
          {
             new WorkItem()
@@ -94,6 +105,11 @@ namespace HomeScrum.Common.TestData
             }
          };
 
+         ModelData.Last().ParentWorkItem = ModelData.First();
+      }
+
+      private static void AddAcceptanceCriteria()
+      {
          ModelData[0].AcceptanceCriteria = new[]
          {
             new AcceptanceCriteria()
@@ -165,12 +181,6 @@ namespace HomeScrum.Common.TestData
                WorkItem = ModelData[5]
             }
          };
-
-
-         if (initializeIds)
-         {
-            InitializeIds();
-         }
       }
 
       private static void InitializeIds()
