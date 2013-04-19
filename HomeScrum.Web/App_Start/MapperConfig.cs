@@ -26,7 +26,7 @@ namespace HomeScrum.Web
             .Include<SprintStatusEditorViewModel, SprintStatus>()
             .Include<WorkItemStatusEditorViewModel, WorkItemStatus>()
             .Include<WorkItemTypeEditorViewModel, WorkItemType>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorStatusCodeResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
          Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>();
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>();
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>();
@@ -39,9 +39,9 @@ namespace HomeScrum.Web
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorUserStatusResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<UserStatusResolver>() );
          Mapper.CreateMap<EditUserViewModel, User>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<EditorUserStatusResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<UserStatusResolver>() );
       }
 
 
@@ -107,7 +107,7 @@ namespace HomeScrum.Web
          }
       }
 
-      public class EditorStatusCodeResolver : ValueResolver<SystemDomainObjectEditorViewModel, char>
+      public class StatusCodeResolver : ValueResolver<SystemDomainObjectEditorViewModel, char>
       {
          protected override char ResolveCore( SystemDomainObjectEditorViewModel source )
          {
@@ -123,7 +123,7 @@ namespace HomeScrum.Web
          }
       }
 
-      public class EditorUserStatusResolver : ValueResolver<UserEditorViewModel, char>
+      public class UserStatusResolver : ValueResolver<UserEditorViewModel, char>
       {
          protected override char ResolveCore( UserEditorViewModel source )
          {
