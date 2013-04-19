@@ -62,7 +62,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapAcceptanceCriteriaStatus_DomainToEditorViewModel()
       {
          var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( AcceptanceCriteriaStatusEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriteriaStatusEditorViewModel ) );
          Assert.IsFalse( ((AcceptanceCriteriaStatusEditorViewModel)viewModel).AllowUse );
@@ -80,7 +80,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             IsPredefined = false,
             AllowUse = true
          };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( AcceptanceCriteriaStatus ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriteriaStatus ) );
          Assert.AreEqual( viewModel.Id, ((AcceptanceCriteriaStatus)domainModel).Id );
@@ -95,7 +95,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapProjectStatus_DomainToViewModel()
       {
          var domainModel = ProjectStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectStatusViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( ProjectStatusViewModel ) );
          Assert.IsTrue( ((ProjectStatusViewModel)viewModel).AllowUse );
@@ -105,7 +105,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapProjectStatus_DomainToEditorViewModel()
       {
          var domainModel = ProjectStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectStatusEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( ProjectStatusEditorViewModel ) );
          Assert.IsFalse( ((ProjectStatusEditorViewModel)viewModel).AllowUse );
@@ -123,7 +123,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             IsPredefined = false,
             AllowUse = true
          };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( ProjectStatus ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( ProjectStatus ) );
          Assert.AreEqual( 'A', ((ProjectStatus)domainModel).StatusCd );
@@ -135,7 +135,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapSprintStatus_DomainToViewModel()
       {
          var domainModel = SprintStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintStatusViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( SprintStatusViewModel ) );
          Assert.IsTrue( ((SprintStatusViewModel)viewModel).AllowUse );
@@ -145,7 +145,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapSprintStatus_DomainToEditorViewModel()
       {
          var domainModel = SprintStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintStatusEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( SprintStatusEditorViewModel ) );
          Assert.IsFalse( ((SprintStatusEditorViewModel)viewModel).AllowUse );
@@ -163,7 +163,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             IsPredefined = false,
             AllowUse = true
          };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( SprintStatus ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( SprintStatus ) );
          Assert.AreEqual( 'A', ((SprintStatus)domainModel).StatusCd );
@@ -175,7 +175,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapWorkItemStatus_DomainToViewModel()
       {
          var domainModel = WorkItemStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemStatusViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemStatusViewModel ) );
          Assert.IsTrue( ((WorkItemStatusViewModel)viewModel).AllowUse );
@@ -185,7 +185,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapWorkItemStatus_DomainToEditorViewModel()
       {
          var domainModel = WorkItemStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemStatusEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemStatusEditorViewModel ) );
          Assert.IsFalse( ((WorkItemStatusEditorViewModel)viewModel).AllowUse );
@@ -203,7 +203,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             IsPredefined = false,
             AllowUse = true
          };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItemStatus ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( WorkItemStatus ) );
          Assert.AreEqual( 'A', ((WorkItemStatus)domainModel).StatusCd );
@@ -215,7 +215,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapWorkItemType_DomainToViewModel()
       {
          var domainModel = WorkItemTypes.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemTypeViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemTypeViewModel ) );
          Assert.IsTrue( ((WorkItemTypeViewModel)viewModel).AllowUse );
@@ -225,7 +225,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapWorkItemType_DomainToEditorViewModel()
       {
          var domainModel = WorkItemTypes.ModelData.ToArray().First( x => x.StatusCd == 'I' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemTypeEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemTypeEditorViewModel ) );
          Assert.IsFalse( ((WorkItemTypeEditorViewModel)viewModel).AllowUse );
@@ -243,7 +243,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             IsPredefined = false,
             AllowUse = true
          };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItemType ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( WorkItemType ) );
          Assert.AreEqual( 'A', ((WorkItemType)domainModel).StatusCd );
@@ -256,7 +256,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapProject_DomainToViewModel()
       {
          var domainModel = Projects.ModelData[0];
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( ProjectViewModel ) );
          Assert.AreEqual( domainModel.Status.Name, ((ProjectViewModel)viewModel).StatusName );
@@ -267,7 +267,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapProject_DomainToEditorViewModel()
       {
          var domainModel = Projects.ModelData.ToArray()[0];
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( DomainObjectEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( ProjectEditorViewModel ) );
          Assert.AreEqual( domainModel.Status.Id, ((ProjectEditorViewModel)viewModel).StatusId );
@@ -290,7 +290,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             .Returns( ProjectStatuses.ModelData[0] )
             .Verifiable();
 
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( DomainObjectBase ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Project ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( Project ) );
          Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
