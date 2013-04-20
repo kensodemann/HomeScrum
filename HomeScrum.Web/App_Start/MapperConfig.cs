@@ -91,7 +91,9 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
-         Mapper.CreateMap<WorkItem, WorkItemViewModel>();
+         Mapper.CreateMap<WorkItem, WorkItemViewModel>()
+            .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
+            .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
 
          Mapper.CreateMap<User, DisplayViewModel>()
             .Include<User, UserViewModel>();

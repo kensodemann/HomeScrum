@@ -142,12 +142,20 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.AssignedToUser.Id, actual.AssignedToUser.Id );
          Assert.AreEqual( expected.CreatedByUser.Id, actual.CreatedByUser.Id );
          Assert.AreEqual( expected.LastModifiedUserRid, actual.LastModifiedUserRid );
          Assert.AreEqual( expected.Status.Id, actual.Status.Id );
          Assert.AreEqual( expected.WorkItemType.Id, actual.WorkItemType.Id );
          Assert.AreEqual( expected.Project.Id, actual.Project.Id );
+
+         if (expected.AssignedToUser == null)
+         {
+            Assert.IsTrue( actual.AssignedToUser == null || actual.AssignedToUser.Id == default( Guid ) );
+         }
+         else
+         {
+            Assert.AreEqual( expected.AssignedToUser.Id, actual.AssignedToUser.Id );
+         }
 
          if (expected.ParentWorkItem == null)
          {
