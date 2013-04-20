@@ -4,6 +4,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
+using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ninject;
@@ -27,6 +28,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          WorkItemTypes.CreateTestModelData( initializeIds: true );
 
          Projects.CreateTestModelData( initializeIds: true );
+         WorkItems.CreateTestModelData( initializeIds: true );
          Users.CreateTestModelData( initializeIds: true );
 
          _iocKernel = new MoqMockingKernel();
@@ -295,6 +297,55 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsInstanceOfType( domainModel, typeof( Project ) );
          Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
       }
+      #endregion
+
+
+      #region WorkItem
+      [TestMethod]
+      public void CanMapWorkItem_DomainToViewModel()
+      {
+         var domainModel = WorkItems.ModelData[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( WorkItemViewModel ) );
+         Assert.AreEqual( domainModel.Status.Name, ((WorkItemViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.WorkItemType.Name, ((WorkItemViewModel)viewModel).WorkItemTypeName );
+         Assert.AreEqual( domainModel.Project.Name, ((WorkItemViewModel)viewModel).ProjectName );
+      }
+
+
+      //[TestMethod]
+      //public void CanMapProject_DomainToEditorViewModel()
+      //{
+      //   var domainModel = Projects.ModelData.ToArray()[0];
+      //   var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectEditorViewModel ) );
+
+      //   Assert.IsInstanceOfType( viewModel, typeof( ProjectEditorViewModel ) );
+      //   Assert.AreEqual( domainModel.Status.Id, ((ProjectEditorViewModel)viewModel).StatusId );
+      //   Assert.AreEqual( domainModel.Status.Name, ((ProjectEditorViewModel)viewModel).StatusName );
+      //}
+
+      //[TestMethod]
+      //public void CanMapProject_EditorViewModelToDomain()
+      //{
+      //   var viewModel = new ProjectEditorViewModel()
+      //   {
+      //      Id = Guid.NewGuid(),
+      //      Name = "Test Me",
+      //      Description = "This is a test",
+      //      LastModifiedUserId = Users.ModelData[0].Id,
+      //      StatusId = ProjectStatuses.ModelData[0].Id
+      //   };
+      //   _projectStatusRepository
+      //      .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
+      //      .Returns( ProjectStatuses.ModelData[0] )
+      //      .Verifiable();
+
+      //   var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Project ) );
+
+      //   Assert.IsInstanceOfType( domainModel, typeof( Project ) );
+      //   Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
+      //}
       #endregion
    }
 }

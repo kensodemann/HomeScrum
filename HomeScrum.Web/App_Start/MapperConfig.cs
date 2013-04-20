@@ -3,6 +3,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
+using HomeScrum.Web.Models.WorkItems;
 using Ninject;
 
 namespace HomeScrum.Web
@@ -90,6 +91,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>();
 
          Mapper.CreateMap<Project, ProjectViewModel>();
+         Mapper.CreateMap<WorkItem, WorkItemViewModel>();
 
          Mapper.CreateMap<User, DisplayViewModel>()
             .Include<User, UserViewModel>();

@@ -11,8 +11,10 @@ namespace HomeScrum.Web.Models.WorkItems
 
       public string StatusName { get; set; }
 
-      public string CreatedByUserName { get; set; }
+      public string ProjectName { get; set; }
 
-      public string AssignedToUserName { get; set; }
+      //public string CreatedByUserName { get; set; }
+
+      //public string AssignedToUserName { get; set; }
    }
 }
