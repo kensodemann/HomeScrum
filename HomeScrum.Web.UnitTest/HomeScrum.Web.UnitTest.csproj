@@ -82,6 +82,7 @@
     <Compile Include="Controllers\ReadWriteControllerTestBase.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\ProjectsControllerTest.cs" />
+    <Compile Include="Controllers\WorkItemsControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />
     <Compile Include="Extensions\CollectionExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
