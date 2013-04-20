@@ -75,6 +75,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
       }
 
+
       private static void MapDomainsToViewModels()
       {
          Mapper.CreateMap<SystemDomainObject, SystemDomainObjectViewModel>()
