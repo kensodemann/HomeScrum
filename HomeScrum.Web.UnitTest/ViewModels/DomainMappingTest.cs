@@ -315,38 +315,36 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       }
 
 
-      //[TestMethod]
-      //public void CanMapProject_DomainToEditorViewModel()
-      //{
-      //   var domainModel = Projects.ModelData.ToArray()[0];
-      //   var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectEditorViewModel ) );
+      [TestMethod]
+      public void CanMapWorkItem_DomainToEditorViewModel()
+      {
+         var domainModel = WorkItems.ModelData.ToArray()[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemEditorViewModel ) );
 
-      //   Assert.IsInstanceOfType( viewModel, typeof( ProjectEditorViewModel ) );
-      //   Assert.AreEqual( domainModel.Status.Id, ((ProjectEditorViewModel)viewModel).StatusId );
-      //   Assert.AreEqual( domainModel.Status.Name, ((ProjectEditorViewModel)viewModel).StatusName );
-      //}
+         Assert.IsInstanceOfType( viewModel, typeof( WorkItemEditorViewModel ) );
+         //Assert.AreEqual( domainModel.Status.Id, ((WorkItemEditorViewModel)viewModel).StatusId );
+         //Assert.AreEqual( domainModel.Status.Name, ((WorkItemEditorViewModel)viewModel).StatusName );
+      }
 
-      //[TestMethod]
-      //public void CanMapProject_EditorViewModelToDomain()
-      //{
-      //   var viewModel = new ProjectEditorViewModel()
-      //   {
-      //      Id = Guid.NewGuid(),
-      //      Name = "Test Me",
-      //      Description = "This is a test",
-      //      LastModifiedUserId = Users.ModelData[0].Id,
-      //      StatusId = ProjectStatuses.ModelData[0].Id
-      //   };
-      //   _projectStatusRepository
-      //      .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
-      //      .Returns( ProjectStatuses.ModelData[0] )
-      //      .Verifiable();
+      [TestMethod]
+      public void CanMapWorkItem_EditorViewModelToDomain()
+      {
+         var viewModel = new WorkItemEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test"
+         };
+         //_projectStatusRepository
+         //   .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
+         //   .Returns( ProjectStatuses.ModelData[0] )
+         //   .Verifiable();
 
-      //   var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Project ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItem ) );
 
-      //   Assert.IsInstanceOfType( domainModel, typeof( Project ) );
-      //   Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
-      //}
+         Assert.IsInstanceOfType( domainModel, typeof( WorkItem ) );
+         //Assert.AreEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
+      }
       #endregion
    }
 }

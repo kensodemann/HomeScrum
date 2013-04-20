@@ -101,6 +101,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
       }
 
+      //[TestMethod]
+      //public void CreateGet_ReturnsViewWithViewWithModel()
+      //{
+      //   var result = _controller.Create() as ViewResult;
+
+      //   Assert.IsNotNull( result );
+      //   var model = result.Model as WorkItemEditorViewModel;
+      //   Assert.IsNotNull( model );
+      //}
+
+      //[TestMethod]
+      //public void CreateGet_InitializesProjectStatusList_NothingSelected()
+      //{
+      //   var result = _controller.Create() as ViewResult;
+
+      //   var model = result.Model as ProjectEditorViewModel;
+
+      //   Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.ProjectStatuses.Count() );
+      //   foreach (var item in model.ProjectStatuses)
+      //   {
+      //      var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+      //      Assert.AreEqual( status.Name, item.Text );
+      //      Assert.IsFalse( item.Selected );
+      //   }
+      //}
+
 
       #region private helpers
       //private static void CreateMockIOCKernel()

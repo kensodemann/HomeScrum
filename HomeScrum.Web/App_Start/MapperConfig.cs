@@ -12,15 +12,15 @@ namespace HomeScrum.Web
    {
       public static void RegisterMappings()
       {
-         MapDomainsToEditorViewModels(); 
+         MapDomainsToEditorViewModels();
          MapDomainsToViewModels();
-         
+
          MapEditorViewModelsToDomains();
       }
 
 
       private static void MapEditorViewModelsToDomains()
-      {       
+      {
          Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>()
@@ -36,6 +36,16 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<ProjectStatusResolver>() )
             .ConstructUsingServiceLocator();
+
+         Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
+            .ForMember( dest => dest.Status, opt => opt.Ignore() )
+            .ForMember( dest => dest.WorkItemType, opt => opt.Ignore() )
+            .ForMember( dest => dest.Project, opt => opt.Ignore() )
+            .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
+            .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
+            .ForMember( dest => dest.CreatedByUser, opt => opt.Ignore() )
+            .ForMember( dest => dest.AssignedToUser, opt => opt.Ignore() )
+            .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() );
 
          Mapper.CreateMap<CreateUserViewModel, User>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<UserStatusResolver>() );
@@ -58,13 +68,15 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
          Mapper.CreateMap<Project, ProjectEditorViewModel>()
-            .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
-            .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
+             .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
+             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
+
+         Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>();
 
          Mapper.CreateMap<User, CreateUserViewModel>()
-            .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
+             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
+             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
+             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
          Mapper.CreateMap<User, EditUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
