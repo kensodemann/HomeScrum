@@ -322,8 +322,8 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemEditorViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemEditorViewModel ) );
-         //Assert.AreEqual( domainModel.Status.Id, ((WorkItemEditorViewModel)viewModel).StatusId );
-         //Assert.AreEqual( domainModel.Status.Name, ((WorkItemEditorViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.Status.Id, ((WorkItemEditorViewModel)viewModel).StatusId );
+         Assert.AreEqual( domainModel.Status.Name, ((WorkItemEditorViewModel)viewModel).StatusName );
       }
 
       [TestMethod]

@@ -68,10 +68,11 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
          Mapper.CreateMap<Project, ProjectEditorViewModel>()
-             .ForMember( dest => dest.ProjectStatuses, opt => opt.Ignore() )
-             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
+            .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
+            .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
 
-         Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>();
+         Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
+            .ForMember( dest => dest.Statuses, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )

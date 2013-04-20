@@ -29,7 +29,7 @@ namespace HomeScrum.Web.Controllers
       {
          var model = new ProjectEditorViewModel();
 
-         model.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
+         model.Statuses = _projectStatusRepository.GetAll().ToSelectList();
 
          return View( model );
       }
@@ -49,7 +49,7 @@ namespace HomeScrum.Web.Controllers
             return RedirectToAction( () => this.Index() );
          }
 
-         viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList();
+         viewModel.Statuses = _projectStatusRepository.GetAll().ToSelectList();
          return View( viewModel );
       }
 
@@ -62,7 +62,7 @@ namespace HomeScrum.Web.Controllers
          if (model != null)
          {
             var viewModel = Mapper.Map<ProjectEditorViewModel>( model );
-            viewModel.ProjectStatuses = _projectStatusRepository.GetAll().ToSelectList( model.Status.Id );
+            viewModel.Statuses = _projectStatusRepository.GetAll().ToSelectList( model.Status.Id );
             return View( viewModel );
          }
 

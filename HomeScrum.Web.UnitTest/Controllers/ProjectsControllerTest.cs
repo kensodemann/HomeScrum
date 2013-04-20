@@ -122,8 +122,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.ProjectStatuses.Count() );
-         foreach (var item in model.ProjectStatuses)
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.Statuses.Count() );
+         foreach (var item in model.Statuses)
          {
             var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( status.Name, item.Text );
@@ -189,8 +189,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var returnedModel = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.ProjectStatuses.Count() );
-         foreach (var item in returnedModel.ProjectStatuses)
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.Statuses.Count() );
+         foreach (var item in returnedModel.Statuses)
          {
             var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( status.Name, item.Text );
@@ -287,8 +287,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.ProjectStatuses.Count() );
-         foreach (var item in viewModel.ProjectStatuses)
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
+         foreach (var item in viewModel.Statuses)
          {
             var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( status.Name, item.Text );
