@@ -84,7 +84,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
             Status = WorkItemStatuses.ModelData[1],
             Project = Projects.ModelData[0],
             WorkItemType = WorkItemTypes.ModelData[1],
-            CreatedByUserRid = Users.ModelData[0].Id,
+            CreatedByUser = Users.ModelData[0],
             LastModifiedUserRid = Users.ModelData[0].Id
          };
          workItem.AcceptanceCriteria = new[]
@@ -142,8 +142,8 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
-         Assert.AreEqual( expected.AssignedToUserRid, actual.AssignedToUserRid );
-         Assert.AreEqual( expected.CreatedByUserRid, actual.CreatedByUserRid );
+         Assert.AreEqual( expected.AssignedToUser.Id, actual.AssignedToUser.Id );
+         Assert.AreEqual( expected.CreatedByUser.Id, actual.CreatedByUser.Id );
          Assert.AreEqual( expected.LastModifiedUserRid, actual.LastModifiedUserRid );
          Assert.AreEqual( expected.Status.Id, actual.Status.Id );
          Assert.AreEqual( expected.WorkItemType.Id, actual.WorkItemType.Id );

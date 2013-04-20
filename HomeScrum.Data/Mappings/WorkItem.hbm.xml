@@ -36,8 +36,16 @@
                lazy="false"
                cascade="none"/>-->
     <property name="LastModifiedUserRid"/>
-    <property name="CreatedByUserRid"/>
-    <property name="AssignedToUserRid"/>
+    <many-to-one name="CreatedByUser"
+                 class="User"
+                 column="CreatedByUserRid"
+                 lazy="false"
+                 cascade="none"/>
+    <many-to-one name="AssignedToUser"
+                 class="User"
+                 column="AssignedToUserRid"
+                 lazy="false"
+                 cascade="none"/>
 
     <set name="AcceptanceCriteria"
          inverse="true"

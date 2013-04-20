@@ -27,9 +27,9 @@ namespace HomeScrum.Data.Domain
       public virtual Guid LastModifiedUserRid { get; set; }
 
       [Required]
-      public virtual Guid CreatedByUserRid { get; set; }
+      public virtual User CreatedByUser { get; set; }
 
-      public virtual Guid AssignedToUserRid { get; set; }
+      public virtual User AssignedToUser { get; set; }
 
       public virtual IEnumerable<AcceptanceCriteria> AcceptanceCriteria { get; set; }
    }

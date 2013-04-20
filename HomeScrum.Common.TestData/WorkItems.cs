@@ -46,7 +46,7 @@ namespace HomeScrum.Common.TestData
                Description = "Description #1",
                WorkItemType = WorkItemTypes.ModelData[0],
                Status = WorkItemStatuses.ModelData[0],
-               CreatedByUserRid = Users.ModelData[0].Id,
+               CreatedByUser = Users.ModelData[0],
                LastModifiedUserRid = Users.ModelData[0].Id,
                Project = Projects.ModelData[1]
             },
@@ -56,9 +56,9 @@ namespace HomeScrum.Common.TestData
                Description = "Description #2",
                WorkItemType = WorkItemTypes.ModelData[2],
                Status = WorkItemStatuses.ModelData[1],
-               CreatedByUserRid = Users.ModelData[2].Id,
+               CreatedByUser = Users.ModelData[2],
                LastModifiedUserRid = Users.ModelData[0].Id,
-               AssignedToUserRid = Users.ModelData[1].Id,
+               AssignedToUser = Users.ModelData[1],
                Project = Projects.ModelData[0]
             },
             new WorkItem()
@@ -67,7 +67,7 @@ namespace HomeScrum.Common.TestData
                Description = "Description #3",
                WorkItemType = WorkItemTypes.ModelData[0],
                Status = WorkItemStatuses.ModelData[2],
-               CreatedByUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1],
                LastModifiedUserRid = Users.ModelData[0].Id,
                Project = Projects.ModelData[2]
             },
@@ -77,9 +77,9 @@ namespace HomeScrum.Common.TestData
                Description = "Description #4",
                WorkItemType = WorkItemTypes.ModelData[1],
                Status = WorkItemStatuses.ModelData[2],
-               CreatedByUserRid = Users.ModelData[0].Id,
+               CreatedByUser = Users.ModelData[0],
                LastModifiedUserRid = Users.ModelData[1].Id,
-               AssignedToUserRid = Users.ModelData[2].Id,
+               AssignedToUser = Users.ModelData[2],
                Project = Projects.ModelData[1]
             },
             new WorkItem()
@@ -88,7 +88,7 @@ namespace HomeScrum.Common.TestData
                Description = "Description #5",
                WorkItemType = WorkItemTypes.ModelData[0],
                Status = WorkItemStatuses.ModelData[1],
-               CreatedByUserRid = Users.ModelData[0].Id,
+               CreatedByUser = Users.ModelData[0],
                LastModifiedUserRid = Users.ModelData[1].Id,
                Project = Projects.ModelData[2]
             },
@@ -98,9 +98,9 @@ namespace HomeScrum.Common.TestData
                Description = "Description #6",
                WorkItemType = WorkItemTypes.ModelData[1],
                Status = WorkItemStatuses.ModelData[0],
-               CreatedByUserRid = Users.ModelData[2].Id,
+               CreatedByUser = Users.ModelData[2],
                LastModifiedUserRid = Users.ModelData[1].Id,
-               AssignedToUserRid = Users.ModelData[2].Id,
+               AssignedToUser = Users.ModelData[2],
                Project = Projects.ModelData[0]
             }
          };
