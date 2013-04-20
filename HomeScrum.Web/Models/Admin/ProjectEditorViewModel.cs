@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public class ProjectEditorViewModel : Base.DomainObjectEditorViewModel
+   public class ProjectEditorViewModel : Base.DomainObjectViewModel
    {
       public Guid LastModifiedUserId { get; set; }
 

@@ -7,8 +7,10 @@ using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public abstract class UserEditorViewModel : Base.EditorViewModel
+   public abstract class UserEditorViewModel
    {
+      public Guid Id { get; set; }
+
       [Display( Name = "UserName", Prompt = "UserNamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string UserName { get; set; }
 

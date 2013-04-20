@@ -6,12 +6,15 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.Base
 {
-   public class DomainObjectViewModel : DisplayViewModel
+   public class DomainObjectViewModel
    {
+      public Guid Id { get; set; }
+
       [Display( Name = "Name", Prompt = "NamePrompt", ResourceType = typeof( DisplayStrings ) )]
       public virtual string Name { get; set; }
 
       [Display( Name = "Description", Prompt = "DescriptionPrompt", ResourceType = typeof( DisplayStrings ) )]
+      [UIHint( "MultilineText" )]
       public virtual string Description { get; set; }
    }
 }

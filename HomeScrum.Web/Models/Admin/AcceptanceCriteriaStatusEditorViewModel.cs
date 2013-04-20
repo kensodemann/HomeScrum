@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public class AcceptanceCriteriaStatusEditorViewModel : Base.SystemDomainObjectEditorViewModel
+   public class AcceptanceCriteriaStatusEditorViewModel : Base.SystemDomainObjectViewModel
    {
       [Display( Name = "AcceptanceCriteriaStatusIsAccepted", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsAccepted { get; set; }

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public class WorkItemStatusEditorViewModel : Base.SystemDomainObjectEditorViewModel
+   public class WorkItemStatusEditorViewModel : Base.SystemDomainObjectViewModel
    {
       [Display( Name = "WorkItemStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool IsOpenStatus { get; set; }

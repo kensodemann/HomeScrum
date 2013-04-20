@@ -16,7 +16,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public abstract class ReadWriteControllerTestBase<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : DomainObjectBase, new()
       where ViewModelT : DomainObjectViewModel, new()
-      where EditorViewModelT : DomainObjectEditorViewModel, new()
+      where EditorViewModelT : DomainObjectViewModel, new()
    {
       protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
