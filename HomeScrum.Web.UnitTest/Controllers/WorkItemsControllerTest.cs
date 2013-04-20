@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Web.Mvc;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers;
+using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -20,7 +22,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       //private Mock<IValidator<WorkItem>> _validator;
       private Mock<IRepository<WorkItem>> _workItemRepository;
-      //private WorkItemsController _controller;
+      private WorkItemsController _controller;
 
       //private User _currentUser;
       //private Mock<IPrincipal> _principal;
@@ -32,7 +34,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public static void InitiailizeTestClass( TestContext context )
       {
          //CreateMockIOCKernel();
-         //InitializeTestData();
+         InitializeTestData();
          //CreateStaticRepositories();
          //IntializeMapper();
       }
@@ -44,14 +46,59 @@ namespace HomeScrum.Web.UnitTest.Controllers
          //SetupValidator();
          SetupWorkItemRepository();
 
-         //CreateController();
+         CreateController();
       }
 
 
 
       [TestMethod]
-      public void TestMethod1()
+      public void Index_ReturnsViewWithModel()
       {
+         var view = _controller.Index() as ViewResult;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<WorkItemViewModel> ) );
+      }
+
+      [TestMethod]
+      public void Index_GetsAllItems()
+      {
+         _controller.Index();
+
+         _workItemRepository.Verify( x => x.GetAll(), Times.Once() );
+      }
+
+      [TestMethod]
+      public void Details_ReturnsViewWithModel()
+      {
+         var model = WorkItems.ModelData[2];
+
+         _workItemRepository.Setup( x => x.Get( model.Id ) )
+            .Returns( model );
+
+         var view = _controller.Details( model.Id ) as ViewResult;
+
+         _workItemRepository.Verify( x => x.Get( model.Id ), Times.Once() );
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+         Assert.IsInstanceOfType( view.Model, typeof( WorkItemViewModel ) );
+         Assert.AreEqual( model.Id, ((WorkItemViewModel)view.Model).Id );
+         Assert.AreEqual( model.Name, ((WorkItemViewModel)view.Model).Name );
+         Assert.AreEqual( model.Description, ((WorkItemViewModel)view.Model).Description );
+      }
+
+      [TestMethod]
+      public void Details_ReturnsHttpNotFoundIfNoModel()
+      {
+         var id = Guid.NewGuid();
+
+         _workItemRepository.Setup( x => x.Get( id ) ).Returns( null as WorkItem );
+
+         var result = _controller.Details( id ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
       }
 
 
@@ -77,13 +124,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       //   }
       //}
 
-      //private static void InitializeTestData()
-      //{
-      //   Users.CreateTestModelData( initializeIds: true );
-      //   WorkItemStatuses.CreateTestModelData( initializeIds: true );
-      //   WorkItemTypes.CreateTestModelData( initializeIds: true );
-      //   Projects.CreateTestModelData( initializeIds: true );
-      //}
+      private static void InitializeTestData()
+      {
+         Users.CreateTestModelData( initializeIds: true );
+         WorkItemStatuses.CreateTestModelData( initializeIds: true );
+         WorkItemTypes.CreateTestModelData( initializeIds: true );
+         Projects.CreateTestModelData( initializeIds: true );
+      }
 
       ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
       {
@@ -142,14 +189,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       //      .Returns( "test" );
       //}
 
-      //private void CreateController()
-      //{
-      //   _controller = new WorkItemsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object );
-      //   _controller.ControllerContext = new ControllerContext();
-      //}
+      private void CreateController()
+      {
+         //_controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _userRepository.Object, _validator.Object );
+         _controller = new WorkItemsController( _workItemRepository.Object );
+         _controller.ControllerContext = new ControllerContext();
+      }
 
       private void SetupWorkItemRepository()
       {
+         WorkItems.CreateTestModelData( initializeIds: true );
          _workItemRepository = new Mock<IRepository<WorkItem>>();
          _workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
       }
