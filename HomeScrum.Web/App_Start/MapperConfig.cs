@@ -85,6 +85,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
 
+         Mapper.CreateMap<AcceptanceCriteria, AcceptanceCriteriaViewModel>()
+            .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.IsAccepted ) );
          Mapper.CreateMap<Project, ProjectViewModel>();
          Mapper.CreateMap<WorkItem, WorkItemViewModel>()
             .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )

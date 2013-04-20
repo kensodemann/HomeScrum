@@ -21,6 +21,8 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
       {
+         Users.CreateTestModelData( initializeIds: true );
+
          AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
          ProjectStatuses.CreateTestModelData( initializeIds: true );
          SprintStatuses.CreateTestModelData( initializeIds: true );
@@ -29,7 +31,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Projects.CreateTestModelData( initializeIds: true );
          WorkItems.CreateTestModelData( initializeIds: true );
-         Users.CreateTestModelData( initializeIds: true );
 
          _iocKernel = new MoqMockingKernel();
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
@@ -304,7 +305,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [TestMethod]
       public void CanMapWorkItem_DomainToViewModel()
       {
-         var domainModel = WorkItems.ModelData[0];
+         var domainModel = WorkItems.ModelData.First( x => x.AcceptanceCriteria != null && x.AcceptanceCriteria.Count() > 0 );
          var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemViewModel ) );

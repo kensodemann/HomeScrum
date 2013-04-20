@@ -16,5 +16,7 @@ namespace HomeScrum.Web.Models.WorkItems
       public string CreatedByUserName { get; set; }
 
       public string AssignedToUserName { get; set; }
+
+      public IEnumerable<AcceptanceCriteriaViewModel> AcceptanceCriteria { get; set; }
    }
 }
