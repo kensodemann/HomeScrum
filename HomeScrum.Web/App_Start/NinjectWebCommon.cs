@@ -92,6 +92,7 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
 
          kernel.Bind<IValidator<Project>>().To( typeof( NullValidator<Project> ) );
+         kernel.Bind<IValidator<WorkItem>>().To( typeof( NullValidator<WorkItem> ) );
 
          kernel.Bind<IValidator<User>>().To( typeof( UserValidator ) );
       }

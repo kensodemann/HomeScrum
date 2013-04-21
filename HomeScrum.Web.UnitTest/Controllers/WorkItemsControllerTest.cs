@@ -20,7 +20,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       //private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
       //private static MoqMockingKernel _iocKernel;
 
-      //private Mock<IValidator<WorkItem>> _validator;
+      private Mock<IValidator<WorkItem>> _validator;
       private Mock<IRepository<WorkItem>> _workItemRepository;
       private WorkItemsController _controller;
 
@@ -43,7 +43,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public virtual void InitializeTest()
       {
          //SetupCurrentUser();
-         //SetupValidator();
+         SetupValidator();
          SetupWorkItemRepository();
 
          CreateController();
@@ -101,15 +101,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
       }
 
-      //[TestMethod]
-      //public void CreateGet_ReturnsViewWithViewWithModel()
-      //{
-      //   var result = _controller.Create() as ViewResult;
+      [TestMethod]
+      public void CreateGet_ReturnsViewWithViewWithModel()
+      {
+         var result = _controller.Create() as ViewResult;
 
-      //   Assert.IsNotNull( result );
-      //   var model = result.Model as WorkItemEditorViewModel;
-      //   Assert.IsNotNull( model );
-      //}
+         Assert.IsNotNull( result );
+         var model = result.Model as WorkItemEditorViewModel;
+         Assert.IsNotNull( model );
+      }
 
       //[TestMethod]
       //public void CreateGet_InitializesProjectStatusList_NothingSelected()
@@ -218,7 +218,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          //_controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _userRepository.Object, _validator.Object );
-         _controller = new WorkItemsController( _workItemRepository.Object );
+         _controller = new WorkItemsController( _workItemRepository.Object, _validator.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -229,11 +229,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
       }
 
-      //private void SetupValidator()
-      //{
-      //   _validator = new Mock<IValidator<WorkItem>>();
-      //   _validator.Setup( x => x.ModelIsValid( It.IsAny<WorkItem>(), It.IsAny<TransactionType>() ) ).Returns( true );
-      //}
+      private void SetupValidator()
+      {
+         _validator = new Mock<IValidator<WorkItem>>();
+         _validator.Setup( x => x.ModelIsValid( It.IsAny<WorkItem>(), It.IsAny<TransactionType>() ) ).Returns( true );
+      }
       #endregion
    }
 }

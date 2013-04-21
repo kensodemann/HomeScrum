@@ -34,12 +34,14 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          _iocKernel = new MoqMockingKernel();
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
+         _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
 
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
       }
 
       private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
+      private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
       private static MoqMockingKernel _iocKernel;
       #endregion
 
@@ -333,17 +335,20 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          {
             Id = Guid.NewGuid(),
             Name = "Test Me",
-            Description = "This is a test"
+            Description = "This is a test",
+            StatusId = WorkItemStatuses.ModelData[0].Id,
+            StatusName = WorkItemStatuses.ModelData[0].Name
          };
-         //_projectStatusRepository
-         //   .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
-         //   .Returns( ProjectStatuses.ModelData[0] )
-         //   .Verifiable();
+         _workItemStatusRepository
+            .Setup( x => x.Get( WorkItemStatuses.ModelData[0].Id ) )
+            .Returns( WorkItemStatuses.ModelData[0] )
+            .Verifiable();
 
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItem ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( WorkItem ) );
-         //Assert.AreEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
+         Assert.AreEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
+         _workItemStatusRepository.Verify();
       }
       #endregion
    }

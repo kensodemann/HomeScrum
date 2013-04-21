@@ -38,7 +38,8 @@ namespace HomeScrum.Web
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
-            .ForMember( dest => dest.Status, opt => opt.Ignore() )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<WorkItemStatusResolver>() )
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.WorkItemType, opt => opt.Ignore() )
             .ForMember( dest => dest.Project, opt => opt.Ignore() )
             .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
@@ -156,6 +157,22 @@ namespace HomeScrum.Web
          protected override ProjectStatus ResolveCore( ProjectEditorViewModel source )
          {
             return _projectStatusRepository.Get( source.StatusId );
+         }
+      }
+
+      public class WorkItemStatusResolver : ValueResolver<WorkItemEditorViewModel, WorkItemStatus>
+      {
+         [Inject]
+         public WorkItemStatusResolver( IRepository<WorkItemStatus> repository )
+         {
+            _respository = repository;
+         }
+         private readonly IRepository<WorkItemStatus> _respository;
+
+
+         protected override WorkItemStatus ResolveCore( WorkItemEditorViewModel source )
+         {
+            return _respository.Get( source.StatusId );
          }
       }
       #endregion
