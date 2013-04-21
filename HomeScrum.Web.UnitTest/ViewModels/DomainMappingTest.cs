@@ -33,6 +33,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          WorkItems.CreateTestModelData( initializeIds: true );
 
          _iocKernel = new MoqMockingKernel();
+         _projectRepository = _iocKernel.GetMock<IRepository<Project>>();
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
          _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
          _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
@@ -41,6 +42,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          MapperConfig.RegisterMappings();
       }
 
+      private static Mock<IRepository<Project>> _projectRepository;
       private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
       private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
       private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
@@ -328,6 +330,10 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsInstanceOfType( viewModel, typeof( WorkItemEditorViewModel ) );
          Assert.AreEqual( domainModel.Status.Id, ((WorkItemEditorViewModel)viewModel).StatusId );
          Assert.AreEqual( domainModel.Status.Name, ((WorkItemEditorViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.WorkItemType.Id, ((WorkItemEditorViewModel)viewModel).WorkItemTypeId );
+         Assert.AreEqual( domainModel.WorkItemType.Name, ((WorkItemEditorViewModel)viewModel).WorkItemTypeName );
+         Assert.AreEqual( domainModel.Project.Id, ((WorkItemEditorViewModel)viewModel).ProjectId );
+         Assert.AreEqual( domainModel.Project.Name, ((WorkItemEditorViewModel)viewModel).ProjectName );
       }
 
       [TestMethod]
@@ -341,8 +347,14 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             StatusId = WorkItemStatuses.ModelData[0].Id,
             StatusName = WorkItemStatuses.ModelData[0].Name,
             WorkItemTypeId = WorkItemTypes.ModelData[1].Id,
-            WorkItemTypeName = WorkItemTypes.ModelData[1].Name
+            WorkItemTypeName = WorkItemTypes.ModelData[1].Name,
+            ProjectId = Projects.ModelData[0].Id,
+            ProjectName = Projects.ModelData[0].Name
          };
+         _projectRepository
+            .Setup( x => x.Get( Projects.ModelData[0].Id ) )
+            .Returns( Projects.ModelData[0] )
+            .Verifiable();
          _workItemStatusRepository
             .Setup( x => x.Get( WorkItemStatuses.ModelData[0].Id ) )
             .Returns( WorkItemStatuses.ModelData[0] )
@@ -357,8 +369,10 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.IsInstanceOfType( domainModel, typeof( WorkItem ) );
          Assert.AreEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
          Assert.AreEqual( WorkItemTypes.ModelData[1], ((WorkItem)domainModel).WorkItemType );
+         Assert.AreEqual( Projects.ModelData[0], ((WorkItem)domainModel).Project );
          _workItemStatusRepository.Verify();
          _workItemTypeRepository.Verify();
+         _projectRepository.Verify();
       }
       #endregion
    }

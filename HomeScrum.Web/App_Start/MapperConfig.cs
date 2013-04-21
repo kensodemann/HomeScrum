@@ -40,7 +40,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<WorkItemStatusResolver>() )
             .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<WorkItemTypeResolver>() )
-            .ForMember( dest => dest.Project, opt => opt.Ignore() )
+            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<ProjectResolver>() )
             .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.Ignore() )
@@ -74,7 +74,8 @@ namespace HomeScrum.Web
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
-            .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() );
+            .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() )
+            .ForMember( dest => dest.Projects, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
@@ -158,6 +159,22 @@ namespace HomeScrum.Web
          protected override ProjectStatus ResolveCore( ProjectEditorViewModel source )
          {
             return _projectStatusRepository.Get( source.StatusId );
+         }
+      }
+
+      public class ProjectResolver : ValueResolver<WorkItemEditorViewModel, Project>
+      {
+         [Inject]
+         public ProjectResolver( IRepository<Project> repository )
+         {
+            _projectRepository = repository;
+         }
+         private readonly IRepository<Project> _projectRepository;
+
+
+         protected override Project ResolveCore( WorkItemEditorViewModel source )
+         {
+            return _projectRepository.Get( source.ProjectId );
          }
       }
 

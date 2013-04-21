@@ -15,5 +15,9 @@ namespace HomeScrum.Web.Models.WorkItems
       public Guid WorkItemTypeId { get; set; }
       public string WorkItemTypeName { get; set; }
       public IEnumerable<SelectListItem> WorkItemTypes { get; set; }
+
+      public Guid ProjectId { get; set; }
+      public string ProjectName { get; set; }
+      public IEnumerable<SelectListItem> Projects { get; set; }
    }
 }
