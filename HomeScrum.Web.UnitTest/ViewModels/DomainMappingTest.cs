@@ -35,6 +35,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          _iocKernel = new MoqMockingKernel();
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
          _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
+         _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
 
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
@@ -42,6 +43,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
       private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
       private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
+      private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
       private static MoqMockingKernel _iocKernel;
       #endregion
 
@@ -337,18 +339,26 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Name = "Test Me",
             Description = "This is a test",
             StatusId = WorkItemStatuses.ModelData[0].Id,
-            StatusName = WorkItemStatuses.ModelData[0].Name
+            StatusName = WorkItemStatuses.ModelData[0].Name,
+            WorkItemTypeId = WorkItemTypes.ModelData[1].Id,
+            WorkItemTypeName = WorkItemTypes.ModelData[1].Name
          };
          _workItemStatusRepository
             .Setup( x => x.Get( WorkItemStatuses.ModelData[0].Id ) )
             .Returns( WorkItemStatuses.ModelData[0] )
+            .Verifiable();
+         _workItemTypeRepository
+            .Setup( x => x.Get( WorkItemTypes.ModelData[1].Id ) )
+            .Returns( WorkItemTypes.ModelData[1] )
             .Verifiable();
 
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItem ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( WorkItem ) );
          Assert.AreEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
+         Assert.AreEqual( WorkItemTypes.ModelData[1], ((WorkItem)domainModel).WorkItemType );
          _workItemStatusRepository.Verify();
+         _workItemTypeRepository.Verify();
       }
       #endregion
    }

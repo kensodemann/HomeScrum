@@ -39,14 +39,14 @@ namespace HomeScrum.Web
 
          Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<WorkItemStatusResolver>() )
-            .ConstructUsingServiceLocator()
-            .ForMember( dest => dest.WorkItemType, opt => opt.Ignore() )
+            .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<WorkItemTypeResolver>() )
             .ForMember( dest => dest.Project, opt => opt.Ignore() )
             .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.Ignore() )
             .ForMember( dest => dest.AssignedToUser, opt => opt.Ignore() )
-            .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() );
+            .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
+            .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<UserStatusResolver>() );
@@ -73,7 +73,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
-            .ForMember( dest => dest.Statuses, opt => opt.Ignore() );
+            .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
+            .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
@@ -173,6 +174,22 @@ namespace HomeScrum.Web
          protected override WorkItemStatus ResolveCore( WorkItemEditorViewModel source )
          {
             return _respository.Get( source.StatusId );
+         }
+      }
+
+      public class WorkItemTypeResolver : ValueResolver<WorkItemEditorViewModel, WorkItemType>
+      {
+         [Inject]
+         public WorkItemTypeResolver( IRepository<WorkItemType> repository )
+         {
+            _respository = repository;
+         }
+         private readonly IRepository<WorkItemType> _respository;
+
+
+         protected override WorkItemType ResolveCore( WorkItemEditorViewModel source )
+         {
+            return _respository.Get( source.WorkItemTypeId );
          }
       }
       #endregion

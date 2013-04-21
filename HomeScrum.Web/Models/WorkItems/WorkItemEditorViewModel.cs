@@ -10,7 +10,10 @@ namespace HomeScrum.Web.Models.WorkItems
    {
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }
-
       public IEnumerable<SelectListItem> Statuses { get; set; }
+
+      public Guid WorkItemTypeId { get; set; }
+      public string WorkItemTypeName { get; set; }
+      public IEnumerable<SelectListItem> WorkItemTypes { get; set; }
    }
 }
