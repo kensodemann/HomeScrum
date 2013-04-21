@@ -75,7 +75,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() )
-            .ForMember( dest => dest.Projects, opt => opt.Ignore() );
+            .ForMember( dest => dest.Projects, opt => opt.Ignore() )
+            .ForMember( dest => dest.Users, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )

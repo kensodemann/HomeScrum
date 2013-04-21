@@ -19,5 +19,12 @@ namespace HomeScrum.Web.Models.WorkItems
       public Guid ProjectId { get; set; }
       public string ProjectName { get; set; }
       public IEnumerable<SelectListItem> Projects { get; set; }
+
+      public Guid CreatedByUserId { get; set; }
+      public string CreatedByUserUserName { get; set; }
+
+      public Guid AssignedToUserId { get; set; }
+      public string AssignedToUserUserName { get; set; }
+      public IEnumerable<SelectListItem> Users { get; set; }
    }
 }

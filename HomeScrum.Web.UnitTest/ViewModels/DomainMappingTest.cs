@@ -334,6 +334,11 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( domainModel.WorkItemType.Name, ((WorkItemEditorViewModel)viewModel).WorkItemTypeName );
          Assert.AreEqual( domainModel.Project.Id, ((WorkItemEditorViewModel)viewModel).ProjectId );
          Assert.AreEqual( domainModel.Project.Name, ((WorkItemEditorViewModel)viewModel).ProjectName );
+         Assert.AreEqual( domainModel.CreatedByUser.UserName, ((WorkItemEditorViewModel)viewModel).CreatedByUserUserName );
+         if (domainModel.AssignedToUser != null)
+         {
+            Assert.AreEqual( domainModel.AssignedToUser.UserName, ((WorkItemEditorViewModel)viewModel).AssignedToUserUserName );
+         }
       }
 
       [TestMethod]
@@ -349,7 +354,11 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             WorkItemTypeId = WorkItemTypes.ModelData[1].Id,
             WorkItemTypeName = WorkItemTypes.ModelData[1].Name,
             ProjectId = Projects.ModelData[0].Id,
-            ProjectName = Projects.ModelData[0].Name
+            ProjectName = Projects.ModelData[0].Name,
+            AssignedToUserId = Users.ModelData[0].Id,
+            AssignedToUserUserName = Users.ModelData[0].UserName,
+            CreatedByUserId = Users.ModelData[1].Id,
+            CreatedByUserUserName = Users.ModelData[1].UserName
          };
          _projectRepository
             .Setup( x => x.Get( Projects.ModelData[0].Id ) )
