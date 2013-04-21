@@ -5,6 +5,8 @@ using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.WorkItems;
 using Ninject;
+using System;
+using AutoMapper.Mappers;
 
 namespace HomeScrum.Web
 {
@@ -22,25 +24,25 @@ namespace HomeScrum.Web
       private static void MapEditorViewModelsToDomains()
       {
          Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemTypeEditorViewModel, WorkItemType>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<StatusCodeResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
-            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<ProjectStatusResolver>() )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<RepositoryItemResolver<ProjectStatus>>().FromMember( src => src.StatusId ) )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
-            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<WorkItemStatusResolver>() )
-            .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<WorkItemTypeResolver>() )
-            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<ProjectResolver>() )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<RepositoryItemResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
+            .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<RepositoryItemResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
+            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<RepositoryItemResolver<Project>>().FromMember( src => src.ProjectId ) )
             .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.Ignore() )
@@ -49,24 +51,24 @@ namespace HomeScrum.Web
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<UserStatusResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.IsActive ) );
          Mapper.CreateMap<EditUserViewModel, User>()
-            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<UserStatusResolver>() );
+            .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.IsActive ) );
       }
 
 
       private static void MapDomainsToEditorViewModels()
       {
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<ProjectStatus, ProjectStatusEditorViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<SprintStatus, SprintStatusEditorViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusEditorViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemType, WorkItemTypeEditorViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
 
          Mapper.CreateMap<Project, ProjectEditorViewModel>()
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
@@ -81,26 +83,26 @@ namespace HomeScrum.Web
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
              .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
-             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
+             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<User, EditUserViewModel>()
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
+            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
       }
 
 
       private static void MapDomainsToViewModels()
       {
          Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>()
-            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<AllowUseResolver>() );
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
 
          Mapper.CreateMap<AcceptanceCriteria, AcceptanceCriteriaViewModel>()
             .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.IsAccepted ) );
@@ -110,104 +112,40 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
 
          Mapper.CreateMap<User, UserViewModel>()
-            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<IsActiveUserResolver>() );
+            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
       }
 
 
       #region Resolvers
-      public class AllowUseResolver : ValueResolver<SystemDomainObject, bool>
+      public class StatusCdToBooleanResolver : ValueResolver<char, bool>
       {
-         protected override bool ResolveCore( SystemDomainObject source )
+         protected override bool ResolveCore( char source )
          {
-            return source.StatusCd == 'A';
+            return source == 'A';
          }
       }
 
-      public class StatusCodeResolver : ValueResolver<SystemDomainObjectViewModel, char>
+      public class BooleanToStatusCdResolver : ValueResolver<bool, char>
       {
-         protected override char ResolveCore( SystemDomainObjectViewModel source )
+         protected override char ResolveCore( bool source )
          {
-            return source.AllowUse ? 'A' : 'I';
+            return source ? 'A' : 'I';
          }
       }
 
-      public class IsActiveUserResolver : ValueResolver<User, bool>
-      {
-         protected override bool ResolveCore( User source )
-         {
-            return source.StatusCd == 'A';
-         }
-      }
-
-      public class UserStatusResolver : ValueResolver<UserEditorViewModel, char>
-      {
-         protected override char ResolveCore( UserEditorViewModel source )
-         {
-            return source.IsActive ? 'A' : 'I';
-         }
-      }
-
-      public class ProjectStatusResolver : ValueResolver<ProjectEditorViewModel, ProjectStatus>
+      public class RepositoryItemResolver<ModelT> : ValueResolver<Guid, ModelT>
       {
          [Inject]
-         public ProjectStatusResolver( IRepository<ProjectStatus> repository )
+         public RepositoryItemResolver( IRepository<ModelT> repository )
          {
-            _projectStatusRepository = repository;
+            _repository = repository;
          }
-         private readonly IRepository<ProjectStatus> _projectStatusRepository;
+         private readonly IRepository<ModelT> _repository;
 
 
-         protected override ProjectStatus ResolveCore( ProjectEditorViewModel source )
+         protected override ModelT ResolveCore( Guid sourceId )
          {
-            return _projectStatusRepository.Get( source.StatusId );
-         }
-      }
-
-      public class ProjectResolver : ValueResolver<WorkItemEditorViewModel, Project>
-      {
-         [Inject]
-         public ProjectResolver( IRepository<Project> repository )
-         {
-            _projectRepository = repository;
-         }
-         private readonly IRepository<Project> _projectRepository;
-
-
-         protected override Project ResolveCore( WorkItemEditorViewModel source )
-         {
-            return _projectRepository.Get( source.ProjectId );
-         }
-      }
-
-      public class WorkItemStatusResolver : ValueResolver<WorkItemEditorViewModel, WorkItemStatus>
-      {
-         [Inject]
-         public WorkItemStatusResolver( IRepository<WorkItemStatus> repository )
-         {
-            _respository = repository;
-         }
-         private readonly IRepository<WorkItemStatus> _respository;
-
-
-         protected override WorkItemStatus ResolveCore( WorkItemEditorViewModel source )
-         {
-            return _respository.Get( source.StatusId );
-         }
-      }
-
-      public class WorkItemTypeResolver : ValueResolver<WorkItemEditorViewModel, WorkItemType>
-      {
-         [Inject]
-         public WorkItemTypeResolver( IRepository<WorkItemType> repository )
-         {
-            _respository = repository;
-         }
-         private readonly IRepository<WorkItemType> _respository;
-
-
-         protected override WorkItemType ResolveCore( WorkItemEditorViewModel source )
-         {
-            return _respository.Get( source.WorkItemTypeId );
+            return _repository.Get( sourceId );
          }
       }
       #endregion
