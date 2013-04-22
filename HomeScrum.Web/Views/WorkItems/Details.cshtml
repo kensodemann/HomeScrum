@@ -1,0 +1,64 @@
+﻿@model HomeScrum.Web.Models.WorkItems.WorkItemViewModel
+
+@{
+    ViewBag.Title = "Work Item";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>WorkItemViewModel</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.WorkItemTypeName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WorkItemTypeName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StatusName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StatusName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ProjectName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ProjectName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreatedByUserName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedByUserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AssignedToUserName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AssignedToUserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

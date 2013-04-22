@@ -1,0 +1,17 @@
+﻿@model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary( true )
+
+    @Html.Partial( "_DataObjectBaseEditor", Model )
+
+    <fieldset>
+        <legend>Properties</legend>
+
+    </fieldset>
+ 
+    <p>
+        <input type="submit" value="@ViewBag.EditorButtonLabel" />
+    </p>
+}
