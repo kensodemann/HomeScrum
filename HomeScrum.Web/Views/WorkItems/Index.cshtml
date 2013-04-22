@@ -1,0 +1,9 @@
+﻿@model IEnumerable<HomeScrum.Web.Models.WorkItems.WorkItemViewModel>
+
+@{
+    ViewBag.Title = "Work Items";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial( "_DataObjectList", Model )

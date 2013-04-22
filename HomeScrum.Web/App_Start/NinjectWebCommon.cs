@@ -73,6 +73,7 @@ namespace HomeScrum.Web.App_Start
          BindRepository<WorkItemType>( kernel );
 
          BindRepository<Project>( kernel );
+         BindRepository<WorkItem>( kernel );
 
          kernel.Bind<IUserRepository>().ToConstant( new UserRepository() );
          kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
