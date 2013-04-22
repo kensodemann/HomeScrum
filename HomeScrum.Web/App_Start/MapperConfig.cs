@@ -45,8 +45,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Project, opt => opt.ResolveUsing<RepositoryItemResolver<Project>>().FromMember( src => src.ProjectId ) )
             .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
-            .ForMember( dest => dest.CreatedByUser, opt => opt.Ignore() )
-            .ForMember( dest => dest.AssignedToUser, opt => opt.Ignore() )
+            .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<RepositoryItemResolver<User>>().FromMember( src => src.CreatedByUserId ) )
+            .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<RepositoryItemResolver<User>>().FromMember( src => src.AssignedToUserId ) )
             .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
             .ConstructUsingServiceLocator();
 
