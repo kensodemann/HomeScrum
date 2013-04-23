@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Web.Mvc;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
@@ -10,15 +7,23 @@ using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Ninject;
+using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
    public class WorkItemsControllerTest
    {
-      //private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
-      //private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
-      //private static MoqMockingKernel _iocKernel;
+      private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
+      private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
+      private static Mock<IRepository<Project>> _projectRepository;
+      private static Mock<IUserRepository> _userRepository;
+      private static MoqMockingKernel _iocKernel;
 
       private Mock<IValidator<WorkItem>> _validator;
       private Mock<IRepository<WorkItem>> _workItemRepository;
@@ -33,10 +38,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
-         //CreateMockIOCKernel();
+         CreateMockIOCKernel();
          InitializeTestData();
-         //CreateStaticRepositories();
-         //IntializeMapper();
+         CreateStaticRepositories();
+         IntializeMapper();
       }
 
       [TestInitialize]
@@ -111,44 +116,65 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( model );
       }
 
-      //[TestMethod]
-      //public void CreateGet_InitializesProjectStatusList_NothingSelected()
-      //{
-      //   var result = _controller.Create() as ViewResult;
+      [TestMethod]
+      public void CreateGet_InitializesWorkItemStatusList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
 
-      //   var model = result.Model as ProjectEditorViewModel;
+         var model = result.Model as WorkItemEditorViewModel;
 
-      //   Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.ProjectStatuses.Count() );
-      //   foreach (var item in model.ProjectStatuses)
-      //   {
-      //      var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
-      //      Assert.AreEqual( status.Name, item.Text );
-      //      Assert.IsFalse( item.Selected );
-      //   }
-      //}
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.Statuses.Count() );
+         foreach (var item in model.Statuses)
+         {
+            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsFalse( item.Selected );
+         }
+      }
 
 
       #region private helpers
-      //private static void CreateMockIOCKernel()
-      //{
-      //   _iocKernel = new MoqMockingKernel();
-      //}
+      private static void CreateMockIOCKernel()
+      {
+         _iocKernel = new MoqMockingKernel();
+      }
 
-      //private static void IntializeMapper()
-      //{
-      //   Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
-      //   MapperConfig.RegisterMappings();
-      //}
+      private static void IntializeMapper()
+      {
+         Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
+         MapperConfig.RegisterMappings();
+      }
 
-      //private static void CreateStaticRepositories()
-      //{
-      //   _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
-      //   _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-      //   foreach (var model in ProjectStatuses.ModelData)
-      //   {
-      //      _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-      //   }
-      //}
+      private static void CreateStaticRepositories()
+      {
+         _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
+         _workItemStatusRepository.Setup( x => x.GetAll() ).Returns( WorkItemStatuses.ModelData );
+         foreach (var model in WorkItemStatuses.ModelData)
+         {
+            _workItemStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
+
+         _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
+         _workItemTypeRepository.Setup( x => x.GetAll() ).Returns( WorkItemTypes.ModelData );
+         foreach (var model in WorkItemTypes.ModelData)
+         {
+            _workItemTypeRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
+
+         _projectRepository = _iocKernel.GetMock<IRepository<Project>>();
+         _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
+         foreach (var model in Projects.ModelData)
+         {
+            _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
+
+         _userRepository = _iocKernel.GetMock<IUserRepository>();
+         _userRepository.Setup( x => x.GetAll() ).Returns( Users.ModelData );
+         foreach (var model in Users.ModelData)
+         {
+            _userRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
+      }
 
       private static void InitializeTestData()
       {
@@ -217,8 +243,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         //_controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _userRepository.Object, _validator.Object );
-         _controller = new WorkItemsController( _workItemRepository.Object, _validator.Object );
+         _controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
+            _projectRepository.Object, _userRepository.Object, _validator.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
