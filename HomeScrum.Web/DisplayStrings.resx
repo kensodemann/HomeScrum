@@ -150,6 +150,9 @@
   <data name="NamePrompt" xml:space="preserve">
     <value>Enter a unique name</value>
   </data>
+  <data name="NotAssigned" xml:space="preserve">
+    <value>&lt;Not Assigned&gt;</value>
+  </data>
   <data name="ProjectStatus" xml:space="preserve">
     <value>Project Status:</value>
   </data>

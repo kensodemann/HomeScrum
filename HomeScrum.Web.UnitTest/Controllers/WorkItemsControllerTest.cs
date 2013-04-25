@@ -148,6 +148,34 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
 
+      [TestMethod]
+      public void CreateGet_InitializesProjectList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ) + 1, model.Projects.Count() );
+
+         bool isFirst = true;
+         foreach (var item in model.Projects)
+         {
+            if (isFirst)
+            {
+               Assert.IsNull( item.Value );
+               Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
+               Assert.IsFalse( item.Selected );
+               isFirst = false;
+            }
+            else
+            {
+               var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+               Assert.AreEqual( project.Name, item.Text );
+               Assert.IsFalse( item.Selected );
+            }
+         }
+      }
+
       #region private helpers
       private static void CreateMockIOCKernel()
       {

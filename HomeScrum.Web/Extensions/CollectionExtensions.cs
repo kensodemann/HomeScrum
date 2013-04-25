@@ -30,5 +30,32 @@ namespace HomeScrum.Web.Extensions
                                 Selected = item.Id == selectedId
                              } );
       }
+
+      public static IEnumerable<SelectListItem> ToSelectList( this IEnumerable<Project> collection, Guid selectedId = default(Guid) )
+      {
+         var selectList = new List<SelectListItem>();
+
+         selectList.Add( new SelectListItem()
+                         {
+                            Value = null,
+                            Text = DisplayStrings.NotAssigned,
+                            Selected = false
+                         } );
+
+         selectList.AddRange(
+            collection
+               .OrderBy( x => x.Name, new CaseInsensitiveComparer() )
+               .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+               .Select( item => new SelectListItem()
+                                {
+                                   Value = item.Id.ToString(),
+                                   Text = item.Name,
+                                   Selected = item.Id == selectedId
+                                } ) );
+
+
+
+         return selectList;
+      }
    }
 }
