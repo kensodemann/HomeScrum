@@ -35,6 +35,7 @@ namespace HomeScrum.Web.Controllers
          var viewModel = new WorkItemEditorViewModel();
 
          viewModel.Statuses = _statusRepository.GetAll().ToSelectList();
+         //viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList();
 
          return View( viewModel );
       }

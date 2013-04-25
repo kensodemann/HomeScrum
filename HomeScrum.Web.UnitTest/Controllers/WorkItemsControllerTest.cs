@@ -132,6 +132,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
 
+      [TestMethod]
+      public void CreateGet_InitializesWorkItemTypeList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), model.WorkItemTypes.Count() );
+         foreach (var item in model.WorkItemTypes)
+         {
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( workItemType.Name, item.Text );
+            Assert.IsFalse( item.Selected );
+         }
+      }
 
       #region private helpers
       private static void CreateMockIOCKernel()
