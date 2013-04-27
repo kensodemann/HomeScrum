@@ -13,6 +13,9 @@ namespace HomeScrum.Web.UnitTest.Extensions
       public void InitializeTest()
       {
          WorkItemTypes.CreateTestModelData( initializeIds: true );
+         ProjectStatuses.CreateTestModelData( initializeIds: true );
+         Projects.CreateTestModelData( initializeIds: true );
+         Users.CreateTestModelData( initializeIds: true );
       }
 
       [TestMethod]
@@ -62,6 +65,78 @@ namespace HomeScrum.Web.UnitTest.Extensions
          foreach (var item in selectList)
          {
             Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
+
+      /* 
+       * Project specific ToSelectList Tests
+       * 
+       * Many of these tests traverse the list starting with element 1.  This is because the
+       * 0th element is always the "Not Assigned" element, and does not apply to the test.
+       */
+      [TestMethod]
+      public void Project_ToSelectList_FirstElementTheNotAssignedElement()
+      {
+         var selectList = Projects.ModelData.ToArray().ToSelectList();
+
+         var item = selectList.ElementAt( 0 );
+
+         Assert.IsNull( item.Value );
+         Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
+         Assert.IsFalse( item.Selected );
+      }
+
+      [TestMethod]
+      public void Project_ToSelectList_ReturnsActiveProjects()
+      {
+         var selectList = Projects.ModelData.ToArray().ToSelectList();
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ) + 1, selectList.Count() );
+         for (int i = 1; i < selectList.Count(); i++)
+         {
+            var item = selectList.ElementAt( i );
+            Assert.IsNotNull( Projects.ModelData.FirstOrDefault( x => x.Status.IsActive && x.Id.ToString() == item.Value ) );
+         }
+      }
+
+      [TestMethod]
+      public void Project_ToSelectList_OrdersProjectssByName()
+      {
+         var selectList = Projects.ModelData.ToArray().ToSelectList();
+
+         string previousName = null;
+         for (int i = 1; i < selectList.Count(); i++)
+         {
+            var item = selectList.ElementAt( i );
+            Assert.IsTrue( previousName == null ? true : String.Compare( previousName, item.Text, StringComparison.OrdinalIgnoreCase ) <= 0 );
+            previousName = item.Text;
+         }
+      }
+
+      [TestMethod]
+      public void Project_ToSelectedList_MarksProjectSelected()
+      {
+         var selected = Projects.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsActive ).ToArray()[1];
+         var selectList = Projects.ModelData.ToArray().ToSelectList( selected.Id );
+
+         foreach (var item in selectList)
+         {
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void Project_ToSelectedList_IncludesInactiveProjectIfSelected()
+      {
+         var selected = Projects.ModelData.First( x => !x.Status.IsActive );
+         var selectList = Projects.ModelData.ToArray().ToSelectList( selected.Id );
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 2, selectList.Count() );
+         for (int i = 1; i < selectList.Count(); i++)
+         {
+            var item = selectList.ElementAt( i );
+            Assert.IsNotNull( Projects.ModelData.FirstOrDefault( x => (x.Status.IsActive || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
          }
       }

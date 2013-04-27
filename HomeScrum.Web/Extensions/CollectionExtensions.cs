@@ -35,12 +35,7 @@ namespace HomeScrum.Web.Extensions
       {
          var selectList = new List<SelectListItem>();
 
-         selectList.Add( new SelectListItem()
-                         {
-                            Value = null,
-                            Text = DisplayStrings.NotAssigned,
-                            Selected = false
-                         } );
+         AddEmptyItem( selectList );
 
          selectList.AddRange(
             collection
@@ -56,6 +51,16 @@ namespace HomeScrum.Web.Extensions
 
 
          return selectList;
+      }
+
+      private static void AddEmptyItem( List<SelectListItem> selectList )
+      {
+         selectList.Add( new SelectListItem()
+         {
+            Value = null,
+            Text = DisplayStrings.NotAssigned,
+            Selected = false
+         } );
       }
    }
 }
