@@ -53,6 +53,29 @@ namespace HomeScrum.Web.Extensions
          return selectList;
       }
 
+      public static IEnumerable<SelectListItem> ToSelectList( this IEnumerable<User> collection, bool allowUnassigned, Guid selectedId = default(Guid) )
+      {
+         var selectList = new List<SelectListItem>();
+
+         if (allowUnassigned)
+         {
+            AddEmptyItem( selectList );
+         }
+
+         selectList.AddRange(
+            collection
+               .OrderBy( x => x.LastName + x.FirstName, new CaseInsensitiveComparer() )
+               .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+               .Select( item => new SelectListItem()
+                                {
+                                   Value = item.Id.ToString(),
+                                   Text = (String.IsNullOrWhiteSpace( item.LastName ) ? "" : item.LastName + ", ") + item.FirstName,
+                                   Selected = item.Id == selectedId
+                                } ) );
+
+         return selectList;
+      }
+
       private static void AddEmptyItem( List<SelectListItem> selectList )
       {
          selectList.Add( new SelectListItem()

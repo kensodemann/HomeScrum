@@ -12,10 +12,10 @@ namespace HomeScrum.Web.UnitTest.Extensions
       [TestInitialize]
       public void InitializeTest()
       {
+         Users.CreateTestModelData( initializeIds: true );
          WorkItemTypes.CreateTestModelData( initializeIds: true );
          ProjectStatuses.CreateTestModelData( initializeIds: true );
          Projects.CreateTestModelData( initializeIds: true );
-         Users.CreateTestModelData( initializeIds: true );
       }
 
       [TestMethod]
@@ -101,7 +101,7 @@ namespace HomeScrum.Web.UnitTest.Extensions
       }
 
       [TestMethod]
-      public void Project_ToSelectList_OrdersProjectssByName()
+      public void Project_ToSelectList_OrdersProjectsByName()
       {
          var selectList = Projects.ModelData.ToArray().ToSelectList();
 
@@ -137,6 +137,83 @@ namespace HomeScrum.Web.UnitTest.Extensions
          {
             var item = selectList.ElementAt( i );
             Assert.IsNotNull( Projects.ModelData.FirstOrDefault( x => (x.Status.IsActive || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
+
+      /* 
+       * User specific ToSelectList Tests
+       */
+      [TestMethod]
+      public void User_ToSelectList_FirstElementTheNotAssignedElement_IfAllowed()
+      {
+         var selectList = Users.ModelData.ToArray().ToSelectList( true );
+
+         var item = selectList.ElementAt( 0 );
+
+         Assert.IsNull( item.Value );
+         Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
+         Assert.IsFalse( item.Selected );
+      }
+
+      [TestMethod]
+      public void User_ToSelectList_FirstElementNotTheNotAssignedElement_IfNotAllowed()
+      {
+         var selectList = Users.ModelData.ToArray().ToSelectList( false );
+
+         var item = selectList.ElementAt( 0 );
+
+         Assert.IsNotNull( item.Value );
+         Assert.AreNotEqual( DisplayStrings.NotAssigned, item.Text );
+      }
+
+      [TestMethod]
+      public void User_ToSelectList_ReturnsActiveUsers()
+      {
+         var selectList = Users.ModelData.ToArray().ToSelectList( false );
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ), selectList.Count() );
+         foreach (var item in selectList)
+         {
+            Assert.IsNotNull( Users.ModelData.FirstOrDefault( x => x.StatusCd == 'A' && x.Id.ToString() == item.Value ) );
+         }
+      }
+
+      [TestMethod]
+      public void User_ToSelectList_OrdersUsersByName()
+      {
+         var selectList = Users.ModelData.ToArray().ToSelectList( false );
+
+         string previousName = null;
+         foreach (var item in selectList)
+         {
+            Assert.IsTrue( previousName == null ? true : String.Compare( previousName, item.Text, StringComparison.OrdinalIgnoreCase ) <= 0 );
+            previousName = item.Text;
+         }
+      }
+
+      [TestMethod]
+      public void User_ToSelectedList_MarksUserSelected()
+      {
+         var selected = Users.ModelData.Where( x => x.StatusCd == 'A' ).ToArray()[1];
+         var selectList = Users.ModelData.ToArray().ToSelectList( false, selected.Id );
+
+         foreach (var item in selectList)
+         {
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void User_ToSelectedList_IncludesInactiveUserIfSelected()
+      {
+         var selected = Users.ModelData.First( x => x.StatusCd == 'I' );
+         var selectList = Users.ModelData.ToArray().ToSelectList(false, selected.Id );
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, selectList.Count() );
+         foreach(var item in selectList)
+         {
+            Assert.IsNotNull( Users.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
          }
       }
