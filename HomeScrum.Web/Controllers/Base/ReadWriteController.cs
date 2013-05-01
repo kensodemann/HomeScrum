@@ -45,13 +45,15 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (ModelState.IsValid)
          {
-            MainRepository.Add( model );
+            AddItem( model );
             return RedirectToAction( () => this.Index() );
          }
 
-         return View();
+         PopulateSelectLists( viewModel );
+         return View( viewModel );
       }
 
+      
       //
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id )
@@ -61,6 +63,7 @@ namespace HomeScrum.Web.Controllers.Base
          if (model != null)
          {
             var viewModel = Mapper.Map<EditorViewModelT>( model );
+            PopulateSelectLists( viewModel );
             return View( viewModel );
          }
 
@@ -77,18 +80,31 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (ModelState.IsValid)
          {
-            MainRepository.Update( model );
+            UpdateItem( model );
 
             return RedirectToAction( () => this.Index() );
          }
          else
          {
-            return View();
+            PopulateSelectLists( viewModel );
+            return View( viewModel );
          }
       }
 
-
+      
       protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
+
+
+      protected virtual void AddItem( ModelT model )
+      {
+         MainRepository.Add( model );
+      }
+
+
+      protected virtual void UpdateItem( ModelT model )
+      {
+         MainRepository.Update( model );
+      }
 
 
       protected virtual void PerformModelValidations( ModelT model )
