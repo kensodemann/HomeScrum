@@ -180,7 +180,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_InitializesProjectStatusList_NothingSelected()
+      public void CreatePost_InitializesProjectStatusList_ActiveItemSelected()
       {
          var model = CreateProjectEditorViewModel();
 
@@ -194,7 +194,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsFalse( item.Selected );
+            Assert.IsTrue( (item.Value == model.StatusId.ToString()) ? item.Selected : !item.Selected );
          }
       }
 

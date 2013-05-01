@@ -45,7 +45,7 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (ModelState.IsValid)
          {
-            AddItem( model );
+            AddItem( model, user );
             return RedirectToAction( () => this.Index() );
          }
 
@@ -80,7 +80,7 @@ namespace HomeScrum.Web.Controllers.Base
 
          if (ModelState.IsValid)
          {
-            UpdateItem( model );
+            UpdateItem( model, user );
 
             return RedirectToAction( () => this.Index() );
          }
@@ -95,13 +95,13 @@ namespace HomeScrum.Web.Controllers.Base
       protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
 
 
-      protected virtual void AddItem( ModelT model )
+      protected virtual void AddItem( ModelT model, IPrincipal user )
       {
          MainRepository.Add( model );
       }
 
 
-      protected virtual void UpdateItem( ModelT model )
+      protected virtual void UpdateItem( ModelT model, IPrincipal user )
       {
          MainRepository.Update( model );
       }

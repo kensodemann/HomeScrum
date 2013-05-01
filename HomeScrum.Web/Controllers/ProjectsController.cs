@@ -22,69 +22,24 @@ namespace HomeScrum.Web.Controllers
 
       private readonly IRepository<ProjectStatus> _projectStatusRepository;
       private readonly IUserRepository _userRepository;
-
-      //
-      // GET: /Projects/Create
-      public override ActionResult Create()
+      
+      protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
       {
-         var model = new ProjectEditorViewModel();
-
-         model.Statuses = _projectStatusRepository.GetAll().ToSelectList();
-
-         return View( model );
+         base.PopulateSelectLists( viewModel );
+         viewModel.Statuses = _projectStatusRepository.GetAll().ToSelectList( viewModel.StatusId );
       }
 
-      //
-      // POST: /Projects/Create
-      [HttpPost]
-      public override ActionResult Create( ProjectEditorViewModel viewModel, IPrincipal user )
+
+      protected override void AddItem( Project model, IPrincipal user )
       {
-         var model = Mapper.Map<Project>( viewModel );
-         Validate( model, TransactionType.Insert );
-
-         if (ModelState.IsValid)
-         {
-            model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
-            MainRepository.Add( model );
-            return RedirectToAction( () => this.Index() );
-         }
-
-         viewModel.Statuses = _projectStatusRepository.GetAll().ToSelectList();
-         return View( viewModel );
+         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         base.AddItem( model, user );
       }
 
-      //
-      // GET: /Projects/Edit/Guid
-      public override ActionResult Edit( Guid id )
+      protected override void UpdateItem( Project model, IPrincipal user )
       {
-         var model = MainRepository.Get( id );
-
-         if (model != null)
-         {
-            var viewModel = Mapper.Map<ProjectEditorViewModel>( model );
-            viewModel.Statuses = _projectStatusRepository.GetAll().ToSelectList( model.Status.Id );
-            return View( viewModel );
-         }
-
-         return HttpNotFound();
-      }
-
-      //
-      // POST: /Projects/Edit/Guid
-      [HttpPost]
-      public override ActionResult Edit( ProjectEditorViewModel viewModel, IPrincipal user )
-      {
-         var model = Mapper.Map<Project>( viewModel );
-         Validate( model, TransactionType.Update );
-
-         if (ModelState.IsValid)
-         {
-            model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
-            MainRepository.Update( model );
-            return RedirectToAction( () => this.Index() );
-         }
-
-         return View( viewModel );
+         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         base.UpdateItem( model, user );
       }
    }
 }
