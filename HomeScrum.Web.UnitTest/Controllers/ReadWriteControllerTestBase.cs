@@ -109,12 +109,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreateGet_ReturnsViewWithoutModel()
+      public void CreateGet_ReturnsViewWithViewModel()
       {
          var result = _controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
-         Assert.IsNull( result.Model );
+         Assert.IsInstanceOfType( result.Model, typeof( EditorViewModelT ) );
       }
 
       [TestMethod]

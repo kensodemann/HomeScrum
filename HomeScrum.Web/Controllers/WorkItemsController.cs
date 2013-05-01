@@ -37,6 +37,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.Statuses = _statusRepository.GetAll().ToSelectList();
          viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList();
          viewModel.Projects = _projectRepository.GetAll().ToSelectList();
+         viewModel.Users = _userRepository.GetAll().ToSelectList( allowUnassigned: true );
 
          return View( viewModel );
       }

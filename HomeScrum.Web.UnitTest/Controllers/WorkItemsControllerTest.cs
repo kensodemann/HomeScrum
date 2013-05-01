@@ -176,6 +176,33 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
 
+      [TestMethod]
+      public void CreateGet_InitializesUserList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, model.Users.Count() );
+
+         for (int i = 0; i < model.Users.Count(); i++)
+         {
+            var item = model.Users.ElementAt(i);
+            if (i == 0)
+            {
+               Assert.IsNull( item.Value );
+               Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
+               Assert.IsFalse( item.Selected );
+            }
+            else
+            {
+               var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+               Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
+               Assert.IsFalse( item.Selected );
+            }
+         }
+      }
+
       #region private helpers
       private static void CreateMockIOCKernel()
       {

@@ -13,6 +13,7 @@ namespace HomeScrum.Web.Controllers.Base
 {
    public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
       : ReadOnlyController<ModelT, ViewModelT>
+      where EditorViewModelT : new()
    {
       public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator )
          : base( mainRepository )
@@ -28,7 +29,10 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Create
       public virtual ActionResult Create()
       {
-         return View();
+         var viewModel = new EditorViewModelT();
+
+         PopulateSelectLists( viewModel );
+         return View( viewModel );
       }
 
       //
@@ -82,6 +86,9 @@ namespace HomeScrum.Web.Controllers.Base
             return View();
          }
       }
+
+
+      protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
 
 
       protected virtual void PerformModelValidations( ModelT model )
