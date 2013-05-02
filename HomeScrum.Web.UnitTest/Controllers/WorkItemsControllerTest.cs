@@ -187,7 +187,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          for (int i = 0; i < model.Users.Count(); i++)
          {
-            var item = model.Users.ElementAt(i);
+            var item = model.Users.ElementAt( i );
             if (i == 0)
             {
                Assert.IsNull( item.Value );
@@ -261,6 +261,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( workItemType.Name, item.Text );
+            Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_InitializesProjects_ProjectSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, viewModel.Projects.Count() );
+         //
+         // Skip the first item (null item) 
+         for (int i = 1; i < viewModel.Projects.Count(); i++)
+         {
+            var item = viewModel.Projects.ElementAt( i );
+            var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( project.Name, item.Text );
             Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
                            (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
          }
