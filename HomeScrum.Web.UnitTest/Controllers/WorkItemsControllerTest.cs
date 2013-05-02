@@ -203,6 +203,91 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
 
+      // TODO: More Create tests, including create POST tests go here
+
+      [TestMethod]
+      public void EditGet_CallsRepositoryGet()
+      {
+         Guid id = Guid.NewGuid();
+         _controller.Edit( id );
+
+         _workItemRepository.Verify( x => x.Get( id ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditGet_ReturnsViewWithModel()
+      {
+         var model = WorkItems.ModelData[3];
+         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+         Assert.IsNotNull( returnedModel );
+         Assert.AreEqual( model.Id, returnedModel.Id );
+      }
+
+      [TestMethod]
+      public void EditGet_InitializesWorkItemStatuses_WorkItemStatusSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
+         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
+         foreach (var item in viewModel.Statuses)
+         {
+            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_InitializesWorkItemTypes_WorkItemTypeSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
+         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
+         foreach (var item in viewModel.WorkItemTypes)
+         {
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( workItemType.Name, item.Text );
+            Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      {
+         _workItemRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
+
+         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
+
+      //[TestMethod]
+      //public void EditPost_CallRepositoryUpdateIfModelValid()
+      //{
+      //   var model = WorkItems.ModelData[2];
+      //   var viewModel = CreateWorkItemEditorViewModel( model );
+
+      //   _controller.Edit( viewModel, _principal.Object );
+
+      //   _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+      //}
+
+
       #region private helpers
       private static void CreateMockIOCKernel()
       {
