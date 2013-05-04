@@ -202,7 +202,188 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
 
-      // TODO: More Create tests, including create POST tests go here
+      [TestMethod]
+      public void CreatePost_CallRepositoryInsertIfModelValid()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( p => p.Name == viewModel.Name && p.Description == viewModel.Description ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object );
+
+         _workItemRepository.Verify( x => x.Add( It.IsAny<WorkItem>() ), Times.Never() );
+      }
+
+      [TestMethod]
+      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( viewModel, result.Model );
+      }
+
+      [TestMethod]
+      public void CreatePost_InitializesWorkItemStatusList_ActiveItemSelected()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.Statuses.Count() );
+         foreach (var item in returnedModel.Statuses)
+         {
+            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsTrue( (item.Value == viewModel.StatusId.ToString()) ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void CreatePost_InitializesWorkItemTypeList_ActiveItemSelected()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.WorkItemTypes.Count() );
+         foreach (var item in returnedModel.WorkItemTypes)
+         {
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( workItemType.Name, item.Text );
+            Assert.IsTrue( (item.Value == viewModel.WorkItemTypeId.ToString()) ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void CreatePost_InitializesProjectList_ActiveItemSelected()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, returnedModel.Projects.Count() );
+         for (int i = 1; i < returnedModel.Projects.Count(); i++)
+         {
+            var item = returnedModel.Projects.ElementAt( i );
+            var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( project.Name, item.Text );
+            Assert.IsTrue( (item.Value == viewModel.ProjectId.ToString()) ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void CreatePost_InitializesAssignedToUserList_ActiveItemSelected()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, returnedModel.Users.Count() );
+         for (int i = 1; i < returnedModel.Users.Count(); i++)
+         {
+            var item = returnedModel.Users.ElementAt( i );
+            var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
+            Assert.IsTrue( (item.Value == viewModel.AssignedToUserId.ToString()) ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void CreatePost_PassesModelToValidator()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _validator.Verify( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      {
+         var messages = CreateStockErrorMessages();
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
+
+         var result = _controller.Create( viewModel, _principal.Object );
+
+         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         foreach (var message in messages)
+         {
+            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+         }
+         Assert.IsTrue( result is ViewResult );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      {
+         var messages = CreateStockErrorMessages();
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
+
+         var result = _controller.Create( viewModel, _principal.Object );
+
+         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.IsNotNull( result );
+         Assert.IsTrue( result is RedirectToRouteResult );
+      }
+
+      [TestMethod]
+      public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _userIdentity.Verify();
+         _userRepository.Verify();
+         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+      }
 
       [TestMethod]
       public void EditGet_CallsRepositoryGet()
@@ -282,8 +463,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             var item = viewModel.Projects.ElementAt( i );
             var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( project.Name, item.Text );
-            Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Project.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.Project.Id.ToString() == item.Value && item.Selected) );
          }
       }
 
@@ -306,6 +487,111 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Edit( viewModel, _principal.Object );
 
          _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( p => p.Id == model.Id ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         _controller.Edit( viewModel, _principal.Object );
+
+         _workItemRepository.Verify( x => x.Update( It.IsAny<WorkItem>() ), Times.Never() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToIndexIfModelIsValid()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_ReturnsViewIfModelIsNotValid()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.IsInstanceOfType( result.Model, typeof( WorkItemEditorViewModel ) );
+         Assert.AreEqual( model.Id, ((WorkItemEditorViewModel)result.Model).Id );
+         Assert.AreEqual( model.Name, ((WorkItemEditorViewModel)result.Model).Name );
+         Assert.AreEqual( model.Description, ((WorkItemEditorViewModel)result.Model).Description );
+      }
+
+      [TestMethod]
+      public void EditPost_PassesModelToValidator()
+      {
+         var model = WorkItems.ModelData[3];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _validator.Verify( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Update ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = WorkItems.ModelData[3];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
+
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         foreach (var message in messages)
+         {
+            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+         }
+         Assert.IsTrue( result is ViewResult );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      {
+         var messages = CreateStockErrorMessages();
+         var model = WorkItems.ModelData[3];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _validator.SetupGet( x => x.Messages ).Returns( messages );
+         _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
+
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.IsNotNull( result );
+         Assert.IsTrue( result is RedirectToRouteResult );
+      }
+
+      [TestMethod]
+      public void EditPost_SetsLastModifiedUserId()
+      {
+         var model = WorkItems.ModelData[3];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _userIdentity.Verify();
+         _userRepository.Verify();
+         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.Id == model.Id && w.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
       }
 
 
@@ -379,16 +665,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Id = Guid.NewGuid(),
             Name = "New Work Item",
             Description = "This is a test",
-            StatusId = WorkItemStatuses.ModelData[0].Id,
-            StatusName = WorkItemStatuses.ModelData[0].Name,
-            WorkItemTypeId = WorkItemTypes.ModelData[1].Id,
-            WorkItemTypeName = WorkItemTypes.ModelData[1].Name,
-            AssignedToUserId = Users.ModelData[0].Id,
-            AssignedToUserUserName = Users.ModelData[0].UserName,
-            CreatedByUserId = Users.ModelData[1].Id,
-            CreatedByUserUserName = Users.ModelData[1].UserName,
-            ProjectId = Projects.ModelData[2].Id,
-            ProjectName = Projects.ModelData[2].Name
+            StatusId = WorkItemStatuses.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            StatusName = WorkItemStatuses.ModelData.First( x => x.StatusCd == 'A' ).Name,
+            WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            WorkItemTypeName = WorkItemTypes.ModelData.First( x => x.StatusCd == 'A' ).Name,
+            AssignedToUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            AssignedToUserUserName = Users.ModelData.First( x => x.StatusCd == 'A' ).UserName,
+            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            CreatedByUserUserName = Users.ModelData.First( x => x.StatusCd == 'A' ).UserName,
+            ProjectId = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Id,
+            ProjectName = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Name
          };
       }
 
