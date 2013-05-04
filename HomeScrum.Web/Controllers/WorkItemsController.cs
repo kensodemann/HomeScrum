@@ -36,5 +36,17 @@ namespace HomeScrum.Web.Controllers
          viewModel.Users = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
          base.PopulateSelectLists( viewModel );
       }
+
+      protected override void AddItem( WorkItem model, System.Security.Principal.IPrincipal user )
+      {
+         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         base.AddItem( model, user );
+      }
+
+      protected override void UpdateItem( WorkItem model, System.Security.Principal.IPrincipal user )
+      {
+         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         base.UpdateItem( model, user );
+      }
    }
 }
