@@ -469,6 +469,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void EditGet_InitializesAssignedToUsers_UserSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
+         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.Users.Count() );
+         //
+         // Skip the first item (null item) 
+         for (int i = 1; i < viewModel.Users.Count(); i++)
+         {
+            var item = viewModel.Users.ElementAt( i );
+            var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
+            Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.AssignedToUser.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
          _workItemRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
@@ -479,7 +501,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_CallRepositoryUpdateIfModelValid()
+      public void EditPost_CallsRepositoryUpdateIfModelValid()
       {
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -592,6 +614,88 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _userIdentity.Verify();
          _userRepository.Verify();
          _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.Id == model.Id && w.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_ReInitializesWorkItemStatusesIfModelNotValid_WorkItemStatusSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
+         foreach (var item in viewModel.Statuses)
+         {
+            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
+         foreach (var item in viewModel.WorkItemTypes)
+         {
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( workItemType.Name, item.Text );
+            Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, viewModel.Projects.Count() );
+         //
+         // Skip the first item (null item) 
+         for (int i = 1; i < viewModel.Projects.Count(); i++)
+         {
+            var item = viewModel.Projects.ElementAt( i );
+            var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( project.Name, item.Text );
+            Assert.IsTrue( (model.Project.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.Project.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.Users.Count() );
+         //
+         // Skip the first item (null item) 
+         for (int i = 1; i < viewModel.Users.Count(); i++)
+         {
+            var item = viewModel.Users.ElementAt( i );
+            var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
+            Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.AssignedToUser.Id.ToString() == item.Value && item.Selected) );
+         }
       }
 
 

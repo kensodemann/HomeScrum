@@ -431,6 +431,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
       }
 
+      [TestMethod]
+      public void EditGet_ReInitializesProjectStatusesIfModelInvalid_ProjectStatusSelected()
+      {
+         var model = Projects.ModelData[0];
+         var viewModel = CreateProjectEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
+         foreach (var item in viewModel.Statuses)
+         {
+            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
       #region private helpers
       private static void CreateMockIOCKernel()
       {
