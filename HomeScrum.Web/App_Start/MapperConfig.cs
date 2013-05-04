@@ -45,8 +45,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Project, opt => opt.ResolveUsing<RepositoryItemResolver<Project>>().FromMember( src => src.ProjectId ) )
             .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
-            .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<RepositoryItemResolver<User>>().FromMember( src => src.CreatedByUserId ) )
-            .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<RepositoryItemResolver<User>>().FromMember( src => src.AssignedToUserId ) )
+            .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<UserResolver>().FromMember( src => src.CreatedByUserId ) )
+            .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<UserResolver>().FromMember( src => src.AssignedToUserId ) )
             .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
             .ConstructUsingServiceLocator();
 
@@ -146,6 +146,22 @@ namespace HomeScrum.Web
          protected override ModelT ResolveCore( Guid sourceId )
          {
             ModelT model = _repository.Get( sourceId );
+            return model;
+         }
+      }
+
+      public class UserResolver : ValueResolver<Guid, User>
+      {
+         [Inject]
+         public UserResolver( IUserRepository repository )
+         {
+            _repository = repository;
+         }
+         private readonly IUserRepository _repository;
+
+         protected override User ResolveCore( Guid sourceId )
+         {
+            User model = _repository.Get( sourceId );
             return model;
          }
       }

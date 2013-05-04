@@ -35,7 +35,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          _iocKernel = new MoqMockingKernel();
          _projectRepository = _iocKernel.GetMock<IRepository<Project>>();
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
-         _userRepository = _iocKernel.GetMock<IRepository<User>>();
+         _userRepository = _iocKernel.GetMock<IUserRepository>();
          _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
          _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
 
@@ -45,7 +45,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
       private static Mock<IRepository<Project>> _projectRepository;
       private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
-      private static Mock<IRepository<User>> _userRepository;
+      private static Mock<IUserRepository> _userRepository;
       private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
       private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
       private static MoqMockingKernel _iocKernel;
