@@ -182,11 +182,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, model.Users.Count() );
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, model.AssignedToUsers.Count() );
 
-         for (int i = 0; i < model.Users.Count(); i++)
+         for (int i = 0; i < model.AssignedToUsers.Count(); i++)
          {
-            var item = model.Users.ElementAt( i );
+            var item = model.AssignedToUsers.ElementAt( i );
             if (i == 0)
             {
                Assert.IsNull( item.Value );
@@ -318,10 +318,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, returnedModel.Users.Count() );
-         for (int i = 1; i < returnedModel.Users.Count(); i++)
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, returnedModel.AssignedToUsers.Count() );
+         for (int i = 1; i < returnedModel.AssignedToUsers.Count(); i++)
          {
-            var item = returnedModel.Users.ElementAt( i );
+            var item = returnedModel.AssignedToUsers.ElementAt( i );
             var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
             Assert.IsTrue( (item.Value == viewModel.AssignedToUserId.ToString()) ? item.Selected : !item.Selected );
@@ -477,12 +477,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.Users.Count() );
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
          //
          // Skip the first item (null item) 
-         for (int i = 1; i < viewModel.Users.Count(); i++)
+         for (int i = 1; i < viewModel.AssignedToUsers.Count(); i++)
          {
-            var item = viewModel.Users.ElementAt( i );
+            var item = viewModel.AssignedToUsers.ElementAt( i );
             var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
             Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||
@@ -685,12 +685,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.Users.Count() );
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
          //
          // Skip the first item (null item) 
-         for (int i = 1; i < viewModel.Users.Count(); i++)
+         for (int i = 1; i < viewModel.AssignedToUsers.Count(); i++)
          {
-            var item = viewModel.Users.ElementAt( i );
+            var item = viewModel.AssignedToUsers.ElementAt( i );
             var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
             Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||

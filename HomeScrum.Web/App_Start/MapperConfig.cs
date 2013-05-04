@@ -78,7 +78,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
-            .ForMember( dest => dest.Users, opt => opt.Ignore() );
+            .ForMember( dest => dest.AssignedToUsers, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )

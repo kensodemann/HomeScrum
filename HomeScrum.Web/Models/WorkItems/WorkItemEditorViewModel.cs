@@ -25,6 +25,6 @@ namespace HomeScrum.Web.Models.WorkItems
 
       public Guid AssignedToUserId { get; set; }
       public string AssignedToUserUserName { get; set; }
-      public IEnumerable<SelectListItem> Users { get; set; }
+      public IEnumerable<SelectListItem> AssignedToUsers { get; set; }
    }
 }
