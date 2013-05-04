@@ -89,6 +89,7 @@
     <Content Include="..\HomeScrum.Common.TestData\Hibernate.cfg.xml">
       <Link>Hibernate.cfg.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

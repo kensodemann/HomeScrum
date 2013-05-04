@@ -12,6 +12,7 @@ using Ninject.MockingKernel.Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -29,11 +30,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IRepository<WorkItem>> _workItemRepository;
       private WorkItemsController _controller;
 
-      //private User _currentUser;
-      //private Mock<IPrincipal> _principal;
-      //private Mock<IIdentity> _userIdentity;
-      //private static Mock<IUserRepository> _userRepository;
-
+      private User _currentUser;
+      private Mock<IPrincipal> _principal;
+      private Mock<IIdentity> _userIdentity;
 
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
@@ -47,7 +46,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         //SetupCurrentUser();
+         SetupCurrentUser();
          SetupValidator();
          SetupWorkItemRepository();
 
@@ -298,16 +297,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
       }
 
-      //[TestMethod]
-      //public void EditPost_CallRepositoryUpdateIfModelValid()
-      //{
-      //   var model = WorkItems.ModelData[2];
-      //   var viewModel = CreateWorkItemEditorViewModel( model );
+      [TestMethod]
+      public void EditPost_CallRepositoryUpdateIfModelValid()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
 
-      //   _controller.Edit( viewModel, _principal.Object );
+         _controller.Edit( viewModel, _principal.Object );
 
-      //   _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
-      //}
+         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( p => p.Id == model.Id ) ), Times.Once() );
+      }
 
 
       #region private helpers
@@ -358,7 +357,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Users.CreateTestModelData( initializeIds: true );
          WorkItemStatuses.CreateTestModelData( initializeIds: true );
          WorkItemTypes.CreateTestModelData( initializeIds: true );
+         ProjectStatuses.CreateTestModelData( initializeIds: true );
          Projects.CreateTestModelData( initializeIds: true );
+         AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
       }
 
       ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
@@ -371,52 +372,65 @@ namespace HomeScrum.Web.UnitTest.Controllers
          return messages;
       }
 
-      //private WorkItemEditorViewModel CreateWorkItemEditorViewModel()
-      //{
-      //   return new WorkItemEditorViewModel()
-      //   {
-      //      Id = Guid.NewGuid(),
-      //      Name = "New Work Item",
-      //      Description = "This is a test",
-      //      LastModifiedUserId = default( Guid ),
-      //      StatusId = ProjectStatuses.ModelData[0].Id,
-      //      StatusName = ProjectStatuses.ModelData[0].Name
-      //   };
-      //}
+      private WorkItemEditorViewModel CreateWorkItemEditorViewModel()
+      {
+         return new WorkItemEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Work Item",
+            Description = "This is a test",
+            StatusId = WorkItemStatuses.ModelData[0].Id,
+            StatusName = WorkItemStatuses.ModelData[0].Name,
+            WorkItemTypeId = WorkItemTypes.ModelData[1].Id,
+            WorkItemTypeName = WorkItemTypes.ModelData[1].Name,
+            AssignedToUserId = Users.ModelData[0].Id,
+            AssignedToUserUserName = Users.ModelData[0].UserName,
+            CreatedByUserId = Users.ModelData[1].Id,
+            CreatedByUserUserName = Users.ModelData[1].UserName,
+            ProjectId = Projects.ModelData[2].Id,
+            ProjectName = Projects.ModelData[2].Name
+         };
+      }
 
-      //private WorkItemEditorViewModel CreateWorkItemEditorViewModel( WorkItem workItem )
-      //{
-      //   return new WorkItemEditorViewModel()
-      //   {
-      //      Id = workItem.Id,
-      //      Name = workItem.Name,
-      //      Description = workItem.Description,
-      //      LastModifiedUserId = workItem.LastModifiedUserRid,
-      //      StatusId = workItem.Status.Id,
-      //      StatusName = workItem.Status.Name
-      //   };
-      //}
+      private WorkItemEditorViewModel CreateWorkItemEditorViewModel( WorkItem workItem )
+      {
+         return new WorkItemEditorViewModel()
+         {
+            Id = workItem.Id,
+            Name = workItem.Name,
+            Description = workItem.Description,
+            StatusId = workItem.Status.Id,
+            StatusName = workItem.Status.Name,
+            WorkItemTypeId = workItem.WorkItemType.Id,
+            WorkItemTypeName = workItem.WorkItemType.Name,
+            AssignedToUserId = (workItem.AssignedToUser == null) ? default( Guid ) : workItem.AssignedToUser.Id,
+            AssignedToUserUserName = (workItem.AssignedToUser == null) ? null : workItem.AssignedToUser.UserName,
+            CreatedByUserId = workItem.CreatedByUser.Id,
+            CreatedByUserUserName = workItem.CreatedByUser.UserName,
+            ProjectId = (workItem.Project == null) ? default( Guid ) : workItem.Project.Id,
+            ProjectName = (workItem.Project == null) ? null : workItem.Project.Name
+         };
+      }
 
-      //private void SetupCurrentUser()
-      //{
-      //   _userRepository = new Mock<IUserRepository>();
-      //   _userIdentity = new Mock<IIdentity>();
-      //   _principal = new Mock<IPrincipal>();
-      //   _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
+      private void SetupCurrentUser()
+      {
+         _userIdentity = new Mock<IIdentity>();
+         _principal = new Mock<IPrincipal>();
+         _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
 
-      //   _currentUser = new User()
-      //   {
-      //      Id = Guid.NewGuid(),
-      //      UserName = "test",
-      //      FirstName = "Fred"
-      //   };
-      //   _userRepository
-      //      .Setup( x => x.Get( "test" ) )
-      //      .Returns( _currentUser );
-      //   _userIdentity
-      //      .SetupGet( x => x.Name )
-      //      .Returns( "test" );
-      //}
+         _currentUser = new User()
+         {
+            Id = Guid.NewGuid(),
+            UserName = "test",
+            FirstName = "Fred"
+         };
+         _userRepository
+            .Setup( x => x.Get( "test" ) )
+            .Returns( _currentUser );
+         _userIdentity
+            .SetupGet( x => x.Name )
+            .Returns( "test" );
+      }
 
       private void CreateController()
       {

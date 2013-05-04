@@ -145,7 +145,8 @@ namespace HomeScrum.Web
 
          protected override ModelT ResolveCore( Guid sourceId )
          {
-            return _repository.Get( sourceId );
+            ModelT model = _repository.Get( sourceId );
+            return model;
          }
       }
       #endregion
