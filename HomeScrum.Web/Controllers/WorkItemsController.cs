@@ -48,5 +48,11 @@ namespace HomeScrum.Web.Controllers
          model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
          base.UpdateItem( model, user );
       }
+
+      public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
+      {
+         viewModel.CreatedByUserId = _userRepository.Get( user.Identity.Name ).Id;
+         return base.Create( viewModel, user );
+      }
    }
 }

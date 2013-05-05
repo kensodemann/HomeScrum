@@ -20,6 +20,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class WorkItemsControllerTest
    {
+      #region Test Setup
       private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
       private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
       private static Mock<IRepository<Project>> _projectRepository;
@@ -52,9 +53,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          CreateController();
       }
+      #endregion
 
 
-
+      #region Index Tests
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
@@ -72,7 +74,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _workItemRepository.Verify( x => x.GetAll(), Times.Once() );
       }
+      #endregion
 
+
+      #region Details Tests
       [TestMethod]
       public void Details_ReturnsViewWithModel()
       {
@@ -104,7 +109,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( result );
       }
+      #endregion
 
+
+      #region Create GET Tests
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
       {
@@ -201,7 +209,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
          }
       }
+      #endregion
 
+
+      #region Create POST Tests
       [TestMethod]
       public void CreatePost_CallRepositoryInsertIfModelValid()
       {
@@ -386,6 +397,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreatePost_SetsCreatedByUserIdToCurrentUser()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _userIdentity.Verify();
+         _userRepository.Verify();
+         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( w => w.CreatedByUser.Id == _currentUser.Id ) ), Times.Once() );
+      }
+      #endregion
+
+
+      #region Edit GET Tests
+      [TestMethod]
       public void EditGet_CallsRepositoryGet()
       {
          Guid id = Guid.NewGuid();
@@ -499,7 +525,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( result );
       }
+      #endregion
 
+
+      #region Edit POST Tests
       [TestMethod]
       public void EditPost_CallsRepositoryUpdateIfModelValid()
       {
@@ -697,6 +726,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
                            (model.AssignedToUser.Id.ToString() == item.Value && item.Selected) );
          }
       }
+      #endregion
 
 
       #region private helpers
@@ -808,18 +838,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _principal = new Mock<IPrincipal>();
          _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
 
-         _currentUser = new User()
-         {
-            Id = Guid.NewGuid(),
-            UserName = "test",
-            FirstName = "Fred"
-         };
+         // In other places where we use a random user, we use the first active one.
+         // Use the first inactive user here just to ensure it is a different user.
+         _currentUser = Users.ModelData.First( x => x.StatusCd == 'I' );
          _userRepository
-            .Setup( x => x.Get( "test" ) )
+            .Setup( x => x.Get( _currentUser.UserName ) )
             .Returns( _currentUser );
          _userIdentity
             .SetupGet( x => x.Name )
-            .Returns( "test" );
+            .Returns( _currentUser.UserName );
       }
 
       private void CreateController()

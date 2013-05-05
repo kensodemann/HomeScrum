@@ -11,25 +11,30 @@
 
         @Html.LabelFor( model => model.CreatedByUserUserName )
         @Html.DisplayFor( model => model.CreatedByUserUserName )
+        @Html.ValidationMessageFor( model => model.CreatedByUserId )
 
         <div class="formSelectList">
             @Html.LabelFor( model => model.WorkItemTypeId )
             @Html.DropDownListFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
+            @Html.ValidationMessageFor( model => model.WorkItemTypeId )
         </div>
 
         <div class="formSelectList">
             @Html.LabelFor( model => model.StatusId )
             @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+            @Html.ValidationMessageFor( model => model.StatusId )
         </div>
 
         <div class="formSelectList">
             @Html.LabelFor( model => model.ProjectId )
             @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+            @Html.ValidationMessageFor( model => model.ProjectId )
         </div>
 
         <div class="formSelectList">
             @Html.LabelFor( model => model.AssignedToUserId )
             @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
+            @Html.ValidationMessageFor( model => model.AssignedToUserId )
         </div>
 
     </fieldset>
