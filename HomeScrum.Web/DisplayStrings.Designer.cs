@@ -88,6 +88,24 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assigned To:.
+        /// </summary>
+        public static string AssignedToUser {
+            get {
+                return ResourceManager.GetString("AssignedToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created By:.
+        /// </summary>
+        public static string CreatedByUser {
+            get {
+                return ResourceManager.GetString("CreatedByUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description:.
         /// </summary>
         public static string Description {
@@ -169,6 +187,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project:.
+        /// </summary>
+        public static string Project {
+            get {
+                return ResourceManager.GetString("Project", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project Status:.
         /// </summary>
         public static string ProjectStatus {
@@ -223,11 +250,29 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status:.
+        /// </summary>
+        public static string WorkItemStatus {
+            get {
+                return ResourceManager.GetString("WorkItemStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work items with this status have not been completed.
         /// </summary>
         public static string WorkItemStatusIsOpenStatus {
             get {
                 return ResourceManager.GetString("WorkItemStatusIsOpenStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Item Type:.
+        /// </summary>
+        public static string WorkItemType {
+            get {
+                return ResourceManager.GetString("WorkItemType", resourceCulture);
             }
         }
         

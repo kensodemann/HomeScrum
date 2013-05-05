@@ -126,6 +126,12 @@
   <data name="AllowUse" xml:space="preserve">
     <value>Active for use in system</value>
   </data>
+  <data name="AssignedToUser" xml:space="preserve">
+    <value>Assigned To:</value>
+  </data>
+  <data name="CreatedByUser" xml:space="preserve">
+    <value>Created By:</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description:</value>
   </data>
@@ -153,6 +159,9 @@
   <data name="NotAssigned" xml:space="preserve">
     <value>&lt;Not Assigned&gt;</value>
   </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project:</value>
+  </data>
   <data name="ProjectStatus" xml:space="preserve">
     <value>Project Status:</value>
   </data>
@@ -171,8 +180,14 @@
   <data name="UserNamePrompt" xml:space="preserve">
     <value>Enter a unique Username</value>
   </data>
+  <data name="WorkItemStatus" xml:space="preserve">
+    <value>Status:</value>
+  </data>
   <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
     <value>Work items with this status have not been completed</value>
+  </data>
+  <data name="WorkItemType" xml:space="preserve">
+    <value>Work Item Type:</value>
   </data>
   <data name="WorkItemTypeIsTask" xml:space="preserve">
     <value>Work Items of this Type are Tasks</value>

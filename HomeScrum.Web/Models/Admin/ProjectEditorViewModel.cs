@@ -15,7 +15,6 @@ namespace HomeScrum.Web.Models.Admin
       [Display( Name = "ProjectStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }
-
       public IEnumerable<SelectListItem> Statuses { get; set; }
    }
 }
