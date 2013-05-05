@@ -9,6 +9,29 @@
     <fieldset>
         <legend>Properties</legend>
 
+        @Html.LabelFor( model => model.CreatedByUserUserName )
+        @Html.DisplayFor( model => model.CreatedByUserUserName )
+
+        <div class="formSelectList">
+            @Html.LabelFor( model => model.WorkItemTypeId )
+            @Html.DropDownListFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
+        </div>
+
+        <div class="formSelectList">
+            @Html.LabelFor( model => model.StatusId )
+            @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+        </div>
+
+        <div class="formSelectList">
+            @Html.LabelFor( model => model.ProjectId )
+            @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+        </div>
+
+        <div class="formSelectList">
+            @Html.LabelFor( model => model.AssignedToUserId )
+            @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
+        </div>
+
     </fieldset>
  
     <p>
