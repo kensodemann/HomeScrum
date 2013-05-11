@@ -40,6 +40,13 @@ namespace HomeScrum.Web.UnitTest.Translators
       }
 
       [TestMethod]
+      public void AssignedToUserTranslatesToAssignedToUserId()
+      {
+         Assert.AreEqual( "AssignedToUserId", _translator.TranslatedName( "AssignedToUser" ) );
+         Assert.AreEqual( "AssignedToUserId", _translator.TranslatedName( () => _sourceObject.AssignedToUser ) );
+      }
+
+      [TestMethod]
       public void CreatedByUserTranslatesToCreatedByUserName()
       {
          Assert.AreEqual( "CreatedByUserId", _translator.TranslatedName( "CreatedByUser" ) );
@@ -54,10 +61,10 @@ namespace HomeScrum.Web.UnitTest.Translators
       }
 
       [TestMethod]
-      public void AssignedToUserTranslatesToAssignedToUserId()
+      public void ProjectTranslatesToProjectId()
       {
-         Assert.AreEqual( "AssignedToUserId", _translator.TranslatedName( "AssignedToUser" ) );
-         Assert.AreEqual( "AssignedToUserId", _translator.TranslatedName( () => _sourceObject.AssignedToUser ) );
+         Assert.AreEqual( "ProjectId", _translator.TranslatedName( "Project" ) );
+         Assert.AreEqual( "ProjectId", _translator.TranslatedName( () => _sourceObject.Project ) );
       }
    }
 }

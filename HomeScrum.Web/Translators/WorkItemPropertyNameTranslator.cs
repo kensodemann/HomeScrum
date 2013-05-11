@@ -13,6 +13,7 @@ namespace HomeScrum.Web.Translators
          this.AddTranslation( "AssignedToUser", "AssignedToUserId" );
          this.AddTranslation( "CreatedByUser", "CreatedByUserId" );
          this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
+         this.AddTranslation( "Project", "ProjectId" );
       }
    }
 }
