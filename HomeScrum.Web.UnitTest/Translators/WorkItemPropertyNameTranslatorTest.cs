@@ -52,5 +52,12 @@ namespace HomeScrum.Web.UnitTest.Translators
          Assert.AreEqual( "LastModifiedUserId", _translator.TranslatedName( "LastModifiedUserRid" ) );
          Assert.AreEqual( "LastModifiedUserId", _translator.TranslatedName( () => _sourceObject.LastModifiedUserRid ) );
       }
+
+      [TestMethod]
+      public void AssignedToUserTranslatesToAssignedToUserId()
+      {
+         Assert.AreEqual( "AssignedToUserId", _translator.TranslatedName( "AssignedToUser" ) );
+         Assert.AreEqual( "AssignedToUserId", _translator.TranslatedName( () => _sourceObject.AssignedToUser ) );
+      }
    }
 }

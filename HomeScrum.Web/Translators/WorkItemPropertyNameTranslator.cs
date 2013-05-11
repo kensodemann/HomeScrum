@@ -10,6 +10,7 @@ namespace HomeScrum.Web.Translators
    {
       public WorkItemEditorViewModelPropertyNameTranslator() : base()
       {
+         this.AddTranslation( "AssignedToUser", "AssignedToUserId" );
          this.AddTranslation( "CreatedByUser", "CreatedByUserId" );
          this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
       }
