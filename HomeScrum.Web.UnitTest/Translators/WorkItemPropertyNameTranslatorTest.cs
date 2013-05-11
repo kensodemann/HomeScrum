@@ -40,6 +40,13 @@ namespace HomeScrum.Web.UnitTest.Translators
       }
 
       [TestMethod]
+      public void CreatedByUserTranslatesToCreatedByUserName()
+      {
+         Assert.AreEqual( "CreatedByUserId", _translator.TranslatedName( "CreatedByUser" ) );
+         Assert.AreEqual( "CreatedByUserId", _translator.TranslatedName( () => _sourceObject.CreatedByUser ) );
+      }
+
+      [TestMethod]
       public void LastModifiedUserRidTranslatesToLastModifiedUserId()
       {
          Assert.AreEqual( "LastModifiedUserId", _translator.TranslatedName( "LastModifiedUserRid" ) );
