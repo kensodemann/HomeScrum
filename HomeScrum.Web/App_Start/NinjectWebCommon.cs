@@ -14,6 +14,7 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Data.Validators;
    using HomeScrum.Web.Providers;
    using AutoMapper;
+   using HomeScrum.Web.Translators;
 
    public static class NinjectWebCommon
    {
@@ -96,6 +97,20 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IValidator<WorkItem>>().To( typeof( NullValidator<WorkItem> ) );
 
          kernel.Bind<IValidator<User>>().To( typeof( UserValidator ) );
+      }
+
+      private static void RegisterTranslators( IKernel kernel )
+      {
+         kernel.Bind<IPropertyNameTranslator<AcceptanceCriteriaStatus>>().ToConstant( new GenericTranslator<AcceptanceCriteriaStatus>() );
+         kernel.Bind<IPropertyNameTranslator<ProjectStatus>>().ToConstant( new GenericTranslator<ProjectStatus>() );
+         kernel.Bind<IPropertyNameTranslator<SprintStatus>>().ToConstant( new GenericTranslator<SprintStatus>() );
+         kernel.Bind<IPropertyNameTranslator<WorkItemStatus>>().ToConstant( new GenericTranslator<WorkItemStatus>() );
+         kernel.Bind<IPropertyNameTranslator<WorkItemType>>().ToConstant( new GenericTranslator<WorkItemType>() );
+
+         kernel.Bind<IPropertyNameTranslator<Project>>().ToConstant( new GenericTranslator<Project>() );
+         kernel.Bind<IPropertyNameTranslator<WorkItem>>().ToConstant( new GenericTranslator<WorkItem>() );
+
+         kernel.Bind<IPropertyNameTranslator<User>>().ToConstant( new GenericTranslator<User>() );
       }
 
       private static void RegisterProviders( IKernel kernel )
