@@ -16,7 +16,7 @@ namespace HomeScrum.Web.UnitTest.Translators
          public int GrossMargin { get; set; }
       }
 
-      private PropertyNameTranslator _translator;
+      private PropertyNameTranslator<TestClass> _translator;
       private TestClass _testObject;
 
       [TestInitialize]
@@ -28,7 +28,7 @@ namespace HomeScrum.Web.UnitTest.Translators
 
       private void BuildTestObjects()
       {
-         _translator = new PropertyNameTranslator();
+         _translator = new PropertyNameTranslator<TestClass>();
          _testObject = new TestClass();
       }
 
@@ -41,20 +41,20 @@ namespace HomeScrum.Web.UnitTest.Translators
       [TestMethod]
       public void PropertiesWithoutEntryTranslatesToSelf()
       {
-         Assert.AreEqual( "Id", _translator.TraslatedName( "Id" ) );
+         Assert.AreEqual( "Id", _translator.TranslatedName( "Id" ) );
          Assert.AreEqual( "Id", _translator.TranslatedName( () => _testObject.Id ) );
 
-         Assert.AreEqual( "Name", _translator.TraslatedName( "Name" ) );
+         Assert.AreEqual( "Name", _translator.TranslatedName( "Name" ) );
          Assert.AreEqual( "Name", _translator.TranslatedName( () => _testObject.Name ) );
       }
 
       [TestMethod]
       public void PropertiesWithEntriesTranslatesToEntries()
       {
-         Assert.AreEqual( "Profit", _translator.TraslatedName( "GrossMargin" ) );
+         Assert.AreEqual( "Profit", _translator.TranslatedName( "GrossMargin" ) );
          Assert.AreEqual( "Profit", _translator.TranslatedName( () => _testObject.GrossMargin ) );
 
-         Assert.AreEqual( "DescriptiveText", _translator.TraslatedName( "Description" ) );
+         Assert.AreEqual( "DescriptiveText", _translator.TranslatedName( "Description" ) );
          Assert.AreEqual( "DescriptiveText", _translator.TranslatedName( () => _testObject.Description ) );
       }
    }

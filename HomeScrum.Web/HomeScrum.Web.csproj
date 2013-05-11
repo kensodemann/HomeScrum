@@ -197,6 +197,7 @@
     <Compile Include="Translators\GenericTranslator.cs" />
     <Compile Include="Translators\IPropertyNameTranslator.cs" />
     <Compile Include="Translators\PropertyNameTranslator.cs" />
+    <Compile Include="Translators\WorkItemPropertyNameTranslator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\animated-overlay.gif" />

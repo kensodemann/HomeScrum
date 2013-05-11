@@ -5,5 +5,5 @@ using System.Web;
 
 namespace HomeScrum.Web.Translators
 {
-   public class GenericTranslator<TargetT> : PropertyNameTranslator, IPropertyNameTranslator<TargetT> { }
+   public class GenericTranslator<TargetT> : PropertyNameTranslator<TargetT> { }
 }

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Translators
 {
-   public class PropertyNameTranslator
+   public class PropertyNameTranslator<TargetT> : IPropertyNameTranslator<TargetT>
    {
       public PropertyNameTranslator()
       {
@@ -29,10 +29,10 @@ namespace HomeScrum.Web.Translators
 
       public string TranslatedName<T>( Expression<Func<T>> propertyExpression )
       {
-         return TraslatedName( ClassHelper.ExtractPropertyName( propertyExpression ) );
+         return TranslatedName( ClassHelper.ExtractPropertyName( propertyExpression ) );
       }
 
-      public string TraslatedName( string propertyName )
+      public string TranslatedName( string propertyName )
       {
          if (_propertyMap.ContainsKey( propertyName ))
          {

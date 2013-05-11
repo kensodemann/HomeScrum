@@ -13,6 +13,6 @@ namespace HomeScrum.Web.Translators
       void AddTranslation( string fromPropertyName, string toPropertyName );
 
       string TranslatedName<T>( Expression<Func<T>> propertyExpression );
-      string TraslatedName( string propertyName );
+      string TranslatedName( string propertyName );
    }
 }

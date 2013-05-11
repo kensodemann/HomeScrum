@@ -15,6 +15,8 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Web.Providers;
    using AutoMapper;
    using HomeScrum.Web.Translators;
+   using HomeScrum.Web.Models.Admin;
+   using HomeScrum.Web.Models.WorkItems;
 
    public static class NinjectWebCommon
    {
@@ -101,16 +103,16 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterTranslators( IKernel kernel )
       {
-         kernel.Bind<IPropertyNameTranslator<AcceptanceCriteriaStatus>>().ToConstant( new GenericTranslator<AcceptanceCriteriaStatus>() );
-         kernel.Bind<IPropertyNameTranslator<ProjectStatus>>().ToConstant( new GenericTranslator<ProjectStatus>() );
-         kernel.Bind<IPropertyNameTranslator<SprintStatus>>().ToConstant( new GenericTranslator<SprintStatus>() );
-         kernel.Bind<IPropertyNameTranslator<WorkItemStatus>>().ToConstant( new GenericTranslator<WorkItemStatus>() );
-         kernel.Bind<IPropertyNameTranslator<WorkItemType>>().ToConstant( new GenericTranslator<WorkItemType>() );
+         kernel.Bind<IPropertyNameTranslator<AcceptanceCriteriaStatusEditorViewModel>>().ToConstant( new GenericTranslator<AcceptanceCriteriaStatusEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<ProjectStatusEditorViewModel>>().ToConstant( new GenericTranslator<ProjectStatusEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<SprintStatusEditorViewModel>>().ToConstant( new GenericTranslator<SprintStatusEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<WorkItemStatusEditorViewModel>>().ToConstant( new GenericTranslator<WorkItemStatusEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<WorkItemTypeEditorViewModel>>().ToConstant( new GenericTranslator<WorkItemTypeEditorViewModel>() );
 
-         kernel.Bind<IPropertyNameTranslator<Project>>().ToConstant( new GenericTranslator<Project>() );
-         kernel.Bind<IPropertyNameTranslator<WorkItem>>().ToConstant( new GenericTranslator<WorkItem>() );
+         kernel.Bind<IPropertyNameTranslator<ProjectEditorViewModel>>().ToConstant( new GenericTranslator<ProjectEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<WorkItemEditorViewModel>>().ToConstant( new WorkItemEditorViewModelPropertyNameTranslator() );
 
-         kernel.Bind<IPropertyNameTranslator<User>>().ToConstant( new GenericTranslator<User>() );
+         kernel.Bind<IPropertyNameTranslator<UserEditorViewModel>>().ToConstant( new GenericTranslator<UserEditorViewModel>() );
       }
 
       private static void RegisterProviders( IKernel kernel )
