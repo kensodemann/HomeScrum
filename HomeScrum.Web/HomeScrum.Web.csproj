@@ -194,6 +194,7 @@
     <Compile Include="Providers\HomeScrumRoleProvider.cs" />
     <Compile Include="Providers\IWebSecurity.cs" />
     <Compile Include="Providers\WebSecurityWrapper.cs" />
+    <Compile Include="Translators\PropertyNameTranslatorBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
