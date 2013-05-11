@@ -14,6 +14,8 @@ namespace HomeScrum.Web.Translators
          this.AddTranslation( "CreatedByUser", "CreatedByUserId" );
          this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
          this.AddTranslation( "Project", "ProjectId" );
+         this.AddTranslation( "Status", "StatusId" );
+         this.AddTranslation( "WorkItemType", "WorkItemTypeId" );
       }
    }
 }
