@@ -5,6 +5,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.WorkItems;
+using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ninject;
@@ -852,7 +853,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
-            _projectRepository.Object, _userRepository.Object, _validator.Object );
+            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemEditorViewModelPropertyNameTranslator() );
          _controller.ControllerContext = new ControllerContext();
       }
 

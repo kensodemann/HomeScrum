@@ -2,6 +2,7 @@
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -40,7 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          WorkItemStatuses.CreateTestModelData( initializeIds: true );
-         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object );
+         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object, new GenericTranslator<WorkItemStatusEditorViewModel>() );
          _controller.ControllerContext = new ControllerContext();
       }
    }

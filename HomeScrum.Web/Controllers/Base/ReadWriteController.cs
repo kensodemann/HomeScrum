@@ -2,6 +2,7 @@
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Base;
+using HomeScrum.Web.Translators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,15 @@ namespace HomeScrum.Web.Controllers.Base
       : ReadOnlyController<ModelT, ViewModelT>
       where EditorViewModelT : new()
    {
-      public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator )
+      public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<EditorViewModelT> translator )
          : base( mainRepository )
       {
          _validator = validator;
+         _translator = translator;
       }
 
       private readonly IValidator<ModelT> _validator;
+      private readonly IPropertyNameTranslator<EditorViewModelT> _translator;
       protected IValidator<ModelT> Validator { get { return _validator; } }
 
 
@@ -53,7 +56,7 @@ namespace HomeScrum.Web.Controllers.Base
          return View( viewModel );
       }
 
-      
+
       //
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id )
@@ -91,7 +94,7 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
-      
+
       protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
 
 
@@ -113,8 +116,8 @@ namespace HomeScrum.Web.Controllers.Base
 
          foreach (ModelValidationResult validationResult in ModelValidator.GetModelValidator( metadata, this.ControllerContext ).Validate( null ))
          {
-            // TODO: Look into a way to use the auto-map data to map the member name to the appropriate view model name if possible
-            ModelState.AddModelError( validationResult.MemberName, validationResult.Message );
+            var viewModelPropertyName = _translator.TranslatedName( validationResult.MemberName );
+            ModelState.AddModelError( viewModelPropertyName, validationResult.Message );
          }
       }
 

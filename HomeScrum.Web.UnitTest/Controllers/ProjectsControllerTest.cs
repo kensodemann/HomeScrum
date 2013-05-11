@@ -5,6 +5,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ninject;
@@ -538,7 +539,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object );
+         _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
+            new GenericTranslator<ProjectEditorViewModel>() );
          _controller.ControllerContext = new ControllerContext();
       }
 

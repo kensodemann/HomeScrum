@@ -62,6 +62,7 @@ namespace HomeScrum.Web.App_Start
       {
          RegisterRepositories( kernel );
          RegisterValidators( kernel );
+         RegisterTranslators( kernel );
          RegisterProviders( kernel );
 
          Mapper.Initialize( map => map.ConstructServicesUsing( x => kernel.Get( x ) ) );

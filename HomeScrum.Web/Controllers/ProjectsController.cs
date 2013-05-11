@@ -5,6 +5,7 @@ using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Translators;
 using System;
 using System.Security.Principal;
 using System.Web.Mvc;
@@ -13,8 +14,9 @@ namespace HomeScrum.Web.Controllers
 {
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
-      public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IUserRepository userRepository, IValidator<Project> validator )
-         : base( repository, validator )
+      public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IUserRepository userRepository,
+         IValidator<Project> validator, IPropertyNameTranslator<ProjectEditorViewModel> translator )
+         : base( repository, validator, translator )
       {
          _projectStatusRepository = projectStatusRepository;
          _userRepository = userRepository;
@@ -22,7 +24,7 @@ namespace HomeScrum.Web.Controllers
 
       private readonly IRepository<ProjectStatus> _projectStatusRepository;
       private readonly IUserRepository _userRepository;
-      
+
       protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
       {
          base.PopulateSelectLists( viewModel );

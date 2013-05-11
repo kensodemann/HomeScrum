@@ -3,6 +3,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
+using HomeScrum.Web.Translators;
 using Ninject;
 using System;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public WorkItemsController( IRepository<WorkItem> repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
-         IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator )
-         : base( repository, validator )
+         IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItemEditorViewModel> translator )
+         : base( repository, validator, translator )
       {
          _statusRepository = statusRepository;
          _workItemTypeRepository = workItemTypeRepository;

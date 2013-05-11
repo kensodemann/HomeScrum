@@ -3,6 +3,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Translators;
 using Ninject;
 
 namespace HomeScrum.Web.Controllers
@@ -10,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class SprintStatusesController : ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel>
    {
       [Inject]
-      public SprintStatusesController( IRepository<SprintStatus> repository, IValidator<SprintStatus> validator )
-         : base( repository, validator ) { }
+      public SprintStatusesController( IRepository<SprintStatus> repository, IValidator<SprintStatus> validator, IPropertyNameTranslator<SprintStatusEditorViewModel> translator )
+         : base( repository, validator, translator ) { }
    }
 }
