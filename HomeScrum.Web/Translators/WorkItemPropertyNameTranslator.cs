@@ -8,6 +8,9 @@ namespace HomeScrum.Web.Translators
 {
    public class WorkItemEditorViewModelPropertyNameTranslator : PropertyNameTranslator<WorkItemEditorViewModel>
    {
-      public WorkItemEditorViewModelPropertyNameTranslator() : base() { }
+      public WorkItemEditorViewModelPropertyNameTranslator() : base()
+      {
+         this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
+      }
    }
 }
