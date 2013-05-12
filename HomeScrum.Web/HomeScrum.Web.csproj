@@ -195,6 +195,7 @@
     <Compile Include="Providers\IWebSecurity.cs" />
     <Compile Include="Providers\WebSecurityWrapper.cs" />
     <Compile Include="Translators\IPropertyNameTranslator.cs" />
+    <Compile Include="Translators\ProjectPropertyNameTranslator.cs" />
     <Compile Include="Translators\PropertyNameTranslator.cs" />
     <Compile Include="Translators\WorkItemPropertyNameTranslator.cs" />
   </ItemGroup>

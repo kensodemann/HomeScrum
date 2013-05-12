@@ -115,9 +115,8 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>() );
 
-         kernel.Bind<IPropertyNameTranslator<Project, ProjectEditorViewModel>>()
-            .ToConstant( new PropertyNameTranslator<Project, ProjectEditorViewModel>() );
-         kernel.Bind<IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel>>().ToConstant( new WorkItemEditorViewModelPropertyNameTranslator() );
+         kernel.Bind<IPropertyNameTranslator<Project, ProjectEditorViewModel>>().ToConstant( new ProjectPropertyNameTranslator() );
+         kernel.Bind<IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel>>().ToConstant( new WorkItemPropertyNameTranslator() );
 
          kernel.Bind<IPropertyNameTranslator<User, UserEditorViewModel>>().ToConstant( new PropertyNameTranslator<User, UserEditorViewModel>() );
       }

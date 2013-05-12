@@ -7,9 +7,9 @@ using System.Web;
 
 namespace HomeScrum.Web.Translators
 {
-   public class WorkItemEditorViewModelPropertyNameTranslator : PropertyNameTranslator<WorkItem, WorkItemEditorViewModel>
+   public class WorkItemPropertyNameTranslator : PropertyNameTranslator<WorkItem, WorkItemEditorViewModel>
    {
-      public WorkItemEditorViewModelPropertyNameTranslator() : base()
+      public WorkItemPropertyNameTranslator() : base()
       {
          this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
       }

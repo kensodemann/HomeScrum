@@ -8,13 +8,13 @@ namespace HomeScrum.Web.UnitTest.Translators
    [TestClass]
    public class WorkItemPropertyNameTranslatorTest
    {
-      private WorkItemEditorViewModelPropertyNameTranslator _translator;
+      private WorkItemPropertyNameTranslator _translator;
       private WorkItem _sourceObject;
 
       [TestInitialize]
       public void InitializeTest()
       {
-         _translator = new WorkItemEditorViewModelPropertyNameTranslator();
+         _translator = new WorkItemPropertyNameTranslator();
          _sourceObject = new WorkItem();
       }
 

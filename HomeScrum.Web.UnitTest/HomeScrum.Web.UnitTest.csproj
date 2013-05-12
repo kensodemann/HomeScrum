@@ -92,6 +92,7 @@
     <Compile Include="Controllers\WorkItemTypesControllerTest.cs" />
     <Compile Include="Providers\HomeScrumMembershipProviderTest.cs" />
     <Compile Include="Translators\PropertyNameTranslatorTest.cs" />
+    <Compile Include="Translators\ProjectPropertyNameTranslatorTest.cs" />
     <Compile Include="Translators\WorkItemPropertyNameTranslatorTest.cs" />
     <Compile Include="ViewModels\EditUserViewModelTest.cs" />
     <Compile Include="ViewModels\CreateUserViewModelTest.cs" />

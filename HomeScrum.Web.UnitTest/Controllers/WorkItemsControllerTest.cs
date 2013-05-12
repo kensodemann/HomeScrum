@@ -853,7 +853,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
-            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemEditorViewModelPropertyNameTranslator() );
+            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator() );
          _controller.ControllerContext = new ControllerContext();
       }
 
