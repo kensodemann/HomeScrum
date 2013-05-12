@@ -109,7 +109,7 @@ namespace HomeScrum.Web.UnitTest.Translators
       }
 
       [TestMethod]
-      public void UnmatchedPropertyWithNoExplicitMappingAndNoConvensionMappingDoesNotMap()
+      public void UnmatchedPropertyWithNoExplicitMappingAndNoConventionMappingDoesNotMap()
       {
          Assert.IsNull( _translator.TranslatedName( "NoMatchInTarget" ) );
          Assert.IsNull( _translator.TranslatedName( () => _testObject.NoMatchInTarget ) );
