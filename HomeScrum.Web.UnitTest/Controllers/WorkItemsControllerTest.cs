@@ -170,7 +170,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             if (isFirst)
             {
-               Assert.IsNull( item.Value );
+               Assert.AreEqual( default(Guid).ToString(), item.Value );
                Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
                Assert.IsFalse( item.Selected );
                isFirst = false;
@@ -198,7 +198,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             var item = model.AssignedToUsers.ElementAt( i );
             if (i == 0)
             {
-               Assert.IsNull( item.Value );
+               Assert.AreEqual( default( Guid ).ToString(), item.Value );
                Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
                Assert.IsFalse( item.Selected );
             }

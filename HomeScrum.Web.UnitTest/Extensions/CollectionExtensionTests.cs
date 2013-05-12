@@ -82,7 +82,7 @@ namespace HomeScrum.Web.UnitTest.Extensions
 
          var item = selectList.ElementAt( 0 );
 
-         Assert.IsNull( item.Value );
+         Assert.AreEqual( default( Guid ).ToString(), item.Value );
          Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
          Assert.IsFalse( item.Selected );
       }
@@ -151,7 +151,7 @@ namespace HomeScrum.Web.UnitTest.Extensions
 
          var item = selectList.ElementAt( 0 );
 
-         Assert.IsNull( item.Value );
+         Assert.AreEqual( default( Guid ).ToString(), item.Value );
          Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
          Assert.IsFalse( item.Selected );
       }

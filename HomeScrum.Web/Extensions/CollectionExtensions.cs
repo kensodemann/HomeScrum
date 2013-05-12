@@ -80,7 +80,7 @@ namespace HomeScrum.Web.Extensions
       {
          selectList.Add( new SelectListItem()
          {
-            Value = null,
+            Value = default( Guid ).ToString(),
             Text = DisplayStrings.NotAssigned,
             Selected = false
          } );
