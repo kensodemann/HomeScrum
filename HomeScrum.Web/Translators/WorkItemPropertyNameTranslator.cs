@@ -11,13 +11,7 @@ namespace HomeScrum.Web.Translators
    {
       public WorkItemEditorViewModelPropertyNameTranslator() : base()
       {
-         this.AddTranslation( "AssignedToUser", "AssignedToUserId" );
-         this.AddTranslation( "CreatedByUser", "CreatedByUserId" );
          this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
-         this.AddTranslation( "ParentWorkItem", "ParentWorkItemId" );
-         this.AddTranslation( "Project", "ProjectId" );
-         this.AddTranslation( "Status", "StatusId" );
-         this.AddTranslation( "WorkItemType", "WorkItemTypeId" );
       }
    }
 }

@@ -60,12 +60,12 @@ namespace HomeScrum.Web.UnitTest.Translators
          Assert.AreEqual( "LastModifiedUserId", _translator.TranslatedName( () => _sourceObject.LastModifiedUserRid ) );
       }
 
-      [TestMethod]
-      public void ParentWorkItemTranslatesToParentWorkItemId()
-      {
-         Assert.AreEqual( "ParentWorkItemId", _translator.TranslatedName( "ParentWorkItem" ) );
-         Assert.AreEqual( "ParentWorkItemId", _translator.TranslatedName( () => _sourceObject.ParentWorkItem ) );
-      }
+      //[TestMethod]
+      //public void ParentWorkItemTranslatesToParentWorkItemId()
+      //{
+      //   Assert.AreEqual( "ParentWorkItemId", _translator.TranslatedName( "ParentWorkItem" ) );
+      //   Assert.AreEqual( "ParentWorkItemId", _translator.TranslatedName( () => _sourceObject.ParentWorkItem ) );
+      //}
 
       [TestMethod]
       public void ProjectTranslatesToProjectId()
