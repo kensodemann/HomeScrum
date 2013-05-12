@@ -7,7 +7,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Translators
 {
-   public class PropertyNameTranslator<TargetT> : IPropertyNameTranslator<TargetT>
+   public class PropertyNameTranslator<SourceT, TargetT> : IPropertyNameTranslator<SourceT, TargetT>
    {
       public PropertyNameTranslator()
       {

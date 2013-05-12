@@ -15,7 +15,7 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public WorkItemsController( IRepository<WorkItem> repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
-         IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItemEditorViewModel> translator )
+         IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator )
          : base( repository, validator, translator )
       {
          _statusRepository = statusRepository;

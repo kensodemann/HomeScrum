@@ -16,7 +16,7 @@ namespace HomeScrum.Web.Controllers.Base
       : ReadOnlyController<ModelT, ViewModelT>
       where EditorViewModelT : new()
    {
-      public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<EditorViewModelT> translator )
+      public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator )
          : base( mainRepository )
       {
          _validator = validator;
@@ -24,7 +24,7 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       private readonly IValidator<ModelT> _validator;
-      private readonly IPropertyNameTranslator<EditorViewModelT> _translator;
+      private readonly IPropertyNameTranslator<ModelT, EditorViewModelT> _translator;
       protected IValidator<ModelT> Validator { get { return _validator; } }
 
 

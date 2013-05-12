@@ -15,7 +15,7 @@ namespace HomeScrum.Web.Controllers
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
       public ProjectsController( IRepository<Project> repository, IRepository<ProjectStatus> projectStatusRepository, IUserRepository userRepository,
-         IValidator<Project> validator, IPropertyNameTranslator<ProjectEditorViewModel> translator )
+         IValidator<Project> validator, IPropertyNameTranslator<Project, ProjectEditorViewModel> translator )
          : base( repository, validator, translator )
       {
          _projectStatusRepository = projectStatusRepository;

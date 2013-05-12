@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class ProjectStatusesController : ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
    {
       [Inject]
-      public ProjectStatusesController( IRepository<ProjectStatus> repository, IValidator<ProjectStatus> validator, IPropertyNameTranslator<ProjectStatusEditorViewModel> translator )
+      public ProjectStatusesController( IRepository<ProjectStatus> repository, IValidator<ProjectStatus> validator, IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel> translator )
          : base( repository, validator, translator ) { }
    }
 }

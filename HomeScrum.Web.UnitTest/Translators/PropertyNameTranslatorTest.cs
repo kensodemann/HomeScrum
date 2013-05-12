@@ -8,7 +8,11 @@ namespace HomeScrum.Web.UnitTest.Translators
    [TestClass]
    public class PropertyNameTranslatorTest
    {
-      class TestClass
+      class SourceTestClass
+      {
+      }
+
+      class TargetTestClass
       {
          public Guid Id { get; set; }
          public string Name { get; set; }
@@ -16,8 +20,8 @@ namespace HomeScrum.Web.UnitTest.Translators
          public int GrossMargin { get; set; }
       }
 
-      private PropertyNameTranslator<TestClass> _translator;
-      private TestClass _testObject;
+      private PropertyNameTranslator<SourceTestClass, TargetTestClass> _translator;
+      private TargetTestClass _testObject;
 
       [TestInitialize]
       public void InitializeTest()
@@ -28,8 +32,8 @@ namespace HomeScrum.Web.UnitTest.Translators
 
       private void BuildTestObjects()
       {
-         _translator = new PropertyNameTranslator<TestClass>();
-         _testObject = new TestClass();
+         _translator = new PropertyNameTranslator<SourceTestClass, TargetTestClass>();
+         _testObject = new TargetTestClass();
       }
 
       private void SetupTranslator()

@@ -1,4 +1,5 @@
-﻿using HomeScrum.Web.Models.WorkItems;
+﻿using HomeScrum.Data.Domain;
+using HomeScrum.Web.Models.WorkItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,14 @@ using System.Web;
 
 namespace HomeScrum.Web.Translators
 {
-   public class WorkItemEditorViewModelPropertyNameTranslator : PropertyNameTranslator<WorkItemEditorViewModel>
+   public class WorkItemEditorViewModelPropertyNameTranslator : PropertyNameTranslator<WorkItem, WorkItemEditorViewModel>
    {
       public WorkItemEditorViewModelPropertyNameTranslator() : base()
       {
          this.AddTranslation( "AssignedToUser", "AssignedToUserId" );
          this.AddTranslation( "CreatedByUser", "CreatedByUserId" );
          this.AddTranslation( "LastModifiedUserRid", "LastModifiedUserId" );
+         this.AddTranslation( "ParentWorkItem", "ParentWorkItemId" );
          this.AddTranslation( "Project", "ProjectId" );
          this.AddTranslation( "Status", "StatusId" );
          this.AddTranslation( "WorkItemType", "WorkItemTypeId" );

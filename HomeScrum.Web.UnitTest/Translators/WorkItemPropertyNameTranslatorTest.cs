@@ -61,6 +61,13 @@ namespace HomeScrum.Web.UnitTest.Translators
       }
 
       [TestMethod]
+      public void ParentWorkItemTranslatesToParentWorkItemId()
+      {
+         Assert.AreEqual( "ParentWorkItemId", _translator.TranslatedName( "ParentWorkItem" ) );
+         Assert.AreEqual( "ParentWorkItemId", _translator.TranslatedName( () => _sourceObject.ParentWorkItem ) );
+      }
+
+      [TestMethod]
       public void ProjectTranslatesToProjectId()
       {
          Assert.AreEqual( "ProjectId", _translator.TranslatedName( "Project" ) );

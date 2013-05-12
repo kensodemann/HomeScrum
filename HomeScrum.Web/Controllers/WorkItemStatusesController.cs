@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemStatusesController : ReadWriteController<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel>
    {
       [Inject]
-      public WorkItemStatusesController( IRepository<WorkItemStatus> repository, IValidator<WorkItemStatus> validator, IPropertyNameTranslator<WorkItemStatusEditorViewModel> translator )
+      public WorkItemStatusesController( IRepository<WorkItemStatus> repository, IValidator<WorkItemStatus> validator, IPropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel> translator )
          : base( repository, validator, translator ) { }
    }
 }

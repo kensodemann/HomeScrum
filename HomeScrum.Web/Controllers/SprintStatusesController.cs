@@ -11,7 +11,7 @@ namespace HomeScrum.Web.Controllers
    public class SprintStatusesController : ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel>
    {
       [Inject]
-      public SprintStatusesController( IRepository<SprintStatus> repository, IValidator<SprintStatus> validator, IPropertyNameTranslator<SprintStatusEditorViewModel> translator )
+      public SprintStatusesController( IRepository<SprintStatus> repository, IValidator<SprintStatus> validator, IPropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel> translator )
          : base( repository, validator, translator ) { }
    }
 }

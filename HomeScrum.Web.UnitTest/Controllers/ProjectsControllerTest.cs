@@ -540,7 +540,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
-            new GenericTranslator<ProjectEditorViewModel>() );
+            new GenericTranslator<Project, ProjectEditorViewModel>() );
          _controller.ControllerContext = new ControllerContext();
       }
 

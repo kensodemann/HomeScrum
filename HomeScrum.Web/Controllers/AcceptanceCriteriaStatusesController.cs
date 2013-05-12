@@ -12,7 +12,7 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator,
-         IPropertyNameTranslator<AcceptanceCriteriaStatusEditorViewModel> translator )
+         IPropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel> translator )
          : base( repository, validator, translator ) { }
    }
 }

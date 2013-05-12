@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Web.Translators
 {
-   public interface IPropertyNameTranslator<TargetT>
+   public interface IPropertyNameTranslator<SourceT, TargetT>
    {
       string TranslatedName<T>( Expression<Func<T>> propertyExpression );
       string TranslatedName( string propertyName );
