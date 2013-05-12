@@ -11,6 +11,7 @@
 
         @Html.LabelFor( model => model.CreatedByUserUserName )
         @Html.DisplayFor( model => model.CreatedByUserUserName )
+        @Html.HiddenFor( model => model.CreatedByUserId )
         @Html.ValidationMessageFor( model => model.CreatedByUserId )
 
         <div class="formSelectList">
