@@ -41,7 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          WorkItemTypes.CreateTestModelData( initializeIds: true );
-         _controller = new WorkItemTypesController( _repository.Object, _validator.Object, new GenericTranslator<WorkItemType, WorkItemTypeEditorViewModel>() );
+         _controller = new WorkItemTypesController( _repository.Object, _validator.Object, new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>() );
          _controller.ControllerContext = new ControllerContext();
       }
 
