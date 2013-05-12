@@ -34,12 +34,45 @@ namespace HomeScrum.Web.Translators
 
       public string TranslatedName( string propertyName )
       {
+         return ExplicitTranslation( propertyName ) ??
+            ConventionBasedMapping( propertyName ) ??
+            propertyName;
+      }
+
+      private string ExplicitTranslation( string propertyName )
+      {
          if (_propertyMap.ContainsKey( propertyName ))
          {
             return _propertyMap[propertyName];
          }
 
-         return propertyName;
+         return null;
+      }
+
+      private string ConventionBasedMapping( string propertyName )
+      {
+         var conventionPropertyName = propertyName + "Id";
+         if (SourcePropertyHasId( propertyName ) && TypeHasProperty( typeof( TargetT ), conventionPropertyName ))
+         {
+            return conventionPropertyName;
+         }
+
+         return null;
+      }
+
+      private bool SourcePropertyHasId( string propertyName )
+      {
+         var sourceType = typeof( SourceT );
+         var property = sourceType.GetProperty( propertyName );
+
+         return TypeHasProperty( property.PropertyType, "Id" );
+      }
+
+      private bool TypeHasProperty( Type theType, string propertyName )
+      {
+         var property = theType.GetProperty( propertyName );
+
+         return property != null;
       }
    }
 }

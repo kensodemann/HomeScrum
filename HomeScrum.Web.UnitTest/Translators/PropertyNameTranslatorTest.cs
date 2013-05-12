@@ -75,5 +75,12 @@ namespace HomeScrum.Web.UnitTest.Translators
          Assert.AreEqual( "DescriptiveText", _translator.TranslatedName( "Description" ) );
          Assert.AreEqual( "DescriptiveText", _translator.TranslatedName( () => _testObject.Description ) );
       }
+
+      [TestMethod]
+      public void ClassInSourceTranslatesToIdInTarget()
+      {
+         Assert.AreEqual( "ChildId", _translator.TranslatedName( "Child" ) );
+         Assert.AreEqual( "ChildId", _translator.TranslatedName( () => _testObject.Child ) );
+      }
    }
 }
