@@ -36,7 +36,17 @@ namespace HomeScrum.Web.Translators
       {
          return ExplicitTranslation( propertyName ) ??
             ConventionBasedMapping( propertyName ) ??
-            propertyName;
+            ExactPropertyMatchMapping( propertyName );
+      }
+
+      private string ExactPropertyMatchMapping( string propertyName )
+      {
+         if (TypeHasProperty( typeof( TargetT ), propertyName ) && TypeHasProperty( typeof( SourceT ), propertyName ))
+         {
+            return propertyName;
+         }
+
+         return null;
       }
 
       private string ExplicitTranslation( string propertyName )

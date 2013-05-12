@@ -14,6 +14,12 @@ namespace HomeScrum.Web.UnitTest.Translators
          public string Name { get; set; }
          public string Description { get; set; }
       }
+
+      class NoIdChildClass
+      {
+         public string Name { get; set; }
+         public string Description { get; set; }
+      }
       
       class SourceTestClass
       {
@@ -22,6 +28,9 @@ namespace HomeScrum.Web.UnitTest.Translators
          public string Description { get; set; }
          public Decimal GrossMargin { get; set; }
          public ChildClass Child { get; set; }
+         public ChildClass SecondChild { get; set; }
+         public NoIdChildClass NoIdChild { get; set; }
+         public string NoMatchInTarget { get; set; }
       }
 
       class TargetTestClass
@@ -32,6 +41,8 @@ namespace HomeScrum.Web.UnitTest.Translators
          public Decimal Profit { get; set; }
          public Guid ChildId{get;set;}
          public string ChildName{get;set;}
+         public string SecondChildName { get; set; }
+         public Guid NoIdChildId { get; set; }
       }
 
       private PropertyNameTranslator<SourceTestClass, TargetTestClass> _translator;
@@ -81,6 +92,27 @@ namespace HomeScrum.Web.UnitTest.Translators
       {
          Assert.AreEqual( "ChildId", _translator.TranslatedName( "Child" ) );
          Assert.AreEqual( "ChildId", _translator.TranslatedName( () => _testObject.Child ) );
+      }
+
+      [TestMethod]
+      public void ClassInSourceDoesNotTranslateIfNoChildClassIdProperty()
+      {
+         Assert.IsNull( _translator.TranslatedName( "SecondChild" ) );
+         Assert.IsNull( _translator.TranslatedName( () => _testObject.SecondChild ) );
+      }
+
+      [TestMethod]
+      public void ChildClassWithoutIdDoesNotTranslateToChildIdProperty()
+      {
+         Assert.IsNull( _translator.TranslatedName( "NoIdChild" ) );
+         Assert.IsNull( _translator.TranslatedName( () => _testObject.NoIdChild ) );
+      }
+
+      [TestMethod]
+      public void UnmatchedPropertyWithNoExplicitMappingAndNoConvensionMappingDoesNotMap()
+      {
+         Assert.IsNull( _translator.TranslatedName( "NoMatchInTarget" ) );
+         Assert.IsNull( _translator.TranslatedName( () => _testObject.NoMatchInTarget ) );
       }
    }
 }
