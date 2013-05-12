@@ -8,20 +8,34 @@ namespace HomeScrum.Web.UnitTest.Translators
    [TestClass]
    public class PropertyNameTranslatorTest
    {
+      class ChildClass
+      {
+         public Guid Id { get; set; }
+         public string Name { get; set; }
+         public string Description { get; set; }
+      }
+      
       class SourceTestClass
       {
+         public Guid Id { get; set; }
+         public string Name { get; set; }
+         public string Description { get; set; }
+         public Decimal GrossMargin { get; set; }
+         public ChildClass Child { get; set; }
       }
 
       class TargetTestClass
       {
          public Guid Id { get; set; }
          public string Name { get; set; }
-         public string Description { get; set; }
-         public int GrossMargin { get; set; }
+         public string DescriptiveText { get; set; }
+         public Decimal Profit { get; set; }
+         public Guid ChildId{get;set;}
+         public string ChildName{get;set;}
       }
 
       private PropertyNameTranslator<SourceTestClass, TargetTestClass> _translator;
-      private TargetTestClass _testObject;
+      private SourceTestClass _testObject;
 
       [TestInitialize]
       public void InitializeTest()
@@ -33,7 +47,7 @@ namespace HomeScrum.Web.UnitTest.Translators
       private void BuildTestObjects()
       {
          _translator = new PropertyNameTranslator<SourceTestClass, TargetTestClass>();
-         _testObject = new TargetTestClass();
+         _testObject = new SourceTestClass();
       }
 
       private void SetupTranslator()
@@ -43,7 +57,7 @@ namespace HomeScrum.Web.UnitTest.Translators
       }
 
       [TestMethod]
-      public void PropertiesWithoutEntryTranslatesToSelf()
+      public void MatchingPropertiesMap()
       {
          Assert.AreEqual( "Id", _translator.TranslatedName( "Id" ) );
          Assert.AreEqual( "Id", _translator.TranslatedName( () => _testObject.Id ) );
