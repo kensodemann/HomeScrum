@@ -9,56 +9,56 @@
 <fieldset>
     <legend>WorkItemViewModel</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.WorkItemTypeName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.WorkItemTypeName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.StatusName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.StatusName)
+    <div class="DataArea">
+        @Html.DisplayFor( model => model.Name )
+        <blockquote>
+            @Html.DisplayFor( model => model.Description )
+        </blockquote>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.ProjectName)
+        @Html.DisplayNameFor( model => model.StatusName )
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ProjectName)
+        @Html.DisplayFor( model => model.StatusName )
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreatedByUserName)
+        @Html.DisplayNameFor( model => model.ProjectName )
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CreatedByUserName)
+        @Html.DisplayFor( model => model.ProjectName )
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.AssignedToUserName)
+        @Html.DisplayNameFor( model => model.CreatedByUserName )
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.AssignedToUserName)
+        @Html.DisplayFor( model => model.CreatedByUserName )
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
+        @Html.DisplayNameFor( model => model.AssignedToUserName )
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
+        @Html.DisplayFor( model => model.AssignedToUserName )
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Description)
+        @Html.DisplayNameFor( model => model.Name )
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
+        @Html.DisplayFor( model => model.Name )
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor( model => model.Description )
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor( model => model.Description )
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink( "Edit", "Edit", new { id = Model.Id } ) |
+    @Html.ActionLink( "Back to List", "Index" )
 </p>

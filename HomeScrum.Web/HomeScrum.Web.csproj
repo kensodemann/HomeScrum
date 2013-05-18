@@ -164,6 +164,7 @@
       <DependentUpon>DisplayStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

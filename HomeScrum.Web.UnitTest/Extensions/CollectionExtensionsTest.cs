@@ -7,7 +7,7 @@ using HomeScrum.Common.TestData;
 namespace HomeScrum.Web.UnitTest.Extensions
 {
    [TestClass]
-   public class CollectionExtensionTests
+   public class CollectionExtensionsTest
    {
       [TestInitialize]
       public void InitializeTest()
