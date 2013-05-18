@@ -9,9 +9,16 @@ namespace HomeScrum.Web.Extensions
 {
    public static class HtmlHelperExtensions
    {
-      public static MvcHtmlString DisplayFormattedText(this HtmlHelper htmlHelper, string text)
+      public static MvcHtmlString DisplayFormattedText( this HtmlHelper htmlHelper, string text )
       {
-         return null;
+         if (text == null)
+         {
+            return null;
+         }
+
+         var result = htmlHelper.Encode( text );
+         result = result.Replace( System.Environment.NewLine, "<br/>" );
+         return new MvcHtmlString( result );
       }
    }
 }

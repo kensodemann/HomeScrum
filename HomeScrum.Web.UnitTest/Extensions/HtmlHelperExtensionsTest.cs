@@ -24,5 +24,27 @@ namespace HomeScrum.Web.UnitTest.Extensions
       {
          Assert.IsNull( _htmlHelper.DisplayFormattedText( null ) );
       }
+
+      [TestMethod]
+      public void AllNewLinesConvertedToHtmlBreaks()
+      {
+         string testData = "line 1" + System.Environment.NewLine +
+                           "line 2" + System.Environment.NewLine + System.Environment.NewLine +
+                           "line 3";
+
+         var result = _htmlHelper.DisplayFormattedText( testData );
+
+         Assert.AreEqual( "line 1<br/>line 2<br/><br/>line 3", result.ToHtmlString() );
+      }
+
+      [TestMethod]
+      public void SpecialCharactersInStringsAreEncoded()
+      {
+         string testData = "line <1>" + System.Environment.NewLine + "& line <2>";
+
+         var result = _htmlHelper.DisplayFormattedText( testData );
+
+         Assert.AreEqual( "line &lt;1&gt;<br/>&amp; line &lt;2&gt;", result.ToHtmlString() );
+      }
    }
 }
