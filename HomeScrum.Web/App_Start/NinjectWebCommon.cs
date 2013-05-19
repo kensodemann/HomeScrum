@@ -104,8 +104,8 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterTranslators( IKernel kernel )
       {
-         kernel.Bind<IPropertyNameTranslator<AcceptanceCriteria, AcceptanceCriteriaStatusEditorViewModel>>()
-            .ToConstant( new PropertyNameTranslator<AcceptanceCriteria, AcceptanceCriteriaStatusEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>>()
+            .ToConstant( new PropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>>()

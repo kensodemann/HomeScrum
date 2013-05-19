@@ -163,23 +163,36 @@ article
 
 
 /* Display Pages */
-.displayLabel
+.displayCheckBoxLabel
 {
-  float:left;
-  clear:left;
-  font-weight:bold;
-  width:10em;
+  float: left;
+  font-weight: bold;
 }
 
-.displayField .displayLongTextField
+.displayLabel
+{
+  float: left;
+  clear: left;
+  font-weight: bold;
+  width: 10em;
+}
+
+.displayField
 {
   float: left;
 }
 
 .displayLongTextField
 {
+  float: left;
   clear: left;
-  margin-bottom:1em;
+  margin-bottom: 1em;
+}
+
+.displayCheckBox
+{
+  float:left;
+  clear:left;
 }
 
 /* forms */
