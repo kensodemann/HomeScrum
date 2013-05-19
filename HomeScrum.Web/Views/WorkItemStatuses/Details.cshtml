@@ -9,39 +9,39 @@
 <fieldset>
     <legend>WorkItemStatus</legend>
 
-    <div class="displayLabel">
-         @Html.DisplayNameFor(model => model.AllowUse)
+    <div class="displayLabel" id="NameLabel">
+        @Html.DisplayNameFor( model => model.Name )
     </div>
-    <div class="displayField">
-        @Html.DisplayFor(model => model.AllowUse)
-    </div>
-
-    <div class="displayLabel">
-         @Html.DisplayNameFor(model => model.IsOpenStatus)
-    </div>
-    <div class="displayField">
-        @Html.DisplayFor(model => model.IsOpenStatus)
+    <div class="displayField" id="Name">
+        @Html.DisplayFor( model => model.Name )
     </div>
 
-    <div class="displayLabel">
-         @Html.DisplayNameFor(model => model.IsPredefined)
+    <div class="displayLabel" id="DescriptionLabel">
+        @Html.DisplayNameFor( model => model.Description )
     </div>
-    <div class="displayField">
-        @Html.DisplayFor(model => model.IsPredefined)
-    </div>
-
-    <div class="displayLabel">
-         @Html.DisplayNameFor(model => model.Name)
-    </div>
-    <div class="displayField">
-        @Html.DisplayFor(model => model.Name)
+    <div class="displayLongTextField" id="Description">
+        @Html.DisplayFor( model => model.Description )
     </div>
 
-    <div class="displayLabel">
-         @Html.DisplayNameFor(model => model.Description)
+    <div class="displayCheckBox" id="AllowUse">
+        @Html.DisplayFor( model => model.AllowUse )
     </div>
-    <div class="displayField">
-        @Html.DisplayFor(model => model.Description)
+    <div class="displayCheckBoxLabel" id="AllowUseLabel">
+        @Html.DisplayNameFor( model => model.AllowUse )
+    </div>
+
+    <div class="displayCheckBox" id="IsOpenStatus">
+        @Html.DisplayFor( model => model.IsOpenStatus )
+    </div>
+    <div class="displayCheckBoxLabel" id="IsOpenStatusLabel">
+        @Html.DisplayNameFor( model => model.IsOpenStatus )
+    </div>
+
+    <div class="displayCheckBox" id="IsPredefined">
+        @Html.DisplayFor( model => model.IsPredefined )
+    </div>
+    <div class="displayCheckBoxLabel" id="IsPredefinedLabel">
+        @Html.DisplayNameFor( model => model.IsPredefined )
     </div>
 </fieldset>
 <p>
