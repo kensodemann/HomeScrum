@@ -162,6 +162,26 @@ article
   }
 
 
+/* Display Pages */
+.displayLabel
+{
+  float:left;
+  clear:left;
+  font-weight:bold;
+  width:10em;
+}
+
+.displayField .displayLongTextField
+{
+  float: left;
+}
+
+.displayLongTextField
+{
+  clear: left;
+  margin-bottom:1em;
+}
+
 /* forms */
 fieldset
 {
