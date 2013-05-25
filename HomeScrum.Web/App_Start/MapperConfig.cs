@@ -32,6 +32,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemTypeEditorViewModel, WorkItemType>()
+            .ForMember( dest => dest.SortSequence, opt => opt.Ignore() )  // How to do this?
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()

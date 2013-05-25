@@ -6,5 +6,6 @@ namespace HomeScrum.Data.Domain
    public class WorkItemType : SystemDomainObject
    {
       public virtual bool IsTask { get; set; }
+      public virtual int SortSequence { get; set; }
    }
 }
