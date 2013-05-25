@@ -7,3 +7,10 @@
 <h2>@ViewBag.Title</h2>
 
 @Html.Partial( "_DataObjectList", Model )
+
+<script>
+    $(function () {
+        $(".ListBody").sortable();
+        $(".ListBody").disableSelection();
+    });
+</script>
