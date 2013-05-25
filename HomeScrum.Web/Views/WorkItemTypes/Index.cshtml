@@ -8,9 +8,12 @@
 
 @Html.Partial( "_DataObjectList", Model )
 
+<input type="checkbox" id="MakeSortable" /><label for="MakeSortable">Change Order</label>
+
 <script>
     $(function () {
         $(".ListBody").sortable();
         $(".ListBody").disableSelection();
+        $("#MakeSortable").button();
     });
 </script>
