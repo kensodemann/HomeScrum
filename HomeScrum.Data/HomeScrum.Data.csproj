@@ -94,6 +94,7 @@
     <EmbeddedResource Include="Mappings\WorkItemStatus.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Domain\DomainClasses.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

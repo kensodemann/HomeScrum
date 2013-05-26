@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HomeScrum.Data.Domain.AcceptanceCriteriaStatus" Collapsed="true">
+    <Position X="9.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\AcceptanceCriteriaStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.AcceptanceCriteria" Collapsed="true">
+    <Position X="2.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\AcceptanceCriteria.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.DomainObjectBase" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\DomainObjectBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.Project" Collapsed="true">
+    <Position X="7.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Project.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.ProjectHistory" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAIAAAgAAAAAAACAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Domain\ProjectHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.SprintStatus" Collapsed="true">
+    <Position X="11.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\SprintStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.ProjectStatus" Collapsed="true">
+    <Position X="14" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\ProjectStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.SystemDomainObject" Collapsed="true">
+    <Position X="14" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\SystemDomainObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.User" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAEIAAAAAAAAAAAAQAAAAAAAAAAACAQAAAAAAAAg=</HashCode>
+      <FileName>Domain\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.WorkItem" Collapsed="true">
+    <Position X="5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAEAAAQAAAAEAAACAAABACAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\WorkItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.WorkItemStatus" Collapsed="true">
+    <Position X="16.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\WorkItemStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Data.Domain.WorkItemType" Collapsed="true">
+    <Position X="18.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\WorkItemType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -12,5 +12,7 @@ namespace HomeScrum.Data.Domain
       public virtual char StatusCd { get; set; }
 
       public virtual bool IsPredefined { get; set; }
+
+      public virtual int SortSequence { get; set; }
    }
 }

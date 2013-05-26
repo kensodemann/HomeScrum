@@ -12,5 +12,6 @@ namespace HomeScrum.Web.Models.Base
       public virtual bool AllowUse { get; set; }
 
       public virtual bool IsPredefined { get; set; }
+      public virtual int SortSequence { get; set; }
    }
 }
