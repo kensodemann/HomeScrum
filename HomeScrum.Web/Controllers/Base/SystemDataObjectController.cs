@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
@@ -17,5 +18,12 @@ namespace HomeScrum.Web.Controllers.Base
    {
       public SystemDataObjectController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator )
          : base( mainRepository, validator, translator ) { }
+
+
+      [HttpPost]
+      public ActionResult UpdateSortOrders( IEnumerable<string> itemIds )
+      {
+         return new EmptyResult();
+      }
    }
 }

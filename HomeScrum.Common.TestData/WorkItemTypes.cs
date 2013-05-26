@@ -35,7 +35,8 @@ namespace HomeScrum.Common.TestData
                Description="Sprint Backlog Item",
                StatusCd='A',
                IsTask=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=1
             },
             new WorkItemType ()
             {
@@ -43,7 +44,8 @@ namespace HomeScrum.Common.TestData
                Description="Product BacklogItem",
                StatusCd='A',
                IsTask=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=2
             },
             new WorkItemType ()
             {
@@ -51,7 +53,8 @@ namespace HomeScrum.Common.TestData
                Description="A problem with the software or design",
                StatusCd='A',
                IsTask=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=3
             },
             new WorkItemType ()
             {
@@ -59,7 +62,8 @@ namespace HomeScrum.Common.TestData
                Description="A problem in the process that is blocking someone",
                StatusCd='A',
                IsTask=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=4
             },
             new WorkItemType ()
             {
@@ -67,7 +71,8 @@ namespace HomeScrum.Common.TestData
                Description="Active, Not a Task, Predefined",
                StatusCd='A',
                IsTask=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=5
             },
             new WorkItemType ()
             {
@@ -75,7 +80,8 @@ namespace HomeScrum.Common.TestData
                Description="Active, Task, Not Predefined",
                StatusCd='A',
                IsTask=true,
-               IsPredefined=false
+               IsPredefined=false,
+               SortSequence=6
             },
             new WorkItemType ()
             {
@@ -83,7 +89,8 @@ namespace HomeScrum.Common.TestData
                Description="Not Active, Task, Predefined",
                StatusCd='I',
                IsTask=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=7
             },
             new WorkItemType ()
             {
@@ -91,7 +98,8 @@ namespace HomeScrum.Common.TestData
                Description="Not Active, Task, Predefined - second one line this",
                StatusCd='I',
                IsTask=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=8
             }
          };
 

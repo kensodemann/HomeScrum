@@ -35,7 +35,8 @@ namespace HomeScrum.Common.TestData
                Description="The sprint is set up for the future",
                StatusCd='A',
                IsOpenStatus=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=1
             },
             new SprintStatus ()
             {
@@ -43,7 +44,8 @@ namespace HomeScrum.Common.TestData
                Description="In Planning",
                StatusCd='A',
                IsOpenStatus=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=2
             },
             new SprintStatus ()
             {
@@ -51,7 +53,8 @@ namespace HomeScrum.Common.TestData
                Description="The sprint is the active one",
                StatusCd='A',
                IsOpenStatus=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=3
             },
             new SprintStatus ()
             {
@@ -59,7 +62,8 @@ namespace HomeScrum.Common.TestData
                Description="The sprint is done",
                StatusCd='A',
                IsOpenStatus=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=4
             },
             new SprintStatus ()
             {
@@ -67,7 +71,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Open, Predefined",
                StatusCd='A',
                IsOpenStatus=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=5
             },
             new SprintStatus ()
             {
@@ -75,7 +80,8 @@ namespace HomeScrum.Common.TestData
                Description="Inactive Status, Is Open, Predefined",
                StatusCd='I',
                IsOpenStatus=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=6
             },
             new SprintStatus ()
             {
@@ -83,7 +89,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Not Open, Predefined",
                StatusCd='A',
                IsOpenStatus=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=7
             },
             new SprintStatus ()
             {
@@ -91,7 +98,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Open, Not Predefined",
                StatusCd='A',
                IsOpenStatus=true,
-               IsPredefined=false
+               IsPredefined=false,
+               SortSequence=8
             }
          };
 

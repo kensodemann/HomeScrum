@@ -35,7 +35,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Project",
                StatusCd='A',
                IsActive=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=1
             },
             new ProjectStatus ()
             {
@@ -43,7 +44,8 @@ namespace HomeScrum.Common.TestData
                Description="No longer active",
                StatusCd='A',
                IsActive=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=2
             },
             new ProjectStatus ()
             {
@@ -51,7 +53,8 @@ namespace HomeScrum.Common.TestData
                Description="The project is closed",
                StatusCd='A',
                IsActive=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=3
             },
             new ProjectStatus ()
             {
@@ -59,7 +62,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Active, Predefined",
                StatusCd='A',
                IsActive=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=4
             },
             new ProjectStatus ()
             {
@@ -67,7 +71,8 @@ namespace HomeScrum.Common.TestData
                Description="Inactive Status, Is Active, Predefined",
                StatusCd='I',
                IsActive=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=5
             },
             new ProjectStatus ()
             {
@@ -75,7 +80,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Not Active, Predefined",
                StatusCd='A',
                IsActive=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=6
             },
             new ProjectStatus ()
             {
@@ -83,7 +89,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Active, Not Predefined",
                StatusCd='A',
                IsActive=true,
-               IsPredefined=false
+               IsPredefined=false,
+               SortSequence=7
             }
          };
 

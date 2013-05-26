@@ -13,6 +13,7 @@ namespace HomeScrum.Data.Domain
 
       public virtual bool IsPredefined { get; set; }
 
+      [Required]
       public virtual int SortSequence { get; set; }
    }
 }

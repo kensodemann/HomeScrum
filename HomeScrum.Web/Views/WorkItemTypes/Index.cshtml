@@ -32,7 +32,7 @@
                     $(".ListBody").enableSelection();
                     $.ajax({
                         url: '/WorkItemTypes/UpdateSortOrders/',
-                        data: { items: $(".ListBody").sortable('toArray') },
+                        data: { itemIds: $(".ListBody").sortable('toArray') },
                         type: 'post',
                         traditional: true
                     });
