@@ -150,6 +150,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Base\ReadOnlyController.cs" />
     <Compile Include="Controllers\Base\ReadWriteController.cs" />
+    <Compile Include="Controllers\Base\SystemDataObjectController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\ProjectStatusesController.cs" />

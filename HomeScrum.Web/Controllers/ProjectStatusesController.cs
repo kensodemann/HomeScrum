@@ -8,7 +8,7 @@ using Ninject;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectStatusesController : ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
+   public class ProjectStatusesController : SystemDataObjectController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
    {
       [Inject]
       public ProjectStatusesController( IRepository<ProjectStatus> repository, IValidator<ProjectStatus> validator, IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel> translator )

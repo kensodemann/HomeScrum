@@ -28,14 +28,7 @@
       <FileName>Controllers\UsersController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HomeScrum.Web.Controllers.Base.ReadWriteController&lt;ModelT&gt;" Collapsed="true">
-    <Position X="6.25" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAEACgAAAAAAAIAA=</HashCode>
-      <FileName>Controllers\Base\ReadWriteController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="HomeScrum.Web.Controllers.Base.ReadOnlyController&lt;ModelT&gt;" Collapsed="true">
+  <Class Name="HomeScrum.Web.Controllers.Base.ReadOnlyController&lt;ModelT, ViewModelT&gt;" Collapsed="true">
     <Position X="6.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABBAAAAAAAAAAAAAgAAAAQAAAEAAAAAAAA=</HashCode>
@@ -43,45 +36,66 @@
     </TypeIdentifier>
   </Class>
   <Class Name="HomeScrum.Web.Controllers.AcceptanceCriteriaStatusesController" Collapsed="true">
-    <Position X="9.75" Y="7.25" Width="1.5" />
+    <Position X="8.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\AcceptanceCriteriaStatusesController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HomeScrum.Web.Controllers.ProjectsController" Collapsed="true">
-    <Position X="0.75" Y="7.25" Width="1.5" />
+    <Position X="2.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAQAAgAAAAAAAAAAAAAQAAgAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Controllers\ProjectsController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HomeScrum.Web.Controllers.ProjectStatusesController" Collapsed="true">
-    <Position X="5.25" Y="7.25" Width="1.5" />
+    <Position X="4.25" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\ProjectStatusesController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HomeScrum.Web.Controllers.SprintStatusesController" Collapsed="true">
-    <Position X="12" Y="7.25" Width="1.5" />
+    <Position X="11" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\SprintStatusesController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HomeScrum.Web.Controllers.WorkItemStatusesController" Collapsed="true">
-    <Position X="3" Y="7.25" Width="1.5" />
+    <Position X="2" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\WorkItemStatusesController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HomeScrum.Web.Controllers.WorkItemTypesController" Collapsed="true">
-    <Position X="7.5" Y="7.25" Width="1.5" />
+    <Position X="6.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\WorkItemTypesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Web.Controllers.Base.ReadWriteController&lt;ModelT, ViewModelT, EditorViewModelT&gt;" Collapsed="true">
+    <Position X="5.75" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAACAAIAAAAAAAAAAgAAAAFACgAABAAAAIAA=</HashCode>
+      <FileName>Controllers\Base\ReadWriteController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Web.Controllers.Base.SystemDataObjectController&lt;ModelT, ViewModelT, EditorViewModelT&gt;" Collapsed="true">
+    <Position X="6.25" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controllers\WorkItemTypesController.cs</FileName>
+      <FileName>Controllers\Base\SystemDataObjectController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomeScrum.Web.Controllers.WorkItemsController" Collapsed="true">
+    <Position X="9.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAgAAAAAAAAAAAAAAAAgAAAgEIAAAABAAgAAAA=</HashCode>
+      <FileName>Controllers\WorkItemsController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

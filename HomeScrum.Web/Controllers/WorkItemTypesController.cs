@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemTypesController : ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel>
+   public class WorkItemTypesController : SystemDataObjectController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel>
    {
       [Inject]
       public WorkItemTypesController( IRepository<WorkItemType> repository, IValidator<WorkItemType> validator, IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel> translator )
