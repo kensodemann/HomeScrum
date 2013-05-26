@@ -22,12 +22,12 @@ body
 /* Links */
 a
 {
-  color: #25547B;
+  color: #0070a3;
 }
 
   a:hover
   {
-    color: #BF8330;
+    color: #ff8700;
   }
 
 
@@ -39,21 +39,23 @@ header
   padding: 10px;
   margin-top: 0px;
   margin-bottom: 0px;
-  background-color: #043C6B;
+  border: 1px solid #2694e8;
+  background: #3baae3 url(themes/cupertino/images/ui-bg_glass_50_3baae3_1x400.png) 50% 50% repeat-x;
+  color: #ffffff;
 }
 
   header h1
   {
     margin: 0px;
     font-size: xx-large;
-    color: lightgray;
+    color: #ffffff;
     float: left;
   }
 
   header section#headerMenu
   {
     float: right;
-    color: lightgray;
+    color: #ffffff;
   }
 
     header section#headerMenu a
@@ -63,7 +65,7 @@ header
 
       header section#headerMenu a:hover
       {
-        color: #FFC473;
+        color: #ff8700;
       }
 
   header nav ul
@@ -114,7 +116,8 @@ header
   .Sidebar nav h2
   {
     font-size: large;
-    border-bottom: thin #25547B solid;
+    color: #004a6a;
+    border-bottom: thin #004a6a solid;
   }
 
   .Sidebar nav ul
@@ -150,10 +153,11 @@ article
     padding: 5px;
     text-align: center;
     font-size: large;
-    color: white;
-    background-color: #A66000;
+    color: #0070a3;
+    background: #e4f1fb url(themes/cupertino/images/ui-bg_glass_100_e4f1fb_1x400.png) 50% 50% repeat-x;
     border-top-left-radius: 0.5em;
     border-top-right-radius: 0.5em;
+    border: 1px solid #74b2e2;
   }
 
   article h3
@@ -191,8 +195,8 @@ article
 
 .displayCheckBox
 {
-  float:left;
-  clear:left;
+  float: left;
+  clear: left;
 }
 
 /* forms */
