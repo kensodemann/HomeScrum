@@ -30,6 +30,12 @@
                     $(this).button("option", "label", "Change Order");
                     $(".ListBody").sortable("disable");
                     $(".ListBody").enableSelection();
+                    $.ajax({
+                        url: '/WorkItemTypes/UpdateSortOrders/',
+                        data: { items: $(".ListBody").sortable('toArray') },
+                        type: 'post',
+                        traditional: true
+                    });
                 }
             });
     });

@@ -19,7 +19,7 @@
     <tbody class="ListBody">
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="@Html.AttributeEncode(item.Id.ToString())">
                 <td>
                     @Html.DisplayFor( modelItem => item.Name )
                 </td>
