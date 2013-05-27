@@ -34,7 +34,8 @@ namespace HomeScrum.Common.TestData
                Description="Not yet verified",
                StatusCd='A',
                IsAccepted=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=1
             }, 
             new AcceptanceCriteriaStatus ()
             {
@@ -42,7 +43,8 @@ namespace HomeScrum.Common.TestData
                Description="Accepted",
                StatusCd='A',
                IsAccepted=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=2
             },
             new AcceptanceCriteriaStatus ()
             {
@@ -50,7 +52,8 @@ namespace HomeScrum.Common.TestData
                Description="Rejected",
                StatusCd='A',
                IsAccepted=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=3
             },
             new AcceptanceCriteriaStatus ()
             {
@@ -58,7 +61,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Accepted, Predefined",
                StatusCd='A',
                IsAccepted=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=4
             },
             new AcceptanceCriteriaStatus ()
             {
@@ -66,7 +70,8 @@ namespace HomeScrum.Common.TestData
                Description="Inactive Status, Is Accepted, Predefined",
                StatusCd='I',
                IsAccepted=true,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=5
             },
             new AcceptanceCriteriaStatus ()
             {
@@ -74,7 +79,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Not Accepted, Predefined",
                StatusCd='A',
                IsAccepted=false,
-               IsPredefined=true
+               IsPredefined=true,
+               SortSequence=6
             },
             new AcceptanceCriteriaStatus ()
             {
@@ -82,7 +88,8 @@ namespace HomeScrum.Common.TestData
                Description="Active Status, Is Accepted, Not Predefined",
                StatusCd='A',
                IsAccepted=true,
-               IsPredefined=false
+               IsPredefined=false,
+               SortSequence=7
             }
          };
 

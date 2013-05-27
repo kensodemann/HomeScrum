@@ -23,6 +23,18 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public ActionResult UpdateSortOrders( IEnumerable<string> itemIds )
       {
+         var idIndex = 0;
+         foreach (var id in itemIds)
+         {
+            var item = MainRepository.Get( new Guid( id ) );
+            idIndex++;
+            if (item != null && item.SortSequence != idIndex)
+            {
+               item.SortSequence = idIndex;
+               MainRepository.Update( item );
+            }
+         }
+
          return new EmptyResult();
       }
    }
