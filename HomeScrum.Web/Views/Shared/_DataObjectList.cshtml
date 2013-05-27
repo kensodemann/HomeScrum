@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Base.DomainObjectViewModel>
 
-<p>
-    @Html.ActionLink( "Create New", "Create" )
-</p>
 <table>
     <thead class="ListHead">
         <tr>
@@ -19,7 +16,7 @@
     <tbody class="ListBody">
         @foreach (var item in Model)
         {
-            <tr id="@Html.AttributeEncode(item.Id.ToString())">
+            <tr id="@Html.AttributeEncode( item.Id.ToString() )">
                 <td>
                     @Html.DisplayFor( modelItem => item.Name )
                 </td>
@@ -33,5 +30,12 @@
             </tr>
         }
     </tbody>
-
 </table>
+
+@Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
+
+<script>
+    $(function () {
+        $("#CreateNewItem").button();
+    });
+</script>

@@ -11,10 +11,17 @@
 <input type="checkbox" id="MakeSortable" /><label for="MakeSortable">Change Order</label>
 
 <script>
+    function postSortData(controllerName) {
+        $.ajax({
+            url: '/' + controllerName + '/UpdateSortOrders/',
+            data: { itemIds: $(".ListBody").sortable('toArray') },
+            type: 'post',
+            traditional: true
+        });
+    }
+
     $(function () {
         // TODO: Read up on how to make this testable and more modular.
-        //       Also, I need an endpoint here to POST the changes to
-        //       once the user saves changes.
         $(".ListBody").sortable();
         $(".ListBody").sortable("disable");
         $("#MakeSortable").button();
@@ -30,12 +37,7 @@
                     $(this).button("option", "label", "Change Order");
                     $(".ListBody").sortable("disable");
                     $(".ListBody").enableSelection();
-                    $.ajax({
-                        url: '/WorkItemTypes/UpdateSortOrders/',
-                        data: { itemIds: $(".ListBody").sortable('toArray') },
-                        type: 'post',
-                        traditional: true
-                    });
+                    postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
                 }
             });
     });
