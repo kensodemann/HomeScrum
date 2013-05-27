@@ -1,4 +1,5 @@
-﻿using HomeScrum.Data.Domain;
+﻿using AutoMapper;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Extensions;
@@ -6,6 +7,7 @@ using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
 using Ninject;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -54,6 +56,20 @@ namespace HomeScrum.Web.Controllers
       {
          viewModel.CreatedByUserId = _userRepository.Get( user.Identity.Name ).Id;
          return base.Create( viewModel, user );
+      }
+
+      //
+      // GET: /WorkItems/
+      // TODO: Look at moving the default sort into the repository
+      public override System.Web.Mvc.ActionResult Index()
+      {
+         var workItems = MainRepository
+            .GetAll()
+            .OrderBy( x => x.Status.SortSequence )
+            .OrderBy( x => x.WorkItemType.SortSequence )
+            .ToList();
+
+         return View( Mapper.Map<ICollection<WorkItem>, IEnumerable<WorkItemViewModel>>( workItems ) );
       }
    }
 }
