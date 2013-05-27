@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class AcceptanceCriteriaStatusesControllerTest : ReadWriteControllerTestBase<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
+   public class AcceptanceCriteriaStatusesControllerTest : SystemDataObjectControllerTestBase<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
    {
       protected override ICollection<AcceptanceCriteriaStatus> GetAllModels()
       {

@@ -28,9 +28,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void UpdateSortOrders_ReturnsEmptyResult()
       {
-         var result = MyController.UpdateSortOrders( null ) as EmptyResult;
+         var ids = TestObjectIdList();
+
+         var result = MyController.UpdateSortOrders( ids ) as EmptyResult;
 
          Assert.IsNotNull( result );
       }
+
+      #region Private Helpers
+      private List<string> TestObjectIdList()
+      {
+         return GetAllModels().Select( x => x.Id.ToString() ).ToList();
+      }
+      #endregion
    }
 }

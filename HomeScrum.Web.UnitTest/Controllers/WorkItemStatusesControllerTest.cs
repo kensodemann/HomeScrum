@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class WorkItemStatusesControllerTest : ReadWriteControllerTestBase<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel>
+   public class WorkItemStatusesControllerTest : SystemDataObjectControllerTestBase<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel>
    {
       protected override ICollection<WorkItemStatus> GetAllModels()
       {

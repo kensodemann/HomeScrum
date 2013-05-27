@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class ProjectStatusesControllerTest : ReadWriteControllerTestBase<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
+   public class ProjectStatusesControllerTest : SystemDataObjectControllerTestBase<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
    {
       protected override ICollection<ProjectStatus> GetAllModels()
       {
