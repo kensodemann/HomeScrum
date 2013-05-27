@@ -71,6 +71,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_GetsAllItems()
       {
+         _repository.Setup( x => x.GetAll() )
+            .Returns( GetAllModels() );
+
          _controller.Index();
 
          _repository.Verify( x => x.GetAll(), Times.Once() );

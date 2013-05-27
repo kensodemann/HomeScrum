@@ -1,4 +1,5 @@
-﻿using HomeScrum.Data.Domain;
+﻿using AutoMapper;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Base;
@@ -20,6 +21,18 @@ namespace HomeScrum.Web.Controllers.Base
          : base( mainRepository, validator, translator ) { }
 
 
+      //
+      // GET: /ModelTs/
+      public override ActionResult Index()
+      {
+         var items = MainRepository.GetAll()
+            .OrderBy( x => x.SortSequence )
+            .ToList();
+         return View( Mapper.Map<ICollection<ModelT>, IEnumerable<ViewModelT>>( items ) );
+      }
+
+      //
+      // POST: /ModelTs/UpdateSortOrders
       [HttpPost]
       public ActionResult UpdateSortOrders( IEnumerable<string> itemIds )
       {
