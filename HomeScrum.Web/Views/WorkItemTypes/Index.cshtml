@@ -6,39 +6,4 @@
 
 <h2>@ViewBag.Title</h2>
 
-@Html.Partial( "_DataObjectList", Model )
-
-<input type="checkbox" id="MakeSortable" /><label for="MakeSortable">Change Order</label>
-
-<script>
-    function postSortData(controllerName) {
-        $.ajax({
-            url: '/' + controllerName + '/UpdateSortOrders/',
-            data: { itemIds: $(".ListBody").sortable('toArray') },
-            type: 'post',
-            traditional: true
-        });
-    }
-
-    $(function () {
-        // TODO: Read up on how to make this testable and more modular.
-        $(".ListBody").sortable();
-        $(".ListBody").sortable("disable");
-        $("#MakeSortable").button();
-
-        $("#MakeSortable").click(
-            function () {
-                if ($(this).is(":checked")) {
-                    $(this).button("option", "label", "Save Changes");
-                    $(".ListBody").sortable("enable");
-                    $(".ListBody").disableSelection();
-                }
-                else {
-                    $(this).button("option", "label", "Change Order");
-                    $(".ListBody").sortable("disable");
-                    $(".ListBody").enableSelection();
-                    postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
-                }
-            });
-    });
-</script>
+@Html.Partial( "_SystemDataObjectList", Model )

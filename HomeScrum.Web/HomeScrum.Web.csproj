@@ -358,7 +358,7 @@
     <Content Include="Views\WorkItemStatuses\Edit.cshtml" />
     <Content Include="Views\SprintStatuses\Create.cshtml" />
     <Content Include="Views\SprintStatuses\Edit.cshtml" />
-    <Content Include="Views\Shared\_DataObjectList.cshtml" />
+    <Content Include="Views\Shared\_SystemDataObjectList.cshtml" />
     <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
     <Content Include="Views\WorkItemStatuses\_Editor.cshtml" />
     <Content Include="Views\AcceptanceCriteriaStatuses\_Editor.cshtml" />

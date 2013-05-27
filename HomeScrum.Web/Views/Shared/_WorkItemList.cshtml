@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.WorkItems.WorkItemViewModel>
 
-<p>
-    @Html.ActionLink( "Create New", "Create" )
-</p>
 <table>
     <tr>
         <th>
@@ -35,5 +32,14 @@
             </td>
         </tr>
     }
-
 </table>
+
+<div id="ActionButtonArea">
+    @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
+
+    <script>
+        $(function () {
+            $("#CreateNewItem").button();
+        });
+    </script>
+</div>
