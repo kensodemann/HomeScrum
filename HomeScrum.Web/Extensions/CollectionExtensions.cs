@@ -20,8 +20,8 @@ namespace HomeScrum.Web.Extensions
       public static IEnumerable<SelectListItem> ToSelectList<ModelT>( this IEnumerable<ModelT> collection, Guid selectedId = default( Guid ) )
          where ModelT : SystemDomainObject
       {
+         // The repository defaults to the user defined sort order, so just use that.
          return collection
-            .OrderBy( x => x.Name, new CaseInsensitiveComparer() )
             .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
             .Select( item => new SelectListItem()
                              {

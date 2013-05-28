@@ -31,19 +31,6 @@ namespace HomeScrum.Web.UnitTest.Extensions
       }
 
       [TestMethod]
-      public void ToSelectList_OrdersItemsByName()
-      {
-         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList();
-
-         string previousName = null;
-         foreach (var item in selectList)
-         {
-            Assert.IsTrue( previousName == null ? true : String.Compare( previousName, item.Text, StringComparison.OrdinalIgnoreCase ) <= 0 );
-            previousName = item.Text;
-         }
-      }
-
-      [TestMethod]
       public void ToSelectedList_MarksItemSelected()
       {
          var selected = WorkItemTypes.ModelData.Where( x => x.StatusCd == 'A' ).ToArray()[2];
