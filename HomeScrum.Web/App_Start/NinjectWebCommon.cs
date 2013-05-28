@@ -76,7 +76,7 @@ namespace HomeScrum.Web.App_Start
          BindSimpleSortRepository<WorkItemStatus>( kernel );
          BindSimpleSortRepository<WorkItemType>( kernel );
 
-         BindRepository<Project>( kernel );
+         kernel.Bind<IRepository<Project>>().ToConstant( new ProjectRepository() );
          BindRepository<WorkItem>( kernel );
 
          kernel.Bind<IUserRepository>().ToConstant( new UserRepository() );

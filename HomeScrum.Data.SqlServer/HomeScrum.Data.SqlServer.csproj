@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectRepository.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

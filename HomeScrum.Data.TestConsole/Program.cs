@@ -30,7 +30,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllWorkItemTypes()
       {
-         var repository = new Repository<WorkItemType, Guid>();
+         var repository = new SimpleSortedRepository<WorkItemType>();
          var workItemTypes = repository.GetAll();
 
          Console.WriteLine( "Work Item Types: " + workItemTypes.Count().ToString() );
@@ -43,7 +43,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllWorkItemStatuses()
       {
-         var repository = new Repository<WorkItemStatus, Guid>();
+         var repository = new SimpleSortedRepository<WorkItemStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Work Item Statuses: " + statuses.Count().ToString() );
@@ -56,7 +56,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllSprintStatuses()
       {
-         var repository = new Repository<SprintStatus, Guid>();
+         var repository = new SimpleSortedRepository<SprintStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Sprint Statuses: " + statuses.Count().ToString() );
@@ -69,7 +69,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllProjectStatuses()
       {
-         var repository = new Repository<ProjectStatus, Guid>();
+         var repository = new SimpleSortedRepository<ProjectStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Project Statuses: " + statuses.Count().ToString() );
@@ -82,7 +82,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllAcceptanceCriteriaStatuses()
       {
-         var repository = new Repository<AcceptanceCriteriaStatus, Guid>();
+         var repository = new SimpleSortedRepository<AcceptanceCriteriaStatus>();
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );
@@ -95,7 +95,8 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllProjects()
       {
-         var repository = new Repository<Project, Guid>();
+         //var repository = new Repository<Project, Guid>();
+         var repository = new ProjectRepository();
          var projects = repository.GetAll();
 
          Console.WriteLine( "Projects: " + projects.Count().ToString() );
