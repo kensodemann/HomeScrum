@@ -10,7 +10,7 @@ using System.Linq;
 namespace HomeScrum.Data.UnitTest.Repositories
 {
    [TestClass]
-   public class ProjectRepository
+   public class ProjectRepositoryTest
    {
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
@@ -26,7 +26,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Users.Load();
          ProjectStatuses.Load();
          Projects.Load();
-         _repository = new Repository<Project>();
+         _repository = new ProjectRepository();
       }
 
       private IRepository<Project> _repository;
@@ -37,9 +37,23 @@ namespace HomeScrum.Data.UnitTest.Repositories
          var projects = _repository.GetAll();
 
          Assert.AreEqual( Projects.ModelData.GetLength( 0 ), projects.Count );
-         foreach (var status in Projects.ModelData)
+         foreach (var project in Projects.ModelData)
          {
-            AssertCollectionContainsProject( projects, status );
+            AssertCollectionContainsProject( projects, project );
+         }
+      }
+
+      [TestMethod]
+      public void GetAll_ReturnsProjetsInStatusOrder()
+      {
+         var projects = _repository.GetAll();
+
+         int previousSortSequence = 0;
+         foreach (var project in projects)
+         {
+            Assert.IsTrue( project.Status.SortSequence >= previousSortSequence,
+                String.Format( "List out of order.  Current: {0}, Previouis {1}", project.Status.SortSequence, previousSortSequence ) );
+            previousSortSequence = project.Status.SortSequence;
          }
       }
 
