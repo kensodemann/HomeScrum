@@ -79,28 +79,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }
 
-      [TestMethod]
-      public void Index_SortsBySortSequence()
-      {
-         SwapElementOrders( 0, 3 );
-         SwapElementOrders( 1, 3 );
-         _repository.Setup( x => x.GetAll() )
-            .Returns( GetAllModels() );
-
-         var view = MyController.Index() as ViewResult;
-         var models = view.Model as IEnumerable<ViewModelT>;
-
-         Assert.AreEqual( models.Count(), GetAllModels().Count );
-
-         int previousSortSequence = 0;
-         foreach (var model in models)
-         {
-            Assert.IsTrue( model.SortSequence > previousSortSequence,
-               String.Format( "List out of order.  Current: {0}, Previouis {1}", model.SortSequence, previousSortSequence ) );
-            previousSortSequence = model.SortSequence;
-         }
-      }
-
       #region Private Helpers
       private List<string> TestObjectIdList()
       {
@@ -115,14 +93,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
                .Setup( x => x.Get( item.Id ) )
                .Returns( item );
          }
-      }
-
-      private void SwapElementOrders( int idx1, int idx2 )
-      {
-         var itemList = GetAllModels();
-         var saveSortSequence = itemList.ElementAt( idx1 ).SortSequence;
-         itemList.ElementAt( idx1 ).SortSequence = itemList.ElementAt( idx2 ).SortSequence;
-         itemList.ElementAt( idx2 ).SortSequence = saveSortSequence;
       }
       #endregion
    }

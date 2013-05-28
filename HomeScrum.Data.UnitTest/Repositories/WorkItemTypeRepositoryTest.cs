@@ -24,7 +24,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       {
          Database.Build();
          WorkItemTypes.Load();
-         _repository = new Repository<WorkItemType>();
+         _repository = new SimpleSortedRepository<WorkItemType>();
       }
 
       private IRepository<WorkItemType> _repository;
@@ -38,6 +38,21 @@ namespace HomeScrum.Data.UnitTest.Repositories
          foreach (var wit in WorkItemTypes.ModelData)
          {
             AssertCollectionContainsWorkItemType( workItemTypes, wit );
+         }
+      }
+
+      [TestMethod]
+      public void GetAll_ReturnsItemsInSortOrder()
+      {
+         SwapSortOrders( WorkItemTypes.ModelData[0].Id, WorkItemTypes.ModelData[1].Id );
+         var workItemTypes = _repository.GetAll();
+
+         int previousSortSequence = 0;
+         foreach (var item in workItemTypes)
+         {
+            Assert.IsTrue( item.SortSequence > previousSortSequence,
+                String.Format( "List out of order.  Current: {0}, Previouis {1}", item.SortSequence, previousSortSequence ) );
+            previousSortSequence = item.SortSequence;
          }
       }
 
@@ -125,6 +140,18 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Assert.AreEqual( expected.StatusCd, actual.StatusCd );
          Assert.AreEqual( expected.IsTask, actual.IsTask );
          Assert.AreEqual( expected.IsPredefined, actual.IsPredefined );
+      }
+
+      private void SwapSortOrders( Guid witOneId, Guid witTwoId )
+      {
+         var item1 = _repository.Get( witOneId );
+         var item2 = _repository.Get( witTwoId );
+         int temp = item1.SortSequence;
+         item1.SortSequence = item2.SortSequence;
+         item2.SortSequence = temp;
+
+         _repository.Update( item1 );
+         _repository.Update( item2 );
       }
    }
 }

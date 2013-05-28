@@ -11,7 +11,7 @@ namespace HomeScrum.Data.SqlServer
 
    public class Repository<T, KeyT> : IRepository<T, KeyT>
    {
-      public ICollection<T> GetAll()
+      public virtual ICollection<T> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {

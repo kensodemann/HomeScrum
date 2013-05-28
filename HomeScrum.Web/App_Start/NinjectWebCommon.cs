@@ -70,11 +70,11 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         BindRepository<AcceptanceCriteriaStatus>( kernel );
-         BindRepository<ProjectStatus>( kernel );
-         BindRepository<SprintStatus>( kernel );
-         BindRepository<WorkItemStatus>( kernel );
-         BindRepository<WorkItemType>( kernel );
+         BindSimpleSortRepository<AcceptanceCriteriaStatus>( kernel );
+         BindSimpleSortRepository<ProjectStatus>( kernel );
+         BindSimpleSortRepository<SprintStatus>( kernel );
+         BindSimpleSortRepository<WorkItemStatus>( kernel );
+         BindSimpleSortRepository<WorkItemType>( kernel );
 
          BindRepository<Project>( kernel );
          BindRepository<WorkItem>( kernel );
@@ -86,6 +86,11 @@ namespace HomeScrum.Web.App_Start
       private static void BindRepository<T>( IKernel kernel )
       {
          kernel.Bind<IRepository<T>>().ToConstant( new Repository<T>() );
+      }
+
+      private static void BindSimpleSortRepository<T>( IKernel kernel )
+      {
+         kernel.Bind<IRepository<T>>().ToConstant( new SimpleSortedRepository<T>() );
       }
 
       private static void RegisterValidators( IKernel kernel )
