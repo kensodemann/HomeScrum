@@ -32,7 +32,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          //Sprints.Load();
          AcceptanceCriteriaStatuses.Load();
          WorkItems.Load();
-         _repository = new Repository<WorkItem>();
+         _repository = new WorkItemRepository();
       }
 
       private IRepository<WorkItem> _repository;
@@ -46,6 +46,25 @@ namespace HomeScrum.Data.UnitTest.Repositories
          foreach (var workItem in WorkItems.ModelData)
          {
             AssertCollectionContainsWorkItem( workItems, workItem );
+         }
+      }
+
+      [TestMethod]
+      public void GetAll_SortsByTypeThenByStatus()
+      {
+         var workItems = _repository.GetAll();
+         
+         int previousTypeSortSequence = 0;
+         int previousStatusSortSequence = 0;
+         foreach (var item in workItems)
+         {
+            previousStatusSortSequence = (previousTypeSortSequence != item.WorkItemType.SortSequence) ? 0 : previousStatusSortSequence;
+            Assert.IsTrue( item.WorkItemType.SortSequence >= previousTypeSortSequence,
+                String.Format( "List out of order by type.  Current: {0}, Previouis {1}", item.WorkItemType.SortSequence, previousTypeSortSequence ) );
+            Assert.IsTrue( item.Status.SortSequence >= previousStatusSortSequence,
+                String.Format( "List out of order by status.  Current: {0}, Previouis {1}", item.Status.SortSequence, previousStatusSortSequence ) );
+            previousStatusSortSequence = item.Status.SortSequence;
+            previousTypeSortSequence = item.WorkItemType.SortSequence;
          }
       }
 

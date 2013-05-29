@@ -55,6 +55,7 @@
     <Compile Include="SecurityRepository.cs" />
     <Compile Include="SimpleSortedRepository.cs" />
     <Compile Include="UserRepository.cs" />
+    <Compile Include="WorkItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
