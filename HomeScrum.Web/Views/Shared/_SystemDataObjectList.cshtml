@@ -3,13 +3,13 @@
 <table>
     <thead class="ListHead">
         <tr>
-            <th>
+            <th id="NameColumnHeader">
                 @Html.DisplayNameFor( model => model.Name )
             </th>
-            <th>
+            <th id="DescriptionColumnHeader">
                 @Html.DisplayNameFor( model => model.Description )
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
 
@@ -34,7 +34,7 @@
 
 <div id="ActionButtonArea">
     @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-    <input type="checkbox" id="MakeSortable" /><label for="MakeSortable">Change Order</label>
+    <input type="checkbox" id="SortableToggle" /><label for="SortableToggle">Allow Sorting</label>
 
     <script>
         function postSortData(controllerName) {
@@ -51,9 +51,9 @@
             $(".ListBody").sortable();
             $(".ListBody").sortable("disable");
             $("#CreateNewItem").button();
-            $("#MakeSortable").button();
+            $("#SortableToggle").button();
 
-            $("#MakeSortable").click(
+            $("#SortableToggle").click(
                 function () {
                     if ($(this).is(":checked")) {
                         $(this).button("option", "label", "Save Changes");
@@ -61,7 +61,7 @@
                         $(".ListBody").disableSelection();
                     }
                     else {
-                        $(this).button("option", "label", "Change Order");
+                        $(this).button("option", "label", "Allow Sorting");
                         $(".ListBody").sortable("disable");
                         $(".ListBody").enableSelection();
                         postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");

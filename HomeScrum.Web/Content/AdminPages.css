@@ -1,0 +1,40 @@
+﻿table
+{
+  border-color: #004a6a;
+  border-width: 1px;
+  border-style: solid;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1em;
+}
+
+  table th
+  {
+    background-color: #004a6a;
+    color: #ffffff;
+    border-width: 1px;
+    border-color: #004a6a;
+    border-style: solid;
+    padding: 3px;
+    text-align: left;
+  }
+
+  table td
+  {
+    background-color: #ffffff;
+    color: #000000;
+    border-width: 1px;
+    border-color: #004a6a;
+    border-style: none solid;
+    padding: 3px 5px;
+  }
+
+#DescriptionColumnHeader
+{
+  min-width: 400px;
+}
+
+#SortableToggle
+{
+  margin-left: 20em;
+}

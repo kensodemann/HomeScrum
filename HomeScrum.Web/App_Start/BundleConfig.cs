@@ -23,12 +23,18 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/modernizr" ).Include(
                      "~/Scripts/modernizr-*" ) );
 
-         bundles.Add( new StyleBundle( "~/Content/css" ).Include( "~/Content/site.css" ) );
+         bundles.Add( new StyleBundle( "~/Content/css" )
+            .Include( "~/Content/site.css" )
+            .Include( "~/Content/AdminPages.css" )
+            .Include( "~/Content/themes/cupertino/jquery-ui.css" ) );
 
-         bundles.Add( new StyleBundle( "~/Content/themes/base/css" ).Include(
-                     "~/Content/themes/base/jquery-ui.css" ) );
-         bundles.Add( new StyleBundle( "~/Content/themes/cupertino/css" ).Include(
-                     "~/Content/themes/cupertino/jquery-ui.css" ) );
+         //bundles.Add( new StyleBundle( "~/Content/adminCss" )
+         //   .Include( "~/Content/AdminPages.css" ) );
+
+         //bundles.Add( new StyleBundle( "~/Content/themes/base/css" ).Include(
+         //            "~/Content/themes/base/jquery-ui.css" ) );
+         //bundles.Add( new StyleBundle( "~/Content/themes/cupertino/css" ).Include(
+         //            "~/Content/themes/cupertino/jquery-ui.css" ) );
       }
    }
 }
