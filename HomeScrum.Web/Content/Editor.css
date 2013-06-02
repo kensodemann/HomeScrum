@@ -62,7 +62,6 @@ fieldset
     {
       height: 8em;
       width: 32em;
-      display: table-row;
     }
 
 #UserEditor fieldset .formSingleLineEdit label
