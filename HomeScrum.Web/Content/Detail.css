@@ -1,0 +1,31 @@
+﻿.displayCheckBoxLabel
+{
+  float: left;
+  font-weight: bold;
+}
+
+.displayLabel
+{
+  float: left;
+  clear: left;
+  font-weight: bold;
+  width: 10em;
+}
+
+.displayField
+{
+  float: left;
+}
+
+.displayLongTextField
+{
+  float: left;
+  clear: left;
+  margin-bottom: 1em;
+}
+
+.displayCheckBox
+{
+  float: left;
+  clear: left;
+}

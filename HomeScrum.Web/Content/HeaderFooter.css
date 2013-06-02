@@ -1,0 +1,74 @@
+﻿/*
+ * Header Region
+ */
+header
+{
+  padding: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border: 1px solid #2694e8;
+  background: #3baae3 url(themes/cupertino/images/ui-bg_glass_50_3baae3_1x400.png) 50% 50% repeat-x;
+  color: #ffffff;
+}
+
+  header h1
+  {
+    margin: 0px;
+    font-size: xx-large;
+    color: #ffffff;
+    float: left;
+  }
+
+  header section#headerMenu
+  {
+    float: right;
+    color: #ffffff;
+  }
+
+    header section#headerMenu a
+    {
+      color: whitesmoke;
+    }
+
+      header section#headerMenu a:hover
+      {
+        color: #ff8700;
+      }
+
+  header nav ul
+  {
+    margin: 0px;
+    text-align: right;
+  }
+
+    header nav ul li
+    {
+      display: inline;
+      list-style-type: none;
+      font-size: small;
+      margin: 0px;
+    }
+
+
+#login
+{
+  margin: 0px;
+  display: inline;
+  font-size: small;
+  text-align: right;
+}
+
+#logoutForm
+{
+  display: inline;
+}
+
+
+/*
+ * Footer Region
+ */
+footer div#copyright
+{
+  float: left;
+  font-size: xx-small;
+}

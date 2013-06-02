@@ -202,7 +202,8 @@
     <Compile Include="Translators\WorkItemPropertyNameTranslator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\AdminPages.css" />
+    <Content Include="Content\Detail.css" />
+    <Content Include="Content\HeaderFooter.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -283,6 +284,7 @@
     <Content Include="Content\themes\cupertino\jquery-ui.css" />
     <Content Include="Content\themes\cupertino\jquery-ui.min.css" />
     <Content Include="Content\themes\cupertino\jquery.ui.theme.css" />
+    <Content Include="Content\Editor.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Controllers\Controllers.cd" />

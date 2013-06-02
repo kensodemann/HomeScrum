@@ -1,0 +1,111 @@
+﻿/* forms */
+fieldset
+{
+  border: none;
+  margin: 0px;
+  margin-bottom: 10px;
+  padding: 0px;
+}
+
+  fieldset legend
+  {
+    display: none;
+  }
+
+  fieldset .formSingleLineEdit
+  {
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+    fieldset .formSingleLineEdit label
+    {
+      width: 6em;
+      float: left;
+    }
+
+    fieldset .formSingleLineEdit input
+    {
+      width: 26em;
+    }
+
+  fieldset .formSelectList
+  {
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+    fieldset .formSelectList label
+    {
+      width: 8em;
+      float: left;
+    }
+
+    fieldset .formSelectList select
+    {
+      width: 24em;
+    }
+
+  fieldset .formLongText
+  {
+    display: table;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+    fieldset .formLongText label
+    {
+      display: table-row;
+    }
+
+    fieldset .formLongText textarea
+    {
+      height: 8em;
+      width: 32em;
+      display: table-row;
+    }
+
+#UserEditor fieldset .formSingleLineEdit label
+{
+  width: 12em;
+}
+
+
+/* validations */
+.field-validation-error
+{
+  color: #e80c4d;
+  font-weight: bold;
+}
+
+.field-validation-valid
+{
+  display: none;
+}
+
+input.input-validation-error
+{
+  border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error
+{
+  border: 0 none;
+}
+
+.validation-summary-errors
+{
+  color: #e80c4d;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+  .validation-summary-errors ul
+  {
+    list-style: none;
+  }
+
+.validation-summary-valid
+{
+  display: none;
+}
