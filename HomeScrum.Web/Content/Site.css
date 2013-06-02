@@ -43,6 +43,21 @@ table
     text-align: left;
   }
 
+    table th.DescriptiveText
+    {
+      min-width: 400px;
+    }
+
+    table th.FirstDataColumn
+    {
+      border-left: none;
+    }
+
+    table th.LastDataColumn
+    {
+      border-right: none;
+    }
+
   table td
   {
     background-color: #ffffff;
@@ -53,10 +68,28 @@ table
     padding: 3px 5px;
   }
 
-#DescriptionColumnHeader
-{
-  min-width: 400px;
-}
+    table td.SortIcon
+    {
+      border-right: none;
+      width: 10px;
+    }
+
+    table td.FirstDataColumn
+    {
+      border-left: none;
+    }
+
+    table td.LastDataColumn
+    {
+      border-right: none;
+    }
+
+    table td.DescriptiveText
+    {
+      min-width: 400px;
+    }
+
+
 
 #SortableToggle
 {

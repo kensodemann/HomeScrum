@@ -3,13 +3,14 @@
 <table>
     <thead class="ListHead">
         <tr>
-            <th id="NameColumnHeader">
+            <th class="SortIcon"></th>
+            <th class="FirstDataColumn">
                 @Html.DisplayNameFor( model => model.Name )
             </th>
-            <th id="DescriptionColumnHeader">
+            <th class="DescriptiveText">
                 @Html.DisplayNameFor( model => model.Description )
             </th>
-            <th>Actions</th>
+            <th class="FirstDataColumn">Actions</th>
         </tr>
     </thead>
 
@@ -17,13 +18,14 @@
         @foreach (var item in Model)
         {
             <tr id="@Html.AttributeEncode( item.Id.ToString() )">
-                <td>
+                <td class="SortIcon"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
+                <td class="FirstDataColumn">
                     @Html.DisplayFor( modelItem => item.Name )
                 </td>
-                <td>
+                <td class="DescriptiveText">
                     @Html.DisplayFor( modelItem => item.Description )
                 </td>
-                <td>
+                <td class="LastDataColumn">
                     @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
             @Html.ActionLink( "Details", "Details", new { id = item.Id } )
                 </td>
@@ -52,6 +54,7 @@
             $(".ListBody").sortable("disable");
             $("#CreateNewItem").button();
             $("#SortableToggle").button();
+            $(".SortIcon").hide();
 
             $("#SortableToggle").click(
                 function () {
@@ -59,12 +62,14 @@
                         $(this).button("option", "label", "Save Changes");
                         $(".ListBody").sortable("enable");
                         $(".ListBody").disableSelection();
+                        $(".SortIcon").show("fade");
                     }
                     else {
                         $(this).button("option", "label", "Allow Sorting");
                         $(".ListBody").sortable("disable");
                         $(".ListBody").enableSelection();
                         postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
+                        $(".SortIcon").hide("fade");
                     }
                 });
         });
