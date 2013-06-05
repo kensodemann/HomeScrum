@@ -65,12 +65,14 @@
                 $(".InactiveItemRow").show();
                 $("#ShowInactiveToggle").prop("checked", true);
                 $("#ShowInactiveToggle").button("option", "label", "Hide Inactive");
+
             }
             else {
                 $(".InactiveItemRow").hide();
                 $("#ShowInactiveToggle").prop("checked", false);
                 $("#ShowInactiveToggle").button("option", "label", "Show Inactive");
             }
+            $("#ShowInactiveToggle").button("refresh");
 
             $("#SortableToggle").click(
                 function () {
