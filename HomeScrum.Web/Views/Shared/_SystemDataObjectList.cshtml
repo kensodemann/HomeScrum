@@ -59,7 +59,18 @@
             $("#SortableToggle").button();
             $("#ShowInactiveToggle").button();
             $(".SortIcon").hide();
-            $(".InactiveItemRow").hide();
+
+            var tempData = $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive");
+            if ($.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive")) {
+                $(".InactiveItemRow").show();
+                $("#ShowInactiveToggle").prop("checked", true);
+                $("#ShowInactiveToggle").button("option", "label", "Hide Inactive");
+            }
+            else {
+                $(".InactiveItemRow").hide();
+                $("#ShowInactiveToggle").prop("checked", false);
+                $("#ShowInactiveToggle").button("option", "label", "Show Inactive");
+            }
 
             $("#SortableToggle").click(
                 function () {
@@ -88,6 +99,7 @@
                         $(this).button("option", "label", "Show Inactive");
                         $(".InactiveItemRow").hide("fade");
                     }
+                    $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive", $(this).is(":checked"));
                 });
         });
     </script>
