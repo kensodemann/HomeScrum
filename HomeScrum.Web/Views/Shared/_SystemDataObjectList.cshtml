@@ -51,79 +51,81 @@
             });
         }
 
-        function setupShowHideButton(toggleButton) {
-            function showInactiveItems(toggleButton, effect) {
-                $(".InactiveItemRow").show(effect);
-                toggleButton.button("option", "label", "Hide Inactive");
+        function setupShowHideButton(toggleButton, hideThese) {
+            var classToShowHide = "." + hideThese + "ItemRow";
+
+            function showItems(toggleButton, effect) {
+                $(classToShowHide).show(effect);
+                toggleButton.button("option", "label", "Hide " + hideThese);
             }
 
-            function hideInactiveItems(toggleButton, effect) {
-                $(".InactiveItemRow").hide(effect);
-                toggleButton.button("option", "label", "Show Inactive");
+            function hideItems(toggleButton, effect) {
+                $("." + hideThese + "ItemRow").hide(effect);
+                toggleButton.button("option", "label", "Show " + hideThese);
             }
 
-            function shouldShowInactive() {
-                return $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive");
+            function shouldShow() {
+                return $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "Show" + hideThese);
             }
 
-            function saveShowInactiveState(value) {
-                $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive", value);
+            function saveShowState(value) {
+                $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "Show" + hideThese, value);
             }
 
-            function initializeShowInactive(toggleButton) {
-                if (shouldShowInactive()) {
+            function initializeShowHide(toggleButton) {
+                if (shouldShow()) {
                     toggleButton.prop("checked", true);
-                    showInactiveItems(toggleButton);
+                    showItems(toggleButton);
                 }
                 else {
                     toggleButton.prop("checked", false);
-                    hideInactiveItems(toggleButton);
+                    hideItems(toggleButton);
                 }
                 toggleButton.button("refresh");
             }
 
             toggleButton.button();
-            initializeShowInactive(toggleButton);
+            initializeShowHide(toggleButton);
 
             toggleButton.click(
                 function () {
                     if ($(this).is(":checked")) {
-                        showInactiveItems($(this), "fade");
+                        showItems($(this), "fade");
                     }
                     else {
-                        hideInactiveItems($(this), "fade");
+                        hideItems($(this), "fade");
                     }
-                    saveShowInactiveState($(this).is(":checked"));
+                    saveShowState($(this).is(":checked"));
                 });
-        }
+            }
 
-        $(function () {
-            // jQuery UI stand alone widget init
-            $("#CreateNewItem").button();
-            
-            setupShowHideButton($("#ShowInactiveToggle"));
+            $(function () {
+                // jQuery UI stand alone widget init
+                $("#CreateNewItem").button();
 
-            // Sortability stuff
-            $(".ListBody").sortable();
-            $(".ListBody").sortable("disable");
-            $(".SortIcon").hide();
+                setupShowHideButton($("#ShowInactiveToggle"), "Inactive");
 
-            var sortableToggleButton = $("#SortableToggle");
-            sortableToggleButton.button();
+                // Sortability stuff
+                $(".ListBody").sortable();
+                $(".ListBody").sortable("disable");
+                $(".SortIcon").hide();
 
-            sortableToggleButton.click(
-                function () {
-                    if ($(this).is(":checked")) {
-                        $(this).button("option", "label", "Save Changes");
-                        $(".ListBody").sortable("enable");
-                        $(".ListBody").disableSelection();
-                        $(".SortIcon").show("fade");
-                    }
-                    else {
-                        $(this).button("option", "label", "Allow Sorting");
-                        $(".ListBody").sortable("disable");
-                        $(".ListBody").enableSelection();
-                        postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
+                var sortableToggleButton = $("#SortableToggle");
+                sortableToggleButton.button();
+
+                sortableToggleButton.click(
+                    function () {
+                        if ($(this).is(":checked")) {
+                            $(this).button("option", "label", "Save Changes");
+                            $(".ListBody").sortable("enable");
+                            $(".ListBody").disableSelection();
+                            $(".SortIcon").show("fade");
+                        }
+                        else {
+                            $(this).button("option", "label", "Allow Sorting");
+                            $(".ListBody").sortable("disable");
+                            $(".ListBody").enableSelection();
+                            postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
                         $(".SortIcon").hide("fade");
                     }
                 });
