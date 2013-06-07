@@ -51,44 +51,38 @@
             });
         }
 
-        function showInactiveItems(toggleButton, effect) {
-            $(".InactiveItemRow").show(effect);
-            toggleButton.button("option", "label", "Hide Inactive");
-        }
-
-        function hideInactiveItems(toggleButton, effect) {
-            $(".InactiveItemRow").hide(effect);
-            toggleButton.button("option", "label", "Show Inactive");
-        }
-
-        function shouldShowInactive() {
-            return $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive");
-        }
-
-        function saveShowInactiveState(value) {
-            $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive", value);
-        }
-
-        function initializeShowInactive(toggleButton) {
-            if (shouldShowInactive()) {
-                toggleButton.prop("checked", true);
-                showInactiveItems(toggleButton);
+        function setupShowHideButton(toggleButton) {
+            function showInactiveItems(toggleButton, effect) {
+                $(".InactiveItemRow").show(effect);
+                toggleButton.button("option", "label", "Hide Inactive");
             }
-            else {
-                toggleButton.prop("checked", false);
-                hideInactiveItems(toggleButton);
-            }
-            toggleButton.button("refresh");
-        }
 
-        $(function () {
-            // jQuery UI stand alone widget init
-            $("#CreateNewItem").button();
-            
-            // Show - Hide
-            var toggleButton = $("#ShowInactiveToggle");
+            function hideInactiveItems(toggleButton, effect) {
+                $(".InactiveItemRow").hide(effect);
+                toggleButton.button("option", "label", "Show Inactive");
+            }
+
+            function shouldShowInactive() {
+                return $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive");
+            }
+
+            function saveShowInactiveState(value) {
+                $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive", value);
+            }
+
+            function initializeShowInactive(toggleButton) {
+                if (shouldShowInactive()) {
+                    toggleButton.prop("checked", true);
+                    showInactiveItems(toggleButton);
+                }
+                else {
+                    toggleButton.prop("checked", false);
+                    hideInactiveItems(toggleButton);
+                }
+                toggleButton.button("refresh");
+            }
+
             toggleButton.button();
-
             initializeShowInactive(toggleButton);
 
             toggleButton.click(
@@ -101,6 +95,13 @@
                     }
                     saveShowInactiveState($(this).is(":checked"));
                 });
+        }
+
+        $(function () {
+            // jQuery UI stand alone widget init
+            $("#CreateNewItem").button();
+            
+            setupShowHideButton($("#ShowInactiveToggle"));
 
             // Sortability stuff
             $(".ListBody").sortable();
