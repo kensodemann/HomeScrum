@@ -51,30 +51,66 @@
             });
         }
 
-        $(function () {
-            // TODO: Read up on how to make this testable and more modular.
-            $(".ListBody").sortable();
-            $(".ListBody").sortable("disable");
-            $("#CreateNewItem").button();
-            $("#SortableToggle").button();
-            $("#ShowInactiveToggle").button();
-            $(".SortIcon").hide();
+        function showInactiveItems(toggleButton, effect) {
+            $(".InactiveItemRow").show(effect);
+            toggleButton.button("option", "label", "Hide Inactive");
+        }
 
-            var tempData = $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive");
-            if ($.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive")) {
-                $(".InactiveItemRow").show();
-                $("#ShowInactiveToggle").prop("checked", true);
-                $("#ShowInactiveToggle").button("option", "label", "Hide Inactive");
+        function hideInactiveItems(toggleButton, effect) {
+            $(".InactiveItemRow").hide(effect);
+            toggleButton.button("option", "label", "Show Inactive");
+        }
 
+        function shouldShowInactive() {
+            return $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive");
+        }
+
+        function saveShowInactiveState(value) {
+            $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive", value);
+        }
+
+        function initializeShowInactive(toggleButton) {
+            if (shouldShowInactive()) {
+                toggleButton.prop("checked", true);
+                showInactiveItems(toggleButton);
             }
             else {
-                $(".InactiveItemRow").hide();
-                $("#ShowInactiveToggle").prop("checked", false);
-                $("#ShowInactiveToggle").button("option", "label", "Show Inactive");
+                toggleButton.prop("checked", false);
+                hideInactiveItems(toggleButton);
             }
-            $("#ShowInactiveToggle").button("refresh");
+            toggleButton.button("refresh");
+        }
 
-            $("#SortableToggle").click(
+        $(function () {
+            // jQuery UI stand alone widget init
+            $("#CreateNewItem").button();
+            
+            // Show - Hide
+            var toggleButton = $("#ShowInactiveToggle");
+            toggleButton.button();
+
+            initializeShowInactive(toggleButton);
+
+            toggleButton.click(
+                function () {
+                    if ($(this).is(":checked")) {
+                        showInactiveItems($(this), "fade");
+                    }
+                    else {
+                        hideInactiveItems($(this), "fade");
+                    }
+                    saveShowInactiveState($(this).is(":checked"));
+                });
+
+            // Sortability stuff
+            $(".ListBody").sortable();
+            $(".ListBody").sortable("disable");
+            $(".SortIcon").hide();
+
+            var sortableToggleButton = $("#SortableToggle");
+            sortableToggleButton.button();
+
+            sortableToggleButton.click(
                 function () {
                     if ($(this).is(":checked")) {
                         $(this).button("option", "label", "Save Changes");
@@ -89,19 +125,6 @@
                         postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
                         $(".SortIcon").hide("fade");
                     }
-                });
-
-            $("#ShowInactiveToggle").click(
-                function () {
-                    if ($(this).is(":checked")) {
-                        $(this).button("option", "label", "Hide Inactive");
-                        $(".InactiveItemRow").show("fade");
-                    }
-                    else {
-                        $(this).button("option", "label", "Show Inactive");
-                        $(".InactiveItemRow").hide("fade");
-                    }
-                    $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "ShowInactive", $(this).is(":checked"));
                 });
         });
     </script>
