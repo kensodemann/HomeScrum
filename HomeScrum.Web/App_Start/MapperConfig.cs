@@ -108,6 +108,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.IsAccepted ) );
          Mapper.CreateMap<Project, ProjectViewModel>();
          Mapper.CreateMap<WorkItem, WorkItemViewModel>()
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) )
             .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
             .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
 
