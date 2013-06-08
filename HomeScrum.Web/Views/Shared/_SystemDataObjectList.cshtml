@@ -52,83 +52,35 @@
         });
     }
 
-    function setupShowHideButton(toggleButton, hideThese) {
-        var classToShowHide = "." + hideThese + "ItemRow";
+    $(function () {
+        // jQuery UI stand alone widget init
+        $("#CreateNewItem").button();
 
-        function showItems(toggleButton, effect) {
-            $(classToShowHide).show(effect);
-            toggleButton.button("option", "label", "Hide " + hideThese);
-        }
+        setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowInactiveToggle"), "Inactive");
 
-        function hideItems(toggleButton, effect) {
-            $("." + hideThese + "ItemRow").hide(effect);
-            toggleButton.button("option", "label", "Show " + hideThese);
-        }
+        // Sortability stuff
+        $(".ListBody").sortable();
+        $(".ListBody").sortable("disable");
+        $(".SortIcon").hide();
 
-        function shouldShow() {
-            return $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "Show" + hideThese);
-        }
+        var sortableToggleButton = $("#SortableToggle");
+        sortableToggleButton.button();
 
-        function saveShowState(value) {
-            $.localStorage("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()" + "Show" + hideThese, value);
-        }
-
-        function initializeShowHide(toggleButton) {
-            if (shouldShow()) {
-                toggleButton.prop("checked", true);
-                showItems(toggleButton);
-            }
-            else {
-                toggleButton.prop("checked", false);
-                hideItems(toggleButton);
-            }
-            toggleButton.button("refresh");
-        }
-
-        toggleButton.button();
-        initializeShowHide(toggleButton);
-
-        toggleButton.click(
+        sortableToggleButton.click(
             function () {
                 if ($(this).is(":checked")) {
-                    showItems($(this), "fade");
+                    $(this).button("option", "label", "Save Changes");
+                    $(".ListBody").sortable("enable");
+                    $(".ListBody").disableSelection();
+                    $(".SortIcon").show("fade");
                 }
                 else {
-                    hideItems($(this), "fade");
-                }
-                saveShowState($(this).is(":checked"));
-            });
-        }
-
-        $(function () {
-            // jQuery UI stand alone widget init
-            $("#CreateNewItem").button();
-
-            setupShowHideButton($("#ShowInactiveToggle"), "Inactive");
-
-            // Sortability stuff
-            $(".ListBody").sortable();
-            $(".ListBody").sortable("disable");
-            $(".SortIcon").hide();
-
-            var sortableToggleButton = $("#SortableToggle");
-            sortableToggleButton.button();
-
-            sortableToggleButton.click(
-                function () {
-                    if ($(this).is(":checked")) {
-                        $(this).button("option", "label", "Save Changes");
-                        $(".ListBody").sortable("enable");
-                        $(".ListBody").disableSelection();
-                        $(".SortIcon").show("fade");
+                    $(this).button("option", "label", "Allow Sorting");
+                    $(".ListBody").sortable("disable");
+                    $(".ListBody").enableSelection();
+                    postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
+                        $(".SortIcon").hide("fade");
                     }
-                    else {
-                        $(this).button("option", "label", "Allow Sorting");
-                        $(".ListBody").sortable("disable");
-                        $(".ListBody").enableSelection();
-                        postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
-                            $(".SortIcon").hide("fade");
-                        }
-                    });
-            });
+                });
+        });
 </script>

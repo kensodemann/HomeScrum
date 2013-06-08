@@ -8,6 +8,7 @@
     @Styles.Render( "~/Content/css" )
     @Scripts.Render( "~/bundles/modernizr" )
     @Scripts.Render( "~/bundles/jquery" )
+    @Scripts.Render( "~/bundles/myScripts" )
 </head>
 <body>
     <header>
@@ -37,7 +38,7 @@
                     <li><a href="#">Add New Task</a></li>
                     <li><a href="#">My Task List</a></li>
                     <li><a href="#">Unassigned Tasks</a></li>
-                    <li>@Html.ActionLink("All Work Items", "Index", "WorkItems")</li>
+                    <li>@Html.ActionLink( "All Work Items", "Index", "WorkItems" )</li>
                 </ul>
 
                 <h2>Sprints</h2>
@@ -91,6 +92,6 @@
         $(function () {
             $("input[type=text]").first().focus();
         });
-</script>
+    </script>
 </body>
 </html>
