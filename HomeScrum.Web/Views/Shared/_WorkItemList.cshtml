@@ -16,7 +16,9 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
+        
+        <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
             <td>
                 @Html.DisplayFor( modelItem => item.WorkItemTypeName )
             </td>
@@ -36,10 +38,12 @@
 
 <div id="ActionButtonArea">
     @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-
-    <script>
-        $(function () {
-            $("#CreateNewItem").button();
-        });
-    </script>
+    <input type="checkbox" id="ShowCompletedToggle" /><label for="ShowCompletedToggle">Show/Hide</label>
 </div>
+
+<script>
+    $(function () {
+        $("#CreateNewItem").button();
+        setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowCompletedToggle"), "Completed");
+    });
+</script>
