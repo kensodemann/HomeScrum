@@ -9,10 +9,12 @@
     <fieldset>
         <legend>Properties</legend>
 
-        @Html.LabelFor( model => model.CreatedByUserUserName )
-        @Html.DisplayFor( model => model.CreatedByUserUserName )
-        @Html.HiddenFor( model => model.CreatedByUserId )
-        @Html.ValidationMessageFor( model => model.CreatedByUserId )
+        <div class="formStaticText">
+            @Html.LabelFor( model => model.CreatedByUserUserName )
+            @Html.DisplayFor( model => model.CreatedByUserUserName )
+            @Html.HiddenFor( model => model.CreatedByUserId )
+            @Html.ValidationMessageFor( model => model.CreatedByUserId )
+        </div>
 
         <div class="formSelectList">
             @Html.LabelFor( model => model.WorkItemTypeId )

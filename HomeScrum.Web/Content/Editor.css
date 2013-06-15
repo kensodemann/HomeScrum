@@ -15,7 +15,7 @@ fieldset
   fieldset .formSingleLineEdit
   {
     margin: 0px;
-    margin-bottom: 10px;
+    margin-bottom: inherit;
   }
 
     fieldset .formSingleLineEdit label
@@ -29,10 +29,16 @@ fieldset
       width: 26em;
     }
 
+  fieldset .formStaticText
+  {
+    margin: inherit;
+    margin-bottom: inherit;
+  }
+
   fieldset .formSelectList
   {
     margin: 0px;
-    margin-bottom: 10px;
+    margin-bottom: inherit;
   }
 
     fieldset .formSelectList label
@@ -50,7 +56,7 @@ fieldset
   {
     display: table;
     margin: 0px;
-    margin-bottom: 10px;
+    margin-bottom: inherit;
   }
 
     fieldset .formLongText label
