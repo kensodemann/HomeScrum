@@ -12,9 +12,12 @@ fieldset
     display: none;
   }
 
-  fieldset .formSingleLineEdit
+  fieldset .formSingleLineEdit,
+  fieldset .formStaticText,
+  fieldset .formSelectList,
+  fieldset .formLongText
   {
-    margin: 0px;
+    margin: inherit;
     margin-bottom: inherit;
   }
 
@@ -29,21 +32,10 @@ fieldset
       width: 26em;
     }
 
-  fieldset .formStaticText
-  {
-    margin: inherit;
-    margin-bottom: inherit;
-  }
-
-  fieldset .formSelectList
-  {
-    margin: 0px;
-    margin-bottom: inherit;
-  }
-
-    fieldset .formSelectList label
+    fieldset .formSelectList label,
+    fieldset .formStaticText label
     {
-      width: 8em;
+      width: 9em;
       float: left;
     }
 
@@ -51,13 +43,6 @@ fieldset
     {
       width: 24em;
     }
-
-  fieldset .formLongText
-  {
-    display: table;
-    margin: 0px;
-    margin-bottom: inherit;
-  }
 
     fieldset .formLongText label
     {
