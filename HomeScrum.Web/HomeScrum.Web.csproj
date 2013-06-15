@@ -288,6 +288,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Controllers\Controllers.cd" />
+    <None Include="Properties\PublishProfiles\Home.pubxml" />
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Scripts\myUIExtensions.js" />
     <Content Include="Scripts\jquery-2.0.0.js" />
