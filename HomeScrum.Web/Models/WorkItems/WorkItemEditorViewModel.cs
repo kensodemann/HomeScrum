@@ -24,8 +24,8 @@ namespace HomeScrum.Web.Models.WorkItems
       public string ProjectName { get; set; }
       public IEnumerable<SelectListItem> Projects { get; set; }
 
-      [Display( Name = "CreatedByUser", ResourceType = typeof( DisplayStrings ) )]
       public Guid CreatedByUserId { get; set; }
+      [Display( Name = "CreatedByUser", ResourceType = typeof( DisplayStrings ) )]
       public string CreatedByUserUserName { get; set; }
 
       [Display( Name = "AssignedToUser", ResourceType = typeof( DisplayStrings ) )]
