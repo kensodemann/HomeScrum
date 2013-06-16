@@ -19,11 +19,14 @@ fieldset
   {
     margin: inherit;
     margin-bottom: inherit;
+    clear: left;
+    float: left;
   }
 
     fieldset .formSingleLineEdit label
     {
       width: 6em;
+      clear: left;
       float: left;
     }
 
