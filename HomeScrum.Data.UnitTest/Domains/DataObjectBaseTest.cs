@@ -20,5 +20,18 @@ namespace HomeScrum.Data.UnitTest.Domains
          Assert.AreEqual( typeof( ErrorMessages ), required.ErrorMessageResourceType );
          Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.NameIsRequired ) );
       }
+
+      [TestMethod]
+      public void NameHasMaxLength()
+      {
+         var model = new DomainObjectBase();
+
+         var maxLength = AttributeHelper.GetMaxLengthAttribute( () => model.Name );
+
+         Assert.IsNotNull( maxLength );
+         Assert.AreEqual( "NameMaxLength", maxLength.ErrorMessageResourceName );
+         Assert.AreEqual( typeof( ErrorMessages ), maxLength.ErrorMessageResourceType );
+         Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.NameIsRequired ) );
+      }
    }
 }

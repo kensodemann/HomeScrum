@@ -132,4 +132,7 @@
   <data name="UserNameIsRequired" xml:space="preserve">
     <value>Please enter a username.</value>
   </data>
+  <data name="NameMaxLength" xml:space="preserve">
+    <value>Name must be 50 characters or less.</value>
+  </data>
 </root>

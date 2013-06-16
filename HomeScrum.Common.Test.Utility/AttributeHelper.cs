@@ -17,6 +17,11 @@ namespace HomeScrum.Data.Common.Test.Utility
          return GetAttribute( typeof( DisplayAttribute ), propertyExpression ) as DisplayAttribute;
       }
 
+      public static MaxLengthAttribute GetMaxLengthAttribute<T>( Expression<Func<T>> propertyExpression )
+      {
+         return GetAttribute( typeof( MaxLengthAttribute ), propertyExpression ) as MaxLengthAttribute;
+      }
+
       public static RequiredAttribute GetRequiredAttribute<T>( Expression<Func<T>> propertyExpression )
       {
          return GetAttribute( typeof( RequiredAttribute ), propertyExpression ) as RequiredAttribute;
