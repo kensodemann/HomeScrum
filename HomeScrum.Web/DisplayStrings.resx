@@ -190,6 +190,6 @@
     <value>Work Item Type:</value>
   </data>
   <data name="WorkItemTypeIsTask" xml:space="preserve">
-    <value>Work Items of this Type are Tasks</value>
+    <value>Work Items of this type can be assigned to an individual</value>
   </data>
 </root>
