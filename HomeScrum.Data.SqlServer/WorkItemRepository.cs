@@ -17,14 +17,8 @@ namespace HomeScrum.Data.SqlServer
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return session
-               .CreateCriteria( typeof( WorkItem ) )
-               .CreateAlias( "Status", "stat" )
-               .CreateAlias( "WorkItemType", "wit" )
-               .AddOrder( Order.Asc( "wit.SortSequence" ) )
-               .AddOrder( Order.Asc( "stat.SortSequence" ) )
-               .AddOrder( Order.Asc( "Name" ) )
-               .List<WorkItem>();
+            var queryCriteria = CreateBaseQuery( session );
+            return queryCriteria.List<WorkItem>();
          }
       }
 
@@ -32,23 +26,28 @@ namespace HomeScrum.Data.SqlServer
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return session
-               .CreateCriteria( typeof( WorkItem ) )
-               .CreateAlias( "Status", "stat" )
-               .CreateAlias( "WorkItemType", "wit" )
+            var queryCriteria = CreateBaseQuery( session );
+            return queryCriteria
                .Add( Expression.Eq( "wit.IsTask", false ) )
                .Add( Expression.Eq( "wit.StatusCd", 'A' ) )
-               .AddOrder( Order.Asc( "wit.SortSequence" ) )
-               .AddOrder( Order.Asc( "stat.SortSequence" ) )
-               .AddOrder( Order.Asc( "Name" ) )
                .List<WorkItem>();
-            // TODO: Need to add the sorting.
          }
       }
 
       public ICollection<WorkItem> GetOpenProductBacklog()
       {
          throw new NotImplementedException();
+      }
+
+      private ICriteria CreateBaseQuery( ISession session )
+      {
+         return session
+            .CreateCriteria( typeof( WorkItem ) )
+            .CreateAlias( "Status", "stat" )
+            .CreateAlias( "WorkItemType", "wit" )
+            .AddOrder( Order.Asc( "wit.SortSequence" ) )
+            .AddOrder( Order.Asc( "stat.SortSequence" ) )
+            .AddOrder( Order.Asc( "Name" ) );
       }
    }
 }
