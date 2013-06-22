@@ -74,6 +74,7 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISecurityRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Repositories\IWorkItemRepository.cs" />
     <Compile Include="Validators\AcceptanceCriteriaStatusValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Validators\ProjectStatusValidator.cs" />
