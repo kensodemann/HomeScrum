@@ -170,7 +170,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             if (isFirst)
             {
-               Assert.AreEqual( default(Guid).ToString(), item.Value );
+               Assert.AreEqual( default( Guid ).ToString(), item.Value );
                Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
                Assert.IsFalse( item.Selected );
                isFirst = false;
@@ -748,6 +748,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||
                            (model.AssignedToUser.Id.ToString() == item.Value && item.Selected) );
          }
+      }
+
+      [TestMethod]
+      public void EditPost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
+      {
+         var model = WorkItems.ModelData.First( x => x.AssignedToUser != null );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.AssignedToUser == null ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotSetAssignedToUserIdToDefault_IfAssignmentsIsAllowedForType()
+      {
+         var model = WorkItems.ModelData.First( x => x.AssignedToUser != null );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.AssignedToUser.Id == viewModel.AssignedToUserId ) ), Times.Once() );
       }
       #endregion
 

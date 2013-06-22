@@ -52,6 +52,10 @@ namespace HomeScrum.Web.Controllers
 
       protected override void UpdateItem( WorkItem model, System.Security.Principal.IPrincipal user )
       {
+         if (!model.WorkItemType.IsTask)
+         {
+            model.AssignedToUser = null;
+         }
          model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
          base.UpdateItem( model, user );
       }
