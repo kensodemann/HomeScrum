@@ -42,22 +42,24 @@ namespace HomeScrum.Web.Controllers
 
       protected override void AddItem( WorkItem model, System.Security.Principal.IPrincipal user )
       {
-         if (!model.WorkItemType.IsTask)
-         {
-            model.AssignedToUser = null;
-         }
+         ClearNonAllowedItemsInModel( model );
          model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
          base.AddItem( model, user );
       }
 
       protected override void UpdateItem( WorkItem model, System.Security.Principal.IPrincipal user )
       {
+         ClearNonAllowedItemsInModel( model );
+         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         base.UpdateItem( model, user );
+      }
+
+      private void ClearNonAllowedItemsInModel( WorkItem model )
+      {
          if (!model.WorkItemType.IsTask)
          {
             model.AssignedToUser = null;
          }
-         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
-         base.UpdateItem( model, user );
       }
 
       //
