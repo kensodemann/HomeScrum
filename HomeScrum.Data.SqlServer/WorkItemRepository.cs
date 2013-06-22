@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HomeScrum.Data.Repositories;
 
 namespace HomeScrum.Data.SqlServer
 {
-   public class WorkItemRepository : Repository<WorkItem>
+   public class WorkItemRepository : Repository<WorkItem>, IWorkItemRepository
    {
       public override ICollection<WorkItem> GetAll()
       {
@@ -25,6 +26,25 @@ namespace HomeScrum.Data.SqlServer
                .AddOrder( Order.Asc( "Name" ) )
                .List<WorkItem>();
          }
+      }
+
+      public ICollection<WorkItem> GetAllProductBacklog()
+      {
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            return session
+               .CreateCriteria( typeof( WorkItem ) )
+               .CreateAlias( "WorkItemType", "wit" )
+               .Add( Expression.Eq( "wit.IsTask", false ) )
+               .Add( Expression.Eq( "wit.StatusCd", 'A' ) )
+               .List<WorkItem>();
+            // TODO: Need to add the sorting.
+         }
+      }
+
+      public ICollection<WorkItem> GetOpenProductBacklog()
+      {
+         throw new NotImplementedException();
       }
    }
 }

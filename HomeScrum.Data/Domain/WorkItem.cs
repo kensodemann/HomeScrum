@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class WorkItem:DomainObjectBase
+   public class WorkItem : DomainObjectBase
    {
       [Required]
       public virtual WorkItemStatus Status { get; set; }

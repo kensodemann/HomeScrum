@@ -35,7 +35,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          _repository = new WorkItemRepository();
       }
 
-      private IRepository<WorkItem> _repository;
+      private IWorkItemRepository _repository;
 
       [TestMethod]
       public void GetAll_ReturnsAllWorkItems()
@@ -65,6 +65,19 @@ namespace HomeScrum.Data.UnitTest.Repositories
                 String.Format( "List out of order by status.  Current: {0}, Previouis {1}", item.Status.SortSequence, previousStatusSortSequence ) );
             previousStatusSortSequence = item.Status.SortSequence;
             previousTypeSortSequence = item.WorkItemType.SortSequence;
+         }
+      }
+
+      [TestMethod]
+      public void GetAllProductBacklog_ReturnsAllProductBacklogItems()
+      {
+         var expectedWorkItems = WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' );
+         var workItems = _repository.GetAllProductBacklog();
+
+         Assert.AreEqual( expectedWorkItems.Count(), workItems.Count );
+         foreach (var workItem in expectedWorkItems)
+         {
+            AssertCollectionContainsWorkItem( workItems, workItem );
          }
       }
 
@@ -147,6 +160,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       }
 
 
+      #region Helpers
       private void AssertCollectionContainsWorkItem( ICollection<WorkItem> workItems, WorkItem workItem )
       {
          var itemFromCollection = workItems.FirstOrDefault( x => x.Id == workItem.Id );
@@ -194,5 +208,6 @@ namespace HomeScrum.Data.UnitTest.Repositories
             Assert.AreEqual( expected.AcceptanceCriteria.Count(), actual.AcceptanceCriteria.Count() );
          }
       }
+      #endregion
    }
 }
