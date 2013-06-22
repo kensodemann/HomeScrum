@@ -14,6 +14,7 @@ namespace HomeScrum.Web.UnitTest.Extensions
       {
          Users.CreateTestModelData( initializeIds: true );
          WorkItemTypes.CreateTestModelData( initializeIds: true );
+         WorkItemStatuses.CreateTestModelData( initializeIds: true );
          ProjectStatuses.CreateTestModelData( initializeIds: true );
          Projects.CreateTestModelData( initializeIds: true );
       }
@@ -21,20 +22,20 @@ namespace HomeScrum.Web.UnitTest.Extensions
       [TestMethod]
       public void ToSelectList_ReturnsActiveItems()
       {
-         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList();
+         var selectList = WorkItemStatuses.ModelData.ToArray().ToSelectList();
 
-         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), selectList.Count() );
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), selectList.Count() );
          foreach (var item in selectList)
          {
-            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => x.StatusCd == 'A' && x.Id.ToString() == item.Value ) );
+            Assert.IsNotNull( WorkItemStatuses.ModelData.FirstOrDefault( x => x.StatusCd == 'A' && x.Id.ToString() == item.Value ) );
          }
       }
 
       [TestMethod]
       public void ToSelectedList_MarksItemSelected()
       {
-         var selected = WorkItemTypes.ModelData.Where( x => x.StatusCd == 'A' ).ToArray()[2];
-         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( selected.Id );
+         var selected = WorkItemStatuses.ModelData.Where( x => x.StatusCd == 'A' ).ToArray()[2];
+         var selectList = WorkItemStatuses.ModelData.ToArray().ToSelectList( selected.Id );
 
          foreach (var item in selectList)
          {
@@ -45,13 +46,13 @@ namespace HomeScrum.Web.UnitTest.Extensions
       [TestMethod]
       public void ToSelectedList_IncludesInactiveItemIfSelected()
       {
-         var selected = WorkItemTypes.ModelData.First( x => x.StatusCd == 'I' );
-         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( selected.Id );
+         var selected = WorkItemStatuses.ModelData.First( x => x.StatusCd == 'I' );
+         var selectList = WorkItemStatuses.ModelData.ToArray().ToSelectList( selected.Id );
 
-         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ) + 1, selectList.Count() );
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ) + 1, selectList.Count() );
          foreach (var item in selectList)
          {
-            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
+            Assert.IsNotNull( WorkItemStatuses.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
          }
       }
