@@ -205,5 +205,46 @@ namespace HomeScrum.Web.UnitTest.Extensions
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
          }
       }
+
+      /* 
+       * Work Item Type specific ToSelectList Tests
+       */
+      [TestMethod]
+      public void WorkItemType_ToSelectList_ReturnsActiveWorkItemTypes()
+      {
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList();
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), selectList.Count() );
+         foreach (var item in selectList)
+         {
+            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => x.StatusCd == 'A' && x.Id.ToString() == item.Value ) );
+         }
+      }
+
+      [TestMethod]
+      public void WorkItemType_ToSelectedList_MarksItemSelected()
+      {
+         var selected = WorkItemTypes.ModelData.Where( x => x.StatusCd == 'A' ).ToArray()[2];
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( selected.Id );
+
+         foreach (var item in selectList)
+         {
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
+
+      [TestMethod]
+      public void WorkItemType_ToSelectedList_IncludesInactiveItemIfSelected()
+      {
+         var selected = WorkItemTypes.ModelData.First( x => x.StatusCd == 'I' );
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList( selected.Id );
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ) + 1, selectList.Count() );
+         foreach (var item in selectList)
+         {
+            Assert.IsNotNull( WorkItemTypes.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
+            Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
+         }
+      }
    }
 }
