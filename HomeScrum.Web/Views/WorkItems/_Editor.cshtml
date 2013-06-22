@@ -1,4 +1,6 @@
-﻿@model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
+﻿@using HomeScrum.Web.Extensions
+
+@model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
 
 @using (Html.BeginForm())
 {
@@ -18,7 +20,7 @@
 
         <div class="formSelectList">
             @Html.LabelFor( model => model.WorkItemTypeId )
-            @Html.DropDownListFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
+            @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
             @Html.ValidationMessageFor( model => model.WorkItemTypeId )
         </div>
 

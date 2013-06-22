@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeScrum.Web.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace HomeScrum.Web.Models.WorkItems
       [Display( Name = "WorkItemType", ResourceType = typeof( DisplayStrings ) )]
       public Guid WorkItemTypeId { get; set; }
       public string WorkItemTypeName { get; set; }
-      public IEnumerable<SelectListItem> WorkItemTypes { get; set; }
+      public IEnumerable<SelectListItemWithAttributes> WorkItemTypes { get; set; }
 
       [Display( Name = "Project", ResourceType = typeof( DisplayStrings ) )]
       public Guid ProjectId { get; set; }
