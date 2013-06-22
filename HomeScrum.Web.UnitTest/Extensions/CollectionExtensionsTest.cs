@@ -246,5 +246,19 @@ namespace HomeScrum.Web.UnitTest.Extensions
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
          }
       }
+
+      [TestMethod]
+      public void WorkItemType_ToSelectList_MarksDataAttributesProperly()
+      {
+         var selectList = WorkItemTypes.ModelData.ToArray().ToSelectList();
+
+         foreach (var item in selectList)
+         {
+            var workItemType = WorkItemTypes.ModelData.First( x=> x.Id.ToString() == item.Value );
+            Assert.AreEqual( 1, item.DataAttributes.Count );
+            Assert.AreEqual( workItemType.IsTask ? "True" : "False", item.DataAttributes["IsAssignable"] );
+         }
+      }
+      // TODO: Add the tests that show the "AllowAssignment"
    }
 }

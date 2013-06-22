@@ -76,6 +76,23 @@ namespace HomeScrum.Web.Extensions
          return selectList;
       }
 
+      public static IEnumerable<SelectListItemWithAttributes> ToSelectList( this IEnumerable<WorkItemType> collection, Guid selectedId = default( Guid ) )
+      {
+         // The repository defaults to the user defined sort order, so just use that.
+         return collection
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+            .Select( item => new SelectListItemWithAttributes()
+            {
+               Value = item.Id.ToString(),
+               Text = item.Name,
+               Selected = item.Id == selectedId,
+               DataAttributes = new Dictionary<string, string>()
+               {
+                  { "IsAssignable", item.IsTask ? "True" : "False" }
+               }
+            } );
+      }
+
       private static void AddEmptyItem( List<SelectListItem> selectList )
       {
          selectList.Add( new SelectListItem()
