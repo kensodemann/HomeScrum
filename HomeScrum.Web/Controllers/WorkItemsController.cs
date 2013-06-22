@@ -42,6 +42,10 @@ namespace HomeScrum.Web.Controllers
 
       protected override void AddItem( WorkItem model, System.Security.Principal.IPrincipal user )
       {
+         if (!model.WorkItemType.IsTask)
+         {
+            model.AssignedToUser = null;
+         }
          model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
          base.AddItem( model, user );
       }
@@ -52,8 +56,12 @@ namespace HomeScrum.Web.Controllers
          base.UpdateItem( model, user );
       }
 
+      //
+      // POST: /WorkItem/Create
       public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {
+         // The base Create() does a validation before calling AddItem().
+         // This data must be set before the validation.
          viewModel.CreatedByUserId = _userRepository.Get( user.Identity.Name ).Id;
          return base.Create( viewModel, user );
       }

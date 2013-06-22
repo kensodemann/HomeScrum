@@ -408,6 +408,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _userRepository.Verify();
          _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( w => w.CreatedByUser.Id == _currentUser.Id ) ), Times.Once() );
       }
+
+      [TestMethod]
+      public void CreatePost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( w => w.AssignedToUser == null ) ), Times.Once() );
+      }
       #endregion
 
 
