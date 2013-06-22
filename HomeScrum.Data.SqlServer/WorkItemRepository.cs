@@ -11,6 +11,17 @@ using HomeScrum.Data.Repositories;
 
 namespace HomeScrum.Data.SqlServer
 {
+   internal static class WorkItemRepositoryCriteriaExtensions
+   {
+      public static ICriteria LimitToProductBacklogItems( this ICriteria queryCriteria )
+      {
+         return queryCriteria
+            .Add( Expression.Eq( "wit.IsTask", false ) )
+            .Add( Expression.Eq( "wit.StatusCd", 'A' ) );
+      }
+   }
+
+
    public class WorkItemRepository : Repository<WorkItem>, IWorkItemRepository
    {
       public override ICollection<WorkItem> GetAll()
@@ -28,8 +39,7 @@ namespace HomeScrum.Data.SqlServer
          {
             var queryCriteria = CreateBaseQuery( session );
             return queryCriteria
-               .Add( Expression.Eq( "wit.IsTask", false ) )
-               .Add( Expression.Eq( "wit.StatusCd", 'A' ) )
+               .LimitToProductBacklogItems()
                .List<WorkItem>();
          }
       }
