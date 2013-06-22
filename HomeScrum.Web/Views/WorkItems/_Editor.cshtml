@@ -36,7 +36,7 @@
             @Html.ValidationMessageFor( model => model.ProjectId )
         </div>
 
-        <div class="formSelectList">
+        <div class="formSelectList" id="AssignedToUserDiv">
             @Html.LabelFor( model => model.AssignedToUserId )
             @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
             @Html.ValidationMessageFor( model => model.AssignedToUserId )
@@ -47,4 +47,20 @@
     <p>
         <input type="submit" value="@ViewBag.EditorButtonLabel" />
     </p>
+    
+    <script>
+        function ShowHideDataItems() {
+            var isAssignable = $("#WorkItemTypeId").find(":selected").attr("data-IsAssignable");
+            if (isAssignable == "True") {
+                $("#AssignedToUserDiv").show();
+            }
+            else {
+                $("#AssignedToUserDiv").hide();
+            }
+        }
+
+        $(function () {
+            ShowHideDataItems();
+        });
+    </script>
 }
