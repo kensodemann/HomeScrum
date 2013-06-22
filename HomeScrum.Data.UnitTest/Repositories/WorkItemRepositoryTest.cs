@@ -82,6 +82,25 @@ namespace HomeScrum.Data.UnitTest.Repositories
       }
 
       [TestMethod]
+      public void GetAllProductBacklog_SortsByTypeThenByStatus()
+      {
+         var workItems = _repository.GetAllProductBacklog();
+
+         int previousTypeSortSequence = 0;
+         int previousStatusSortSequence = 0;
+         foreach (var item in workItems)
+         {
+            previousStatusSortSequence = (previousTypeSortSequence != item.WorkItemType.SortSequence) ? 0 : previousStatusSortSequence;
+            Assert.IsTrue( item.WorkItemType.SortSequence >= previousTypeSortSequence,
+                String.Format( "List out of order by type.  Current: {0}, Previouis {1}", item.WorkItemType.SortSequence, previousTypeSortSequence ) );
+            Assert.IsTrue( item.Status.SortSequence >= previousStatusSortSequence,
+                String.Format( "List out of order by status.  Current: {0}, Previouis {1}", item.Status.SortSequence, previousStatusSortSequence ) );
+            previousStatusSortSequence = item.Status.SortSequence;
+            previousTypeSortSequence = item.WorkItemType.SortSequence;
+         }
+      }
+
+      [TestMethod]
       public void GetNonExistentWorkItem_ReturnsNull()
       {
          var workItem = _repository.Get( Guid.NewGuid() );

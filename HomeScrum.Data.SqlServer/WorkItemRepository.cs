@@ -34,9 +34,13 @@ namespace HomeScrum.Data.SqlServer
          {
             return session
                .CreateCriteria( typeof( WorkItem ) )
+               .CreateAlias( "Status", "stat" )
                .CreateAlias( "WorkItemType", "wit" )
                .Add( Expression.Eq( "wit.IsTask", false ) )
                .Add( Expression.Eq( "wit.StatusCd", 'A' ) )
+               .AddOrder( Order.Asc( "wit.SortSequence" ) )
+               .AddOrder( Order.Asc( "stat.SortSequence" ) )
+               .AddOrder( Order.Asc( "Name" ) )
                .List<WorkItem>();
             // TODO: Need to add the sorting.
          }
