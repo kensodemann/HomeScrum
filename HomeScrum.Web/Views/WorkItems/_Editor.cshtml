@@ -49,18 +49,22 @@
     </p>
     
     <script>
-        function ShowHideDataItems() {
+        function ShowHideDataItems(effect) {
             var isAssignable = $("#WorkItemTypeId").find(":selected").attr("data-IsAssignable");
             if (isAssignable == "True") {
-                $("#AssignedToUserDiv").show();
+                $("#AssignedToUserDiv").show(effect);
             }
             else {
-                $("#AssignedToUserDiv").hide();
+                $("#AssignedToUserDiv").hide(effect);
             }
         }
 
         $(function () {
             ShowHideDataItems();
+
+            $("#WorkItemTypeId").change(function () {
+                ShowHideDataItems("fade");
+            });
         });
     </script>
 }
