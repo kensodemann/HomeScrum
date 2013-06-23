@@ -11,25 +11,15 @@ using HomeScrum.Data.Repositories;
 
 namespace HomeScrum.Data.SqlServer
 {
-   internal static class WorkItemRepositoryCriteriaExtensions
-   {
-      public static ICriteria LimitToProductBacklogItems( this ICriteria queryCriteria )
-      {
-         return queryCriteria
-            .Add( Expression.Eq( "wit.IsTask", false ) )
-            .Add( Expression.Eq( "wit.StatusCd", 'A' ) );
-      }
-   }
-
-
    public class WorkItemRepository : Repository<WorkItem>, IWorkItemRepository
    {
       public override ICollection<WorkItem> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            var queryCriteria = CreateBaseQuery( session );
-            return queryCriteria.List<WorkItem>();
+            return session
+               .CreateBaseQuery()
+               .List<WorkItem>();
          }
       }
 
@@ -37,8 +27,8 @@ namespace HomeScrum.Data.SqlServer
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            var queryCriteria = CreateBaseQuery( session );
-            return queryCriteria
+            return session
+               .CreateBaseQuery()
                .LimitToProductBacklogItems()
                .List<WorkItem>();
          }
@@ -48,8 +38,20 @@ namespace HomeScrum.Data.SqlServer
       {
          throw new NotImplementedException();
       }
+   }
 
-      private ICriteria CreateBaseQuery( ISession session )
+
+   #region nHibernate Extensions
+   internal static class WorkItemRepositoryCriteriaExtensions
+   {
+      public static ICriteria LimitToProductBacklogItems( this ICriteria queryCriteria )
+      {
+         return queryCriteria
+            .Add( Expression.Eq( "wit.IsTask", false ) )
+            .Add( Expression.Eq( "wit.StatusCd", 'A' ) );
+      }
+
+      public static ICriteria CreateBaseQuery( this ISession session )
       {
          return session
             .CreateCriteria( typeof( WorkItem ) )
@@ -60,4 +62,5 @@ namespace HomeScrum.Data.SqlServer
             .AddOrder( Order.Asc( "Name" ) );
       }
    }
+   #endregion
 }
