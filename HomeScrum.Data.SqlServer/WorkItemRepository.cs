@@ -36,7 +36,14 @@ namespace HomeScrum.Data.SqlServer
 
       public ICollection<WorkItem> GetOpenProductBacklog()
       {
-         throw new NotImplementedException();
+         using (ISession session = NHibernateHelper.OpenSession())
+         {
+            return session
+               .CreateBaseQuery()
+               .LimitToProductBacklogItems()
+               .LimitToOpenItems()
+               .List<WorkItem>();
+         }
       }
    }
 
@@ -49,6 +56,13 @@ namespace HomeScrum.Data.SqlServer
          return queryCriteria
             .Add( Expression.Eq( "wit.IsTask", false ) )
             .Add( Expression.Eq( "wit.StatusCd", 'A' ) );
+      }
+
+      public static ICriteria LimitToOpenItems( this ICriteria queryCriteria )
+      {
+         return queryCriteria
+            .Add( Expression.Eq( "stat.IsOpenStatus", true ) )
+            .Add( Expression.Eq( "stat.StatusCd", 'A' ) );
       }
 
       public static ICriteria CreateBaseQuery( this ISession session )

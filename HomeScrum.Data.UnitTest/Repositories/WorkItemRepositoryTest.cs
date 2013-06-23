@@ -53,7 +53,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       public void GetAll_SortsByTypeThenByStatus()
       {
          var workItems = _repository.GetAll();
-         
+
          int previousTypeSortSequence = 0;
          int previousStatusSortSequence = 0;
          foreach (var item in workItems)
@@ -85,6 +85,38 @@ namespace HomeScrum.Data.UnitTest.Repositories
       public void GetAllProductBacklog_SortsByTypeThenByStatus()
       {
          var workItems = _repository.GetAllProductBacklog();
+
+         int previousTypeSortSequence = 0;
+         int previousStatusSortSequence = 0;
+         foreach (var item in workItems)
+         {
+            previousStatusSortSequence = (previousTypeSortSequence != item.WorkItemType.SortSequence) ? 0 : previousStatusSortSequence;
+            Assert.IsTrue( item.WorkItemType.SortSequence >= previousTypeSortSequence,
+                String.Format( "List out of order by type.  Current: {0}, Previouis {1}", item.WorkItemType.SortSequence, previousTypeSortSequence ) );
+            Assert.IsTrue( item.Status.SortSequence >= previousStatusSortSequence,
+                String.Format( "List out of order by status.  Current: {0}, Previouis {1}", item.Status.SortSequence, previousStatusSortSequence ) );
+            previousStatusSortSequence = item.Status.SortSequence;
+            previousTypeSortSequence = item.WorkItemType.SortSequence;
+         }
+      }
+
+      [TestMethod]
+      public void GetOpenProductBacklog_ReturnsAllProductBacklogItems()
+      {
+         var expectedWorkItems = WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' );
+         var workItems = _repository.GetOpenProductBacklog();
+
+         Assert.AreEqual( expectedWorkItems.Count(), workItems.Count );
+         foreach (var workItem in expectedWorkItems)
+         {
+            AssertCollectionContainsWorkItem( workItems, workItem );
+         }
+      }
+
+      [TestMethod]
+      public void GetOpenProductBacklog_SortsByTypeThenByStatus()
+      {
+         var workItems = _repository.GetOpenProductBacklog();
 
          int previousTypeSortSequence = 0;
          int previousStatusSortSequence = 0;

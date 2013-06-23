@@ -102,6 +102,17 @@ namespace HomeScrum.Common.TestData
                LastModifiedUserRid = Users.ModelData[1].Id,
                AssignedToUser = Users.ModelData[2],
                Project = Projects.ModelData[0]
+            },
+            new WorkItem()
+            {
+               Name = "Work Item #7",
+               Description = "PBI that is not open",
+               WorkItemType = WorkItemTypes.ModelData.First(x => !x.IsTask),
+               Status = WorkItemStatuses.ModelData.First(x => !x.IsOpenStatus),
+               CreatedByUser = Users.ModelData[2],
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               AssignedToUser = Users.ModelData[2],
+               Project = Projects.ModelData[0]
             }
          };
 
