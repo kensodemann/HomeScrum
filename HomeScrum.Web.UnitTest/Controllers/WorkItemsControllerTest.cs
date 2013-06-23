@@ -29,7 +29,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static MoqMockingKernel _iocKernel;
 
       private Mock<IValidator<WorkItem>> _validator;
-      private Mock<IRepository<WorkItem>> _workItemRepository;
+      private Mock<IWorkItemRepository> _workItemRepository;
       private WorkItemsController _controller;
 
       private User _currentUser;
@@ -208,6 +208,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
                Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
                Assert.IsFalse( item.Selected );
             }
+         }
+      }
+
+      [TestMethod]
+      public void CreateGet_InitializesProductBacklogList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ), model.ProductBacklogItems.Count() );
+         foreach (var item in model.ProductBacklogItems)
+         {
+            var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( workItem.Name, item.Text );
+            Assert.IsFalse( item.Selected );
          }
       }
       #endregion
@@ -906,8 +922,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void SetupWorkItemRepository()
       {
          WorkItems.CreateTestModelData( initializeIds: true );
-         _workItemRepository = new Mock<IRepository<WorkItem>>();
+         _workItemRepository = new Mock<IWorkItemRepository>();
          _workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
+         _workItemRepository.Setup( x => x.GetOpenProductBacklog() ).Returns( WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.Status.IsOpenStatus ).ToList() );
       }
 
       private void SetupValidator()

@@ -196,10 +196,10 @@ namespace HomeScrum.Web.UnitTest.Extensions
       public void User_ToSelectedList_IncludesInactiveUserIfSelected()
       {
          var selected = Users.ModelData.First( x => x.StatusCd == 'I' );
-         var selectList = Users.ModelData.ToArray().ToSelectList(false, selected.Id );
+         var selectList = Users.ModelData.ToArray().ToSelectList( false, selected.Id );
 
          Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, selectList.Count() );
-         foreach(var item in selectList)
+         foreach (var item in selectList)
          {
             Assert.IsNotNull( Users.ModelData.FirstOrDefault( x => (x.StatusCd == 'A' || x.Id == selected.Id) && x.Id.ToString() == item.Value ) );
             Assert.IsTrue( item.Value == selected.Id.ToString() ? item.Selected : !item.Selected );
@@ -254,11 +254,26 @@ namespace HomeScrum.Web.UnitTest.Extensions
 
          foreach (var item in selectList)
          {
-            var workItemType = WorkItemTypes.ModelData.First( x=> x.Id.ToString() == item.Value );
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
             Assert.AreEqual( 1, item.DataAttributes.Count );
             Assert.AreEqual( workItemType.IsTask ? "True" : "False", item.DataAttributes["IsAssignable"] );
          }
       }
-      // TODO: Add the tests that show the "AllowAssignment"
+
+
+      /* 
+       * Work Item specific ToSelectList Tests
+       */
+      [TestMethod]
+      public void WorkItem_ToSelectList_ReturnsItemsGiven()
+      {
+         var selectList = WorkItems.ModelData.ToArray().ToSelectList();
+
+         Assert.AreEqual( WorkItems.ModelData.Count(), selectList.Count() );
+         foreach (var item in selectList)
+         {
+            Assert.IsNotNull( WorkItems.ModelData.FirstOrDefault( x => x.Id.ToString() == item.Value ) );
+         }
+      }
    }
 }

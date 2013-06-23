@@ -16,7 +16,7 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemViewModel, WorkItemEditorViewModel>
    {
       [Inject]
-      public WorkItemsController( IRepository<WorkItem> repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
+      public WorkItemsController( IWorkItemRepository repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
          IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator )
          : base( repository, validator, translator )
       {
@@ -37,6 +37,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = _projectRepository.GetAll().ToSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
+         viewModel.ProductBacklogItems = ((IWorkItemRepository)MainRepository).GetOpenProductBacklog().ToSelectList();
          base.PopulateSelectLists( viewModel );
       }
 

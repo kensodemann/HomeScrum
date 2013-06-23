@@ -77,7 +77,7 @@ namespace HomeScrum.Web.App_Start
          BindSimpleSortRepository<WorkItemType>( kernel );
 
          kernel.Bind<IRepository<Project>>().ToConstant( new ProjectRepository() );
-         kernel.Bind<IRepository<WorkItem>>().ToConstant( new WorkItemRepository() );
+         kernel.Bind<IWorkItemRepository>().ToConstant( new WorkItemRepository() );
 
          kernel.Bind<IUserRepository>().ToConstant( new UserRepository() );
          kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
@@ -96,8 +96,8 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
          kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
 
-         kernel.Bind<IValidator<Project>>().To( typeof( NullValidator<Project> ) );
-         kernel.Bind<IValidator<WorkItem>>().To( typeof( NullValidator<WorkItem> ) );
+         kernel.Bind<IValidator<Project>>().To( typeof( ProjectValidator ) );
+         kernel.Bind<IValidator<WorkItem>>().To( typeof( WorkItemValidator ) );
 
          kernel.Bind<IValidator<User>>().To( typeof( UserValidator ) );
       }

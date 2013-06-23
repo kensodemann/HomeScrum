@@ -93,6 +93,24 @@ namespace HomeScrum.Web.Extensions
             } );
       }
 
+
+      public static IEnumerable<SelectListItemWithAttributes> ToSelectList( this IEnumerable<WorkItem> collection, Guid selectedId = default( Guid ) )
+      {
+         // The repository defaults to the user defined sort order, so just use that.
+         return collection
+            .Select( item => new SelectListItemWithAttributes()
+            {
+               Value = item.Id.ToString(),
+               Text = item.Name,
+               Selected = item.Id == selectedId,
+               DataAttributes = new Dictionary<string, string>()
+               {
+                  //{ "ProjectId", item.Project.Id }
+               }
+            } );
+      }
+
+
       private static void AddEmptyItem( List<SelectListItem> selectList )
       {
          selectList.Add( new SelectListItem()
