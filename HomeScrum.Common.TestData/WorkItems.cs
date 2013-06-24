@@ -33,6 +33,9 @@ namespace HomeScrum.Common.TestData
          if (initializeIds)
          {
             InitializeIds();
+            var childWorkItem = ModelData.First( x => x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' );
+            var parentWorkItem = ModelData.First( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' );
+            childWorkItem.ParentWorkItem = parentWorkItem;
          }
       }
 
@@ -115,8 +118,6 @@ namespace HomeScrum.Common.TestData
                Project = Projects.ModelData[0]
             }
          };
-
-         ModelData.Last().ParentWorkItem = ModelData.First();
       }
 
       private static void AddAcceptanceCriteria()

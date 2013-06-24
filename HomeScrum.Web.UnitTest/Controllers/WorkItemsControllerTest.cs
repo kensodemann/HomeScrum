@@ -556,6 +556,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void EditGet_InitializesProductBacklog_ParentWorkItemSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null );
+         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ), viewModel.ProductBacklogItems.Count() );
+         foreach (var item in viewModel.ProductBacklogItems)
+         {
+            var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
+            Assert.AreEqual( workItem.Name, item.Text );
+            Assert.IsTrue( (model.ParentWorkItem.Id.ToString() != item.Value && !item.Selected) ||
+                           (model.ParentWorkItem.Id.ToString() == item.Value && item.Selected) );
+         }
+      }
+
+      [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
          _workItemRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
