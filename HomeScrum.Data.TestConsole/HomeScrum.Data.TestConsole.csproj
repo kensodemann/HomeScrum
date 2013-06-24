@@ -48,12 +48,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\HomeScrum.Data.SqlServer\Hibernate.cfg.xml">
-      <Link>Hibernate.cfg.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Data.SqlServer\HomeScrum.Data.SqlServer.csproj">
       <Project>{6b0b91f7-d752-4d5d-b3d2-bdc17c17a4a5}</Project>
       <Name>HomeScrum.Data.SqlServer</Name>

@@ -75,11 +75,6 @@
     <Compile Include="WorkItemTypes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Hibernate.cfg.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>

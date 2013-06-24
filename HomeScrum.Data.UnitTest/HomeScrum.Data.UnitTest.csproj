@@ -86,13 +86,6 @@
     <Compile Include="Validators\WorkItemStatusValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\HomeScrum.Common.TestData\Hibernate.cfg.xml">
-      <Link>Hibernate.cfg.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.Test.Utility\HomeScrum.Common.Test.Utility.csproj">
       <Project>{62c6e62f-a3a7-4a02-b6f3-72103851d9ac}</Project>
       <Name>HomeScrum.Common.Test.Utility</Name>
@@ -111,6 +104,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
