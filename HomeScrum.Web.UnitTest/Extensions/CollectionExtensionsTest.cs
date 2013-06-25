@@ -267,12 +267,35 @@ namespace HomeScrum.Web.UnitTest.Extensions
       [TestMethod]
       public void WorkItem_ToSelectList_ReturnsItemsGiven()
       {
-         var selectList = WorkItems.ModelData.ToArray().ToSelectList();
+         var selectList = WorkItems.ModelData.ToArray().ToSelectList( false );
 
          Assert.AreEqual( WorkItems.ModelData.Count(), selectList.Count() );
          foreach (var item in selectList)
          {
-            Assert.IsNotNull( WorkItems.ModelData.FirstOrDefault( x => x.Id.ToString() == item.Value ) );
+            Assert.IsNotNull( WorkItems.ModelData.FirstOrDefault( x => x.Id.ToString() == item.Value && x.Name == item.Text ) );
+         }
+      }
+
+      [TestMethod]
+      public void WorkItem_ToSelectList_ReturnsItemsGiven_UnassignedFirst()
+      {
+         var selectList = WorkItems.ModelData.ToArray().ToSelectList( true );
+
+         Assert.AreEqual( WorkItems.ModelData.Count() + 1, selectList.Count() );
+         int i = 0;
+         foreach (var item in selectList)
+         {
+            if (i == 0)
+            {
+               Assert.AreEqual( default( Guid ).ToString(), item.Value );
+               Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
+               Assert.IsFalse( item.Selected );
+            }
+            else
+            {
+               Assert.IsNotNull( WorkItems.ModelData.FirstOrDefault( x => x.Id.ToString() == item.Value && x.Name == item.Text ) );
+            }
+            i++;
          }
       }
    }

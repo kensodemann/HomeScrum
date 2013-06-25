@@ -35,7 +35,7 @@ namespace HomeScrum.Web.Extensions
       {
          var selectList = new List<SelectListItem>();
 
-         AddEmptyItem( selectList );
+         selectList.AddEmptyItem();
 
          selectList.AddRange(
             collection
@@ -59,7 +59,7 @@ namespace HomeScrum.Web.Extensions
 
          if (allowUnassigned)
          {
-            AddEmptyItem( selectList );
+            selectList.AddEmptyItem();
          }
 
          selectList.AddRange(
@@ -94,26 +94,36 @@ namespace HomeScrum.Web.Extensions
       }
 
 
-      public static IEnumerable<SelectListItemWithAttributes> ToSelectList( this IEnumerable<WorkItem> collection, Guid selectedId = default( Guid ) )
+      public static IEnumerable<SelectListItemWithAttributes> ToSelectList( this IEnumerable<WorkItem> collection, bool allowUnassigned, Guid selectedId = default( Guid ) )
       {
+         var selectList = new List<SelectListItemWithAttributes>();
+
+         if (allowUnassigned)
+         {
+            selectList.AddEmptyItem();
+         }
+
          // The repository defaults to the user defined sort order, so just use that.
-         return collection
-            .Select( item => new SelectListItemWithAttributes()
-            {
-               Value = item.Id.ToString(),
-               Text = item.Name,
-               Selected = item.Id == selectedId,
-               DataAttributes = new Dictionary<string, string>()
+         selectList.AddRange(
+            collection
+               .Select( item => new SelectListItemWithAttributes()
                {
-                  //{ "ProjectId", item.Project.Id }
-               }
-            } );
+                  Value = item.Id.ToString(),
+                  Text = item.Name,
+                  Selected = item.Id == selectedId,
+                  DataAttributes = new Dictionary<string, string>()
+                  {
+                     //{ "ProjectId", item.Project.Id }
+                  }
+               } ) );
+
+         return selectList;
       }
 
-
-      private static void AddEmptyItem( List<SelectListItem> selectList )
+      private static void AddEmptyItem<T>( this List<T> selectList )
+         where T : SelectListItem, new()
       {
-         selectList.Add( new SelectListItem()
+         selectList.Add( new T()
          {
             Value = default( Guid ).ToString(),
             Text = DisplayStrings.NotAssigned,

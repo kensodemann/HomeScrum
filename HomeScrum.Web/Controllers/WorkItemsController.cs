@@ -37,7 +37,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = _projectRepository.GetAll().ToSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
-         viewModel.ProductBacklogItems = ((IWorkItemRepository)MainRepository).GetOpenProductBacklog().ToSelectList( viewModel.ParentWorkItemId );
+         viewModel.ProductBacklogItems = ((IWorkItemRepository)MainRepository).GetOpenProductBacklog().ToSelectList( false, viewModel.ParentWorkItemId );
          base.PopulateSelectLists( viewModel );
       }
 
