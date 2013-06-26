@@ -113,7 +113,7 @@ namespace HomeScrum.Web.Extensions
                   Selected = item.Id == selectedId,
                   DataAttributes = new Dictionary<string, string>()
                   {
-                     //{ "ProjectId", item.Project.Id }
+                     { "ProjectId", item.Project.Id.ToString() }
                   }
                } ) );
 

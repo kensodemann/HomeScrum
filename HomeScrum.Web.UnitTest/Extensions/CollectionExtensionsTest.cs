@@ -298,5 +298,18 @@ namespace HomeScrum.Web.UnitTest.Extensions
             i++;
          }
       }
+
+      [TestMethod]
+      public void WorkItem_ToSelectList_MarksDataAttributesProperly()
+      {
+         var selectList = WorkItems.ModelData.ToArray().ToSelectList( false );
+
+         foreach (var item in selectList)
+         {
+            var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value && x.Name == item.Text );
+            Assert.AreEqual( 1, item.DataAttributes.Count );
+            Assert.AreEqual( workItem.Project.Id.ToString(), item.DataAttributes["ProjectId"] );
+         }
+      }
    }
 }
