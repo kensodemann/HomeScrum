@@ -218,12 +218,20 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ), model.ProductBacklogItems.Count() );
-         foreach (var item in model.ProductBacklogItems)
+         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, model.ProductBacklogItems.Count() );
+         for (int i = 0; i < model.ProductBacklogItems.Count(); i++)
          {
-            var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
-            Assert.AreEqual( workItem.Name, item.Text );
-            Assert.IsFalse( item.Selected );
+            var item = model.ProductBacklogItems.ElementAt( i );
+            if (i == 0)
+            {
+               Assert.AreEqual( default( Guid ).ToString(), item.Value );
+            }
+            else
+            {
+               var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
+               Assert.AreEqual( workItem.Name, item.Text );
+               Assert.IsFalse( item.Selected );
+            }
          }
       }
       #endregion
@@ -564,13 +572,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ), viewModel.ProductBacklogItems.Count() );
-         foreach (var item in viewModel.ProductBacklogItems)
+         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
+         for (int i = 0; i<viewModel.ProductBacklogItems.Count();i++)
          {
-            var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
-            Assert.AreEqual( workItem.Name, item.Text );
-            Assert.IsTrue( (model.ParentWorkItem.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.ParentWorkItem.Id.ToString() == item.Value && item.Selected) );
+            var item = viewModel.ProductBacklogItems.ElementAt( i );
+            if (i == 0)
+            {
+               Assert.AreEqual( default( Guid ).ToString(), item.Value );
+            }
+            else
+            {
+               var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
+               Assert.AreEqual( workItem.Name, item.Text );
+               Assert.IsTrue( (model.ParentWorkItem.Id.ToString() != item.Value && !item.Selected) ||
+                              (model.ParentWorkItem.Id.ToString() == item.Value && item.Selected) );
+            }
          }
       }
 
