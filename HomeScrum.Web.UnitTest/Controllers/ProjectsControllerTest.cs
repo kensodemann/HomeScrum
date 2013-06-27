@@ -9,6 +9,7 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ninject;
+using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<IValidator<Project>> _validator;
       private Mock<IRepository<Project>> _projectRepository;
+      private Mock<ILogger> _logger;
       private ProjectsController _controller;
 
       private User _currentUser;
@@ -49,6 +51,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          SetupCurrentUser();
          SetupValidator();
          SetupProjectRepository();
+         SetupLogger();
 
          CreateController();
       }
@@ -540,7 +543,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
-            new PropertyNameTranslator<Project, ProjectEditorViewModel>() );
+            new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -548,6 +551,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _projectRepository = new Mock<IRepository<Project>>();
          _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
+      }
+
+      private void SetupLogger()
+      {
+         _logger = new Mock<ILogger>();
       }
 
       private void SetupValidator()

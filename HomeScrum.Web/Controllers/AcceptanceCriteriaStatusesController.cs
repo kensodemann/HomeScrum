@@ -5,6 +5,7 @@ using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using Ninject;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -12,7 +13,7 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator,
-         IPropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel> translator )
-         : base( repository, validator, translator ) { }
+         IPropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel> translator, ILogger logger )
+         : base( repository, validator, translator, logger ) { }
    }
 }

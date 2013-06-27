@@ -5,6 +5,7 @@ using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
+      protected Mock<ILogger> _logger;
       protected ReadWriteController<ModelT, ViewModelT, EditorViewModelT> _controller;
       protected IPrincipal FakeUser = new GenericPrincipal( new GenericIdentity( "ken", "Forms" ), null );
 
@@ -50,6 +52,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _repository = new Mock<IRepository<ModelT>>();
          _validator = new Mock<IValidator<ModelT>>();
+         _logger = new Mock<ILogger>();
 
          _validator.Setup( x => x.ModelIsValid( It.IsAny<ModelT>(), It.IsAny<TransactionType>() ) ).Returns( true );
       }

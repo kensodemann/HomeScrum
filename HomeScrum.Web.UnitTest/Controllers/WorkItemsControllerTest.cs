@@ -9,6 +9,7 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ninject;
+using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<IValidator<WorkItem>> _validator;
       private Mock<IWorkItemRepository> _workItemRepository;
+      private Mock<ILogger> _logger;
       private WorkItemsController _controller;
 
       private User _currentUser;
@@ -51,6 +53,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          SetupCurrentUser();
          SetupValidator();
          SetupWorkItemRepository();
+         SetupLogger();
 
          CreateController();
       }
@@ -950,7 +953,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
-            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator() );
+            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -960,6 +963,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _workItemRepository = new Mock<IWorkItemRepository>();
          _workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
          _workItemRepository.Setup( x => x.GetOpenProductBacklog() ).Returns( WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.Status.IsOpenStatus ).ToList() );
+      }
+
+      private void SetupLogger()
+      {
+         _logger = new Mock<ILogger>();
       }
 
       private void SetupValidator()

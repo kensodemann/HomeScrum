@@ -4,6 +4,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
+using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace HomeScrum.Web.Controllers.Base
       where ViewModelT : SystemDomainObjectViewModel
       where EditorViewModelT : SystemDomainObjectViewModel, new()
    {
-      public SystemDataObjectController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator )
-         : base( mainRepository, validator, translator ) { }
+      public SystemDataObjectController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger )
+         : base( mainRepository, validator, translator, logger ) { }
 
 
       //

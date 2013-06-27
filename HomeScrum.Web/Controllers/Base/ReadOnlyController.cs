@@ -8,6 +8,7 @@ using HomeScrum.Common.Utility;
 using HomeScrum.Data.Repositories;
 using AutoMapper;
 using HomeScrum.Web.Models.Base;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers.Base
 {
@@ -23,9 +24,13 @@ namespace HomeScrum.Web.Controllers.Base
       private readonly IRepository<ModelT> _repository;
       protected IRepository<ModelT> MainRepository { get { return _repository; } }
 
-      public ReadOnlyController( IRepository<ModelT> mainRepository )
+      private readonly ILogger _logger;
+      protected ILogger Log { get { return _logger; } }
+
+      public ReadOnlyController( IRepository<ModelT> mainRepository, ILogger logger )
       {
          _repository = mainRepository;
+         _logger = logger;
       }
 
       //
