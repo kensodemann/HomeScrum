@@ -5,13 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using HomeScrum.Data.SqlServer;
 using HomeScrum.Data.Domain;
+using Ninject.Extensions.Logging;
+using Moq;
 
 namespace HomeScrum.Data.TestConsole
 {
    public class Program
    {
+      private static Mock<ILogger> _logger;
+      
       static void Main( string[] args )
       {
+         _logger = new Mock<ILogger>();
+
          //PrintAllWorkItemTypes();
          //PrintAllWorkItemStatuses();
          //PrintAllSprintStatuses();
@@ -30,7 +36,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllWorkItemTypes()
       {
-         var repository = new SimpleSortedRepository<WorkItemType>();
+         var repository = new SimpleSortedRepository<WorkItemType>(_logger.Object);
          var workItemTypes = repository.GetAll();
 
          Console.WriteLine( "Work Item Types: " + workItemTypes.Count().ToString() );
@@ -43,7 +49,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllWorkItemStatuses()
       {
-         var repository = new SimpleSortedRepository<WorkItemStatus>();
+         var repository = new SimpleSortedRepository<WorkItemStatus>( _logger.Object );
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Work Item Statuses: " + statuses.Count().ToString() );
@@ -56,7 +62,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllSprintStatuses()
       {
-         var repository = new SimpleSortedRepository<SprintStatus>();
+         var repository = new SimpleSortedRepository<SprintStatus>( _logger.Object );
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Sprint Statuses: " + statuses.Count().ToString() );
@@ -69,7 +75,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllProjectStatuses()
       {
-         var repository = new SimpleSortedRepository<ProjectStatus>();
+         var repository = new SimpleSortedRepository<ProjectStatus>( _logger.Object );
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Project Statuses: " + statuses.Count().ToString() );
@@ -82,7 +88,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllAcceptanceCriteriaStatuses()
       {
-         var repository = new SimpleSortedRepository<AcceptanceCriteriaStatus>();
+         var repository = new SimpleSortedRepository<AcceptanceCriteriaStatus>( _logger.Object );
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );
@@ -96,7 +102,7 @@ namespace HomeScrum.Data.TestConsole
       private static void PrintAllProjects()
       {
          //var repository = new Repository<Project, Guid>();
-         var repository = new ProjectRepository();
+         var repository = new ProjectRepository( _logger.Object );
          var projects = repository.GetAll();
 
          Console.WriteLine( "Projects: " + projects.Count().ToString() );

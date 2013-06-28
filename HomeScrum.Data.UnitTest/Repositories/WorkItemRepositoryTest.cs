@@ -6,6 +6,8 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.SqlServer;
 using HomeScrum.Data.Repositories;
 using System.Collections.Generic;
+using Moq;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Data.UnitTest.Repositories
 {
@@ -32,10 +34,12 @@ namespace HomeScrum.Data.UnitTest.Repositories
          //Sprints.Load();
          AcceptanceCriteriaStatuses.Load();
          WorkItems.Load();
-         _repository = new WorkItemRepository();
+         _logger = new Mock<ILogger>();
+         _repository = new WorkItemRepository( _logger.Object );
       }
 
       private IWorkItemRepository _repository;
+      private Mock<ILogger> _logger;
 
       [TestMethod]
       public void GetAll_ReturnsAllWorkItems()

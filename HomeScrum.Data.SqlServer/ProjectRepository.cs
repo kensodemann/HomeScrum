@@ -2,6 +2,8 @@
 using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
+using Ninject;
+using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,9 @@ namespace HomeScrum.Data.SqlServer
 {
    public class ProjectRepository : Repository<Project>
    {
+      [Inject]
+      public ProjectRepository( ILogger logger ) : base( logger ) { }
+
       public override ICollection<Project> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())

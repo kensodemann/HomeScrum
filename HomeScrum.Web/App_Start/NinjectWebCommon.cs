@@ -76,16 +76,16 @@ namespace HomeScrum.Web.App_Start
          BindSimpleSortRepository<WorkItemStatus>( kernel );
          BindSimpleSortRepository<WorkItemType>( kernel );
 
-         kernel.Bind<IRepository<Project>>().ToConstant( new ProjectRepository() );
-         kernel.Bind<IWorkItemRepository>().ToConstant( new WorkItemRepository() );
+         kernel.Bind<IRepository<Project>>().To( typeof( ProjectRepository ) ).InSingletonScope();
+         kernel.Bind<IWorkItemRepository>().To( typeof( WorkItemRepository ) ).InSingletonScope();
 
-         kernel.Bind<IUserRepository>().ToConstant( new UserRepository() );
-         kernel.Bind<ISecurityRepository>().ToConstant( new SecurityRepository() );
+         kernel.Bind<IUserRepository>().To( typeof( UserRepository ) ).InSingletonScope();
+         kernel.Bind<ISecurityRepository>().To( typeof( SecurityRepository ) ).InSingletonScope();
       }
 
       private static void BindSimpleSortRepository<T>( IKernel kernel )
       {
-         kernel.Bind<IRepository<T>>().ToConstant( new SimpleSortedRepository<T>() );
+         kernel.Bind<IRepository<T>>().To( typeof( SimpleSortedRepository<T> ) ).InSingletonScope();
       }
 
       private static void RegisterValidators( IKernel kernel )

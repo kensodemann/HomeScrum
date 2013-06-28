@@ -1,16 +1,17 @@
 ﻿using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
-using System;
+using Ninject;
+using Ninject.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Data.SqlServer
 {
    public class SimpleSortedRepository<T> : Repository<T>
    {
+      [Inject]
+      public SimpleSortedRepository( ILogger logger ) : base( logger ) { }
+
       public override ICollection<T> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())

@@ -3,6 +3,8 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +28,12 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Users.Load();
          ProjectStatuses.Load();
          Projects.Load();
-         _repository = new ProjectRepository();
+         _logger = new Mock<ILogger>();
+         _repository = new ProjectRepository( _logger.Object );
       }
 
       private IRepository<Project> _repository;
+      private Mock<ILogger> _logger;
 
       [TestMethod]
       public void GetAll_ReturnsAllProjects()

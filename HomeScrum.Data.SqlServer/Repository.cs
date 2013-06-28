@@ -2,15 +2,32 @@
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
+using Ninject;
+using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
 namespace HomeScrum.Data.SqlServer
 {
-   public class Repository<T> : Repository<T, Guid>, IRepository<T> { }
+   public class Repository<T> : Repository<T, Guid>, IRepository<T>
+   {
+      [Inject]
+      public Repository( ILogger logger ) : base( logger ) { }
+   }
 
    public class Repository<T, KeyT> : IRepository<T, KeyT>
    {
+      private readonly ILogger _logger;
+      protected ILogger Log { get { return _logger; } }
+
+
+      [Inject]
+      public Repository( ILogger logger )
+      {
+         _logger = logger;
+      }
+
+
       public virtual ICollection<T> GetAll()
       {
          using (ISession session = NHibernateHelper.OpenSession())

@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
+using Ninject;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Data.SqlServer
 {
    public class SecurityRepository : ISecurityRepository
    {
+      [Inject]
+      public SecurityRepository( ILogger logger )
+      {
+         _logger = logger;
+      }
+
+      private readonly ILogger _logger;
+      private ILogger Log { get { return _logger; } }
+
       public bool IsValidLogin( string userName, string password )
       {
          using (ISession session = NHibernateHelper.OpenSession())

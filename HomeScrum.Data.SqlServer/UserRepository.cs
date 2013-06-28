@@ -3,6 +3,8 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
+using Ninject;
+using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,9 @@ namespace HomeScrum.Data.SqlServer
 {
    public class UserRepository : Repository<User>, IUserRepository
    {
+      [Inject]
+      public UserRepository( ILogger logger ) : base( logger ) { }
+
       public User Get( string username )
       {
          using (ISession session = NHibernateHelper.OpenSession())
