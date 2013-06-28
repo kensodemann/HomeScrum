@@ -41,9 +41,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.Extensions.Logging">
-      <HintPath>..\packages\Ninject.Extensions.Logging.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,6 +65,10 @@
     <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
       <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
       <Name>HomeScrum.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeScrum.Services\HomeScrum.Services.csproj">
+      <Project>{6b8b5b00-18de-46e9-8387-2f4d5e36911e}</Project>
+      <Name>HomeScrum.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

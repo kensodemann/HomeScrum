@@ -2,9 +2,9 @@
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer;
+using HomeScrum.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

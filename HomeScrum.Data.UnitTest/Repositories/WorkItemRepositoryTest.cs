@@ -7,7 +7,7 @@ using HomeScrum.Data.SqlServer;
 using HomeScrum.Data.Repositories;
 using System.Collections.Generic;
 using Moq;
-using Ninject.Extensions.Logging;
+using HomeScrum.Services;
 
 namespace HomeScrum.Data.UnitTest.Repositories
 {

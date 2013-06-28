@@ -2,9 +2,9 @@
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
+using HomeScrum.Services;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
-using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

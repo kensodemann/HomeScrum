@@ -7,7 +7,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using Ninject;
-using Ninject.Extensions.Logging;
+using HomeScrum.Services;
 
 namespace HomeScrum.Data.SqlServer
 {
