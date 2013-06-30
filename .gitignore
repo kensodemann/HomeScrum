@@ -10,8 +10,13 @@ packages
 TestResults
 
 # Log Files
-log-file.txt
+log-file.*
+
+# vim backup files
+*~
+.*~
 
 # other files
 *.user
 *.suo
+*.swp
