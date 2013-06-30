@@ -23,6 +23,8 @@ namespace HomeScrum.Web
          AuthConfig.RegisterAuth();
          MapperConfig.RegisterMappings();
 
+         log4net.Config.XmlConfigurator.Configure();
+
          ModelBinders.Binders[typeof( IPrincipal )] = new PrincipalModelBinder();
       }
    }
