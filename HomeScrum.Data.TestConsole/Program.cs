@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HomeScrum.Data.SqlServer;
 using HomeScrum.Data.Domain;
 using Moq;
-using HomeScrum.Services;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Data.TestConsole
 {

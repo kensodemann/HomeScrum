@@ -8,7 +8,7 @@ using HomeScrum.Common.Utility;
 using HomeScrum.Data.Repositories;
 using AutoMapper;
 using HomeScrum.Web.Models.Base;
-using HomeScrum.Services;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers.Base
 {

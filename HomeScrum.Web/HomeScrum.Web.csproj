@@ -438,10 +438,6 @@
       <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
       <Name>HomeScrum.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HomeScrum.Services\HomeScrum.Services.csproj">
-      <Project>{6b8b5b00-18de-46e9-8387-2f4d5e36911e}</Project>
-      <Name>HomeScrum.Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DisplayStrings.resx">

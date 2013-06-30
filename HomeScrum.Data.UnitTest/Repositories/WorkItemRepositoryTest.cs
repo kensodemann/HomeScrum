@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.SqlServer;
 using HomeScrum.Data.Repositories;
-using System.Collections.Generic;
+using HomeScrum.Data.SqlServer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using HomeScrum.Services;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Data.UnitTest.Repositories
 {

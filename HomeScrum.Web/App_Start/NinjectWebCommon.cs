@@ -64,7 +64,6 @@ namespace HomeScrum.Web.App_Start
          RegisterValidators( kernel );
          RegisterTranslators( kernel );
          RegisterProviders( kernel );
-         RegisterHomeScrumServices( kernel );
 
          Mapper.Initialize( map => map.ConstructServicesUsing( x => kernel.Get( x ) ) );
       }
@@ -125,11 +124,6 @@ namespace HomeScrum.Web.App_Start
       private static void RegisterProviders( IKernel kernel )
       {
          kernel.Bind<IWebSecurity>().ToConstant( new WebSecurityWrapper() );
-      }
-
-      private static void RegisterHomeScrumServices( IKernel kernel )
-      {
-         kernel.Bind<HomeScrum.Services.ILogger>().To( typeof( HomeScrum.Services.Logger.Logger ) ).InSingletonScope();
       }
    }
 }

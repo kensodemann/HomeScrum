@@ -1,11 +1,11 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Services;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
+using Ninject.Extensions.Logging;
 using System.Security.Principal;
 
 namespace HomeScrum.Web.Controllers

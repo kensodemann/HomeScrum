@@ -1,16 +1,16 @@
-﻿using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
-using HomeScrum.Data.Validators;
-using HomeScrum.Services;
-using HomeScrum.Web.Controllers.Base;
-using HomeScrum.Web.Models.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web.Mvc;
+using HomeScrum.Data.Domain;
+using HomeScrum.Data.Repositories;
+using HomeScrum.Data.Validators;
+using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Models.Base;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {

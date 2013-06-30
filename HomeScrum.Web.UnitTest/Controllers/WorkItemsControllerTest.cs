@@ -1,21 +1,21 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Services;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ninject;
+using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
