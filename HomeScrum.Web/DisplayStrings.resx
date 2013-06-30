@@ -159,6 +159,9 @@
   <data name="NotAssigned" xml:space="preserve">
     <value>&lt;Not Assigned&gt;</value>
   </data>
+  <data name="ParentWorkItem" xml:space="preserve">
+    <value>Backlog Item:</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>Project:</value>
   </data>

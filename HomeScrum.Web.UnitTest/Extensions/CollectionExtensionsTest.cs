@@ -255,8 +255,9 @@ namespace HomeScrum.Web.UnitTest.Extensions
          foreach (var item in selectList)
          {
             var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
-            Assert.AreEqual( 1, item.DataAttributes.Count );
-            Assert.AreEqual( workItemType.IsTask ? "True" : "False", item.DataAttributes["IsAssignable"] );
+            Assert.AreEqual( 2, item.DataAttributes.Count );
+            Assert.AreEqual( workItemType.IsTask ? "True" : "False", item.DataAttributes["CanBeAssigned"] );
+            Assert.AreEqual( workItemType.IsTask ? "True" : "False", item.DataAttributes["CanHaveParent"] );
          }
       }
 

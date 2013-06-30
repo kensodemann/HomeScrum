@@ -42,6 +42,12 @@
             @Html.ValidationMessageFor( model => model.AssignedToUserId )
         </div>
 
+        <div class="formSelectList" id="ParentWorkItemDiv">
+            @Html.LabelFor( model => model.ParentWorkItemId )
+            @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems )
+            @Html.ValidationMessageFor( model => model.ParentWorkItemId )
+        </div>
+
     </fieldset>
  
     <p>
@@ -49,14 +55,29 @@
     </p>
     
     <script>
-        function ShowHideDataItems(effect) {
-            var isAssignable = $("#WorkItemTypeId").find(":selected").attr("data-IsAssignable");
-            if (isAssignable == "True") {
+        function ShowHideAssigned(effect) {
+            var canBeAssigned = $("#WorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
+            if (canBeAssigned == "True") {
                 $("#AssignedToUserDiv").show(effect);
             }
             else {
                 $("#AssignedToUserDiv").hide(effect);
             }
+        }
+
+        function ShowHideParentWorkItem(effect) {
+            var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveParent");
+            if (canHaveParent == "True") {
+                $("#ParentWorkItemDiv").show(effect);
+            }
+            else {
+                $("#ParentWorkItemDiv").hide(effect);
+            }
+        }
+
+        function ShowHideDataItems(effect) {
+            ShowHideAssigned(effect);
+            ShowHideParentWorkItem(effect);
         }
 
         $(function () {

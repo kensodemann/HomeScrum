@@ -88,7 +88,8 @@ namespace HomeScrum.Web.Extensions
                Selected = item.Id == selectedId,
                DataAttributes = new Dictionary<string, string>()
                {
-                  { "IsAssignable", item.IsTask ? "True" : "False" }
+                  { "CanBeAssigned", item.IsTask ? "True" : "False" },
+                  { "CanHaveParent", item.IsTask ? "True" : "False" }
                }
             } );
       }
@@ -101,6 +102,10 @@ namespace HomeScrum.Web.Extensions
          if (allowUnassigned)
          {
             selectList.AddEmptyItem();
+            selectList[0].DataAttributes = new Dictionary<string, string>()
+            {
+               { "ProjectId", default( Guid ).ToString() }
+            };
          }
 
          // The repository defaults to the user defined sort order, so just use that.

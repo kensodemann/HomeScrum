@@ -187,6 +187,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backlog Item:.
+        /// </summary>
+        public static string ParentWorkItem {
+            get {
+                return ResourceManager.GetString("ParentWorkItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project:.
         /// </summary>
         public static string Project {
