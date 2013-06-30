@@ -9,6 +9,9 @@ packages
 # mstest test results
 TestResults
 
+# Log Files
+log-file.txt
+
 # other files
 *.user
 *.suo
