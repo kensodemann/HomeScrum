@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Providers;
+using Ninject.Extensions.Logging;
 using System;
 using System.Web.Mvc;
 using WebMatrix.WebData;
@@ -10,11 +11,14 @@ namespace HomeScrum.Web.Controllers
    public class AccountController : Controller
    {
       private readonly IWebSecurity WebSecurity;
+      private readonly ILogger _logger;
+      protected ILogger Log { get { return _logger; } }
 
-      public AccountController( IWebSecurity webSecurity )
+      public AccountController( IWebSecurity webSecurity, ILogger logger )
          : base()
       {
          WebSecurity = webSecurity;
+         _logger = logger;
       }
 
       //
@@ -36,6 +40,7 @@ namespace HomeScrum.Web.Controllers
       {
          if (ModelState.IsValid && WebSecurity.Login( model.UserName, model.Password, persistCookie: model.RememberMe ))
          {
+            Log.Info( "User {0} successfully logged in.", model.UserName );
             return RedirectToLocal( returnUrl );
          }
 
