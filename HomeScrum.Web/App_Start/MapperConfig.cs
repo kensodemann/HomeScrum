@@ -43,7 +43,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<RepositoryItemResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
             .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<RepositoryItemResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
             .ForMember( dest => dest.Project, opt => opt.ResolveUsing<RepositoryItemResolver<Project>>().FromMember( src => src.ProjectId ) )
-            .ForMember( dest => dest.ParentWorkItem, opt => opt.Ignore() )
+            .ForMember( dest => dest.ParentWorkItem, opt => opt.ResolveUsing<WorkItemResolver>().FromMember( src => src.ParentWorkItemId ) )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<UserResolver>().FromMember( src => src.CreatedByUserId ) )
             .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<UserResolver>().FromMember( src => src.AssignedToUserId ) )
@@ -150,6 +150,13 @@ namespace HomeScrum.Web
             ModelT model = _repository.Get( sourceId );
             return model;
          }
+      }
+
+      public class WorkItemResolver : RepositoryItemResolver<WorkItem>
+      {
+         [Inject]
+         public WorkItemResolver( IWorkItemRepository repository )
+            : base( repository ) { }
       }
 
       public class UserResolver : ValueResolver<Guid, User>

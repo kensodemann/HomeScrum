@@ -38,6 +38,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          _userRepository = _iocKernel.GetMock<IUserRepository>();
          _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
          _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
+         _workItemRepository = _iocKernel.GetMock<IWorkItemRepository>();
 
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
@@ -48,6 +49,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       private static Mock<IUserRepository> _userRepository;
       private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
       private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
+      private static Mock<IWorkItemRepository> _workItemRepository;
       private static MoqMockingKernel _iocKernel;
       #endregion
 
@@ -359,7 +361,9 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             AssignedToUserId = Users.ModelData[0].Id,
             AssignedToUserUserName = Users.ModelData[0].UserName,
             CreatedByUserId = Users.ModelData[1].Id,
-            CreatedByUserUserName = Users.ModelData[1].UserName
+            CreatedByUserUserName = Users.ModelData[1].UserName,
+            ParentWorkItemId = WorkItems.ModelData[0].Id,
+            ParentWorkItemName = WorkItems.ModelData[0].Name
          };
          _projectRepository
             .Setup( x => x.Get( Projects.ModelData[0].Id ) )
@@ -373,6 +377,10 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             .Setup( x => x.Get( WorkItemTypes.ModelData[1].Id ) )
             .Returns( WorkItemTypes.ModelData[1] )
             .Verifiable();
+         _workItemRepository
+            .Setup( x => x.Get( WorkItems.ModelData[0].Id ) )
+            .Returns( WorkItems.ModelData[0] )
+            .Verifiable();
          _userRepository
             .Setup( x => x.Get( Users.ModelData[0].Id ) )
             .Returns( Users.ModelData[0] )
@@ -381,6 +389,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             .Setup( x => x.Get( Users.ModelData[1].Id ) )
             .Returns( Users.ModelData[1] )
             .Verifiable();
+         
 
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItem ) );
 
@@ -390,10 +399,12 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( Projects.ModelData[0], ((WorkItem)domainModel).Project );
          Assert.AreEqual( Users.ModelData[0], ((WorkItem)domainModel).AssignedToUser );
          Assert.AreEqual( Users.ModelData[1], ((WorkItem)domainModel).CreatedByUser );
+         Assert.AreEqual( WorkItems.ModelData[0], ((WorkItem)domainModel).ParentWorkItem );
          _workItemStatusRepository.Verify();
          _workItemTypeRepository.Verify();
          _projectRepository.Verify();
          _userRepository.Verify();
+         _workItemRepository.Verify();
       }
       #endregion
    }
