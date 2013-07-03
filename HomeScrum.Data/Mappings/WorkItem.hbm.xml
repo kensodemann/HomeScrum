@@ -54,5 +54,13 @@
       <key column="WorkItemRid"/>
       <one-to-many class="AcceptanceCriteria"/>
     </set>
+
+    <set name="Tasks"
+         inverse="true"
+         cascade="none"
+         lazy="false">
+      <key column="ParentWorkItemRid"/>
+      <one-to-many class="WorkItem"/>
+    </set>
   </class>
 </hibernate-mapping>
