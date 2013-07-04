@@ -31,22 +31,31 @@ namespace HomeScrum.Common.TestData
          {
             new WorkItemType ()
             {
+               Name="PBI",
+               Description="Product Backlog Item",
+               StatusCd='A',
+               IsTask=false,
+               IsPredefined=true,
+               SortSequence=5
+            },
+            new WorkItemType ()
+            {
+               Name="CR",
+               Description="Customer Request",
+               StatusCd='A',
+               IsTask=false,
+               IsPredefined=false,
+               SortSequence=6
+            },
+            new WorkItemType ()
+            {
                Name="SBI",
                Description="Sprint Backlog Item",
                StatusCd='A',
                IsTask=true,
                IsPredefined=true,
                SortSequence=1
-            },
-            new WorkItemType ()
-            {
-               Name="PBI",
-               Description="Product BacklogItem",
-               StatusCd='A',
-               IsTask=false,
-               IsPredefined=true,
-               SortSequence=2
-            },
+            },          
             new WorkItemType ()
             {
                Name="Bug",
@@ -54,7 +63,7 @@ namespace HomeScrum.Common.TestData
                StatusCd='A',
                IsTask=true,
                IsPredefined=true,
-               SortSequence=3
+               SortSequence=2
             },
             new WorkItemType ()
             {
@@ -63,43 +72,61 @@ namespace HomeScrum.Common.TestData
                StatusCd='A',
                IsTask=true,
                IsPredefined=true,
+               SortSequence=3
+            },
+            new WorkItemType ()
+            {
+               Name="Design Goal",
+               Description="The output of this task is a design item",
+               StatusCd='A',
+               IsTask=true,
+               IsPredefined=false,
                SortSequence=4
             },
             new WorkItemType ()
             {
-               Name="type 3",
-               Description="Active, Not a Task, Predefined",
-               StatusCd='A',
-               IsTask=false,
-               IsPredefined=true,
-               SortSequence=5
-            },
-            new WorkItemType ()
-            {
-               Name="Type 4",
-               Description="Active, Task, Not Predefined",
-               StatusCd='A',
-               IsTask=true,
-               IsPredefined=false,
-               SortSequence=6
-            },
-            new WorkItemType ()
-            {
-               Name="tYPe 5",
-               Description="Not Active, Task, Predefined",
+               Name="CFP",
+               Description="Customer Funded PBI",
                StatusCd='I',
-               IsTask=true,
-               IsPredefined=true,
+               IsTask=false,
+               IsPredefined=false,
                SortSequence=7
             },
             new WorkItemType ()
             {
-               Name="TYPE 6",
-               Description="Not Active, Task, Predefined - second one line this",
+               Name="IFP",
+               Description="Internally Funded PBI",
+               StatusCd='I',
+               IsTask=false,
+               IsPredefined=false,
+               SortSequence=8
+            },
+            new WorkItemType ()
+            {
+               Name="WO",
+               Description="Work Order",
                StatusCd='I',
                IsTask=true,
-               IsPredefined=true,
-               SortSequence=8
+               IsPredefined=false,
+               SortSequence=9
+            },
+            new WorkItemType ()
+            {
+               Name="PL",
+               Description="Problem Log",
+               StatusCd='I',
+               IsTask=true,
+               IsPredefined=false,
+               SortSequence=10
+            },
+            new WorkItemType ()
+            {
+               Name="Step",
+               Description="A specific step required to complete and CFP or IFP",
+               StatusCd='I',
+               IsTask=true,
+               IsPredefined=false,
+               SortSequence=11
             }
          };
 

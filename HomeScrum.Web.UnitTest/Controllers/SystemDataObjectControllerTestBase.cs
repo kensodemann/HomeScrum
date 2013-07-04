@@ -72,7 +72,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          SetupRepositoryGets();
          var newId = Guid.NewGuid();
          _repository.Setup( x => x.Get( newId ) ).Returns( null as ModelT );
-         ids.Add(newId.ToString());
+         ids.Add( newId.ToString() );
 
          var results = MyController.UpdateSortOrders( ids );
 
@@ -82,7 +82,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #region Private Helpers
       private List<string> TestObjectIdList()
       {
-         return GetAllModels().Select( x => x.Id.ToString() ).ToList();
+         return GetAllModels()
+            .OrderBy( x => x.SortSequence )
+            .Select( x => x.Id.ToString() )
+            .ToList();
       }
 
       private void SetupRepositoryGets()
