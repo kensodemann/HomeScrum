@@ -79,6 +79,11 @@ namespace HomeScrum.Common.TestData
          StartCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
          CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Write Tests", "Write tests to cover the code.", sbi, newWorkItem );
+         StartCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Passing", "All tests pass", unverified );
+         CloseCriteriaList( childWorkItem );
          CloseTaskList( workItem );
 
          _workItems.Add(
