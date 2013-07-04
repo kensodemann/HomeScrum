@@ -26,10 +26,38 @@ namespace HomeScrum.Common.TestData
       private static List<WorkItem> _workItems;
       public static WorkItem[] ModelData { get { return _workItems.ToArray(); } }
 
+      private static List<WorkItem> _tasks;
+      private static List<AcceptanceCriteria> _criteria;
+
+      private static Project homeScrum;
+      private static Project sandwiches;
+      private static Project preps;
+      private static Project mathWar;
+
+      private static WorkItemStatus newWorkItem;
+      private static WorkItemStatus planning;
+      private static WorkItemStatus assigned;
+      private static WorkItemStatus complete;
+      private static WorkItemStatus cancelled;
+
+      private static WorkItemType pbi;
+      private static WorkItemType customerRequest;
+      private static WorkItemType bug;
+      private static WorkItemType issue;
+      private static WorkItemType sbi;
+
+      private static AcceptanceCriteriaStatus unverified;
+      private static AcceptanceCriteriaStatus accepted;
+      private static AcceptanceCriteriaStatus rejected;
+
       public static void CreateTestModelData( bool initializeIds = false )
       {
+         InitializeProjects();
+         InitializeWorkItemStatuses();
+         InitializeWorkItemTypes();
+         InitializeAcceptanceCriteriaStatuses();
+
          BuildBaseWorkItems();
-         AddAcceptanceCriteria();
 
          if (initializeIds)
          {
@@ -42,36 +70,17 @@ namespace HomeScrum.Common.TestData
 
       private static void BuildBaseWorkItems()
       {
-         var homeScrum = Projects.ModelData.First( x => x.Name == "Home Scrum" );
-         var sandwiches = Projects.ModelData.First( x => x.Name == "Sandwiches" );
-         var preps = Projects.ModelData.First( x => x.Name == "PRepS" );
-         var mathWar = Projects.ModelData.First( x => x.Name == "MathWar" );
-
-         var newWorkItem = WorkItemStatuses.ModelData.First( x => x.Name == "New" );
-         var planning = WorkItemStatuses.ModelData.First( x => x.Name == "Planning" );
-         var assigned = WorkItemStatuses.ModelData.First( x => x.Name == "Assigned" );
-         var complete = WorkItemStatuses.ModelData.First( x => x.Name == "Complete" );
-         var cancelled = WorkItemStatuses.ModelData.First( x => x.Name == "Cancelled" );
-
-         var pbi = WorkItemTypes.ModelData.First( x => x.Name == "PBI" );
-         var customerRequest = WorkItemTypes.ModelData.First( x => x.Name == "CR" );
-         var bug = WorkItemTypes.ModelData.First( x => x.Name == "Bug" );
-         var issue = WorkItemTypes.ModelData.First( x => x.Name == "Issue" );
-         var sbi = WorkItemTypes.ModelData.First( x => x.Name == "SBI" );
-
          _workItems = new List<WorkItem>();
 
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #1",
-               Description = "Description #1",
-               WorkItemType = WorkItemTypes.ModelData[0],
-               Status = WorkItemStatuses.ModelData[0],
-               CreatedByUser = Users.ModelData[0],
-               LastModifiedUserRid = Users.ModelData[0].Id,
-               Project = Projects.ModelData[1]
-            } );
+         // PBIs and Customer Requests
+         var workItem = CreateWorkItem( "Add Unit Tests", "We have been bad programmers and have not been using TDD.  Get what we have tested.", pbi, planning, homeScrum );
+         StartNewTaskList();
+         var childWorkItem = CreateChildTask( workItem, "Examine Content", "Create catelog of our currently untested code.", sbi, newWorkItem );
+         StartCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
+         CloseCriteriaList( childWorkItem );
+         CloseTaskList( workItem );
+
          _workItems.Add(
             new WorkItem()
             {
@@ -144,86 +153,130 @@ namespace HomeScrum.Common.TestData
             } );
       }
 
-      private static void AddAcceptanceCriteria()
+      private static void InitializeWorkItemTypes()
       {
-         ModelData[0].AcceptanceCriteria = new[]
+         pbi = WorkItemTypes.ModelData.First( x => x.Name == "PBI" );
+         customerRequest = WorkItemTypes.ModelData.First( x => x.Name == "CR" );
+         bug = WorkItemTypes.ModelData.First( x => x.Name == "Bug" );
+         issue = WorkItemTypes.ModelData.First( x => x.Name == "Issue" );
+         sbi = WorkItemTypes.ModelData.First( x => x.Name == "SBI" );
+      }
+
+      private static void InitializeWorkItemStatuses()
+      {
+         newWorkItem = WorkItemStatuses.ModelData.First( x => x.Name == "New" );
+         planning = WorkItemStatuses.ModelData.First( x => x.Name == "Planning" );
+         assigned = WorkItemStatuses.ModelData.First( x => x.Name == "Assigned" );
+         complete = WorkItemStatuses.ModelData.First( x => x.Name == "Complete" );
+         cancelled = WorkItemStatuses.ModelData.First( x => x.Name == "Cancelled" );
+      }
+
+      private static void InitializeAcceptanceCriteriaStatuses()
+      {
+         unverified = AcceptanceCriteriaStatuses.ModelData.First( x => x.Name == "Unverified" );
+         accepted = AcceptanceCriteriaStatuses.ModelData.First( x => x.Name == "Accepted" );
+         rejected = AcceptanceCriteriaStatuses.ModelData.First( x => x.Name == "Rejected" );
+      }
+
+      private static void InitializeProjects()
+      {
+         homeScrum = Projects.ModelData.First( x => x.Name == "Home Scrum" );
+         sandwiches = Projects.ModelData.First( x => x.Name == "Sandwiches" );
+         preps = Projects.ModelData.First( x => x.Name == "PRepS" );
+         mathWar = Projects.ModelData.First( x => x.Name == "MathWar" );
+      }
+
+      private static WorkItem CreateWorkItem( string name, string description, WorkItemType wit, WorkItemStatus status, Project project )
+      {
+         var workItem = new WorkItem()
          {
-            new AcceptanceCriteria()
-            {
-               Name = "Has all items",
-               Description = "All Items Exist",
-               Status = AcceptanceCriteriaStatuses.ModelData[0],
-               WorkItem = ModelData[0]
-            },
-            new AcceptanceCriteria()
-            {
-               Name = "Everything Works",
-               Description = "Make sure everything actually works",
-               Status = AcceptanceCriteriaStatuses.ModelData[1],
-               WorkItem = ModelData[0]
-            }
+            Name = name,
+            Description = description,
+            WorkItemType = wit,
+            Status = status,
+            CreatedByUser = GetRandomUser(),
+            LastModifiedUserRid = GetRandomUser().Id,
+            Project = project
+         };
+         _workItems.Add( workItem );
+
+         return workItem;
+      }
+
+      private static void StartNewTaskList()
+      {
+         _tasks = new List<WorkItem>();
+      }
+
+      private static void CloseTaskList( WorkItem backlogItem )
+      {
+         backlogItem.Tasks = _tasks.ToArray();
+         _tasks = null;
+      }
+
+      private static WorkItem CreateChildTask( WorkItem backlogItem, string name, string description, WorkItemType wit, WorkItemStatus status )
+      {
+         var workItem = new WorkItem()
+         {
+            ParentWorkItem = backlogItem,
+            Name = name,
+            Description = description,
+            WorkItemType = wit,
+            Status = status,
+            Project = backlogItem.Project,
+            CreatedByUser = backlogItem.CreatedByUser,
+            LastModifiedUserRid = backlogItem.LastModifiedUserRid
          };
 
-         ModelData[2].AcceptanceCriteria = new[]
+         _workItems.Add( workItem );
+
+         return workItem;
+      }
+
+      private static void StartCriteriaList()
+      {
+         _criteria = new List<AcceptanceCriteria>();
+      }
+
+      private static void CloseCriteriaList(WorkItem workItem)
+      {
+         workItem.AcceptanceCriteria = _criteria.ToArray();
+         _criteria = null;
+      }
+
+      private static void AddAcceptanceCriteria( WorkItem workItem, string name, string description, AcceptanceCriteriaStatus status )
+      {
+         var criterion = new AcceptanceCriteria()
          {
-            new AcceptanceCriteria()
-            {
-               Name = "Has been done correctly",
-               Description = "This item will only be accepted if it is done correctly",
-               Status = AcceptanceCriteriaStatuses.ModelData[2],
-               WorkItem = ModelData[2]
-            }
+            WorkItem = workItem,
+            Name = name,
+            Description = description,
+            Status = status
          };
 
-         ModelData[3].AcceptanceCriteria = new[]
-         {
-            new AcceptanceCriteria()
-            {
-               Name = "Criteria #1",
-               Description = "This is criteria #1",
-               Status = AcceptanceCriteriaStatuses.ModelData[0],
-               WorkItem = ModelData[3]
-            },
-            new AcceptanceCriteria()
-            {
-               Name = "Criteria #2",
-               Description = "This is criteria #2",
-               Status = AcceptanceCriteriaStatuses.ModelData[2],
-               WorkItem = ModelData[3]
-            },
-            new AcceptanceCriteria()
-            {
-               Name = "Criteria #3",
-               Description = "This is criteria #3",
-               Status = AcceptanceCriteriaStatuses.ModelData[0],
-               WorkItem = ModelData[3]
-            }
-         };
+         _criteria.Add( criterion );
+      }
 
-         ModelData[5].AcceptanceCriteria = new[]
-         {
-            new AcceptanceCriteria()
-            {
-               Name = "Criteria #1",
-               Description = "This is criteria #1",
-               Status = AcceptanceCriteriaStatuses.ModelData[1],
-               WorkItem = ModelData[5]
-            },
-            new AcceptanceCriteria()
-            {
-               Name = "Criteria #2",
-               Description = "This is criteria #2",
-               Status = AcceptanceCriteriaStatuses.ModelData[0],
-               WorkItem = ModelData[5]
-            }
-         };
+      private static User GetRandomUser()
+      {
+         var random = new Random();
+         int idx = random.Next( 3 );
+
+         return Users.ModelData[idx];
       }
 
       private static void InitializeIds()
       {
-         foreach (var model in ModelData)
+         foreach (var workItem in _workItems)
          {
-            model.Id = Guid.NewGuid();
+            workItem.Id = Guid.NewGuid();
+            if (workItem.AcceptanceCriteria != null)
+            {
+               foreach (var criterion in workItem.AcceptanceCriteria)
+               {
+                  criterion.Id = Guid.NewGuid();
+               }
+            }
          }
       }
    }
