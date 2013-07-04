@@ -118,7 +118,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       [TestMethod]
       public void Update_ModifiesProjectStatus()
       {
-         var activeStatus = ProjectStatuses.ModelData.First( x => x.Name == "Active" );
+         var activeStatus = ProjectStatuses.ModelData.First( x => x.Name == "Open" );
          var inactiveStatus = ProjectStatuses.ModelData.First( x => x.Name == "Inactive" );
          var project = Projects.ModelData.First( x => x.Status.Id == activeStatus.Id );
 

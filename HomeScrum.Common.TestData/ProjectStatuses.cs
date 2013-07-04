@@ -31,7 +31,7 @@ namespace HomeScrum.Common.TestData
          {
             new ProjectStatus ()
             {
-               Name="Active",
+               Name="Open",
                Description="Active Project",
                StatusCd='A',
                IsActive=true,
@@ -44,7 +44,7 @@ namespace HomeScrum.Common.TestData
                Description="No longer active",
                StatusCd='A',
                IsActive=false,
-               IsPredefined=true,
+               IsPredefined=false,
                SortSequence=2
             },
             new ProjectStatus ()
@@ -58,36 +58,36 @@ namespace HomeScrum.Common.TestData
             },
             new ProjectStatus ()
             {
-               Name="Status 1",
-               Description="Active Status, Is Active, Predefined",
-               StatusCd='A',
-               IsActive=true,
-               IsPredefined=true,
+               Name="Waiting",
+               Description="Awaiting Customer Approval",
+               StatusCd='I',
+               IsActive=false,
+               IsPredefined=false,
                SortSequence=4
             },
             new ProjectStatus ()
             {
-               Name="Status 2",
-               Description="Inactive Status, Is Active, Predefined",
+               Name="Deleted",
+               Description="The project no longer exists",
                StatusCd='I',
                IsActive=true,
-               IsPredefined=true,
+               IsPredefined=false,
                SortSequence=5
             },
             new ProjectStatus ()
             {
-               Name="Status 3",
-               Description="Active Status, Is Not Active, Predefined",
-               StatusCd='A',
-               IsActive=false,
-               IsPredefined=true,
+               Name="Active",
+               Description="The project is active",
+               StatusCd='I',
+               IsActive=true,
+               IsPredefined=false,
                SortSequence=6
             },
             new ProjectStatus ()
             {
-               Name="Status 4",
-               Description="Active Status, Is Active, Not Predefined",
-               StatusCd='A',
+               Name="On Hold",
+               Description="The project is waiting for something",
+               StatusCd='I',
                IsActive=true,
                IsPredefined=false,
                SortSequence=7
