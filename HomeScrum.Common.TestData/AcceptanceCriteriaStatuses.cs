@@ -40,7 +40,7 @@ namespace HomeScrum.Common.TestData
             new AcceptanceCriteriaStatus ()
             {
                Name="Accepted",
-               Description="Accepted",
+               Description="This criteria has been met.",
                StatusCd='A',
                IsAccepted=true,
                IsPredefined=true,
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             new AcceptanceCriteriaStatus ()
             {
                Name="Rejected",
-               Description="Rejected",
+               Description="This criteria has not been met.",
                StatusCd='A',
                IsAccepted=false,
                IsPredefined=true,
@@ -57,39 +57,48 @@ namespace HomeScrum.Common.TestData
             },
             new AcceptanceCriteriaStatus ()
             {
-               Name="Status 1",
-               Description="Active Status, Is Accepted, Predefined",
+               Name="In Test",
+               Description="This criteria is currently being tested.",
                StatusCd='A',
-               IsAccepted=true,
-               IsPredefined=true,
+               IsAccepted=false,
+               IsPredefined=false,
                SortSequence=4
             },
             new AcceptanceCriteriaStatus ()
             {
-               Name="Status 2",
-               Description="Inactive Status, Is Accepted, Predefined",
+               Name="Inconclusive",
+               Description="It is not possible to test this criteria",
                StatusCd='I',
-               IsAccepted=true,
-               IsPredefined=true,
+               IsAccepted=false,
+               IsPredefined=false,
                SortSequence=5
             },
             new AcceptanceCriteriaStatus ()
             {
-               Name="Status 3",
-               Description="Active Status, Is Not Accepted, Predefined",
-               StatusCd='A',
+               Name="Open",
+               Description="Criteria is open",
+               StatusCd='I',
                IsAccepted=false,
-               IsPredefined=true,
+               IsPredefined=false,
                SortSequence=6
             },
             new AcceptanceCriteriaStatus ()
             {
-               Name="Status 4",
-               Description="Active Status, Is Accepted, Not Predefined",
-               StatusCd='A',
+               Name="Closed",
+               Description="Criteria is closed",
+               StatusCd='I',
                IsAccepted=true,
                IsPredefined=false,
                SortSequence=7
+            },
+            new AcceptanceCriteriaStatus ()
+            {
+               Name="Inactive",
+               Description="Criteria is inactive",
+               StatusCd='I',
+               IsAccepted=false,
+               IsPredefined=false,
+               SortSequence=8
             }
          };
 
