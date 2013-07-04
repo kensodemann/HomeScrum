@@ -34,14 +34,7 @@ namespace HomeScrum.Common.TestData
       {
          _configuration = new Configuration();
          _configuration.Configure();
-         AddAssemblies();
       }
-
-      private static void AddAssemblies()
-      {
-         _configuration.AddAssembly( typeof( WorkItemType ).Assembly );
-      }
-
 
       public static void Build()
       {

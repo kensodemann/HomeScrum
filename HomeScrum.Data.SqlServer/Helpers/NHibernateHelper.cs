@@ -16,7 +16,6 @@ namespace HomeScrum.Data.SqlServer.Helpers
             {
                var configuration = new Configuration();
                configuration.Configure();
-               configuration.AddAssembly( typeof( WorkItemType ).Assembly );
                _sessionFactory = configuration.BuildSessionFactory();
             }
             return _sessionFactory;

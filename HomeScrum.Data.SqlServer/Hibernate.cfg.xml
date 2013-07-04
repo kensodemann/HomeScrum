@@ -6,5 +6,6 @@
     <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
     <property name="connection.connection_string_name">HomeScrumData</property>
     <property name="show_sql">true</property>
+    <mapping assembly="HomeScrum.Data"/>
   </session-factory>
 </hibernate-configuration>
