@@ -31,11 +31,11 @@ namespace HomeScrum.Common.TestData
          {
             new SprintStatus ()
             {
-               Name="Future",
+               Name="Pre Planning",
                Description="The sprint is set up for the future",
                StatusCd='A',
                IsOpenStatus=false,
-               IsPredefined=true,
+               IsPredefined=false,
                SortSequence=1
             },
             new SprintStatus ()
@@ -49,7 +49,7 @@ namespace HomeScrum.Common.TestData
             },
             new SprintStatus ()
             {
-               Name="Active",
+               Name="In Process",
                Description="The sprint is the active one",
                StatusCd='A',
                IsOpenStatus=true,
@@ -58,48 +58,39 @@ namespace HomeScrum.Common.TestData
             },
             new SprintStatus ()
             {
-               Name="Complete",
-               Description="The sprint is done",
+               Name="Retrospective",
+               Description="The sprint is complete and a retrospective is being done",
                StatusCd='A',
-               IsOpenStatus=false,
-               IsPredefined=true,
+               IsOpenStatus=true,
+               IsPredefined=false,
                SortSequence=4
             },
             new SprintStatus ()
             {
-               Name="Status 1",
-               Description="Active Status, Is Open, Predefined",
+               Name="Closed",
+               Description="The sprint and retrospective are both complete",
                StatusCd='A',
-               IsOpenStatus=true,
+               IsOpenStatus=false,
                IsPredefined=true,
                SortSequence=5
             },
             new SprintStatus ()
             {
-               Name="Status 2",
-               Description="Inactive Status, Is Open, Predefined",
+               Name="Released",
+               Description="The output of the sprint has been released to customers",
                StatusCd='I',
-               IsOpenStatus=true,
-               IsPredefined=true,
+               IsOpenStatus=false,
+               IsPredefined=false,
                SortSequence=6
             },
             new SprintStatus ()
             {
-               Name="Status 3",
-               Description="Active Status, Is Not Open, Predefined",
-               StatusCd='A',
+               Name="New",
+               Description="The sprint is newly created",
+               StatusCd='I',
                IsOpenStatus=false,
-               IsPredefined=true,
-               SortSequence=7
-            },
-            new SprintStatus ()
-            {
-               Name="Status 4",
-               Description="Active Status, Is Open, Not Predefined",
-               StatusCd='A',
-               IsOpenStatus=true,
                IsPredefined=false,
-               SortSequence=8
+               SortSequence=7
             }
          };
 
