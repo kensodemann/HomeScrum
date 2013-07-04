@@ -23,7 +23,8 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static WorkItem[] ModelData { get; private set; }
+      private static List<WorkItem> _workItems;
+      public static WorkItem[] ModelData { get { return _workItems.ToArray(); } }
 
       public static void CreateTestModelData( bool initializeIds = false )
       {
@@ -41,8 +42,26 @@ namespace HomeScrum.Common.TestData
 
       private static void BuildBaseWorkItems()
       {
-         ModelData = new[]
-         {
+         var homeScrum = Projects.ModelData.First( x => x.Name == "Home Scrum" );
+         var sandwiches = Projects.ModelData.First( x => x.Name == "Sandwiches" );
+         var preps = Projects.ModelData.First( x => x.Name == "PRepS" );
+         var mathWar = Projects.ModelData.First( x => x.Name == "MathWar" );
+
+         var newWorkItem = WorkItemStatuses.ModelData.First( x => x.Name == "New" );
+         var planning = WorkItemStatuses.ModelData.First( x => x.Name == "Planning" );
+         var assigned = WorkItemStatuses.ModelData.First( x => x.Name == "Assigned" );
+         var complete = WorkItemStatuses.ModelData.First( x => x.Name == "Complete" );
+         var cancelled = WorkItemStatuses.ModelData.First( x => x.Name == "Cancelled" );
+
+         var pbi = WorkItemTypes.ModelData.First( x => x.Name == "PBI" );
+         var customerRequest = WorkItemTypes.ModelData.First( x => x.Name == "CR" );
+         var bug = WorkItemTypes.ModelData.First( x => x.Name == "Bug" );
+         var issue = WorkItemTypes.ModelData.First( x => x.Name == "Issue" );
+         var sbi = WorkItemTypes.ModelData.First( x => x.Name == "SBI" );
+
+         _workItems = new List<WorkItem>();
+
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #1",
@@ -52,7 +71,8 @@ namespace HomeScrum.Common.TestData
                CreatedByUser = Users.ModelData[0],
                LastModifiedUserRid = Users.ModelData[0].Id,
                Project = Projects.ModelData[1]
-            },
+            } );
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #2",
@@ -63,7 +83,8 @@ namespace HomeScrum.Common.TestData
                LastModifiedUserRid = Users.ModelData[0].Id,
                AssignedToUser = Users.ModelData[1],
                Project = Projects.ModelData[0]
-            },
+            } );
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #3",
@@ -73,7 +94,8 @@ namespace HomeScrum.Common.TestData
                CreatedByUser = Users.ModelData[1],
                LastModifiedUserRid = Users.ModelData[0].Id,
                Project = Projects.ModelData[2]
-            },
+            } );
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #4",
@@ -84,7 +106,8 @@ namespace HomeScrum.Common.TestData
                LastModifiedUserRid = Users.ModelData[1].Id,
                AssignedToUser = Users.ModelData[2],
                Project = Projects.ModelData[1]
-            },
+            } );
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #5",
@@ -94,7 +117,8 @@ namespace HomeScrum.Common.TestData
                CreatedByUser = Users.ModelData[0],
                LastModifiedUserRid = Users.ModelData[1].Id,
                Project = Projects.ModelData[2]
-            },
+            } );
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #6",
@@ -105,19 +129,19 @@ namespace HomeScrum.Common.TestData
                LastModifiedUserRid = Users.ModelData[1].Id,
                AssignedToUser = Users.ModelData[2],
                Project = Projects.ModelData[0]
-            },
+            } );
+         _workItems.Add(
             new WorkItem()
             {
                Name = "Work Item #7",
                Description = "PBI that is not open",
-               WorkItemType = WorkItemTypes.ModelData.First(x => !x.IsTask),
-               Status = WorkItemStatuses.ModelData.First(x => !x.IsOpenStatus),
+               WorkItemType = WorkItemTypes.ModelData.First( x => !x.IsTask ),
+               Status = WorkItemStatuses.ModelData.First( x => !x.IsOpenStatus ),
                CreatedByUser = Users.ModelData[2],
                LastModifiedUserRid = Users.ModelData[1].Id,
                AssignedToUser = Users.ModelData[2],
                Project = Projects.ModelData[0]
-            }
-         };
+            } );
       }
 
       private static void AddAcceptanceCriteria()
