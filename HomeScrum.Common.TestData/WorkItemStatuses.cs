@@ -40,12 +40,30 @@ namespace HomeScrum.Common.TestData
             },
             new WorkItemStatus ()
             {
+               Name="Planning",
+               Description="The Item is in planning and estimation",
+               StatusCd='A',
+               IsOpenStatus=true,
+               IsPredefined=false,
+               SortSequence=2
+            },
+            new WorkItemStatus ()
+            {
+               Name="Assigned",
+               Description="The Item is assigned for work",
+               StatusCd='A',
+               IsOpenStatus=true,
+               IsPredefined=true,
+               SortSequence=3
+            },
+            new WorkItemStatus ()
+            {
                Name="In Process",
                Description="The Item is being worked on",
                StatusCd='A',
                IsOpenStatus=true,
-               IsPredefined=true,
-               SortSequence=2
+               IsPredefined=false,
+               SortSequence=4
             },
             new WorkItemStatus ()
             {
@@ -54,7 +72,7 @@ namespace HomeScrum.Common.TestData
                StatusCd='A',
                IsOpenStatus=true,
                IsPredefined=true,
-               SortSequence=3
+               SortSequence=5
             },
             new WorkItemStatus ()
             {
@@ -62,40 +80,22 @@ namespace HomeScrum.Common.TestData
                Description="The Item is ready to be tested",
                StatusCd='A',
                IsOpenStatus=true,
-               IsPredefined=true,
-               SortSequence=4
+               IsPredefined=false,
+               SortSequence=6
             },
             new WorkItemStatus ()
             {
                Name="Complete",
                Description="The Item is done",
                StatusCd='A',
-               IsOpenStatus=true,
-               IsPredefined=true,
-               SortSequence=5
-            },
-            new WorkItemStatus ()
-            {
-               Name="Status 1",
-               Description="Active Status, Is Open, Predefined",
-               StatusCd='A',
-               IsOpenStatus=true,
-               IsPredefined=true,
-               SortSequence=6
-            },
-            new WorkItemStatus ()
-            {
-               Name="Status 2",
-               Description="Inactive Status, Is Open, Predefined",
-               StatusCd='I',
-               IsOpenStatus=true,
+               IsOpenStatus=false,
                IsPredefined=true,
                SortSequence=7
             },
             new WorkItemStatus ()
             {
-               Name="Status 1",
-               Description="Active Status, Is Not Open, Predefined",
+               Name="Cancelled",
+               Description="The Item is no longer needed",
                StatusCd='A',
                IsOpenStatus=false,
                IsPredefined=true,
@@ -103,12 +103,39 @@ namespace HomeScrum.Common.TestData
             },
             new WorkItemStatus ()
             {
-               Name="Status 1",
-               Description="Active Status, Is Open, Not Predefined",
-               StatusCd='A',
+               Name="Waiting for Test",
+               Description="The item is queued up to be tested.",
+               StatusCd='I',
                IsOpenStatus=true,
                IsPredefined=false,
                SortSequence=9
+            },
+            new WorkItemStatus ()
+            {
+               Name="In Design",
+               Description="The task is being designed",
+               StatusCd='I',
+               IsOpenStatus=true,
+               IsPredefined=false,
+               SortSequence=10
+            },
+            new WorkItemStatus ()
+            {
+               Name="In Functional",
+               Description="Functional Specifications are being drawn up",
+               StatusCd='I',
+               IsOpenStatus=true,
+               IsPredefined=false,
+               SortSequence=11
+            },
+            new WorkItemStatus ()
+            {
+               Name="Estimating",
+               Description="This task is being estimated",
+               StatusCd='I',
+               IsOpenStatus=false,
+               IsPredefined=false,
+               SortSequence=12
             }
          };
 
