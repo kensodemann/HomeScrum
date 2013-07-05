@@ -116,6 +116,53 @@ namespace HomeScrum.Common.TestData
          // * Bugs (6)
          // * SBIs (5)
          // Various statuses, all SBI's either new or planning, two of each with Acceptance Criteria (Untested)
+         workItem = CreateWorkItem( "No LDAP Server", "I cannot actually work on the LDAP server related stuff until I have a test server", issue, assigned, preps );
+         StartCriteriaList();
+         AddAcceptanceCriteria( workItem, "Exists", "The LDAP Server exists", accepted );
+         AddAcceptanceCriteria( workItem, "Accessible", "I can access the LDAP Server without error", rejected );
+         AddAcceptanceCriteria( workItem, "Contains Data", "The LDAP server has test data I can use", unverified );
+         CloseCriteriaList( workItem );
+         workItem = CreateWorkItem( "Modly Bread", "I cannot make a BLT if all of the bread has mold on it.", issue, assigned, sandwiches );
+         workItem = CreateWorkItem( "Remainders", "No one has defined how remainders should be dealt with.", issue, cancelled, mathWar );
+         StartCriteriaList();
+         AddAcceptanceCriteria( workItem, "Playable", "The way remainders are to be handled is always playable by the user", unverified );
+         AddAcceptanceCriteria( workItem, "Configurable", "The specification allows for user configuration", unverified );
+         CloseCriteriaList( workItem );
+         workItem = CreateWorkItem( "Negative Numbers", "No one will define how they want negative numbers handled by the game", issue, newWorkItem, mathWar );
+
+         workItem = CreateWorkItem( "No Admin", "It is possible to set all users to not be admins, which makes it impossible to then administer the system", bug, complete, preps );
+         workItem = CreateWorkItem( "Bug in Soup", "Waiter, there is a bug in my soup.", bug, newWorkItem, sandwiches );
+         StartCriteriaList();
+         AddAcceptanceCriteria( workItem, "Removed", "The current bowl of soup is removed", accepted );
+         AddAcceptanceCriteria( workItem, "New Soup", "A new bowl of soup is delivered to the table, not just the old soup with the bug removed", unverified );
+         AddAcceptanceCriteria( workItem, "No Bug", "There is no bug in the new bowl of soup", unverified );
+         AddAcceptanceCriteria( workItem, "Hot", "The new bowl of soup is hot", unverified );
+         CloseCriteriaList( workItem );
+         workItem = CreateWorkItem( "Addition Error", "The program seems to randomly think that 2 + 2 = 8.", bug, assigned, mathWar );
+         workItem = CreateWorkItem( "Cannot assign sprint", "Attempt to assign an SBI to a sprint, the sprint does not stay selected.  It is not being saved in the database.", bug, assigned, homeScrum );
+         workItem = CreateWorkItem( "Hide not working", "The hiding of completed work items is having no effect.", bug, cancelled, homeScrum );
+         StartCriteriaList();
+         AddAcceptanceCriteria( workItem, "Hide", "Completed work items are hidden when hide is active", accepted );
+         AddAcceptanceCriteria( workItem, "Show", "Completed work items are shown when hide is not active", accepted );
+         AddAcceptanceCriteria( workItem, "No Server Hit", "The server is not hit at all during a show or a hide", accepted );
+         CloseCriteriaList( workItem );
+         workItem = CreateWorkItem( "Bacon is Canadian", "The bacon for the BLT is Canadian.  That isn't really bacon, but more like ham.", bug, planning, sandwiches );
+
+         workItem = CreateWorkItem( "Add Last Active Admin Edit", "When a user is made not an admin, make sure they are not the last active admin user.", sbi, newWorkItem, preps );
+         workItem = CreateWorkItem( "Sprint Model", "Implement the domain model for sprints", sbi, newWorkItem, homeScrum );
+         workItem = CreateWorkItem( "Add backlog to sprint", "Modify the sprint screen to allow the addition of one or more backlog items", sbi, planning, homeScrum );
+         StartCriteriaList();
+         AddAcceptanceCriteria( workItem, "All Tasks Added", "All tasks associated with the backlog item are automatically added to the sprint", unverified );
+         AddAcceptanceCriteria( workItem, "Estimate Updated", "The estimate for the completion of the sprint is updated based on the estimates on the individual tasks", unverified );
+         CloseCriteriaList( workItem );
+         workItem = CreateWorkItem( "Add Mayo", "Spread mayo on the toast", sbi, planning, sandwiches );
+         workItem = CreateWorkItem( "Add Division Configuration", "Update the configuration screen to include a configuration section.  Save the configuration to the INI", sbi, planning, mathWar );
+         StartCriteriaList();
+         AddAcceptanceCriteria( workItem, "Remainder Setting", "Are remainders entered? toggle.", unverified );
+         AddAcceptanceCriteria( workItem, "Difficulty Setting", "Difficulting setting (easy, medium, difficult)", unverified );
+         AddAcceptanceCriteria( workItem, "Defaults", "Remainder defaults to Yes.  Difficulty defaults to medium", unverified );
+         AddAcceptanceCriteria( workItem, "Saved to INI", "Whatever elements are set are saved to the INI, even if they match the default", unverified );
+         CloseCriteriaList( workItem );
 
          _workItems.Add(
             new WorkItem()
