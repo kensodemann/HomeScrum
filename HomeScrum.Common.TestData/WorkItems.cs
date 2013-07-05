@@ -72,7 +72,17 @@ namespace HomeScrum.Common.TestData
       {
          _workItems = new List<WorkItem>();
 
-         // PBIs and Customer Requests
+         // Backlog Items
+         // 4 PBI's and 2 CR's
+         //  * All with tasks
+         //  * All tasks with at lest one acceptance criterion
+         //  * All tasks having statuses that are appropriate given the status of the backlog item
+         //  * The following statuses for the backlog items:
+         //    ** Planing (1)
+         //    ** Assigned (3)
+         //    ** Complete
+         //    ** Cancelled
+         //
          var workItem = CreateWorkItem( "Add Unit Tests", "We have been bad programmers and have not been using TDD.  Get what we have tested.", pbi, planning, homeScrum );
          StartNewTaskList();
          var childWorkItem = CreateChildTask( workItem, "Examine Content", "Create catelog of our currently untested code.", sbi, newWorkItem );
@@ -85,6 +95,27 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Passing", "All tests pass", unverified );
          CloseCriteriaList( childWorkItem );
          CloseTaskList( workItem );
+
+         // 2 PBI's and 3 CR's without tasks
+         //    ** New (3)
+         //    ** Planning (2)
+         workItem = CreateWorkItem( "Add Sprints", "As a manager, I want to organize backlog and tasks into workable timeframes.",
+            pbi, newWorkItem, homeScrum );
+         workItem = CreateWorkItem( "Hamburger", "As a hungry person, I want something made with chopped up dead cow.",
+            pbi, newWorkItem, sandwiches );
+         workItem = CreateWorkItem( "LDAP Server", "As a manager, I would like to have the ability to use LDAP as a user store.",
+            customerRequest, newWorkItem, preps );
+         workItem = CreateWorkItem( "Division", "As a parent, I want to teach my kid how to do division.",
+            customerRequest, planning, mathWar );
+         workItem = CreateWorkItem( "BLT", "As a hungry customer, I would like a sandwich made with Bacon.",
+            customerRequest, planning, sandwiches );
+
+
+         // Stand alone tasks
+         // * Issues (4)
+         // * Bugs (6)
+         // * SBIs (5)
+         // Various statuses, all SBI's either new or planning, two of each with Acceptance Criteria (Untested)
 
          _workItems.Add(
             new WorkItem()
