@@ -1,0 +1,9 @@
+﻿@model IEnumerable<HomeScrum.Web.Models.Admin.AcceptanceCriterionStatusViewModel>
+
+@{
+    ViewBag.Title = "Acceptance Criterion Statuses";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial( "_SystemDataObjectList", Model )

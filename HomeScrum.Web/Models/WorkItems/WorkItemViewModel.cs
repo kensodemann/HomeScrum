@@ -28,6 +28,6 @@ namespace HomeScrum.Web.Models.WorkItems
       [Display( Name = "ParentWorkItem", ResourceType = typeof( DisplayStrings ) )]
       public string ParentWorkItemName { get; set; }
 
-      public IEnumerable<AcceptanceCriteriaViewModel> AcceptanceCriteria { get; set; }
+      public IEnumerable<AcceptanceCriterionViewModel> AcceptanceCriteria { get; set; }
    }
 }

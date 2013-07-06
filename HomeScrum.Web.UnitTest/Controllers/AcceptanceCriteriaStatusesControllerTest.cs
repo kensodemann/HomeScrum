@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class AcceptanceCriteriaStatusesControllerTest : SystemDataObjectControllerTestBase<AcceptanceCriterionStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
+   public class AcceptanceCriteriaStatusesControllerTest : SystemDataObjectControllerTestBase<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel>
    {
       protected override ICollection<AcceptanceCriterionStatus> GetAllModels()
       {
@@ -41,7 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
-         _controller = new AcceptanceCriteriaStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriteriaStatusEditorViewModel>(), _logger.Object );
+         _controller = new AcceptanceCriterionStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object );
          _controller.ControllerContext = new ControllerContext();
       }
    }

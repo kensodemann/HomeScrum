@@ -169,7 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Binders\PrincipalModelBinder.cs" />
-    <Compile Include="Controllers\AcceptanceCriteriaStatusesController.cs" />
+    <Compile Include="Controllers\AcceptanceCriterionStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Base\ReadOnlyController.cs" />
@@ -194,8 +194,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Admin\AcceptanceCriteriaStatusEditorViewModel.cs" />
-    <Compile Include="Models\Admin\AcceptanceCriteriaStatusViewModel.cs" />
+    <Compile Include="Models\Admin\AcceptanceCriterionStatusEditorViewModel.cs" />
+    <Compile Include="Models\Admin\AcceptanceCriterionStatusViewModel.cs" />
     <Compile Include="Models\Admin\AccountModels.cs" />
     <Compile Include="Models\Base\DomainObjectViewModel.cs" />
     <Compile Include="Models\Base\SystemDomainObjectViewModel.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="Models\Admin\WorkItemStatusViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
-    <Compile Include="Models\WorkItems\AcceptanceCriteriaViewModel.cs" />
+    <Compile Include="Models\WorkItems\AcceptanceCriterionViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemEditorViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -369,20 +369,20 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\AcceptanceCriteriaStatuses\Index.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\Index.cshtml" />
     <Content Include="Views\WorkItemTypes\Index.cshtml" />
     <Content Include="Views\WorkItemStatuses\Index.cshtml" />
     <Content Include="Views\SprintStatuses\Index.cshtml" />
     <Content Include="Views\ProjectStatuses\Index.cshtml" />
-    <Content Include="Views\AcceptanceCriteriaStatuses\Details.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\Details.cshtml" />
     <Content Include="Views\ProjectStatuses\Details.cshtml" />
     <Content Include="Views\WorkItemTypes\Details.cshtml" />
     <Content Include="Views\WorkItemStatuses\Details.cshtml" />
     <Content Include="Views\SprintStatuses\Details.cshtml" />
     <Content Include="Views\WorkItemTypes\Create.cshtml" />
     <Content Include="Views\WorkItemTypes\Edit.cshtml" />
-    <Content Include="Views\AcceptanceCriteriaStatuses\Create.cshtml" />
-    <Content Include="Views\AcceptanceCriteriaStatuses\Edit.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\Create.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\Edit.cshtml" />
     <Content Include="Views\ProjectStatuses\Create.cshtml" />
     <Content Include="Views\ProjectStatuses\Edit.cshtml" />
     <Content Include="Views\WorkItemStatuses\Create.cshtml" />
@@ -392,7 +392,7 @@
     <Content Include="Views\Shared\_SystemDataObjectList.cshtml" />
     <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
     <Content Include="Views\WorkItemStatuses\_Editor.cshtml" />
-    <Content Include="Views\AcceptanceCriteriaStatuses\_Editor.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\_Editor.cshtml" />
     <Content Include="Views\ProjectStatuses\_Editor.cshtml" />
     <Content Include="Views\SprintStatuses\_Editor.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />

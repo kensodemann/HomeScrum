@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.WorkItems
 {
-   public class AcceptanceCriteriaViewModel : Base.DomainObjectViewModel
+   public class AcceptanceCriterionViewModel : Base.DomainObjectViewModel
    {
       [Display( Name = "AcceptanceCriteriaIsAccepted", ResourceType = typeof( DisplayStrings ) )]
       public bool IsAccepted { get; set; }

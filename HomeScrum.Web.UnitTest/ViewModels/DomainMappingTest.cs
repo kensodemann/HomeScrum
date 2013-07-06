@@ -65,26 +65,26 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       public void CanMapAcceptanceCriteriaStatus_DomainToViewModel()
       {
          var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map<AcceptanceCriteriaStatusViewModel>( domainModel );
+         var viewModel = Mapper.Map<AcceptanceCriterionStatusViewModel>( domainModel );
 
-         Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriteriaStatusViewModel ) );
-         Assert.IsTrue( ((AcceptanceCriteriaStatusViewModel)viewModel).AllowUse );
+         Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriterionStatusViewModel ) );
+         Assert.IsTrue( ((AcceptanceCriterionStatusViewModel)viewModel).AllowUse );
       }
 
       [TestMethod]
       public void CanMapAcceptanceCriteriaStatus_DomainToEditorViewModel()
       {
          var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( AcceptanceCriteriaStatusEditorViewModel ) );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( AcceptanceCriterionStatusEditorViewModel ) );
 
-         Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriteriaStatusEditorViewModel ) );
-         Assert.IsFalse( ((AcceptanceCriteriaStatusEditorViewModel)viewModel).AllowUse );
+         Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriterionStatusEditorViewModel ) );
+         Assert.IsFalse( ((AcceptanceCriterionStatusEditorViewModel)viewModel).AllowUse );
       }
 
       [TestMethod]
       public void CanMapAcceptanceCriteriaStatus_EditorViewModelToDomain()
       {
-         var viewModel = new AcceptanceCriteriaStatusEditorViewModel()
+         var viewModel = new AcceptanceCriterionStatusEditorViewModel()
          {
             Id = Guid.NewGuid(),
             Name = "Test Me",
