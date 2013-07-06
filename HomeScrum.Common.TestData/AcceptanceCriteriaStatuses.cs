@@ -22,13 +22,13 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      public static AcceptanceCriteriaStatus[] ModelData { get; private set; }
+      public static AcceptanceCriterionStatus[] ModelData { get; private set; }
 
       public static void CreateTestModelData( bool initializeIds = false )
       {
          ModelData = new[]
          {
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Unverified",
                Description="Not yet verified",
@@ -37,7 +37,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             }, 
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Accepted",
                Description="This criteria has been met.",
@@ -46,7 +46,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=2
             },
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Rejected",
                Description="This criteria has not been met.",
@@ -55,7 +55,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="In Test",
                Description="This criteria is currently being tested.",
@@ -64,7 +64,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Inconclusive",
                Description="It is not possible to test this criteria",
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=5
             },
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Open",
                Description="Criteria is open",
@@ -82,7 +82,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Closed",
                Description="Criteria is closed",
@@ -91,7 +91,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=7
             },
-            new AcceptanceCriteriaStatus ()
+            new AcceptanceCriterionStatus ()
             {
                Name="Inactive",
                Description="Criteria is inactive",

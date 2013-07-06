@@ -88,7 +88,7 @@ namespace HomeScrum.Data.TestConsole
 
       private static void PrintAllAcceptanceCriteriaStatuses()
       {
-         var repository = new SimpleSortedRepository<AcceptanceCriteriaStatus>( _logger.Object );
+         var repository = new SimpleSortedRepository<AcceptanceCriterionStatus>( _logger.Object );
          var statuses = repository.GetAll();
 
          Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );
@@ -157,7 +157,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
 
-      static void PrintAcceptanceCriteriaStatus( AcceptanceCriteriaStatus status )
+      static void PrintAcceptanceCriteriaStatus( AcceptanceCriterionStatus status )
       {
          Console.WriteLine( "\nAcceptanceCriteriaStatus\n" );
          Console.WriteLine( "\tId: " + status.Id.ToString() );

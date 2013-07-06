@@ -11,16 +11,16 @@ using System.Web.Mvc;
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
-   public class AcceptanceCriteriaStatusesControllerTest : SystemDataObjectControllerTestBase<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
+   public class AcceptanceCriteriaStatusesControllerTest : SystemDataObjectControllerTestBase<AcceptanceCriterionStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
    {
-      protected override ICollection<AcceptanceCriteriaStatus> GetAllModels()
+      protected override ICollection<AcceptanceCriterionStatus> GetAllModels()
       {
          return AcceptanceCriteriaStatuses.ModelData;
       }
 
-      protected override AcceptanceCriteriaStatus CreateNewModel()
+      protected override AcceptanceCriterionStatus CreateNewModel()
       {
-         return new AcceptanceCriteriaStatus()
+         return new AcceptanceCriterionStatus()
          {
             Name = "New Acceptance Criteria Status",
             Description = "New Acceptance Criteria Status",
@@ -41,7 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
-         _controller = new AcceptanceCriteriaStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>(), _logger.Object );
+         _controller = new AcceptanceCriteriaStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriteriaStatusEditorViewModel>(), _logger.Object );
          _controller.ControllerContext = new ControllerContext();
       }
    }

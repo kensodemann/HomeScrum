@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Validators
 {
-   public class AcceptanceCriteriaStatusValidator : SystemDataObjectValidator<AcceptanceCriteriaStatus>
+   public class AcceptanceCriteriaStatusValidator : SystemDataObjectValidator<AcceptanceCriterionStatus>
    {
-      public AcceptanceCriteriaStatusValidator( IRepository<AcceptanceCriteriaStatus> repository )
+      public AcceptanceCriteriaStatusValidator( IRepository<AcceptanceCriterionStatus> repository )
          : base( repository ) { }
 
 

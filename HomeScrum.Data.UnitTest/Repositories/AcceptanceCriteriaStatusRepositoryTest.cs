@@ -27,10 +27,10 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Database.Build();
          AcceptanceCriteriaStatuses.Load();
          _logger = new Mock<ILogger>();
-         _repository = new SimpleSortedRepository<AcceptanceCriteriaStatus>( _logger.Object );
+         _repository = new SimpleSortedRepository<AcceptanceCriterionStatus>( _logger.Object );
       }
 
-      private IRepository<AcceptanceCriteriaStatus> _repository;
+      private IRepository<AcceptanceCriterionStatus> _repository;
       private Mock<ILogger> _logger;
 
       [TestMethod]
@@ -88,7 +88,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       [TestMethod]
       public void Add_AddsAcceptanceCriteriaStatusToDatabase()
       {
-         var status = new AcceptanceCriteriaStatus()
+         var status = new AcceptanceCriterionStatus()
          {
             Name = "New Acceptance Criteria Status",
             Description = "New one for Insert",
@@ -127,7 +127,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
       }
 
 
-      private void AssertCollectionContainsStatus( ICollection<AcceptanceCriteriaStatus> statuses, AcceptanceCriteriaStatus status )
+      private void AssertCollectionContainsStatus( ICollection<AcceptanceCriterionStatus> statuses, AcceptanceCriterionStatus status )
       {
          var statusFromCollection = statuses.FirstOrDefault( x => x.Id == status.Id );
 
@@ -135,7 +135,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          AssertStatusesAreEqual( status, statusFromCollection );
       }
 
-      private static void AssertStatusesAreEqual( AcceptanceCriteriaStatus expected, AcceptanceCriteriaStatus actual )
+      private static void AssertStatusesAreEqual( AcceptanceCriterionStatus expected, AcceptanceCriterionStatus actual )
       {
          Assert.AreNotSame( expected, actual );
          Assert.AreEqual( expected.Id, actual.Id );

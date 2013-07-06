@@ -54,8 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\AcceptanceCriteria.cs" />
-    <Compile Include="Domain\AcceptanceCriteriaStatus.cs" />
+    <Compile Include="Domain\AcceptanceCriterion.cs" />
+    <Compile Include="Domain\AcceptanceCriterionStatus.cs" />
     <Compile Include="Domain\DomainObjectBase.cs" />
     <Compile Include="Domain\Project.cs" />
     <Compile Include="Domain\ProjectHistory.cs" />
@@ -112,7 +112,7 @@
     <EmbeddedResource Include="Mappings\SprintStatus.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\AcceptanceCriteriaStatus.hbm.xml">
+    <EmbeddedResource Include="Mappings\AcceptanceCriterionStatus.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -131,7 +131,7 @@
     <EmbeddedResource Include="Mappings\ProjectHistory.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\AcceptanceCriteria.hbm.xml">
+    <EmbeddedResource Include="Mappings\AcceptanceCriterion.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Mappings\WorkItem.hbm.xml">

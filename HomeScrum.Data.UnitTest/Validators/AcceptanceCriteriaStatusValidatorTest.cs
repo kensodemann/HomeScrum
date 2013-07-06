@@ -11,13 +11,13 @@ namespace HomeScrum.Data.UnitTest.Validators
    [TestClass]
    public class AcceptanceCriteriaStatusValidatorTest
    {
-      private Mock<IRepository<AcceptanceCriteriaStatus>> _repository;
+      private Mock<IRepository<AcceptanceCriterionStatus>> _repository;
       private AcceptanceCriteriaStatusValidator _validator;
 
       [TestInitialize]
       public void InitializeTest()
       {
-         _repository = new Mock<IRepository<AcceptanceCriteriaStatus>>();
+         _repository = new Mock<IRepository<AcceptanceCriterionStatus>>();
          _repository.Setup( x => x.GetAll() ).Returns( AcceptanceCriteriaStatuses.ModelData );
          _validator = new AcceptanceCriteriaStatusValidator( _repository.Object );
       }
@@ -26,7 +26,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       [TestMethod]
       public void MessagesContainsUniqueNameMessage_IfNameNotUnique_OnInsert()
       {
-         var model = new AcceptanceCriteriaStatus();
+         var model = new AcceptanceCriterionStatus();
          model.Name = AcceptanceCriteriaStatuses.ModelData[1].Name;
          model.Id = AcceptanceCriteriaStatuses.ModelData[0].Id;
 
@@ -44,7 +44,7 @@ namespace HomeScrum.Data.UnitTest.Validators
       [TestMethod]
       public void MessagesContainsUniqueNameMessage_IfNameNotUnique_OnUpdate()
       {
-         var model = new AcceptanceCriteriaStatus();
+         var model = new AcceptanceCriterionStatus();
          model.Name = AcceptanceCriteriaStatuses.ModelData[1].Name;
          model.Id = AcceptanceCriteriaStatuses.ModelData[0].Id;
 

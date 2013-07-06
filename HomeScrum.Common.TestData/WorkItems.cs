@@ -27,7 +27,7 @@ namespace HomeScrum.Common.TestData
       public static WorkItem[] ModelData { get { return _workItems.ToArray(); } }
 
       private static List<WorkItem> _tasks;
-      private static List<AcceptanceCriteria> _criteria;
+      private static List<AcceptanceCriterion> _criteria;
 
       private static Project homeScrum;
       private static Project sandwiches;
@@ -46,9 +46,9 @@ namespace HomeScrum.Common.TestData
       private static WorkItemType issue;
       private static WorkItemType sbi;
 
-      private static AcceptanceCriteriaStatus unverified;
-      private static AcceptanceCriteriaStatus accepted;
-      private static AcceptanceCriteriaStatus rejected;
+      private static AcceptanceCriterionStatus unverified;
+      private static AcceptanceCriterionStatus accepted;
+      private static AcceptanceCriterionStatus rejected;
 
       public static void CreateTestModelData( bool initializeIds = false )
       {
@@ -421,7 +421,7 @@ namespace HomeScrum.Common.TestData
 
       private static void OpenCriteriaList()
       {
-         _criteria = new List<AcceptanceCriteria>();
+         _criteria = new List<AcceptanceCriterion>();
       }
 
       private static void CloseCriteriaList( WorkItem workItem )
@@ -430,9 +430,9 @@ namespace HomeScrum.Common.TestData
          _criteria = null;
       }
 
-      private static void AddAcceptanceCriteria( WorkItem workItem, string name, string description, AcceptanceCriteriaStatus status )
+      private static void AddAcceptanceCriteria( WorkItem workItem, string name, string description, AcceptanceCriterionStatus status )
       {
-         var criterion = new AcceptanceCriteria()
+         var criterion = new AcceptanceCriterion()
          {
             WorkItem = workItem,
             Name = name,

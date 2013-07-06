@@ -9,11 +9,11 @@ using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class AcceptanceCriteriaStatusesController : SystemDataObjectController<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
+   public class AcceptanceCriteriaStatusesController : SystemDataObjectController<AcceptanceCriterionStatus, AcceptanceCriteriaStatusViewModel, AcceptanceCriteriaStatusEditorViewModel>
    {
       [Inject]
-      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriteriaStatus> repository, IValidator<AcceptanceCriteriaStatus> validator,
-         IPropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel> translator, ILogger logger )
+      public AcceptanceCriteriaStatusesController( IRepository<AcceptanceCriterionStatus> repository, IValidator<AcceptanceCriterionStatus> validator,
+         IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriteriaStatusEditorViewModel> translator, ILogger logger )
          : base( repository, validator, translator, logger ) { }
    }
 }

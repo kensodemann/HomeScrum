@@ -209,7 +209,7 @@ namespace HomeScrum.Data.UnitTest.Repositories
          };
          workItem.AcceptanceCriteria = new[]
          {
-            new AcceptanceCriteria()
+            new AcceptanceCriterion()
             {
                Name = "It is accepted",
                Description = "It must be accepted in order to be accepted.",

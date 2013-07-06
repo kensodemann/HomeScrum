@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
-   public class AcceptanceCriteriaStatus : SystemDomainObject
+   public class AcceptanceCriterion : DomainObjectBase
    {
-      public virtual bool IsAccepted { get; set; }
+      [Required]
+      public virtual AcceptanceCriterionStatus Status { get; set; }
+
+      [Required]
+      public virtual WorkItem WorkItem { get; set; }
    }
 }

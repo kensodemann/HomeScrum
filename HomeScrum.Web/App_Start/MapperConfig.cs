@@ -23,7 +23,7 @@ namespace HomeScrum.Web
 
       private static void MapEditorViewModelsToDomains()
       {
-         Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriteriaStatus>()
+         Mapper.CreateMap<AcceptanceCriteriaStatusEditorViewModel, AcceptanceCriterionStatus>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
@@ -60,7 +60,7 @@ namespace HomeScrum.Web
 
       private static void MapDomainsToEditorViewModels()
       {
-         Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>()
+         Mapper.CreateMap<AcceptanceCriterionStatus, AcceptanceCriteriaStatusEditorViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<ProjectStatus, ProjectStatusEditorViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
@@ -95,7 +95,7 @@ namespace HomeScrum.Web
 
       private static void MapDomainsToViewModels()
       {
-         Mapper.CreateMap<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusViewModel>()
+         Mapper.CreateMap<AcceptanceCriterionStatus, AcceptanceCriteriaStatusViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
@@ -106,7 +106,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>()
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
 
-         Mapper.CreateMap<AcceptanceCriteria, AcceptanceCriteriaViewModel>()
+         Mapper.CreateMap<AcceptanceCriterion, AcceptanceCriteriaViewModel>()
             .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.IsAccepted ) );
          Mapper.CreateMap<Project, ProjectViewModel>();
          Mapper.CreateMap<WorkItem, WorkItemViewModel>()

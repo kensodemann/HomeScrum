@@ -3,7 +3,7 @@
                    assembly="HomeScrum.Data"
                    namespace="HomeScrum.Data.Domain">
 
-  <class name="AcceptanceCriteriaStatus"
+  <class name="AcceptanceCriterionStatus"
          table="AcceptanceCriteriaStatuses">
     <id name="Id">
       <generator class="guid"></generator>

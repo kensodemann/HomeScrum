@@ -93,13 +93,13 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             IsPredefined = false,
             AllowUse = true
          };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( AcceptanceCriteriaStatus ) );
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( AcceptanceCriterionStatus ) );
 
-         Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriteriaStatus ) );
-         Assert.AreEqual( viewModel.Id, ((AcceptanceCriteriaStatus)domainModel).Id );
-         Assert.AreEqual( viewModel.Name, ((AcceptanceCriteriaStatus)domainModel).Name );
-         Assert.AreEqual( viewModel.Description, ((AcceptanceCriteriaStatus)domainModel).Description );
-         Assert.AreEqual( 'A', ((AcceptanceCriteriaStatus)domainModel).StatusCd );
+         Assert.IsInstanceOfType( domainModel, typeof( AcceptanceCriterionStatus ) );
+         Assert.AreEqual( viewModel.Id, ((AcceptanceCriterionStatus)domainModel).Id );
+         Assert.AreEqual( viewModel.Name, ((AcceptanceCriterionStatus)domainModel).Name );
+         Assert.AreEqual( viewModel.Description, ((AcceptanceCriterionStatus)domainModel).Description );
+         Assert.AreEqual( 'A', ((AcceptanceCriterionStatus)domainModel).StatusCd );
       }
       #endregion
 

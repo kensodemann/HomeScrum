@@ -70,7 +70,7 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         BindSimpleSortRepository<AcceptanceCriteriaStatus>( kernel );
+         BindSimpleSortRepository<AcceptanceCriterionStatus>( kernel );
          BindSimpleSortRepository<ProjectStatus>( kernel );
          BindSimpleSortRepository<SprintStatus>( kernel );
          BindSimpleSortRepository<WorkItemStatus>( kernel );
@@ -90,7 +90,7 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterValidators( IKernel kernel )
       {
-         kernel.Bind<IValidator<AcceptanceCriteriaStatus>>().To( typeof( AcceptanceCriteriaStatusValidator ) );
+         kernel.Bind<IValidator<AcceptanceCriterionStatus>>().To( typeof( AcceptanceCriteriaStatusValidator ) );
          kernel.Bind<IValidator<ProjectStatus>>().To( typeof( ProjectStatusValidator ) );
          kernel.Bind<IValidator<SprintStatus>>().To( typeof( SprintStatusValidator ) );
          kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
@@ -104,8 +104,8 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterTranslators( IKernel kernel )
       {
-         kernel.Bind<IPropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>>()
-            .ToConstant( new PropertyNameTranslator<AcceptanceCriteriaStatus, AcceptanceCriteriaStatusEditorViewModel>() );
+         kernel.Bind<IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriteriaStatusEditorViewModel>>()
+            .ToConstant( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriteriaStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>>()
