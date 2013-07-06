@@ -262,6 +262,15 @@ namespace HomeScrum.Data.UnitTest.Repositories
          {
             Assert.AreEqual( expected.AcceptanceCriteria.Count(), actual.AcceptanceCriteria.Count() );
          }
+
+         if (expected.Tasks == null)
+         {
+            Assert.AreEqual( 0, actual.Tasks.Count() );
+         }
+         else
+         {
+            Assert.AreEqual( expected.Tasks.Count(), actual.Tasks.Count() );
+         }
       }
       #endregion
    }

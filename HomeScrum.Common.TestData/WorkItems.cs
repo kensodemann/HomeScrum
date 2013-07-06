@@ -195,7 +195,7 @@ namespace HomeScrum.Common.TestData
 
          workItem = CreateWorkItem( "Quadratic Equations", "As a parent, I want to teach my child to sovle quadradic equations", customerRequest, cancelled, mathWar );
          OpenTaskList();
-         workItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete );
+         childWorkItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete );
          CloseTaskList( workItem );
 
          // 2 PBI's and 3 CR's without tasks
