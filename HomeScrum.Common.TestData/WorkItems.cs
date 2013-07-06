@@ -75,7 +75,7 @@ namespace HomeScrum.Common.TestData
          // Backlog Items
          // 4 PBI's and 2 CR's
          //  * All with tasks
-         //  * All tasks with at lest one acceptance criterion
+         //  * Most tasks with at lest one acceptance criterion
          //  * All tasks having statuses that are appropriate given the status of the backlog item
          //  * The following statuses for the backlog items:
          //    ** Planing (1)
@@ -131,18 +131,71 @@ namespace HomeScrum.Common.TestData
 
          workItem = CreateWorkItem( "Problem Report Printing", "As a user, I want to be able to print hard copies of problem reports", pbi, complete, preps );
          OpenTaskList();
+         childWorkItem = CreateChildTask( workItem, "No Line Feeds", "The current ASCII printing does not contain line feeds", bug, cancelled );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Line Breaks", "Each line is on its own line", unverified );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Create Postscript", "Create a postscript file of the problem report", sbi, complete );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Sections", "Each section contains a bold header explaining what it is", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Printer", "The file is sent to the printer", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Configuration", "The problem report prints according to the user configuration", accepted );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Configuration Screen", "Create a screen to allow users to configure the report format", sbi, complete );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Header Font", "The user can set the font to use for the header", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Header Font Size", "The user can set the font size to use for the header", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Header Bold", "The user can choose if the header is bold or regular", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Header Default", "The header settings default to Verdana, 14 point, bold", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Text Font", "The user can set the font to use for the body text", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Text Font Size", "The user can set the font size to use for the body text", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Text Bold", "The user can choose if the body text is bold or regular", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Text Default", "The body text settings default to Verdana, 10 point, regular", accepted );
+         CloseCriteriaList( childWorkItem );
          CloseTaskList( workItem );
 
          workItem = CreateWorkItem( "Hummus Sandwich", "As a vegan, I want a tasty, tasty sandwich without any animal product in it", pbi, assigned, sandwiches );
          OpenTaskList();
+         childWorkItem = CreateChildTask( workItem, "All Meat", "All of your sandwiches contain dead animals, nothing for vegans to eat", bug, assigned );
+         childWorkItem = CreateChildTask( workItem, "Make Hummus", "Make Hummus", sbi, assigned );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "No dead animals", "The hummus does not contain the flesh of a dead animal", unverified );
+         AddAcceptanceCriteria( childWorkItem, "No animal products", "The hummus does not contain any animal by-product such as milk, egg, or cheese", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Chickpeas", "The primary ingredient is chickpeas", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Tasty", "The hummus tastes good", unverified );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Bread", "Make Vegan bread", sbi, complete );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "No dead animals", "The bread does not contain the flesh of a dead animal", unverified );
+         AddAcceptanceCriteria( childWorkItem, "No animal products", "The bread does not contain any animal by-product such as milk, egg, or cheese", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Tasty", "The bread tastes good", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Fluffy", "The bread is properly leavened and not flat", unverified );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Assemble", "Make the sandwich", sbi, complete );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "No dead animals", "The sandwich does not contain the flesh of a dead animal", unverified );
+         AddAcceptanceCriteria( childWorkItem, "No animal products", "The sandwich does not contain any animal by-product such as milk, egg, or cheese", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Tasty", "The sandwich tastes good", unverified );
+         CloseCriteriaList( childWorkItem );
          CloseTaskList( workItem );
 
          workItem = CreateWorkItem( "Burndown Chart", "As a user, I want a quick and easy indication of the progress of work on a sprint", customerRequest, assigned, homeScrum );
          OpenTaskList();
+         childWorkItem = CreateChildTask( workItem, "Burndown Store", "Create a table that is used to store the burndown", sbi, newWorkItem );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Information", "At a minimum, contains sprint, date, and remaining", unverified );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Generator", "Create a routine that generates the burndown", sbi, newWorkItem );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "All Active Sprints", "Routine includes all active sprints", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Accurate", "Routine accurately calculates the remaining value for each active sprint", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Store", "Routine stores the calculated value in the burndown table", unverified );
+         CloseCriteriaList( childWorkItem );
          CloseTaskList( workItem );
 
          workItem = CreateWorkItem( "Quadratic Equations", "As a parent, I want to teach my child to sovle quadradic equations", customerRequest, cancelled, mathWar );
          OpenTaskList();
+         workItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete );
          CloseTaskList( workItem );
 
          // 2 PBI's and 3 CR's without tasks
