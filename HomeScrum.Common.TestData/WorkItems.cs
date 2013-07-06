@@ -99,6 +99,34 @@ namespace HomeScrum.Common.TestData
          workItem = CreateWorkItem( "Sprint Retrospective", "As a manager, I want to gather information on what went well with a sprint and what did not in order to improve the process",
             pbi, assigned, homeScrum );
          OpenTaskList();
+         childWorkItem = CreateChildTask( workItem, "No Retrospetive", "We need to design a retrospective", issue, complete );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Before Close", "Must have before close of sprint", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Right", "Design allows for entry of what went right", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Wrong", "Design allows for entry of what went wrong", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Improve", "Design allows for entry of what we will improve upon the next sprint", accepted );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Add Right", "Add list of things we did right", sbi, assigned );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Can Add", "Adding item is allowed", accepted );
+         AddAcceptanceCriteria( childWorkItem, "Can Update", "Changing item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Can Delete", "Removing item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Moves to Next Sprint", "Is viewable while setting up next sprint", unverified );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Add Wrong", "Add list of things we did wrong", sbi, assigned );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Can Add", "Adding item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Can Update", "Changing item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Can Delete", "Removing item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Moves to Next Sprint", "Is viewable while setting up next sprint", unverified );
+         CloseCriteriaList( childWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Add Improvment List", "Add a list of items we need to improve upon", sbi, assigned );
+         OpenCriteriaList();
+         AddAcceptanceCriteria( childWorkItem, "Can Add", "Adding item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Can Update", "Changing item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Can Delete", "Removing item is allowed", unverified );
+         AddAcceptanceCriteria( childWorkItem, "Moves to Next Sprint", "Is viewable while setting up next sprint", unverified );
+         CloseCriteriaList( childWorkItem );
          CloseTaskList( workItem );
 
          workItem = CreateWorkItem( "Problem Report Printing", "As a user, I want to be able to print hard copies of problem reports", pbi, complete, preps );
