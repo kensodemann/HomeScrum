@@ -80,11 +80,36 @@
             ShowHideParentWorkItem(effect);
         }
 
+        function SetProjectToParentWorkItemProject() {
+            var selectedProject = $("#ProjectId").val();
+            var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
+            if (selectedProject != backlogProject &&
+                backlogProject != "00000000-0000-0000-0000-000000000000") {
+                $("#ProjectId").val(backlogProject);
+            }
+        }
+
+        function LimitBacklogItems() {
+            var selectedProject = $("#ProjectId").val();
+            var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
+            if (backlogProject != selectedProject) {
+                $("#ParentWorkItemId").val("00000000-0000-0000-0000-000000000000");
+            }
+        }
+
         $(function () {
             ShowHideDataItems();
 
             $("#WorkItemTypeId").change(function () {
                 ShowHideDataItems("fade");
+            });
+
+            $("#ParentWorkItemId").change(function () {
+                SetProjectToParentWorkItemProject();
+            });
+
+            $("#ProjectId").change(function () {
+                LimitBacklogItems();
             });
         });
     </script>
