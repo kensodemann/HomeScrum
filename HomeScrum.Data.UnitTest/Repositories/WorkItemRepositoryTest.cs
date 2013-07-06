@@ -160,6 +160,39 @@ namespace HomeScrum.Data.UnitTest.Repositories
          AssertWorkItemsAreEqual( WorkItems.ModelData[2], workItem );
       }
 
+      [TestMethod]
+      public void Get_LoadsAcceptanceCriteria()
+      {
+         var expected = WorkItems.ModelData.First( x => x.AcceptanceCriteria != null && x.AcceptanceCriteria.Count() > 2 );
+         var actual = _repository.Get( expected.Id );
+
+         Assert.AreEqual( expected.AcceptanceCriteria.Count(), actual.AcceptanceCriteria.Count() );
+         foreach (var criterion in expected.AcceptanceCriteria)
+         {
+            Assert.IsNotNull( actual.AcceptanceCriteria.FirstOrDefault(
+               x => x.Id == criterion.Id &&
+                  x.Name == criterion.Name &&
+                  x.Description == criterion.Description &&
+                  x.Status.Id == criterion.Status.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void Get_LoadsTasks()
+      {
+         var expected = WorkItems.ModelData.First( x => x.Tasks != null && x.Tasks.Count() > 2 );
+         var actual = _repository.Get( expected.Id );
+
+         Assert.AreEqual( expected.Tasks.Count(), actual.Tasks.Count() );
+         foreach (var task in expected.Tasks)
+         {
+            Assert.IsNotNull( actual.Tasks.FirstOrDefault(
+               x => x.Id == task.Id &&
+                  x.Name == task.Name &&
+                  x.Description == task.Description &&
+                  x.Status.Id == task.Status.Id ) );
+         }
+      }
 
       [TestMethod]
       public void Add_AddsWorkItemToDatabase()
