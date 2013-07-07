@@ -89,7 +89,8 @@ namespace HomeScrum.Web.Extensions
                DataAttributes = new Dictionary<string, string>()
                {
                   { "CanBeAssigned", item.IsTask ? "True" : "False" },
-                  { "CanHaveParent", item.IsTask ? "True" : "False" }
+                  { "CanHaveParent", item.IsTask ? "True" : "False" },
+                  { "CanHaveChildren", item.IsTask? "False" : "True" }
                }
             } );
       }

@@ -79,9 +79,20 @@
             }
         }
 
+        function ShowHideTaskList(effect) {
+            var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
+            if (canHaveChildren == "True") {
+                $("#TaskListDiv").show(effect);
+            }
+            else {
+                $("#TaskListDiv").hide(effect);
+            }
+        }
+
         function ShowHideDataItems(effect) {
             ShowHideAssigned(effect);
             ShowHideParentWorkItem(effect);
+            ShowHideTaskList(effect);
         }
 
         function SetProjectToParentWorkItemProject() {
