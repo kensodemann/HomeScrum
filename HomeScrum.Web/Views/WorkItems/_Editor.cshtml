@@ -93,11 +93,12 @@
             var selectedProject = $("#ProjectId").val();
             var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
             if (backlogProject != selectedProject) {
-                $("#ParentWorkItemId").children("option").show();
                 if (selectedProject != "00000000-0000-0000-0000-000000000000") {
-                    $("#ParentWorkItemId").children("option").hide();
-                    $("#ParentWorkItemId").children("option[data-ProjectId=00000000-0000-0000-0000-000000000000]").show();
-                    $("#ParentWorkItemId").children("option[data-ProjectId=" + selectedProject + "]").show();
+                    $("#ParentWorkItemId").children("option").attr("disabled", "disabled");
+                    $("#ParentWorkItemId").children("option[data-ProjectId=00000000-0000-0000-0000-000000000000]").removeAttr("disabled");
+                    $("#ParentWorkItemId").children("option[data-ProjectId=" + selectedProject + "]").removeAttr("disabled");
+                } else {
+                    $("#ParentWorkItemId").children("option").removeAttr("disabled");
                 }
                 $("#ParentWorkItemId").val("00000000-0000-0000-0000-000000000000");
             }
