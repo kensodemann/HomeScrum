@@ -49,6 +49,10 @@
         </div>
 
     </fieldset>
+    
+    <div id="TaskListDiv">
+        @Html.Partial( "_WorkItemList", Model.Tasks )
+    </div>
  
     <p>
         <input type="submit" value="@ViewBag.EditorButtonLabel" />
