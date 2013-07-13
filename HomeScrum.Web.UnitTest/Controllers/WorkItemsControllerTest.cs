@@ -14,6 +14,8 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
+using NHibernate.Criterion;
+using NHibernate.Transform;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
@@ -34,6 +36,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IWorkItemRepository> _workItemRepository;
       private Mock<ILogger> _logger;
       private Mock<ISessionFactory> _sessionFactory;
+      private Mock<ISession> _session;
+      private Mock<ICriteria> _queryCriteria;
       private WorkItemsController _controller;
 
       private User _currentUser;
@@ -71,7 +75,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<WorkItemViewModel> ) );
+         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<WorkItemIndexViewModel> ) );
       }
 
       [TestMethod]
@@ -79,7 +83,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _controller.Index();
 
-         _workItemRepository.Verify( x => x.GetAll(), Times.Once() );
+         _queryCriteria.Verify( x => x.List<WorkItemIndexViewModel>(), Times.Once() );
       }
       #endregion
 
@@ -579,7 +583,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
-         for (int i = 0; i<viewModel.ProductBacklogItems.Count();i++)
+         for (int i = 0; i < viewModel.ProductBacklogItems.Count(); i++)
          {
             var item = viewModel.ProductBacklogItems.ElementAt( i );
             if (i == 0)
@@ -976,6 +980,42 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void SetupSessionFactory()
       {
          _sessionFactory = new Mock<ISessionFactory>();
+         _session = new Mock<ISession>();
+         _queryCriteria = new Mock<ICriteria>();
+
+         _sessionFactory
+            .Setup( x => x.OpenSession() )
+            .Returns( _session.Object );
+
+         _session
+            .Setup( x => x.CreateCriteria( typeof( WorkItem ) ) )
+            .Returns( _queryCriteria.Object );
+
+         _queryCriteria
+            .Setup( x => x.List<WorkItemIndexViewModel>() )
+            .Returns( (from item in WorkItems.ModelData
+                       select new WorkItemIndexViewModel()
+                       {
+                          Id = item.Id,
+                          Name = item.Name,
+                          Description = item.Description,
+                          IsOpenStatus = item.Status.IsOpenStatus,
+                          StatusName = item.Status.Name,
+                          WorkItemTypeName = item.WorkItemType.Name
+                       }).ToList() );
+
+         _queryCriteria
+            .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
+            .Returns( _queryCriteria.Object );
+         _queryCriteria
+            .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
+            .Returns( _queryCriteria.Object );
+         _queryCriteria
+            .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
+            .Returns( _queryCriteria.Object );
+         _queryCriteria
+            .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
+            .Returns( _queryCriteria.Object );
       }
 
       private void SetupValidator()
