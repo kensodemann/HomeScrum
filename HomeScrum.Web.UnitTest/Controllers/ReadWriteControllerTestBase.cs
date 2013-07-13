@@ -10,6 +10,7 @@ using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate;
 using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -24,6 +25,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected Mock<ILogger> _logger;
       protected ReadWriteController<ModelT, ViewModelT, EditorViewModelT> _controller;
       protected IPrincipal FakeUser = new GenericPrincipal( new GenericIdentity( "ken", "Forms" ), null );
+      protected Mock<ISessionFactory> _sessionFactory;
+      protected Mock<ISession> _session;
+      protected Mock<ICriteria> _query;
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
@@ -50,6 +54,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public virtual void InitializeTest()
       {
+         SetupSessionFactory();
          _repository = new Mock<IRepository<ModelT>>();
          _validator = new Mock<IValidator<ModelT>>();
          _logger = new Mock<ILogger>();
@@ -61,25 +66,43 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         _repository.Setup( x => x.GetAll() )
-            .Returns( GetAllModels() );
+         //_query
+         //  .Setup( x => x.List<SystemDomainObjectViewModel>() )
+         //  .Returns( (from item in GetAllModels()
+         //             select new SystemDomainObjectViewModel()
+         //             {
+         //                Id = item.Id,
+         //                Name = item.Name,
+         //                Description = item.Description,
+         //                StatusCd = 'A',
+         //                IsPredefined = true
+         //             }).ToList() );
 
          var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<ViewModelT> ) );
+         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<SystemDomainObjectViewModel> ) );
       }
 
       [TestMethod]
       public void Index_GetsAllItems()
       {
-         _repository.Setup( x => x.GetAll() )
-            .Returns( GetAllModels() );
+         _query
+            .Setup( x => x.List<SystemDomainObjectViewModel>() )
+            .Returns( (from item in GetAllModels()
+                       select new SystemDomainObjectViewModel()
+                       {
+                          Id = item.Id,
+                          Name = item.Name,
+                          Description = item.Description,
+                          StatusCd = 'A',
+                          IsPredefined = true
+                       }).ToList() );
 
          _controller.Index();
 
-         _repository.Verify( x => x.GetAll(), Times.Once() );
+         _query.Verify( x => x.List<SystemDomainObjectViewModel>(), Times.Once() );
       }
 
       [TestMethod]
@@ -379,6 +402,34 @@ namespace HomeScrum.Web.UnitTest.Controllers
          messages.Add( new KeyValuePair<string, string>( "SomethingElse", "Another Message" ) );
 
          return messages;
+      }
+
+      private void SetupSessionFactory()
+      {
+         _sessionFactory = new Mock<ISessionFactory>();
+         _session = new Mock<ISession>();
+         _query = new Mock<ICriteria>();
+
+         _sessionFactory
+            .Setup( x => x.OpenSession() )
+            .Returns( _session.Object );
+
+         _session
+            .Setup( x => x.CreateCriteria( typeof( WorkItem ) ) )
+            .Returns( _query.Object );
+
+         //_queryCriteria
+         //   .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
+         //   .Returns( _queryCriteria.Object );
+         //_queryCriteria
+         //   .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
+         //   .Returns( _queryCriteria.Object );
+         //_queryCriteria
+         //   .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
+         //   .Returns( _queryCriteria.Object );
+         //_queryCriteria
+         //   .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
+         //   .Returns( _queryCriteria.Object );
       }
       #endregion
    }

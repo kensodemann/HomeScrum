@@ -9,7 +9,18 @@ namespace HomeScrum.Web.Models.Base
    public class SystemDomainObjectViewModel : DomainObjectViewModel
    {
       [Display( Name = "AllowUse", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool AllowUse { get; set; }
+      public virtual bool AllowUse
+      {
+         get
+         {
+            return StatusCd == 'A';
+         }
+         set
+         {
+            StatusCd = value ? 'A' : 'C';
+         }
+      }
+      public virtual char StatusCd { get; set; }
 
       public virtual bool IsPredefined { get; set; }
       public virtual int SortSequence { get; set; }
