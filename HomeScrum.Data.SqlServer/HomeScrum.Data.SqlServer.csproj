@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProjectRepository.cs" />
+    <Compile Include="Queries\WorkItemQuery.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

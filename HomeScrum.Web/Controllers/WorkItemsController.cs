@@ -10,6 +10,8 @@ using Ninject.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using HomeScrum.Data.SqlServer.Queries;
+using HomeScrum.Data.SqlServer.Helpers;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -24,12 +26,14 @@ namespace HomeScrum.Web.Controllers
          _workItemTypeRepository = workItemTypeRepository;
          _projectRepository = projectRepository;
          _userRepository = userRepository;
+         _workItemQuery = new WorkItemQuery();
       }
 
       private IRepository<WorkItemStatus> _statusRepository;
       private IRepository<WorkItemType> _workItemTypeRepository;
       private IRepository<Project> _projectRepository;
       private IUserRepository _userRepository;
+      private WorkItemQuery _workItemQuery;
 
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
@@ -78,13 +82,17 @@ namespace HomeScrum.Web.Controllers
       // TODO: Look at moving the default sort into the repository
       public override System.Web.Mvc.ActionResult Index()
       {
-         var workItems = MainRepository
-            .GetAll()
-            .OrderBy( x => x.Status.SortSequence )
-            .OrderBy( x => x.WorkItemType.SortSequence )
-            .ToList();
-
-         return View( Mapper.Map<ICollection<WorkItem>, IEnumerable<WorkItemViewModel>>( workItems ) );
+         //var workItems = MainRepository
+         //   .GetAll()
+         //   .OrderBy( x => x.Status.SortSequence )
+         //   .OrderBy( x => x.WorkItemType.SortSequence )
+         //   .ToList();
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            var workItems = _workItemQuery.GetQuery( session ).List<WorkItem>();
+          
+            return View( Mapper.Map<ICollection<WorkItem>, IEnumerable<WorkItemViewModel>>( workItems ) );
+         }
       }
    }
 }
