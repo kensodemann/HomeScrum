@@ -236,6 +236,7 @@
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
     <Compile Include="Models\WorkItems\AcceptanceCriterionViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemEditorViewModel.cs" />
+    <Compile Include="Models\WorkItems\WorkItemIndexViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\HomeScrumMembershipProvider.cs" />

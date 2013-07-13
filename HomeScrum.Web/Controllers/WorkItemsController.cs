@@ -12,6 +12,8 @@ using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Data.SqlServer.Queries;
 using HomeScrum.Data.SqlServer.Helpers;
+using NHibernate.Criterion;
+using NHibernate.Transform;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -79,19 +81,22 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/
-      // TODO: Look at moving the default sort into the repository
       public override System.Web.Mvc.ActionResult Index()
       {
-         //var workItems = MainRepository
-         //   .GetAll()
-         //   .OrderBy( x => x.Status.SortSequence )
-         //   .OrderBy( x => x.WorkItemType.SortSequence )
-         //   .ToList();
          using (var session = NHibernateHelper.OpenSession())
          {
-            var workItems = _workItemQuery.GetQuery( session ).List<WorkItem>();
-          
-            return View( Mapper.Map<ICollection<WorkItem>, IEnumerable<WorkItemViewModel>>( workItems ) );
+            var query = _workItemQuery.GetQuery( session );
+            query.SetProjection(
+               Projections.ProjectionList()
+                  .Add( Projections.Property( "Id" ), "Id" )
+                  .Add( Projections.Property( "Name" ), "Name" )
+                  .Add( Projections.Property( "wit.Name" ), "WorkItemTypeName" )
+                  .Add( Projections.Property( "stat.Name" ), "StatusName" )
+                  .Add( Projections.Property( "stat.IsOpenStatus" ), "IsComplete" ) )
+               .SetResultTransformer( Transformers.AliasToBean<WorkItemIndexViewModel>() );
+            var workItems = query.List<WorkItemIndexViewModel>();
+
+            return View( workItems );
          }
       }
    }
