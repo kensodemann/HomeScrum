@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Data.SqlServer.Queries;
-using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using NHibernate;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -21,7 +21,7 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public WorkItemsController( IWorkItemRepository repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
-         IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger )
+         IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( repository, validator, translator, logger )
       {
          _statusRepository = statusRepository;
@@ -29,6 +29,7 @@ namespace HomeScrum.Web.Controllers
          _projectRepository = projectRepository;
          _userRepository = userRepository;
          _workItemQuery = new WorkItemQuery();
+         _sessionFactory = sessionFactory;
       }
 
       private IRepository<WorkItemStatus> _statusRepository;
@@ -36,6 +37,7 @@ namespace HomeScrum.Web.Controllers
       private IRepository<Project> _projectRepository;
       private IUserRepository _userRepository;
       private WorkItemQuery _workItemQuery;
+      private ISessionFactory _sessionFactory;
 
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
@@ -83,7 +85,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /WorkItems/
       public override System.Web.Mvc.ActionResult Index()
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             var query = _workItemQuery.GetQuery( session );
             query.SetProjection(
@@ -92,7 +94,7 @@ namespace HomeScrum.Web.Controllers
                   .Add( Projections.Property( "Name" ), "Name" )
                   .Add( Projections.Property( "wit.Name" ), "WorkItemTypeName" )
                   .Add( Projections.Property( "stat.Name" ), "StatusName" )
-                  .Add( Projections.Property( "stat.IsOpenStatus" ), "IsComplete" ) )
+                  .Add( Projections.Property( "stat.IsOpenStatus" ), "IsOpenStatus" ) )  // find better way to get IsCompleted
                .SetResultTransformer( Transformers.AliasToBean<WorkItemIndexViewModel>() );
             var workItems = query.List<WorkItemIndexViewModel>();
 

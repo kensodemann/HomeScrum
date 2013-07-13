@@ -14,20 +14,7 @@ namespace HomeScrum.Web.Models.WorkItems
       [Display( Name = "WorkItemStatus", ResourceType = typeof( DisplayStrings ) )]
       public string StatusName { get; set; }
 
-      public bool IsComplete { get; set; }
-
-      //[Display( Name = "Project", ResourceType = typeof( DisplayStrings ) )]
-      //public string ProjectName { get; set; }
-
-      //[Display( Name = "CreatedByUser", ResourceType = typeof( DisplayStrings ) )]
-      //public string CreatedByUserName { get; set; }
-
-      //[Display( Name = "AssignedToUser", ResourceType = typeof( DisplayStrings ) )]
-      //public string AssignedToUserName { get; set; }
-
-      //[Display( Name = "ParentWorkItem", ResourceType = typeof( DisplayStrings ) )]
-      //public string ParentWorkItemName { get; set; }
-
-      //public IEnumerable<AcceptanceCriterionViewModel> AcceptanceCriteria { get; set; }
+      public bool IsComplete { get { return !IsOpenStatus; } }
+      public bool IsOpenStatus { get; set; }
    }
 }

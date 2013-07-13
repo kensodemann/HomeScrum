@@ -17,6 +17,8 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Web.Translators;
    using HomeScrum.Web.Models.Admin;
    using HomeScrum.Web.Models.WorkItems;
+   using NHibernate;
+   using HomeScrum.Data.SqlServer.Helpers;
 
    public static class NinjectWebCommon
    {
@@ -81,6 +83,8 @@ namespace HomeScrum.Web.App_Start
 
          kernel.Bind<IUserRepository>().To( typeof( UserRepository ) ).InSingletonScope();
          kernel.Bind<ISecurityRepository>().To( typeof( SecurityRepository ) ).InSingletonScope();
+
+         kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
       }
 
       private static void BindSimpleSortRepository<T>( IKernel kernel )

@@ -8,7 +8,7 @@ namespace HomeScrum.Data.SqlServer.Helpers
    {
       private static ISessionFactory _sessionFactory;
 
-      private static ISessionFactory SessionFactory
+      public static ISessionFactory SessionFactory
       {
          get
          {

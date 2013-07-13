@@ -13,6 +13,7 @@ using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
@@ -32,6 +33,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IValidator<WorkItem>> _validator;
       private Mock<IWorkItemRepository> _workItemRepository;
       private Mock<ILogger> _logger;
+      private Mock<ISessionFactory> _sessionFactory;
       private WorkItemsController _controller;
 
       private User _currentUser;
@@ -53,6 +55,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          SetupCurrentUser();
          SetupValidator();
          SetupWorkItemRepository();
+         SetupSessionFactory();
          SetupLogger();
 
          CreateController();
@@ -953,7 +956,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
-            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object );
+            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -968,6 +971,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void SetupLogger()
       {
          _logger = new Mock<ILogger>();
+      }
+
+      private void SetupSessionFactory()
+      {
+         _sessionFactory = new Mock<ISessionFactory>();
       }
 
       private void SetupValidator()
