@@ -14,12 +14,12 @@
                  class ="AcceptanceCriterionStatus"
                  column="AcceptanceCriteriaStatusRid"
                  lazy="false"
-                 cascade="none"/>
+                 cascade="none" fetch="join"/>
     <many-to-one name="WorkItem"
                  class="WorkItem"
                  column="WorkItemRid"
                  lazy="false"
-                 not-null="true"/>
+                 not-null="true" />
   </class>
 
 </hibernate-mapping>

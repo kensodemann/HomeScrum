@@ -14,7 +14,8 @@
                  class ="ProjectStatus"
                  column="ProjectStatusRid"
                  lazy="false"
-                 cascade="none"/>
+                 cascade="none"
+                 fetch="join"/>
     <property name="LastModifiedUserRid"/>
   </class>
 
