@@ -3,6 +3,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
+using NHibernate;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ namespace HomeScrum.Web.Controllers.Base
       : ReadOnlyController<ModelT, ViewModelT>
       where EditorViewModelT : new()
    {
-      public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger )
-         : base( mainRepository, logger )
+      public ReadWriteController( IRepository<ModelT> mainRepository, IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( mainRepository, logger, sessionFactory )
       {
          _validator = validator;
          _translator = translator;

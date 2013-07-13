@@ -12,6 +12,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
 using Ninject.Extensions.Logging;
+using NHibernate.Criterion;
+using NHibernate.Transform;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -66,17 +68,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         //_query
-         //  .Setup( x => x.List<SystemDomainObjectViewModel>() )
-         //  .Returns( (from item in GetAllModels()
-         //             select new SystemDomainObjectViewModel()
-         //             {
-         //                Id = item.Id,
-         //                Name = item.Name,
-         //                Description = item.Description,
-         //                StatusCd = 'A',
-         //                IsPredefined = true
-         //             }).ToList() );
+         _query
+           .Setup( x => x.List<SystemDomainObjectViewModel>() )
+           .Returns( (from item in GetAllModels()
+                      select new SystemDomainObjectViewModel()
+                      {
+                         Id = item.Id,
+                         Name = item.Name,
+                         Description = item.Description,
+                         StatusCd = 'A',
+                         IsPredefined = true
+                      }).ToList() );
 
          var view = _controller.Index() as ViewResult;
 
@@ -415,7 +417,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Returns( _session.Object );
 
          _session
-            .Setup( x => x.CreateCriteria( typeof( WorkItem ) ) )
+            .Setup( x => x.CreateCriteria( typeof( ModelT ) ) )
             .Returns( _query.Object );
 
          //_queryCriteria
@@ -424,12 +426,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          //_queryCriteria
          //   .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
          //   .Returns( _queryCriteria.Object );
-         //_queryCriteria
-         //   .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
-         //   .Returns( _queryCriteria.Object );
-         //_queryCriteria
-         //   .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
-         //   .Returns( _queryCriteria.Object );
+         _query
+            .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
+            .Returns( _query.Object );
+         _query
+            .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
+            .Returns( _query.Object );
       }
       #endregion
    }

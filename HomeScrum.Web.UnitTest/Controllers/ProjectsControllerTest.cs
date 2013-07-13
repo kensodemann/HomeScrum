@@ -16,6 +16,9 @@ using Moq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
+using NHibernate;
+using NHibernate.Criterion;
+using NHibernate.Transform;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -35,6 +38,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IIdentity> _userIdentity;
       private static Mock<IUserRepository> _userRepository;
 
+      private Mock<ISessionFactory> _sessionFactory;
+      private Mock<ISession> _session;
+      private Mock<ICriteria> _query;
+
 
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
@@ -48,6 +55,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
+         SetupSessionFactory();
          SetupCurrentUser();
          SetupValidator();
          SetupProjectRepository();
@@ -543,7 +551,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void CreateController()
       {
          _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
-            new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object );
+            new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -562,6 +570,34 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _validator = new Mock<IValidator<Project>>();
          _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
+      }
+
+      private void SetupSessionFactory()
+      {
+         _sessionFactory = new Mock<ISessionFactory>();
+         _session = new Mock<ISession>();
+         _query = new Mock<ICriteria>();
+
+         _sessionFactory
+            .Setup( x => x.OpenSession() )
+            .Returns( _session.Object );
+
+         _session
+            .Setup( x => x.CreateCriteria( typeof( Project ) ) )
+            .Returns( _query.Object );
+
+         //_queryCriteria
+         //   .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
+         //   .Returns( _queryCriteria.Object );
+         //_queryCriteria
+         //   .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
+         //   .Returns( _queryCriteria.Object );
+         _query
+            .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
+            .Returns( _query.Object );
+         _query
+            .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
+            .Returns( _query.Object );
       }
       #endregion
    }

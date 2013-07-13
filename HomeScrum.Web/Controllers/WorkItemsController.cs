@@ -22,7 +22,7 @@ namespace HomeScrum.Web.Controllers
       [Inject]
       public WorkItemsController( IWorkItemRepository repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
          IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( repository, validator, translator, logger )
+         : base( repository, validator, translator, logger, sessionFactory )
       {
          _statusRepository = statusRepository;
          _workItemTypeRepository = workItemTypeRepository;

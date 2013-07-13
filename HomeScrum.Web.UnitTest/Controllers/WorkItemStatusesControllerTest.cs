@@ -41,7 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          WorkItemStatuses.CreateTestModelData( initializeIds: true );
-         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel>(), _logger.Object );
+         _controller = new WorkItemStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
    }

@@ -9,6 +9,9 @@ using HomeScrum.Data.Repositories;
 using AutoMapper;
 using HomeScrum.Web.Models.Base;
 using Ninject.Extensions.Logging;
+using NHibernate;
+using NHibernate.Criterion;
+using NHibernate.Transform;
 
 namespace HomeScrum.Web.Controllers.Base
 {
@@ -24,21 +27,39 @@ namespace HomeScrum.Web.Controllers.Base
       private readonly IRepository<ModelT> _repository;
       protected IRepository<ModelT> MainRepository { get { return _repository; } }
 
+      private readonly ISessionFactory _sessionFactory;
+      protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
+
       private readonly ILogger _logger;
       protected ILogger Log { get { return _logger; } }
 
-      public ReadOnlyController( IRepository<ModelT> mainRepository, ILogger logger )
+      public ReadOnlyController( IRepository<ModelT> mainRepository, ILogger logger, ISessionFactory sessionFactory )
       {
          _repository = mainRepository;
          _logger = logger;
+         _sessionFactory = sessionFactory;
       }
 
       //
       // GET: /ModelTs/
       public virtual ActionResult Index()
       {
-         var items = MainRepository.GetAll();
-         return View( Mapper.Map<ICollection<ModelT>, IEnumerable<ViewModelT>>( items ) );
+         Log.Debug( "Index()" );
+
+         using (var session = SessionFactory.OpenSession())
+         {
+            var items = session
+               .CreateCriteria( typeof( ModelT ) )
+               .SetProjection( Projections.ProjectionList()
+                  .Add( Projections.Property( "Id" ), "Id" )
+                  .Add( Projections.Property( "Name" ), "Name" )
+                  .Add( Projections.Property( "Description" ), "Description" )
+                  .Add( Projections.Property( "StatusCd" ), "StatusCd" )
+                  .Add( Projections.Property( "IsPredefined" ), "IsPredefined" ) )
+               .SetResultTransformer( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
+               .List<SystemDomainObjectViewModel>();
+            return View( items );
+         }
       }
 
       //
