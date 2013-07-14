@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
-using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using Ninject.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
-using System.Web;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
@@ -63,16 +59,19 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id )
       {
-         var model = MainRepository.Get( id );
-
-         if (model != null)
+         using (var session = SessionFactory.OpenSession())
          {
-            var viewModel = Mapper.Map<EditorViewModelT>( model );
-            PopulateSelectLists( viewModel );
-            return View( viewModel );
-         }
+            var model = session.Get<ModelT>( id );
 
-         return HttpNotFound();
+            if (model != null)
+            {
+               var viewModel = Mapper.Map<EditorViewModelT>( model );
+               PopulateSelectLists( viewModel );
+               return View( viewModel );
+            }
+
+            return HttpNotFound();
+         }
       }
 
       //
@@ -115,7 +114,14 @@ namespace HomeScrum.Web.Controllers.Base
 
       protected virtual void UpdateItem( ModelT model, IPrincipal user )
       {
-         MainRepository.Update( model );
+         using (var session = SessionFactory.OpenSession())
+         {
+            using (var transaction = session.BeginTransaction())
+            {
+               session.Update( model );
+               transaction.Commit();
+            }
+         }
       }
 
 

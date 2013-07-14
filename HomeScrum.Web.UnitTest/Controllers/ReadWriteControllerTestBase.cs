@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using HomeScrum.Data.Domain;
+﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
@@ -11,9 +6,14 @@ using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
-using Ninject.Extensions.Logging;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -247,19 +247,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_CallsRepositoryGet()
+      public void EditGet_CallsGet()
       {
          Guid id = Guid.NewGuid();
          _controller.Edit( id );
 
-         _repository.Verify( x => x.Get( id ), Times.Once() );
+         _session.Verify( x => x.Get<ModelT>( id ), Times.Once() );
       }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithViewModel()
       {
          var model = GetAllModels().ToArray()[3];
-         _repository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<ModelT>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
 
@@ -274,7 +274,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
-         _repository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as ModelT );
+         _session.Setup( x => x.Get<ModelT>( It.IsAny<Guid>() ) ).Returns( null as ModelT );
 
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
@@ -289,7 +289,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, FakeUser );
 
-         _repository.Verify( x => x.Update( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -301,7 +303,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( viewModel, FakeUser );
 
-         _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Never() );
+         _transaction.Verify( x => x.Commit(), Times.Never() );
+         _session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }
 
       [TestMethod]

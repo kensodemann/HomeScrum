@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
@@ -13,12 +8,17 @@ using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Ninject;
-using Ninject.Extensions.Logging;
-using Ninject.MockingKernel.Moq;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using Ninject;
+using Ninject.Extensions.Logging;
+using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -113,7 +113,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var id = Guid.NewGuid();
 
-         _projectRepository.Setup( x => x.Get( id ) ).Returns( null as Project );
+         _session.Setup( x => x.Get<Project>( id ) ).Returns( null as Project );
 
          var result = _controller.Details( id ) as HttpNotFoundResult;
 
@@ -282,14 +282,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Guid id = Guid.NewGuid();
          _controller.Edit( id );
 
-         _projectRepository.Verify( x => x.Get( id ), Times.Once() );
+         _session.Verify( x => x.Get<Project>( id ), Times.Once() );
       }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithModel()
       {
          var model = Projects.ModelData[3];
-         _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<Project>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
 
@@ -303,7 +303,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_InitializesProjectStatuses_ProjectStatusSelected()
       {
          var model = Projects.ModelData[0];
-         _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<Project>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
@@ -321,7 +321,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
-         _projectRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as Project );
+         _session.Setup( x => x.Get<Project>( It.IsAny<Guid>() ) ).Returns( null as Project );
 
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
@@ -329,18 +329,20 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_CallRepositoryUpdateIfModelValid()
+      public void EditPost_CallsUpdateIfModelValid()
       {
          var model = Projects.ModelData[2];
          var viewModel = CreateProjectEditorViewModel( model );
 
          _controller.Edit( viewModel, _principal.Object );
 
-         _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
       }
 
       [TestMethod]
-      public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
+      public void EditPost_DoesNotCallUpdateIfModelIsNotValid()
       {
          var model = Projects.ModelData[2];
          var viewModel = CreateProjectEditorViewModel( model );
@@ -348,7 +350,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( viewModel, _principal.Object );
 
-         _projectRepository.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Never() );
+         _transaction.Verify( x => x.Commit(), Times.Never() );
+         _session.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -449,7 +453,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
          _userRepository.Verify();
-         _projectRepository.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
       }
 
       [TestMethod]

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
@@ -19,6 +14,11 @@ using NHibernate.Transform;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -116,7 +116,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var id = Guid.NewGuid();
 
-         _workItemRepository.Setup( x => x.Get( id ) ).Returns( null as WorkItem );
+         _session.Setup( x => x.Get<WorkItem>( id ) ).Returns( null as WorkItem );
 
          var result = _controller.Details( id ) as HttpNotFoundResult;
 
@@ -483,19 +483,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       #region Edit GET Tests
       [TestMethod]
-      public void EditGet_CallsRepositoryGet()
+      public void EditGet_CallsGet()
       {
          Guid id = Guid.NewGuid();
          _controller.Edit( id );
 
-         _workItemRepository.Verify( x => x.Get( id ), Times.Once() );
+         _session.Verify( x => x.Get<WorkItem>( id ), Times.Once() );
       }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithModel()
       {
          var model = WorkItems.ModelData[3];
-         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
 
@@ -509,7 +509,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_InitializesWorkItemStatuses_WorkItemStatusSelected()
       {
          var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
-         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -528,7 +528,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_InitializesWorkItemTypes_WorkItemTypeSelected()
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
-         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -547,7 +547,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_InitializesProjects_ProjectSelected()
       {
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
-         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -569,7 +569,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_InitializesAssignedToUsers_UserSelected()
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
-         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -591,7 +591,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_InitializesProductBacklog_ParentWorkItemSelected()
       {
          var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null );
-         _workItemRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -617,7 +617,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
-         _workItemRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
+         _session.Setup( x => x.Get<WorkItem>( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
 
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
@@ -635,7 +635,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( p => p.Id == model.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<WorkItem>( p => p.Id == model.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -647,7 +649,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Update( It.IsAny<WorkItem>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Never() );
+         _transaction.Verify( x => x.Commit(), Times.Never() );
+         _session.Verify( x => x.Update( It.IsAny<WorkItem>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -740,7 +744,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
          _userRepository.Verify();
-         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.Id == model.Id && w.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<WorkItem>( w => w.Id == model.Id && w.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -834,7 +840,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.AssignedToUser == null ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<WorkItem>( w => w.AssignedToUser == null ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -846,7 +854,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( w => w.AssignedToUser.Id == viewModel.AssignedToUserId ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<WorkItem>( w => w.AssignedToUser.Id == viewModel.AssignedToUserId ) ), Times.Once() );
       }
       #endregion
 
@@ -982,7 +992,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          WorkItems.CreateTestModelData( initializeIds: true );
          _workItemRepository = new Mock<IWorkItemRepository>();
-         _workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
+         //_workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
          _workItemRepository.Setup( x => x.GetOpenProductBacklog() ).Returns( WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.Status.IsOpenStatus ).ToList() );
       }
 
