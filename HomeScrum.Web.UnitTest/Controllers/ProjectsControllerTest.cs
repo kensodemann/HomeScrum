@@ -74,24 +74,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
       [TestMethod]
-      public void Index_ReturnsViewWithModel()
-      {
-         var controller = CreateDatabaseConnectedController();
-
-         var view = controller.Index() as ViewResult;
-
-         Assert.IsNotNull( view );
-         Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<DomainObjectViewModel> ) );
-      }
-
-      [TestMethod]
       public void Index_ReturnsViewWithAllItems()
       {
          var controller = CreateDatabaseConnectedController();
 
          var view = controller.Index() as ViewResult;
-         var model = view.Model as IEnumerable<DomainObjectBase>;
+         var model = view.Model as IEnumerable<DomainObjectViewModel>;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( model );
