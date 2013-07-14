@@ -102,7 +102,14 @@ namespace HomeScrum.Web.Controllers.Base
 
       protected virtual void AddItem( ModelT model, IPrincipal user )
       {
-         MainRepository.Add( model );
+         using (var session = SessionFactory.OpenSession())
+         {
+            using (var transaction = session.BeginTransaction())
+            {
+               session.Save( model );
+               transaction.Commit();
+            }
+         }
       }
 
 

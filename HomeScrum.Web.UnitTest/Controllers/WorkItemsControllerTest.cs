@@ -35,10 +35,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IValidator<WorkItem>> _validator;
       private Mock<IWorkItemRepository> _workItemRepository;
       private Mock<ILogger> _logger;
+      private WorkItemsController _controller;
+
       private Mock<ISessionFactory> _sessionFactory;
       private Mock<ISession> _session;
-      private Mock<ICriteria> _queryCriteria;
-      private WorkItemsController _controller;
+      private Mock<ICriteria> _query;
+      private Mock<ITransaction> _transaction;
 
       private User _currentUser;
       private Mock<IPrincipal> _principal;
@@ -83,7 +85,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _controller.Index();
 
-         _queryCriteria.Verify( x => x.List<WorkItemIndexViewModel>(), Times.Once() );
+         _query.Verify( x => x.List<WorkItemIndexViewModel>(), Times.Once() );
       }
       #endregion
 
@@ -249,13 +251,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       #region Create POST Tests
       [TestMethod]
-      public void CreatePost_CallRepositoryInsertIfModelValid()
+      public void CreatePost_CallsSaveAndCommitIfModelValid()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.Edit( viewModel, _principal.Object );
+         _controller.Create( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Update( It.Is<WorkItem>( p => p.Name == viewModel.Name && p.Description == viewModel.Description ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<WorkItem>( p => p.Name == viewModel.Name && p.Description == viewModel.Description ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -274,14 +278,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      public void CreatePost_DoesNotCallSaveOrCommitAddIfModelIsNotValid()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Add( It.IsAny<WorkItem>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Never() );
+         _transaction.Verify( x => x.Commit(), Times.Never() );
+         _session.Verify( x => x.Save( It.IsAny<WorkItem>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -428,7 +434,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
          _userRepository.Verify();
-         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -440,7 +448,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
          _userRepository.Verify();
-         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( w => w.CreatedByUser.Id == _currentUser.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<WorkItem>( w => w.CreatedByUser.Id == _currentUser.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -451,7 +461,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( w => w.AssignedToUser == null ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<WorkItem>( w => w.AssignedToUser == null ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -462,7 +474,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel, _principal.Object );
 
-         _workItemRepository.Verify( x => x.Add( It.Is<WorkItem>( w => w.AssignedToUser.Id == viewModel.AssignedToUserId ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<WorkItem>( w => w.AssignedToUser.Id == viewModel.AssignedToUserId ) ), Times.Once() );
       }
       #endregion
 
@@ -981,7 +995,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
-         _queryCriteria = new Mock<ICriteria>();
+         _query = new Mock<ICriteria>();
+         _transaction = new Mock<ITransaction>();
 
          _sessionFactory
             .Setup( x => x.OpenSession() )
@@ -989,9 +1004,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _session
             .Setup( x => x.CreateCriteria( typeof( WorkItem ) ) )
-            .Returns( _queryCriteria.Object );
+            .Returns( _query.Object );
 
-         _queryCriteria
+         _query
             .Setup( x => x.List<WorkItemIndexViewModel>() )
             .Returns( (from item in WorkItems.ModelData
                        select new WorkItemIndexViewModel()
@@ -1004,18 +1019,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
                           WorkItemTypeName = item.WorkItemType.Name
                        }).ToList() );
 
-         _queryCriteria
+         _query
             .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
-            .Returns( _queryCriteria.Object );
-         _queryCriteria
+            .Returns( _query.Object );
+         _query
             .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
-            .Returns( _queryCriteria.Object );
-         _queryCriteria
+            .Returns( _query.Object );
+         _query
             .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
-            .Returns( _queryCriteria.Object );
-         _queryCriteria
+            .Returns( _query.Object );
+         _query
             .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
-            .Returns( _queryCriteria.Object );
+            .Returns( _query.Object );
+
+         _session
+            .Setup( x => x.BeginTransaction() )
+            .Returns( _transaction.Object );
       }
 
       private void SetupValidator()

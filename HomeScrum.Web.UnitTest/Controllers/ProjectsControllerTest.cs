@@ -25,6 +25,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class ProjectsControllerTest
    {
+      #region Test Setup
       private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
       private static MoqMockingKernel _iocKernel;
 
@@ -41,6 +42,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<ISessionFactory> _sessionFactory;
       private Mock<ISession> _session;
       private Mock<ICriteria> _query;
+      private Mock<ITransaction> _transaction;
 
 
       [ClassInitialize]
@@ -63,6 +65,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          CreateController();
       }
+      #endregion
 
       [TestMethod]
       public void Index_ReturnsViewWithModel()
@@ -144,13 +147,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
+      public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
       {
          var model = CreateProjectEditorViewModel();
 
          var result = _controller.Create( model, _principal.Object );
 
-         _projectRepository.Verify( x => x.Add( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -169,14 +174,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      public void CreatePost_DoesNotCallSaveOrCommitAddIfModelIsNotValid()
       {
          var model = CreateProjectEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( model, _principal.Object );
 
-         _projectRepository.Verify( x => x.Add( It.IsAny<Project>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Never() );
+         _transaction.Verify( x => x.Commit(), Times.Never() );
+         _session.Verify( x => x.Save( It.IsAny<Project>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -263,8 +270,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( viewModel, _principal.Object );
 
          _userIdentity.Verify();
-         _userRepository.Verify(); 
-         _projectRepository.Verify( x => x.Add( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+         _userRepository.Verify();
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -577,6 +586,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
          _query = new Mock<ICriteria>();
+         _transaction = new Mock<ITransaction>();
 
          _sessionFactory
             .Setup( x => x.OpenSession() )
@@ -598,6 +608,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _query
             .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
             .Returns( _query.Object );
+
+         _session
+            .Setup( x => x.BeginTransaction() )
+            .Returns( _transaction.Object );
       }
       #endregion
    }

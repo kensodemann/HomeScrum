@@ -30,6 +30,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected Mock<ISessionFactory> _sessionFactory;
       protected Mock<ISession> _session;
       protected Mock<ICriteria> _query;
+      protected Mock<ITransaction> _transaction;
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
@@ -149,13 +150,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_CallsRepositoryAddIfNewViewModelIsValid()
+      public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
       {
          var viewModel = CreateEditorViewModel();
 
          var result = _controller.Create( viewModel, FakeUser );
 
-         _repository.Verify( x => x.Add( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Save( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ) ), Times.Once() );
       }
 
       [TestMethod]
@@ -174,14 +177,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      public void CreatePost_DoesNotSaveOrCommitIfModelIsNotValid()
       {
          var model = CreateEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( model, FakeUser );
 
-         _repository.Verify( x => x.Add( It.IsAny<ModelT>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Never() );
+         _transaction.Verify( x => x.Commit(), Times.Never() );
+         _session.Verify( x => x.Save( It.IsAny<ModelT>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -411,6 +416,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
          _query = new Mock<ICriteria>();
+         _transaction = new Mock<ITransaction>();
 
          _sessionFactory
             .Setup( x => x.OpenSession() )
@@ -432,6 +438,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _query
             .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
             .Returns( _query.Object );
+
+         _session
+            .Setup( x => x.BeginTransaction() )
+            .Returns( _transaction.Object );
       }
       #endregion
    }
