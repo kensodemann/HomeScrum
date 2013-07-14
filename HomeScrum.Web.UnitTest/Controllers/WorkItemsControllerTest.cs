@@ -94,12 +94,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData[2];
 
-         _workItemRepository.Setup( x => x.Get( model.Id ) )
+         _session.Setup( x => x.Get<WorkItem>( model.Id ) )
             .Returns( model );
 
          var view = _controller.Details( model.Id ) as ViewResult;
 
-         _workItemRepository.Verify( x => x.Get( model.Id ), Times.Once() );
+         _session.Verify( x => x.Get<WorkItem>( model.Id ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );

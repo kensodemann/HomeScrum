@@ -112,12 +112,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = GetAllModels().ToArray()[2];
 
-         _repository.Setup( x => x.Get( model.Id ) )
+         _session.Setup( x => x.Get<ModelT>( model.Id ) )
             .Returns( model );
 
          var view = _controller.Details( model.Id ) as ViewResult;
 
-         _repository.Verify( x => x.Get( model.Id ), Times.Once() );
+         _session.Verify( x => x.Get<ModelT>( model.Id ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -132,7 +132,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var id = Guid.NewGuid();
 
-         _repository.Setup( x => x.Get( id ) ).Returns( null as ModelT );
+         _session.Setup( x => x.Get<ModelT>( id ) ).Returns( null as ModelT );
 
          var result = _controller.Details( id ) as HttpNotFoundResult;
 

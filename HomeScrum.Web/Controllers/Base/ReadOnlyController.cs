@@ -66,13 +66,18 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Details/Guid
       public virtual ActionResult Details( Guid id )
       {
-         var model = MainRepository.Get( id );
+         Log.Debug( "Details(%s)", id.ToString() );
 
-         if (model == null)
+         using (var session = SessionFactory.OpenSession())
          {
-            return HttpNotFound();
+            var model = session.Get<ModelT>( id );
+
+            if (model == null)
+            {
+               return HttpNotFound();
+            }
+            return View( Mapper.Map<ViewModelT>( model ) );
          }
-         return View( Mapper.Map<ViewModelT>( model ) );
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
