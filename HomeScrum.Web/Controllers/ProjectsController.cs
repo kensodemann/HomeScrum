@@ -1,35 +1,44 @@
-﻿using AutoMapper;
-using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
+﻿using HomeScrum.Data.Domain;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
-using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Transform;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
-      public ProjectsController( IRepository<ProjectStatus> projectStatusRepository, IValidator<Project> validator,
-         IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( validator, translator, logger, sessionFactory )
-      {
-         _projectStatusRepository = projectStatusRepository;
-      }
+      public ProjectsController( IValidator<Project> validator, IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( validator, translator, logger, sessionFactory ) { }
 
-      private readonly IRepository<ProjectStatus> _projectStatusRepository;
-      
       protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
       {
          base.PopulateSelectLists( viewModel );
-         viewModel.Statuses = _projectStatusRepository.GetAll().ToSelectList( viewModel.StatusId );
+         viewModel.Statuses = ActiveProjectStatuses( viewModel.StatusId );
+      }
+
+      private IEnumerable<SelectListItem> ActiveProjectStatuses( Guid selectedId )
+      {
+         using (var session = SessionFactory.OpenSession())
+         {
+            return session
+               .CreateCriteria( typeof( ProjectStatus ) )
+               .Add( Restrictions.Eq( "StatusCd", 'A' ) )
+               .SetProjection( Projections.ProjectionList()
+                  .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
+                  .Add( Projections.Property( "Name" ), "Text" )
+                  .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
+               .SetResultTransformer( Transformers.AliasToBean<SelectListItem>() )
+               .List<SelectListItem>();
+         }
       }
 
 

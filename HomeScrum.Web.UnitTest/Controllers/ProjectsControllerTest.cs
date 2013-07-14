@@ -27,7 +27,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public class ProjectsControllerTest
    {
       #region Test Setup
-      private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
       private static MoqMockingKernel _iocKernel;
 
       private Mock<IValidator<Project>> _validator;
@@ -49,7 +48,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          CreateMockIOCKernel();
          InitializeTestData();
-         CreateStaticRepositories();
          IntializeMapper();
       }
 
@@ -482,16 +480,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          MapperConfig.RegisterMappings();
       }
 
-      private static void CreateStaticRepositories()
-      {
-         _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
-         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-         foreach (var model in ProjectStatuses.ModelData)
-         {
-            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
-      }
-
       private static void InitializeTestData()
       {
          Users.CreateTestModelData( initializeIds: true );
@@ -567,8 +555,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         _controller = new ProjectsController( _projectStatusRepository.Object, _validator.Object,
-            new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         _controller = new ProjectsController(
+            _validator.Object, new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
