@@ -136,7 +136,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreateGet_ReturnsViewWithViewWithModel()
       {
          var controller = CreateDatabaseConnectedController();
-         
+
          var result = controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
@@ -232,9 +232,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.Statuses.Count() );
          foreach (var item in returnedModel.Statuses)
          {
-            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var statusId = new Guid( item.Value );
+            var status = ProjectStatuses.ModelData.First( x => x.Id == statusId );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (item.Value == model.StatusId.ToString()) ? item.Selected : !item.Selected );
+            Assert.IsTrue( (statusId == model.StatusId) ? item.Selected : !item.Selected );
          }
       }
 
@@ -304,7 +305,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_CallsSessionGet()
       {
          var controller = CreateDatabaseMockedController();
-         
+
          Guid id = Guid.NewGuid();
          controller.Edit( id );
 
@@ -316,7 +317,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateDatabaseConnectedController();
          var model = Projects.ModelData[3];
-         
+
          var result = controller.Edit( model.Id ) as ViewResult;
 
          Assert.IsNotNull( result );
@@ -330,17 +331,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateDatabaseConnectedController();
          var model = Projects.ModelData[0];
-         
+
          var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
 
          Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
          foreach (var item in viewModel.Statuses)
          {
-            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var statusId = new Guid( item.Value );
+            var status = ProjectStatuses.ModelData.First( x => x.Id == statusId );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Status.Id != statusId && !item.Selected) ||
+                           (model.Status.Id == statusId && item.Selected) );
          }
       }
 
@@ -505,10 +507,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
          foreach (var item in viewModel.Statuses)
          {
-            var status = ProjectStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var statusId = new Guid( item.Value );
+            var status = ProjectStatuses.ModelData.First( x => x.Id == statusId );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Status.Id != statusId && !item.Selected) ||
+                           (model.Status.Id == statusId && item.Selected) );
          }
       }
 
