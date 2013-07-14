@@ -31,7 +31,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static MoqMockingKernel _iocKernel;
 
       private Mock<IValidator<Project>> _validator;
-      private Mock<IRepository<Project>> _projectRepository;
       private Mock<ILogger> _logger;
       private ProjectsController _controller;
 
@@ -61,7 +60,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          SetupSessionFactory();
          SetupCurrentUser();
          SetupValidator();
-         SetupProjectRepository();
          SetupLogger();
 
          CreateController();
@@ -563,15 +561,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         _controller = new ProjectsController( _projectRepository.Object, _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
+         _controller = new ProjectsController( _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
             new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
-      }
-
-      private void SetupProjectRepository()
-      {
-         _projectRepository = new Mock<IRepository<Project>>();
-         _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
       }
 
       private void SetupLogger()

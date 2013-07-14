@@ -41,7 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
-         _controller = new AcceptanceCriterionStatusesController( _repository.Object, _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         _controller = new AcceptanceCriterionStatusesController( _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
    }

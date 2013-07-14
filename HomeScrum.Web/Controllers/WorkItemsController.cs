@@ -22,7 +22,7 @@ namespace HomeScrum.Web.Controllers
       [Inject]
       public WorkItemsController( IWorkItemRepository repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
          IRepository<Project> projectRepository, IUserRepository userRepository, IValidator<WorkItem> validator, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( repository, validator, translator, logger, sessionFactory )
+         : base( validator, translator, logger, sessionFactory )
       {
          _statusRepository = statusRepository;
          _workItemTypeRepository = workItemTypeRepository;
@@ -30,6 +30,7 @@ namespace HomeScrum.Web.Controllers
          _userRepository = userRepository;
          _workItemQuery = new WorkItemQuery();
          _sessionFactory = sessionFactory;
+         _workItemRepository = repository;
       }
 
       private IRepository<WorkItemStatus> _statusRepository;
@@ -38,6 +39,7 @@ namespace HomeScrum.Web.Controllers
       private IUserRepository _userRepository;
       private WorkItemQuery _workItemQuery;
       private ISessionFactory _sessionFactory;
+      private IWorkItemRepository _workItemRepository;
 
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
@@ -45,7 +47,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = _projectRepository.GetAll().ToSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
-         viewModel.ProductBacklogItems = ((IWorkItemRepository)MainRepository).GetOpenProductBacklog().ToSelectList( allowUnassigned: true, selectedId: viewModel.ParentWorkItemId );
+         viewModel.ProductBacklogItems = _workItemRepository.GetOpenProductBacklog().ToSelectList( allowUnassigned: true, selectedId: viewModel.ParentWorkItemId );
          base.PopulateSelectLists( viewModel );
       }
 

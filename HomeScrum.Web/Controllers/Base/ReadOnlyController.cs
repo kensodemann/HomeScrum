@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Web;
-using System.Web.Mvc;
+﻿using AutoMapper;
 using HomeScrum.Common.Utility;
-using HomeScrum.Data.Repositories;
-using AutoMapper;
 using HomeScrum.Web.Models.Base;
-using Ninject.Extensions.Logging;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using Ninject.Extensions.Logging;
+using System;
+using System.Linq.Expressions;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
@@ -24,18 +20,14 @@ namespace HomeScrum.Web.Controllers.Base
    [Authorize]
    public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
    {
-      private readonly IRepository<ModelT> _repository;
-      protected IRepository<ModelT> MainRepository { get { return _repository; } }
-
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
 
       private readonly ILogger _logger;
       protected ILogger Log { get { return _logger; } }
 
-      public ReadOnlyController( IRepository<ModelT> mainRepository, ILogger logger, ISessionFactory sessionFactory )
+      public ReadOnlyController( ILogger logger, ISessionFactory sessionFactory )
       {
-         _repository = mainRepository;
          _logger = logger;
          _sessionFactory = sessionFactory;
       }

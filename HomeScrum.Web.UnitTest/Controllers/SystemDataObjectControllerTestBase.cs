@@ -75,12 +75,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var ids = TestObjectIdList();
          SetupSessionGets();
          var newId = Guid.NewGuid();
-         _repository.Setup( x => x.Get( newId ) ).Returns( null as ModelT );
+         _session.Setup( x => x.Get<ModelT>( newId ) ).Returns( null as ModelT );
          ids.Add( newId.ToString() );
 
          var results = MyController.UpdateSortOrders( ids );
 
-         _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
+         _session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }
 
       #region Private Helpers

@@ -14,7 +14,7 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemStatusesController : SystemDataObjectController<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel>
    {
       [Inject]
-      public WorkItemStatusesController( IRepository<WorkItemStatus> repository, IValidator<WorkItemStatus> validator, IPropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( repository, validator, translator, logger, sessionFactory ) { }
+      public WorkItemStatusesController( IValidator<WorkItemStatus> validator, IPropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( validator, translator, logger, sessionFactory ) { }
    }
 }

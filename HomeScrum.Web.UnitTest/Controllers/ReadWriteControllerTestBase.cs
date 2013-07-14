@@ -22,7 +22,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       where ViewModelT : DomainObjectViewModel, new()
       where EditorViewModelT : DomainObjectViewModel, new()
    {
-      protected Mock<IRepository<ModelT>> _repository;
       protected Mock<IValidator<ModelT>> _validator;
       protected Mock<ILogger> _logger;
       protected ReadWriteController<ModelT, ViewModelT, EditorViewModelT> _controller;
@@ -58,7 +57,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public virtual void InitializeTest()
       {
          SetupSessionFactory();
-         _repository = new Mock<IRepository<ModelT>>();
          _validator = new Mock<IValidator<ModelT>>();
          _logger = new Mock<ILogger>();
 
