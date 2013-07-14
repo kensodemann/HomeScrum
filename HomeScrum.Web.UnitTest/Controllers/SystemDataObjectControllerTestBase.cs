@@ -30,7 +30,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void UpdateSortOrders_ReturnsEmptyResult()
       {
          var ids = TestObjectIdList();
-         SetupRepositoryGets();
+         SetupSessionGets();
 
          var result = MyController.UpdateSortOrders( ids ) as EmptyResult;
 
@@ -41,11 +41,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void UpdateSortOrders_DoesNotUpdateSortOrders_IfNoOrdersHaveChanged()
       {
          var ids = TestObjectIdList();
-         SetupRepositoryGets();
+         SetupSessionGets();
 
          var result = MyController.UpdateSortOrders( ids );
 
-         _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }
 
       [TestMethod]
@@ -56,20 +58,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
          ids[2] = ids[4];
          ids[4] = swapId;
 
-         SetupRepositoryGets();
+         SetupSessionGets();
 
          var results = MyController.UpdateSortOrders( ids );
 
-         _repository.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Exactly( 2 ) );
-         _repository.Verify( x => x.Update( It.Is<ModelT>( m => m.Id.ToString() == ids[2] && m.SortSequence == 3 ) ), Times.Once() );
-         _repository.Verify( x => x.Update( It.Is<ModelT>( m => m.Id.ToString() == ids[4] && m.SortSequence == 5 ) ), Times.Once() );
+         _session.Verify( x => x.BeginTransaction(), Times.Once() );
+         _transaction.Verify( x => x.Commit(), Times.Once() );
+         _session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Exactly( 2 ) );
+         _session.Verify( x => x.Update( It.Is<ModelT>( m => m.Id.ToString() == ids[2] && m.SortSequence == 3 ) ), Times.Once() );
+         _session.Verify( x => x.Update( It.Is<ModelT>( m => m.Id.ToString() == ids[4] && m.SortSequence == 5 ) ), Times.Once() );
       }
 
       [TestMethod]
       public void UpdateSortOrders_DoesNotUpdateIdsNotInRepository()
       {
          var ids = TestObjectIdList();
-         SetupRepositoryGets();
+         SetupSessionGets();
          var newId = Guid.NewGuid();
          _repository.Setup( x => x.Get( newId ) ).Returns( null as ModelT );
          ids.Add( newId.ToString() );
@@ -88,12 +92,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .ToList();
       }
 
-      private void SetupRepositoryGets()
+      private void SetupSessionGets()
       {
          foreach (var item in GetAllModels())
          {
-            _repository
-               .Setup( x => x.Get( item.Id ) )
+            _session
+               .Setup( x => x.Get<ModelT>( item.Id ) )
                .Returns( item );
          }
       }
