@@ -37,7 +37,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private User _currentUser;
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
-      private static Mock<IUserRepository> _userRepository;
 
       private Mock<ISessionFactory> _sessionFactory;
       private Mock<ISession> _session;
@@ -266,7 +265,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( viewModel, _principal.Object );
 
          _userIdentity.Verify();
-         _userRepository.Verify();
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
          _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
@@ -448,7 +446,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Edit( viewModel, _principal.Object );
 
          _userIdentity.Verify();
-         _userRepository.Verify();
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
          _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
@@ -540,7 +537,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void SetupCurrentUser()
       {
-         _userRepository = new Mock<IUserRepository>();
+         Mock<ICriteria> _userQuery = new Mock<ICriteria>();
+
          _userIdentity = new Mock<IIdentity>();
          _principal = new Mock<IPrincipal>();
          _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
@@ -551,9 +549,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
             UserName = "test",
             FirstName = "Fred"
          };
-         _userRepository
-            .Setup( x => x.Get( "test" ) )
+
+         _session
+            .Setup( x => x.CreateCriteria( typeof( User ) ) )
+            .Returns( _userQuery.Object );
+         _userQuery
+            .Setup( x => x.Add( It.IsAny<SimpleExpression>() ) )
+            .Returns( _userQuery.Object );
+         _userQuery
+            .Setup( x => x.UniqueResult() )
             .Returns( _currentUser );
+
          _userIdentity
             .SetupGet( x => x.Name )
             .Returns( "test" );
@@ -561,7 +567,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         _controller = new ProjectsController( _projectStatusRepository.Object, _userRepository.Object, _validator.Object,
+         _controller = new ProjectsController( _projectStatusRepository.Object, _validator.Object,
             new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }

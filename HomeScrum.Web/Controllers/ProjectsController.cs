@@ -7,7 +7,9 @@ using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using NHibernate;
+using NHibernate.Criterion;
 using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -15,17 +17,15 @@ namespace HomeScrum.Web.Controllers
 {
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
-      public ProjectsController( IRepository<ProjectStatus> projectStatusRepository, IUserRepository userRepository,
-         IValidator<Project> validator, IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+      public ProjectsController( IRepository<ProjectStatus> projectStatusRepository, IValidator<Project> validator,
+         IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( validator, translator, logger, sessionFactory )
       {
          _projectStatusRepository = projectStatusRepository;
-         _userRepository = userRepository;
       }
 
       private readonly IRepository<ProjectStatus> _projectStatusRepository;
-      private readonly IUserRepository _userRepository;
-
+      
       protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
       {
          base.PopulateSelectLists( viewModel );
@@ -35,14 +35,26 @@ namespace HomeScrum.Web.Controllers
 
       protected override void AddItem( Project model, IPrincipal user )
       {
-         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         model.LastModifiedUserRid = GetUserId( user );
          base.AddItem( model, user );
       }
 
       protected override void UpdateItem( Project model, IPrincipal user )
       {
-         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         model.LastModifiedUserRid = GetUserId( user );
          base.UpdateItem( model, user );
+      }
+
+      private Guid GetUserId( IPrincipal p )
+      {
+         using (var session = SessionFactory.OpenSession())
+         {
+            var user = session
+               .CreateCriteria( typeof( User ) )
+               .Add( Expression.Eq( "UserName", p.Identity.Name ) )
+               .UniqueResult() as User;
+            return user == null ? default( Guid ) : user.Id;
+         }
       }
    }
 }

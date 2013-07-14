@@ -22,10 +22,9 @@ namespace HomeScrum.Data.SqlServer
       {
          using (ISession session = NHibernateHelper.OpenSession())
          {
-            return session
-               .CreateCriteria( typeof( User ) )
-               .Add( Expression.Eq( "UserName", username ) )
-               .UniqueResult() as User;
+            var query = session.CreateCriteria( typeof( User ) );
+            query = query.Add( Expression.Eq( "UserName", username ) );
+            return query.UniqueResult() as User;
          }
       }
    }
