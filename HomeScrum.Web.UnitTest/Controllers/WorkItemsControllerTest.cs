@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web.Mvc;
+using HomeScrum.Common.Utility;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -35,11 +36,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IValidator<WorkItem>> _validator;
       private Mock<IWorkItemRepository> _workItemRepository;
       private Mock<ILogger> _logger;
-      private WorkItemsController _controller;
 
       private Mock<ISessionFactory> _sessionFactory;
       private Mock<ISession> _session;
-      private Mock<ICriteria> _query;
       private Mock<ITransaction> _transaction;
 
       private User _currentUser;
@@ -63,29 +62,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
          SetupWorkItemRepository();
          SetupSessionFactory();
          SetupLogger();
-
-         CreateController();
       }
       #endregion
 
 
       #region Index Tests
       [TestMethod]
-      public void Index_ReturnsViewWithModel()
+      public void Index_ReturnsViewWithAllItems()
       {
-         var view = _controller.Index() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+
+         var view = controller.Index() as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
 
          Assert.IsNotNull( view );
-         Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<WorkItemIndexViewModel> ) );
-      }
-
-      [TestMethod]
-      public void Index_GetsAllItems()
-      {
-         _controller.Index();
-
-         _query.Verify( x => x.List<WorkItemIndexViewModel>(), Times.Once() );
+         Assert.IsNotNull( model );
+         Assert.AreEqual( WorkItems.ModelData.Count(), model.Count() );
       }
       #endregion
 
@@ -94,12 +86,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Details_ReturnsViewWithModel()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[2];
 
          _session.Setup( x => x.Get<WorkItem>( model.Id ) )
             .Returns( model );
 
-         var view = _controller.Details( model.Id ) as ViewResult;
+         var view = controller.Details( model.Id ) as ViewResult;
 
          _session.Verify( x => x.Get<WorkItem>( model.Id ), Times.Once() );
 
@@ -114,11 +107,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Details_ReturnsHttpNotFoundIfNoModel()
       {
+         var controller = CreateDatabaseMockedController();
          var id = Guid.NewGuid();
 
          _session.Setup( x => x.Get<WorkItem>( id ) ).Returns( null as WorkItem );
 
-         var result = _controller.Details( id ) as HttpNotFoundResult;
+         var result = controller.Details( id ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
@@ -129,7 +123,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+         
+         var result = controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
          var model = result.Model as WorkItemEditorViewModel;
@@ -139,7 +135,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesWorkItemStatusList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+
+         var result = controller.Create() as ViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -155,7 +153,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesWorkItemTypeList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+
+         var result = controller.Create() as ViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -171,7 +171,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesProjectList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+
+         var result = controller.Create() as ViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -199,7 +201,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesUserList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+
+         var result = controller.Create() as ViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -226,7 +230,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesProductBacklogList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseConnectedController();
+
+         var result = controller.Create() as ViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -253,9 +259,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsSaveAndCommitIfModelValid()
       {
+         var controller = CreateDatabaseMockedController();
+
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.Create( viewModel, _principal.Object );
+         controller.Create( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -265,9 +273,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
+         var controller = CreateDatabaseMockedController();
+
          var viewModel = CreateWorkItemEditorViewModel();
 
-         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+         var result = controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -280,10 +290,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallSaveOrCommitAddIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
+
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Never() );
          _transaction.Verify( x => x.Commit(), Times.Never() );
@@ -293,10 +305,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
+
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( viewModel, _principal.Object ) as ViewResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( viewModel, result.Model );
@@ -305,10 +319,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_InitializesWorkItemStatusList_ActiveItemSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( viewModel, _principal.Object ) as ViewResult;
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
@@ -324,10 +339,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_InitializesWorkItemTypeList_ActiveItemSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( viewModel, _principal.Object ) as ViewResult;
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
@@ -343,10 +359,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_InitializesProjectList_ActiveItemSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( viewModel, _principal.Object ) as ViewResult;
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
@@ -363,10 +380,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_InitializesAssignedToUserList_ActiveItemSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( viewModel, _principal.Object ) as ViewResult;
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
@@ -383,9 +401,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.Create( viewModel, _principal.Object );
+         controller.Create( viewModel, _principal.Object );
 
          _validator.Verify( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
       }
@@ -393,18 +412,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var viewModel = CreateWorkItemEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Create( viewModel, _principal.Object );
+         var result = controller.Create( viewModel, _principal.Object );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         Assert.AreEqual( messages.Count, controller.ModelState.Count );
          foreach (var message in messages)
          {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+            Assert.IsTrue( controller.ModelState.ContainsKey( message.Key ) );
          }
          Assert.IsTrue( result is ViewResult );
       }
@@ -412,15 +432,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var viewModel = CreateWorkItemEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Create( viewModel, _principal.Object );
+         var result = controller.Create( viewModel, _principal.Object );
 
-         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.AreEqual( 0, controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
       }
@@ -428,9 +449,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.Create( viewModel, _principal.Object );
+         controller.Create( viewModel, _principal.Object );
 
          _userIdentity.Verify();
          _userRepository.Verify();
@@ -442,9 +464,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_SetsCreatedByUserIdToCurrentUser()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
 
-         _controller.Create( viewModel, _principal.Object );
+         controller.Create( viewModel, _principal.Object );
 
          _userIdentity.Verify();
          _userRepository.Verify();
@@ -456,10 +479,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
          viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
 
-         _controller.Create( viewModel, _principal.Object );
+         controller.Create( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -469,10 +493,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotSetAssignedToUserIdToDefault_IfAssignmentsIsAllowedForType()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateWorkItemEditorViewModel();
          viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
 
-         _controller.Create( viewModel, _principal.Object );
+         controller.Create( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -485,8 +510,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_CallsGet()
       {
+         var controller = CreateDatabaseMockedController();
          Guid id = Guid.NewGuid();
-         _controller.Edit( id );
+
+         controller.Edit( id );
 
          _session.Verify( x => x.Get<WorkItem>( id ), Times.Once() );
       }
@@ -494,10 +521,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsViewWithModel()
       {
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData[3];
          _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
 
          Assert.IsNotNull( result );
          var returnedModel = result.Model as WorkItemEditorViewModel;
@@ -508,10 +536,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesWorkItemStatuses_WorkItemStatusSelected()
       {
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
          _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
@@ -527,10 +556,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesWorkItemTypes_WorkItemTypeSelected()
       {
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
          _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
@@ -546,10 +576,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProjects_ProjectSelected()
       {
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
          _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, viewModel.Projects.Count() );
@@ -568,10 +599,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesAssignedToUsers_UserSelected()
       {
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
          _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
@@ -590,10 +622,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProductBacklog_ParentWorkItemSelected()
       {
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null );
          _session.Setup( x => x.Get<WorkItem>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
@@ -617,9 +650,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
+         var controller = CreateDatabaseMockedController();
          _session.Setup( x => x.Get<WorkItem>( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
 
-         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+         var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
@@ -630,10 +664,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CallsRepositoryUpdateIfModelValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.Edit( viewModel, _principal.Object );
+         controller.Edit( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -643,11 +678,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         _controller.Edit( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         controller.Edit( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Never() );
          _transaction.Verify( x => x.Commit(), Times.Never() );
@@ -657,10 +693,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+         var result = controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -673,11 +710,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Edit( viewModel, _principal.Object ) as ViewResult;
 
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result.Model, typeof( WorkItemEditorViewModel ) );
@@ -689,10 +727,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_PassesModelToValidator()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[3];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.Edit( viewModel, _principal.Object );
+         controller.Edit( viewModel, _principal.Object );
 
          _validator.Verify( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Update ), Times.Once() );
       }
@@ -700,6 +739,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var model = WorkItems.ModelData[3];
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -707,12 +747,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Edit( viewModel, _principal.Object );
+         var result = controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         Assert.AreEqual( messages.Count, controller.ModelState.Count );
          foreach (var message in messages)
          {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+            Assert.IsTrue( controller.ModelState.ContainsKey( message.Key ) );
          }
          Assert.IsTrue( result is ViewResult );
       }
@@ -720,6 +760,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var model = WorkItems.ModelData[3];
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -727,9 +768,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<WorkItem>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Edit( viewModel, _principal.Object );
+         var result = controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.AreEqual( 0, controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
       }
@@ -737,10 +778,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_SetsLastModifiedUserId()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData[3];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.Edit( viewModel, _principal.Object );
+         controller.Edit( viewModel, _principal.Object );
 
          _userIdentity.Verify();
          _userRepository.Verify();
@@ -752,11 +794,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReInitializesWorkItemStatusesIfModelNotValid_WorkItemStatusSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
          foreach (var item in viewModel.Statuses)
@@ -771,11 +814,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
          foreach (var item in viewModel.WorkItemTypes)
@@ -790,11 +834,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, viewModel.Projects.Count() );
          //
@@ -812,11 +857,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
          //
@@ -834,11 +880,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null );
          var viewModel = CreateWorkItemEditorViewModel( model );
          viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
 
-         _controller.Edit( viewModel, _principal.Object );
+         controller.Edit( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -848,11 +895,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotSetAssignedToUserIdToDefault_IfAssignmentsIsAllowedForType()
       {
+         var controller = CreateDatabaseMockedController();
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null );
          var viewModel = CreateWorkItemEditorViewModel( model );
          viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
 
-         _controller.Edit( viewModel, _principal.Object );
+         controller.Edit( viewModel, _principal.Object );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -906,12 +954,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private static void InitializeTestData()
       {
-         Users.CreateTestModelData( initializeIds: true );
-         WorkItemStatuses.CreateTestModelData( initializeIds: true );
-         WorkItemTypes.CreateTestModelData( initializeIds: true );
-         ProjectStatuses.CreateTestModelData( initializeIds: true );
-         Projects.CreateTestModelData( initializeIds: true );
-         AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
+         Database.Initialize();
+         Database.Build();
+         Users.Load();
+         WorkItemStatuses.Load();
+         WorkItemTypes.Load();
+         ProjectStatuses.Load();
+         Projects.Load();
+         AcceptanceCriteriaStatuses.Load();
+         WorkItems.Load();
       }
 
       ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
@@ -981,16 +1032,26 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Returns( _currentUser.UserName );
       }
 
-      private void CreateController()
+      private WorkItemsController CreateDatabaseConnectedController()
       {
-         _controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
+         var controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
+            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
+         controller.ControllerContext = new ControllerContext();
+
+         return controller;
+      }
+
+      private WorkItemsController CreateDatabaseMockedController()
+      {
+         var controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
             _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object );
-         _controller.ControllerContext = new ControllerContext();
+         controller.ControllerContext = new ControllerContext();
+
+         return controller;
       }
 
       private void SetupWorkItemRepository()
       {
-         WorkItems.CreateTestModelData( initializeIds: true );
          _workItemRepository = new Mock<IWorkItemRepository>();
          //_workItemRepository.Setup( x => x.GetAll() ).Returns( WorkItems.ModelData );
          _workItemRepository.Setup( x => x.GetOpenProductBacklog() ).Returns( WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.Status.IsOpenStatus ).ToList() );
@@ -1005,7 +1066,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
-         _query = new Mock<ICriteria>();
+         var query = new Mock<ICriteria>();
          _transaction = new Mock<ITransaction>();
 
          _sessionFactory
@@ -1013,34 +1074,24 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Returns( _session.Object );
 
          _session
-            .Setup( x => x.CreateCriteria( typeof( WorkItem ) ) )
-            .Returns( _query.Object );
+            .Setup( x => x.CreateCriteria( It.IsAny<Type>() ) )
+            .Returns( query.Object );
+         query
+            .Setup( x => x.Add( It.IsAny<ICriterion>() ) )
+            .Returns( query.Object );
 
-         _query
-            .Setup( x => x.List<WorkItemIndexViewModel>() )
-            .Returns( (from item in WorkItems.ModelData
-                       select new WorkItemIndexViewModel()
-                       {
-                          Id = item.Id,
-                          Name = item.Name,
-                          Description = item.Description,
-                          IsOpenStatus = item.Status.IsOpenStatus,
-                          StatusName = item.Status.Name,
-                          WorkItemTypeName = item.WorkItemType.Name
-                       }).ToList() );
-
-         _query
+         query
             .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
-            .Returns( _query.Object );
-         _query
+            .Returns( query.Object );
+         query
             .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
-            .Returns( _query.Object );
-         _query
+            .Returns( query.Object );
+         query
             .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
-            .Returns( _query.Object );
-         _query
+            .Returns( query.Object );
+         query
             .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
-            .Returns( _query.Object );
+            .Returns( query.Object );
 
          _session
             .Setup( x => x.BeginTransaction() )
