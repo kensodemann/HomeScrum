@@ -23,13 +23,6 @@ namespace HomeScrum.Web.Controllers
          _userRepository = userRepository;
       }
 
-      // Temporarily here like this, will need to refactor to project into a list of domain objects
-      public override System.Web.Mvc.ActionResult Index()
-      {
-         var items = MainRepository.GetAll();
-         return View( Mapper.Map<ICollection<Project>, IEnumerable<ProjectViewModel>>( items ) );
-      }
-
       private readonly IRepository<ProjectStatus> _projectStatusRepository;
       private readonly IUserRepository _userRepository;
 

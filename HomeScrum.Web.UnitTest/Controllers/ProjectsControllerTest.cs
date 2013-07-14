@@ -5,6 +5,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -70,14 +71,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         _projectRepository.Setup( x => x.GetAll() )
-            .Returns( Projects.ModelData );
-
          var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<ProjectViewModel> ) );
+         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<DomainObjectViewModel> ) );
       }
 
       [TestMethod]
@@ -85,7 +83,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _controller.Index();
 
-         _projectRepository.Verify( x => x.GetAll(), Times.Once() );
+         _query.Verify( x => x.List<DomainObjectViewModel>(), Times.Once() );
       }
 
       [TestMethod]
@@ -602,12 +600,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Setup( x => x.CreateCriteria( typeof( Project ) ) )
             .Returns( _query.Object );
 
-         //_queryCriteria
-         //   .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
-         //   .Returns( _queryCriteria.Object );
-         //_queryCriteria
-         //   .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
-         //   .Returns( _queryCriteria.Object );
+         _query
+            .Setup( x => x.List<DomainObjectViewModel>() )
+            .Returns( (from item in Projects.ModelData
+                       select new DomainObjectViewModel()
+                       {
+                          Id = item.Id,
+                          Name = item.Name,
+                          Description = item.Description
+                       }).ToList() );
+
          _query
             .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
             .Returns( _query.Object );
