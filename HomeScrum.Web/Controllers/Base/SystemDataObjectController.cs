@@ -5,6 +5,8 @@ using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
+using NHibernate.Criterion;
+using NHibernate.Transform;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,29 @@ namespace HomeScrum.Web.Controllers.Base
          }
 
          return new EmptyResult();
+      }
+
+      //
+      // GET: /ModelT/
+      public override ActionResult Index()
+      {
+         Log.Debug( "Index()" );
+
+         using (var session = SessionFactory.OpenSession())
+         {
+            var items = session
+               .CreateCriteria( typeof( ModelT ) )
+               .SetProjection( Projections.ProjectionList()
+                  .Add( Projections.Property( "Id" ), "Id" )
+                  .Add( Projections.Property( "Name" ), "Name" )
+                  .Add( Projections.Property( "Description" ), "Description" )
+                  .Add( Projections.Property( "StatusCd" ), "StatusCd" )
+                  .Add( Projections.Property( "IsPredefined" ), "IsPredefined" ) )
+               .SetResultTransformer( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
+               .List<SystemDomainObjectViewModel>();
+            return View( items );
+         }
+
       }
    }
 }

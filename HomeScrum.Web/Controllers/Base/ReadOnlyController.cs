@@ -53,11 +53,9 @@ namespace HomeScrum.Web.Controllers.Base
                .SetProjection( Projections.ProjectionList()
                   .Add( Projections.Property( "Id" ), "Id" )
                   .Add( Projections.Property( "Name" ), "Name" )
-                  .Add( Projections.Property( "Description" ), "Description" )
-                  .Add( Projections.Property( "StatusCd" ), "StatusCd" )
-                  .Add( Projections.Property( "IsPredefined" ), "IsPredefined" ) )
-               .SetResultTransformer( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
-               .List<SystemDomainObjectViewModel>();
+                  .Add( Projections.Property( "Description" ), "Description" ) )
+               .SetResultTransformer( Transformers.AliasToBean<DomainObjectViewModel>() )
+               .List<DomainObjectViewModel>();
             return View( items );
          }
       }
