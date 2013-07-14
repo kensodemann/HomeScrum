@@ -1,6 +1,6 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.Utility;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
 using Ninject;

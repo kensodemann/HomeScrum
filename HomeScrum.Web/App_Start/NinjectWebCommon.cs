@@ -3,22 +3,22 @@
 
 namespace HomeScrum.Web.App_Start
 {
-   using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-   using Ninject;
-   using Ninject.Web.Common;
-   using System;
-   using System.Web;
+   using AutoMapper;
+   using HomeScrum.Common.Utility;
    using HomeScrum.Data.Domain;
    using HomeScrum.Data.Repositories;
    using HomeScrum.Data.SqlServer;
    using HomeScrum.Data.Validators;
-   using HomeScrum.Web.Providers;
-   using AutoMapper;
-   using HomeScrum.Web.Translators;
    using HomeScrum.Web.Models.Admin;
    using HomeScrum.Web.Models.WorkItems;
+   using HomeScrum.Web.Providers;
+   using HomeScrum.Web.Translators;
+   using Microsoft.Web.Infrastructure.DynamicModuleHelper;
    using NHibernate;
-   using HomeScrum.Data.SqlServer.Helpers;
+   using Ninject;
+   using Ninject.Web.Common;
+   using System;
+   using System.Web;
 
    public static class NinjectWebCommon
    {

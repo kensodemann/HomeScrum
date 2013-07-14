@@ -1,15 +1,10 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.Utility;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
 using Ninject;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Data.SqlServer
 {

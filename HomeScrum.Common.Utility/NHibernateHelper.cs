@@ -1,8 +1,7 @@
-﻿using HomeScrum.Data.Domain;
-using NHibernate;
+﻿using NHibernate;
 using NHibernate.Cfg;
 
-namespace HomeScrum.Data.SqlServer.Helpers
+namespace HomeScrum.Common.Utility
 {
    public class NHibernateHelper
    {

@@ -1,9 +1,8 @@
-﻿using HomeScrum.Data.SqlServer.Helpers;
+﻿using HomeScrum.Common.Utility;
 using NHibernate;
 using NHibernate.Criterion;
 using Ninject;
 using Ninject.Extensions.Logging;
-
 using System.Collections.Generic;
 
 namespace HomeScrum.Data.SqlServer

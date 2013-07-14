@@ -1,6 +1,5 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.Utility;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using Ninject;
 using Ninject.Extensions.Logging;

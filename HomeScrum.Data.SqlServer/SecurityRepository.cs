@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HomeScrum.Common.Utility;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.SqlServer.Helpers;
 using NHibernate;
 using Ninject;
 using Ninject.Extensions.Logging;

@@ -46,6 +46,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
+         Database.Initialize();
+
          CreateMockIOCKernel();
          InitializeTestData();
          IntializeMapper();
@@ -54,6 +56,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
+         Database.Build();
+
          SetupSessionFactory();
          SetupCurrentUser();
          SetupValidator();
