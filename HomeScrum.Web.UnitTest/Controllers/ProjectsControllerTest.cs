@@ -60,11 +60,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         //Database.Build();
-         //Users.Load();
-         //ProjectStatuses.Load();
-         //Projects.Load();
-
          SetupSessionFactory();
          SetupCurrentUser();
          SetupValidator();

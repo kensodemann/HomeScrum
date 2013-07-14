@@ -6,6 +6,8 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using HomeScrum.Common.Utility;
+using HomeScrum.Web.Controllers.Base;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -33,17 +35,33 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
+         Database.Initialize();
          MapperConfig.RegisterMappings();
       }
 
       [TestInitialize]
       public override void InitializeTest()
       {
+         Database.Build();
+         WorkItemTypes.Load();
          base.InitializeTest();
-         WorkItemTypes.CreateTestModelData( initializeIds: true );
-         _controller = new WorkItemTypesController( _validator.Object, new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, _sessionFactory.Object );
-         _controller.ControllerContext = new ControllerContext();
       }
 
+
+      public override ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel> CreateDatabaseConnectedController()
+      {
+         var controller = new WorkItemTypesController( _validator.Object, new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
+         controller.ControllerContext = new ControllerContext();
+
+         return controller;
+      }
+
+      public override ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel> CreateDatabaseMockedController()
+      {
+         var controller = new WorkItemTypesController( _validator.Object, new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         controller.ControllerContext = new ControllerContext();
+
+         return controller;
+      }
    }
 }

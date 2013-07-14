@@ -17,22 +17,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
       where ViewModelT : SystemDomainObjectViewModel, new()
       where EditorViewModelT : SystemDomainObjectViewModel, new()
    {
-      private SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> MyController
-      {
-         get
-         {
-            return _controller as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
-         }
-      }
-
-
       [TestMethod]
       public void UpdateSortOrders_ReturnsEmptyResult()
       {
+         var controller = CreateDatabaseMockedController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
+
          var ids = TestObjectIdList();
          SetupSessionGets();
 
-         var result = MyController.UpdateSortOrders( ids ) as EmptyResult;
+         var result = controller.UpdateSortOrders( ids ) as EmptyResult;
 
          Assert.IsNotNull( result );
       }
@@ -40,10 +33,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void UpdateSortOrders_DoesNotUpdateSortOrders_IfNoOrdersHaveChanged()
       {
+         var controller = CreateDatabaseMockedController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
          var ids = TestObjectIdList();
          SetupSessionGets();
 
-         var result = MyController.UpdateSortOrders( ids );
+         var result = controller.UpdateSortOrders( ids );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -53,6 +47,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void UpdateSortOrders_UpdatesSortOrders_IfNodeOrdersChanged()
       {
+         var controller = CreateDatabaseMockedController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
          var ids = TestObjectIdList();
          var swapId = ids[2];
          ids[2] = ids[4];
@@ -60,7 +55,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          SetupSessionGets();
 
-         var results = MyController.UpdateSortOrders( ids );
+         var results = controller.UpdateSortOrders( ids );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -72,13 +67,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void UpdateSortOrders_DoesNotUpdateIdsNotInRepository()
       {
+         var controller = CreateDatabaseMockedController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
          var ids = TestObjectIdList();
          SetupSessionGets();
          var newId = Guid.NewGuid();
          _session.Setup( x => x.Get<ModelT>( newId ) ).Returns( null as ModelT );
          ids.Add( newId.ToString() );
 
-         var results = MyController.UpdateSortOrders( ids );
+         var results = controller.UpdateSortOrders( ids );
 
          _session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
       }

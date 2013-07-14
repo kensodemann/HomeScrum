@@ -6,6 +6,8 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Common.Utility;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -41,8 +43,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          base.InitializeTest();
          ProjectStatuses.CreateTestModelData( initializeIds: true );
-         _controller = new ProjectStatusesController( _validator.Object, new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
-         _controller.ControllerContext = new ControllerContext();
+      }
+
+      public override ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel> CreateDatabaseConnectedController()
+      {
+         var controller = new ProjectStatusesController( _validator.Object, new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
+         controller.ControllerContext = new ControllerContext();
+
+         return controller;
+      }
+
+      public override ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel> CreateDatabaseMockedController()
+      {
+         var controller = new ProjectStatusesController( _validator.Object, new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         controller.ControllerContext = new ControllerContext();
+
+         return controller;
       }
    }
 }

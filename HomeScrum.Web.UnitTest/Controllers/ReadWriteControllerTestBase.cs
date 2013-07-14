@@ -22,13 +22,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       where ViewModelT : DomainObjectViewModel, new()
       where EditorViewModelT : DomainObjectViewModel, new()
    {
+      #region Test Setup
       protected Mock<IValidator<ModelT>> _validator;
       protected Mock<ILogger> _logger;
-      protected ReadWriteController<ModelT, ViewModelT, EditorViewModelT> _controller;
       protected IPrincipal FakeUser = new GenericPrincipal( new GenericIdentity( "ken", "Forms" ), null );
       protected Mock<ISessionFactory> _sessionFactory;
       protected Mock<ISession> _session;
-      protected Mock<ICriteria> _query;
       protected Mock<ITransaction> _transaction;
 
       protected abstract ICollection<ModelT> GetAllModels();
@@ -63,58 +62,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.Setup( x => x.ModelIsValid( It.IsAny<ModelT>(), It.IsAny<TransactionType>() ) ).Returns( true );
       }
 
+      public abstract ReadWriteController<ModelT, ViewModelT, EditorViewModelT> CreateDatabaseConnectedController();
+      public abstract ReadWriteController<ModelT, ViewModelT, EditorViewModelT> CreateDatabaseMockedController();
+      #endregion
+
 
       [TestMethod]
-      public void Index_ReturnsViewWithModel()
+      public void Index_ReturnsViewWithAllItem()
       {
-         _query
-           .Setup( x => x.List<SystemDomainObjectViewModel>() )
-           .Returns( (from item in GetAllModels()
-                      select new SystemDomainObjectViewModel()
-                      {
-                         Id = item.Id,
-                         Name = item.Name,
-                         Description = item.Description,
-                         StatusCd = 'A',
-                         IsPredefined = true
-                      }).ToList() );
+         var controller = CreateDatabaseConnectedController();
 
-         var view = _controller.Index() as ViewResult;
+         var view = controller.Index() as ViewResult;
+         var model = view.Model as IEnumerable<SystemDomainObjectViewModel>;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<SystemDomainObjectViewModel> ) );
+         Assert.AreEqual( GetAllModels().Count, model.Count() );
       }
 
-      [TestMethod]
-      public void Index_GetsAllItems()
-      {
-         _query
-            .Setup( x => x.List<SystemDomainObjectViewModel>() )
-            .Returns( (from item in GetAllModels()
-                       select new SystemDomainObjectViewModel()
-                       {
-                          Id = item.Id,
-                          Name = item.Name,
-                          Description = item.Description,
-                          StatusCd = 'A',
-                          IsPredefined = true
-                       }).ToList() );
-
-         _controller.Index();
-
-         _query.Verify( x => x.List<SystemDomainObjectViewModel>(), Times.Once() );
-      }
 
       [TestMethod]
       public void Details_ReturnsViewWithModel()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[2];
 
          _session.Setup( x => x.Get<ModelT>( model.Id ) )
             .Returns( model );
 
-         var view = _controller.Details( model.Id ) as ViewResult;
+         var view = controller.Details( model.Id ) as ViewResult;
 
          _session.Verify( x => x.Get<ModelT>( model.Id ), Times.Once() );
 
@@ -129,11 +105,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Details_ReturnsHttpNotFoundIfNoModel()
       {
+         var controller = CreateDatabaseMockedController();
          var id = Guid.NewGuid();
 
          _session.Setup( x => x.Get<ModelT>( id ) ).Returns( null as ModelT );
 
-         var result = _controller.Details( id ) as HttpNotFoundResult;
+         var result = controller.Details( id ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
@@ -141,7 +118,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewModel()
       {
-         var result = _controller.Create() as ViewResult;
+         var controller = CreateDatabaseMockedController();
+
+         var result = controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result.Model, typeof( EditorViewModelT ) );
@@ -150,9 +129,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateEditorViewModel();
 
-         var result = _controller.Create( viewModel, FakeUser );
+         var result = controller.Create( viewModel, FakeUser );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -162,9 +142,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateEditorViewModel();
 
-         var result = _controller.Create( viewModel, FakeUser ) as RedirectToRouteResult;
+         var result = controller.Create( viewModel, FakeUser ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -177,10 +158,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotSaveOrCommitIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
+
          var model = CreateEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model, FakeUser );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( model, FakeUser );
 
          _session.Verify( x => x.BeginTransaction(), Times.Never() );
          _transaction.Verify( x => x.Commit(), Times.Never() );
@@ -190,10 +173,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = CreateEditorViewModel();
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Create( model, FakeUser );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Create( model, FakeUser );
 
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result, typeof( ViewResult ) );
@@ -202,9 +186,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
+         var controller = CreateDatabaseMockedController();
          var viewModel = CreateEditorViewModel();
 
-         _controller.Create( viewModel, FakeUser );
+         controller.Create( viewModel, FakeUser );
 
          _validator.Verify( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
       }
@@ -212,18 +197,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var viewModel = CreateEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Create( viewModel, FakeUser );
+         var result = controller.Create( viewModel, FakeUser );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         Assert.AreEqual( messages.Count, controller.ModelState.Count );
          foreach (var message in messages)
          {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+            Assert.IsTrue( controller.ModelState.ContainsKey( message.Key ) );
          }
          Assert.IsTrue( result is ViewResult );
       }
@@ -231,24 +217,27 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var viewModel = CreateEditorViewModel();
 
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Create( viewModel, FakeUser );
+         var result = controller.Create( viewModel, FakeUser );
 
-         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.AreEqual( 0, controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
-      public void EditGet_CallsGet()
+      public void EditGet_CallsSessionGet()
       {
+         var controller = CreateDatabaseMockedController();
+
          Guid id = Guid.NewGuid();
-         _controller.Edit( id );
+         controller.Edit( id );
 
          _session.Verify( x => x.Get<ModelT>( id ), Times.Once() );
       }
@@ -256,10 +245,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsViewWithViewModel()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[3];
          _session.Setup( x => x.Get<ModelT>( model.Id ) ).Returns( model );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as ViewResult;
 
          Assert.IsNotNull( result );
          Assert.IsNotNull( result.Model );
@@ -272,9 +262,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
+         var controller = CreateDatabaseMockedController();
          _session.Setup( x => x.Get<ModelT>( It.IsAny<Guid>() ) ).Returns( null as ModelT );
 
-         var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+         var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
@@ -282,10 +273,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CallRepositoryUpdateIfModelValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[2];
          var viewModel = CreateEditorViewModel( model );
 
-         _controller.Edit( viewModel, FakeUser );
+         controller.Edit( viewModel, FakeUser );
 
          _session.Verify( x => x.BeginTransaction(), Times.Once() );
          _transaction.Verify( x => x.Commit(), Times.Once() );
@@ -295,11 +287,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[2];
          var viewModel = CreateEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         _controller.Edit( viewModel, FakeUser );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         controller.Edit( viewModel, FakeUser );
 
          _session.Verify( x => x.BeginTransaction(), Times.Never() );
          _transaction.Verify( x => x.Commit(), Times.Never() );
@@ -309,10 +302,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[2];
          var viewModel = CreateEditorViewModel( model );
 
-         var result = _controller.Edit( viewModel, FakeUser ) as RedirectToRouteResult;
+         var result = controller.Edit( viewModel, FakeUser ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -325,11 +319,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[2];
          var viewModel = CreateEditorViewModel( model );
 
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, FakeUser ) as ViewResult;
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = controller.Edit( viewModel, FakeUser ) as ViewResult;
 
          Assert.IsNotNull( result );
       }
@@ -337,10 +332,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_PassesModelToValidator()
       {
+         var controller = CreateDatabaseMockedController();
          var model = GetAllModels().ToArray()[3];
          var viewModel = CreateEditorViewModel( model );
 
-         _controller.Edit( viewModel, FakeUser );
+         controller.Edit( viewModel, FakeUser );
 
          _validator.Verify( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), TransactionType.Update ), Times.Once() );
       }
@@ -348,6 +344,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
          var viewModel = CreateEditorViewModel( model );
@@ -355,12 +352,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
 
-         var result = _controller.Edit( viewModel, FakeUser );
+         var result = controller.Edit( viewModel, FakeUser );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
+         Assert.AreEqual( messages.Count, controller.ModelState.Count );
          foreach (var message in messages)
          {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
+            Assert.IsTrue( controller.ModelState.ContainsKey( message.Key ) );
          }
          Assert.IsTrue( result is ViewResult );
       }
@@ -368,6 +365,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
          var viewModel = CreateEditorViewModel( model );
@@ -375,9 +373,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _validator.SetupGet( x => x.Messages ).Returns( messages );
          _validator.Setup( x => x.ModelIsValid( It.Is<ModelT>( m => m.Id == viewModel.Id && m.Name == viewModel.Name && m.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
 
-         var result = _controller.Edit( viewModel, FakeUser );
+         var result = controller.Edit( viewModel, FakeUser );
 
-         Assert.AreEqual( 0, _controller.ModelState.Count );
+         Assert.AreEqual( 0, controller.ModelState.Count );
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result, typeof( RedirectToRouteResult ) );
       }
@@ -385,6 +383,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_PerformsDomainValidations()
       {
+         var controller = CreateDatabaseMockedController();
          var messages = CreateStockErrorMessages();
          var model = GetAllModels().ToArray()[3];
          var viewModel = CreateEditorViewModel( model );
@@ -395,9 +394,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          // Name is required in all Domain objects
          viewModel.Name = "";
 
-         var result = _controller.Edit( viewModel, FakeUser );
+         var result = controller.Edit( viewModel, FakeUser );
 
-         Assert.AreEqual( 1, _controller.ModelState.Count );
+         Assert.AreEqual( 1, controller.ModelState.Count );
          Assert.IsInstanceOfType( result, typeof( ViewResult ) );
       }
 
@@ -417,7 +416,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
-         _query = new Mock<ICriteria>();
+         var _query = new Mock<ICriteria>();
          _transaction = new Mock<ITransaction>();
 
          _sessionFactory
@@ -425,15 +424,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Returns( _session.Object );
 
          _session
-            .Setup( x => x.CreateCriteria( typeof( ModelT ) ) )
+            .Setup( x => x.CreateCriteria( It.IsAny<Type>() ) )
             .Returns( _query.Object );
-
-         //_queryCriteria
-         //   .Setup( x => x.CreateAlias( It.IsAny<String>(), It.IsAny<String>() ) )
-         //   .Returns( _queryCriteria.Object );
-         //_queryCriteria
-         //   .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
-         //   .Returns( _queryCriteria.Object );
          _query
             .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
             .Returns( _query.Object );
