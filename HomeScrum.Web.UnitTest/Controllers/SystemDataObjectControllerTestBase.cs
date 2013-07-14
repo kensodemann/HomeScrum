@@ -18,6 +18,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       where EditorViewModelT : SystemDomainObjectViewModel, new()
    {
       [TestMethod]
+      public void Index_ReturnsItemsInSortSeqOrder()
+      {
+         var controller = CreateDatabaseConnectedController();
+
+         var view = controller.Index() as ViewResult;
+         var model = view.Model as IEnumerable<SystemDomainObjectViewModel>;
+
+         var expectedItems = GetAllModels().OrderBy( x => x.SortSequence );
+         var itemCount = model.Count();
+
+         for (int i = 0; i < itemCount; i++)
+         {
+            Assert.AreEqual( expectedItems.ElementAt( i ).Id, model.ElementAt( i ).Id );
+         }
+      }
+
+      [TestMethod]
       public void UpdateSortOrders_ReturnsEmptyResult()
       {
          var controller = CreateDatabaseMockedController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;

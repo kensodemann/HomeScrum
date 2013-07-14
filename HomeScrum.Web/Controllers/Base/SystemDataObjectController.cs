@@ -69,6 +69,7 @@ namespace HomeScrum.Web.Controllers.Base
                   .Add( Projections.Property( "StatusCd" ), "StatusCd" )
                   .Add( Projections.Property( "IsPredefined" ), "IsPredefined" ) )
                .SetResultTransformer( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
+               .AddOrder( Order.Asc( "SortSequence" ) )
                .List<SystemDomainObjectViewModel>();
             return View( items );
          }

@@ -35,14 +35,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
+         Database.Initialize();
          MapperConfig.RegisterMappings();
       }
 
       [TestInitialize]
       public override void InitializeTest()
       {
+         Database.Build();
+         ProjectStatuses.Load();
          base.InitializeTest();
-         ProjectStatuses.CreateTestModelData( initializeIds: true );
       }
 
       public override ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel> CreateDatabaseConnectedController()
