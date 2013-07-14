@@ -40,7 +40,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<ISessionFactory> _sessionFactory;
       private Mock<ISession> _session;
-      private Mock<ICriteria> _query;
       private Mock<ITransaction> _transaction;
 
 
@@ -621,7 +620,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
-         _query = new Mock<ICriteria>();
+         var _query = new Mock<ICriteria>();
          _transaction = new Mock<ITransaction>();
 
          _sessionFactory
@@ -629,21 +628,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Returns( _session.Object );
 
          _session
-            .Setup( x => x.CreateCriteria( typeof( Project ) ) )
-            .Returns( _query.Object );
-
-         _query
-            .Setup( x => x.List<DomainObjectViewModel>() )
-            .Returns( (from item in Projects.ModelData
-                       select new DomainObjectViewModel()
-                       {
-                          Id = item.Id,
-                          Name = item.Name,
-                          Description = item.Description
-                       }).ToList() );
+            .Setup( x => x.BeginTransaction() )
+            .Returns( _transaction.Object );
 
          _session
-            .Setup( x => x.CreateCriteria( typeof( ProjectStatus ) ) )
+            .Setup( x => x.CreateCriteria( It.IsAny<Type>() ))
             .Returns( _query.Object );
          _query
             .Setup( x => x.Add( It.IsAny<ICriterion>() ) )
@@ -658,10 +647,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _query
             .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
             .Returns( _query.Object );
-
-         _session
-            .Setup( x => x.BeginTransaction() )
-            .Returns( _transaction.Object );
       }
 
       private static void CreateStaticRepositories()
