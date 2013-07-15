@@ -74,7 +74,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\IDomainObjectQuery.cs" />
-    <Compile Include="Queries\UnorderedDomainObjects.cs" />
+    <Compile Include="Queries\DomainObjects.cs" />
+    <Compile Include="Queries\SystemObjectsOrdered.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISecurityRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />

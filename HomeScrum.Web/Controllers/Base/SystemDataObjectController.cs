@@ -3,6 +3,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Base;
+using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using NHibernate.Criterion;
@@ -60,18 +61,10 @@ namespace HomeScrum.Web.Controllers.Base
 
          using (var session = SessionFactory.OpenSession())
          {
-            SystemDomainObjectViewModel viewModel = null;
-            var items = session
-               .QueryOver<ModelT>()
-               .Select( Projections.ProjectionList()
-                  .Add( Projections.Property<ModelT>( x => x.Id ).WithAlias( () => viewModel.Id ) )
-                  .Add( Projections.Property<ModelT>( x => x.Name ).WithAlias( () => viewModel.Name ) )
-                  .Add( Projections.Property<ModelT>( x => x.Description ).WithAlias( () => viewModel.Description ) )
-                  .Add( Projections.Conditional( Restrictions.Eq( Projections.Property<ModelT>( x => x.StatusCd ), 'A' ), Projections.Constant( true ), Projections.Constant( false ) ).WithAlias( () => viewModel.AllowUse ) )
-                  .Add( Projections.Property<ModelT>( x => x.IsPredefined ).WithAlias( () => viewModel.IsPredefined ) ) )
-               .OrderBy( x => x.SortSequence ).Asc
-               .TransformUsing( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
-               .List<SystemDomainObjectViewModel>();
+            var queryModel = new HomeScrum.Data.Queries.SystemObjectsOrdered<ModelT>();
+            var items = queryModel.GetQuery( session )
+               .SelectSystemDomainObjectViewModels<ModelT>();
+
             return View( items );
          }
 

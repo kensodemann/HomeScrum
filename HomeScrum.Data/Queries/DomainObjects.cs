@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Queries
 {
-   public class UnorderedDomainObjects<ModelT>
+   public class DomainObjects<ModelT>
       where ModelT : DomainObjectBase
    {
-      public IQueryOver<ModelT,ModelT> GetQuery( ISession session )
+      public virtual IQueryOver<ModelT,ModelT> GetQuery( ISession session )
       {
          var query = session.QueryOver<ModelT>();
 
