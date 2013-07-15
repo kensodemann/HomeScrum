@@ -37,6 +37,7 @@ namespace HomeScrum.Web.Controllers
                   .Add( Projections.Property( "Name" ), "Text" )
                   .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
                .SetResultTransformer( Transformers.AliasToBean<SelectListItem>() )
+               .AddOrder( Order.Asc( "SortSequence" ) )
                .List<SelectListItem>();
          }
       }

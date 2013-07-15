@@ -134,15 +134,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Create() as ViewResult;
 
          var model = result.Model as ProjectEditorViewModel;
+         var expected = ProjectStatuses.ModelData
+            .Where( x => x.StatusCd == 'A' )
+            .OrderBy( x => x.SortSequence );
+         var itemCount = expected.Count();
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.Statuses.Count() );
-         foreach (var item in model.Statuses)
+         Assert.AreEqual( itemCount, model.Statuses.Count() );
+         for (var i = 0; i < itemCount; i++)
          {
-            var status = ProjectStatuses.ModelData.First( x => x.Id == new Guid( item.Value ) );
-            Assert.AreEqual( status.Name, item.Text );
+            var item = model.Statuses.ElementAt( i );
+            Assert.AreEqual( expected.ElementAt( i ).Id, new Guid( item.Value ) );
+            Assert.AreEqual( expected.ElementAt( i ).Name, item.Text );
             Assert.IsFalse( item.Selected );
          }
       }
+
 
       [TestMethod]
       public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
@@ -316,13 +322,20 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
+         var expected = ProjectStatuses.ModelData
+            .Where( x => x.StatusCd == 'A' )
+            .OrderBy( x => x.SortSequence );
 
-         Assert.AreEqual( ProjectStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
-         foreach (var item in viewModel.Statuses)
+         var itemCount = expected.Count();
+         Assert.AreEqual( itemCount, viewModel.Statuses.Count() );
+         for (var i = 0; i < itemCount; i++)
          {
+            var item = viewModel.Statuses.ElementAt( i );
             var statusId = new Guid( item.Value );
-            var status = ProjectStatuses.ModelData.First( x => x.Id == statusId );
-            Assert.AreEqual( status.Name, item.Text );
+            var expectedStatus = expected.ElementAt( i );
+
+            Assert.AreEqual( expectedStatus.Id, statusId );
+            Assert.AreEqual( expectedStatus.Name, item.Text );
             Assert.IsTrue( (model.Status.Id != statusId && !item.Selected) ||
                            (model.Status.Id == statusId && item.Selected) );
          }
@@ -627,7 +640,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Returns( _transaction.Object );
 
          _session
-            .Setup( x => x.CreateCriteria( It.IsAny<Type>() ))
+            .Setup( x => x.CreateCriteria( It.IsAny<Type>() ) )
             .Returns( query.Object );
          query
             .Setup( x => x.Add( It.IsAny<ICriterion>() ) )
@@ -635,12 +648,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          query
             .Setup( x => x.List<SelectListItem>() )
             .Returns( new List<SelectListItem>() );
-
          query
             .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
             .Returns( query.Object );
          query
             .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
+            .Returns( query.Object );
+         query
+            .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
             .Returns( query.Object );
       }
 
