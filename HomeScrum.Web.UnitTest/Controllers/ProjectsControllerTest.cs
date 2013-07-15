@@ -131,24 +131,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateDatabaseConnectedController();
 
-         var result = controller.Create() as ViewResult;
-
-         var model = result.Model as ProjectEditorViewModel;
          var expected = ProjectStatuses.ModelData
             .Where( x => x.StatusCd == 'A' )
             .OrderBy( x => x.SortSequence );
-         var itemCount = expected.Count();
 
-         Assert.AreEqual( itemCount, model.Statuses.Count() );
-         for (var i = 0; i < itemCount; i++)
-         {
-            var item = model.Statuses.ElementAt( i );
-            Assert.AreEqual( expected.ElementAt( i ).Id, new Guid( item.Value ) );
-            Assert.AreEqual( expected.ElementAt( i ).Name, item.Text );
-            Assert.IsFalse( item.Selected );
-         }
+         var result = controller.Create() as ViewResult;
+         var viewModel = result.Model as ProjectEditorViewModel;
+
+         AssertSelectListOrderAndContents( expected, viewModel.Statuses );
       }
-
 
       [TestMethod]
       public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
@@ -320,25 +311,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateDatabaseConnectedController();
          var model = Projects.ModelData[0];
 
-         var result = controller.Edit( model.Id ) as ViewResult;
-         var viewModel = result.Model as ProjectEditorViewModel;
          var expected = ProjectStatuses.ModelData
             .Where( x => x.StatusCd == 'A' )
             .OrderBy( x => x.SortSequence );
 
-         var itemCount = expected.Count();
-         Assert.AreEqual( itemCount, viewModel.Statuses.Count() );
-         for (var i = 0; i < itemCount; i++)
-         {
-            var item = viewModel.Statuses.ElementAt( i );
-            var statusId = new Guid( item.Value );
-            var expectedStatus = expected.ElementAt( i );
+         var result = controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as ProjectEditorViewModel;
 
-            Assert.AreEqual( expectedStatus.Id, statusId );
-            Assert.AreEqual( expectedStatus.Name, item.Text );
-            Assert.IsTrue( (model.Status.Id != statusId && !item.Selected) ||
-                           (model.Status.Id == statusId && item.Selected) );
-         }
+         AssertSelectListOrderAndContents( expected, viewModel.Statuses, model.Status.Id );
       }
 
       [TestMethod]
@@ -348,25 +328,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = Projects.ModelData
             .First( x => x.Status.StatusCd == 'I' );
 
-         var result = controller.Edit( model.Id ) as ViewResult;
-         var viewModel = result.Model as ProjectEditorViewModel;
          var expected = ProjectStatuses.ModelData
             .Where( x => x.StatusCd == 'A' || x.Id == model.Status.Id )
             .OrderBy( x => x.SortSequence );
 
-         var itemCount = expected.Count();
-         Assert.AreEqual( itemCount, viewModel.Statuses.Count() );
-         for (var i = 0; i < itemCount; i++)
-         {
-            var item = viewModel.Statuses.ElementAt( i );
-            var statusId = new Guid( item.Value );
-            var expectedStatus = expected.ElementAt( i );
+         var result = controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as ProjectEditorViewModel;
 
-            Assert.AreEqual( expectedStatus.Id, statusId );
-            Assert.AreEqual( expectedStatus.Name, item.Text );
-            Assert.IsTrue( (model.Status.Id != statusId && !item.Selected) ||
-                           (model.Status.Id == statusId && item.Selected) );
-         }
+         AssertSelectListOrderAndContents( expected, viewModel.Statuses, model.Status.Id );
       }
 
       [TestMethod]
@@ -539,6 +508,29 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       #region private helpers
+      private static void AssertSelectListOrderAndContents( IEnumerable<ProjectStatus> expected, IEnumerable<SelectListItem> actual, Guid selectedId = default( Guid ) )
+      {
+         var expectedCount = expected.Count();
+
+         Assert.AreEqual( expectedCount, actual.Count() );
+         for (var i = 0; i < expectedCount; i++)
+         {
+            var currentActualStatus = actual.ElementAt( i );
+            var currentActualStatusId = new Guid( currentActualStatus.Value );
+
+            Assert.AreEqual( expected.ElementAt( i ).Id, currentActualStatusId );
+            Assert.AreEqual( expected.ElementAt( i ).Name, currentActualStatus.Text );
+            if (currentActualStatusId == selectedId)
+            {
+               Assert.IsTrue( currentActualStatus.Selected, "Status should be selected" );
+            }
+            else
+            {
+               Assert.IsFalse( currentActualStatus.Selected, "Status should not be selected" );
+            }
+         }
+      }
+
       private static void CreateMockIOCKernel()
       {
          _iocKernel = new MoqMockingKernel();
