@@ -67,7 +67,7 @@ namespace HomeScrum.Web.Controllers.Base
                   .Add( Projections.Property<ModelT>( x => x.Id ).WithAlias( () => viewModel.Id ) )
                   .Add( Projections.Property<ModelT>( x => x.Name ).WithAlias( () => viewModel.Name ) )
                   .Add( Projections.Property<ModelT>( x => x.Description ).WithAlias( () => viewModel.Description ) )
-                  .Add( Projections.Property<ModelT>( x => x.StatusCd ).WithAlias( () => viewModel.StatusCd ) )
+                  .Add( Projections.Conditional( Restrictions.Eq( Projections.Property<ModelT>( x => x.StatusCd ), 'A' ), Projections.Constant( true ), Projections.Constant( false ) ).WithAlias( () => viewModel.AllowUse ) )
                   .Add( Projections.Property<ModelT>( x => x.IsPredefined ).WithAlias( () => viewModel.IsPredefined ) ) )
                .OrderBy( x => x.SortSequence ).Asc
                .TransformUsing( Transformers.AliasToBean<SystemDomainObjectViewModel>() )

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
+using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Base;
 using NHibernate;
 using NHibernate.Criterion;
@@ -43,15 +44,9 @@ namespace HomeScrum.Web.Controllers.Base
 
          using (var session = SessionFactory.OpenSession())
          {
-            DomainObjectViewModel viewModel = null;
-            var items = session
-               .QueryOver<ModelT>()
-               .Select( Projections.ProjectionList()
-                  .Add( Projections.Property<ModelT>( x => x.Id ).WithAlias( () => viewModel.Id ) )
-                  .Add( Projections.Property<ModelT>( x => x.Name ).WithAlias( () => viewModel.Name ) )
-                  .Add( Projections.Property<ModelT>( x => x.Description ).WithAlias( () => viewModel.Description ) ) )
-               .TransformUsing( Transformers.AliasToBean<DomainObjectViewModel>() )
-               .List<DomainObjectViewModel>();
+            var query = new HomeScrum.Data.Queries.UnorderedDomainObjects<ModelT>();
+            var items = query.GetQuery( session ).SelectDomainObjectViewModels<ModelT>();
+ 
             return View( items );
          }
       }
