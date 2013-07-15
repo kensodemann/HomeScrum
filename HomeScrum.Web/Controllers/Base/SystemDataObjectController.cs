@@ -60,16 +60,17 @@ namespace HomeScrum.Web.Controllers.Base
 
          using (var session = SessionFactory.OpenSession())
          {
+            SystemDomainObjectViewModel viewModel = null;
             var items = session
-               .CreateCriteria( typeof( ModelT ) )
-               .SetProjection( Projections.ProjectionList()
-                  .Add( Projections.Property( "Id" ), "Id" )
-                  .Add( Projections.Property( "Name" ), "Name" )
-                  .Add( Projections.Property( "Description" ), "Description" )
-                  .Add( Projections.Property( "StatusCd" ), "StatusCd" )
-                  .Add( Projections.Property( "IsPredefined" ), "IsPredefined" ) )
-               .SetResultTransformer( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
-               .AddOrder( Order.Asc( "SortSequence" ) )
+               .QueryOver<ModelT>()
+               .Select( Projections.ProjectionList()
+                  .Add( Projections.Property<ModelT>( x => x.Id ).WithAlias( () => viewModel.Id ) )
+                  .Add( Projections.Property<ModelT>( x => x.Name ).WithAlias( () => viewModel.Name ) )
+                  .Add( Projections.Property<ModelT>( x => x.Description ).WithAlias( () => viewModel.Description ) )
+                  .Add( Projections.Property<ModelT>( x => x.StatusCd ).WithAlias( () => viewModel.StatusCd ) )
+                  .Add( Projections.Property<ModelT>( x => x.IsPredefined ).WithAlias( () => viewModel.IsPredefined ) ) )
+               .OrderBy( x => x.SortSequence ).Asc
+               .TransformUsing( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
                .List<SystemDomainObjectViewModel>();
             return View( items );
          }

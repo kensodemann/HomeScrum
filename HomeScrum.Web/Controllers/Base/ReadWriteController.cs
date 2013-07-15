@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
+using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using Ninject.Extensions.Logging;
@@ -12,6 +14,8 @@ namespace HomeScrum.Web.Controllers.Base
 {
    public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
       : ReadOnlyController<ModelT, ViewModelT>
+      where ModelT : DomainObjectBase
+      where ViewModelT : DomainObjectViewModel
       where EditorViewModelT : new()
    {
       public ReadWriteController( IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )

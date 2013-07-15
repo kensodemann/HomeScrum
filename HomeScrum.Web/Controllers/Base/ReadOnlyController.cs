@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HomeScrum.Common.Utility;
+using HomeScrum.Data.Domain;
 using HomeScrum.Web.Models.Base;
 using NHibernate;
 using NHibernate.Criterion;
@@ -19,6 +20,8 @@ namespace HomeScrum.Web.Controllers.Base
    /// <typeparam name="ViewModelT">The View Model Type for display views</typeparam>
    [Authorize]
    public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
+      where ModelT : DomainObjectBase
+      where ViewModelT : DomainObjectViewModel
    {
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
@@ -40,13 +43,14 @@ namespace HomeScrum.Web.Controllers.Base
 
          using (var session = SessionFactory.OpenSession())
          {
+            DomainObjectViewModel viewModel = null;
             var items = session
-               .CreateCriteria( typeof( ModelT ) )
-               .SetProjection( Projections.ProjectionList()
-                  .Add( Projections.Property( "Id" ), "Id" )
-                  .Add( Projections.Property( "Name" ), "Name" )
-                  .Add( Projections.Property( "Description" ), "Description" ) )
-               .SetResultTransformer( Transformers.AliasToBean<DomainObjectViewModel>() )
+               .QueryOver<ModelT>()
+               .Select( Projections.ProjectionList()
+                  .Add( Projections.Property<ModelT>( x => x.Id ).WithAlias( () => viewModel.Id ) )
+                  .Add( Projections.Property<ModelT>( x => x.Name ).WithAlias( () => viewModel.Name ) )
+                  .Add( Projections.Property<ModelT>( x => x.Description ).WithAlias( () => viewModel.Description ) ) )
+               .TransformUsing( Transformers.AliasToBean<DomainObjectViewModel>() )
                .List<DomainObjectViewModel>();
             return View( items );
          }
