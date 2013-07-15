@@ -29,16 +29,29 @@ namespace HomeScrum.Web.Controllers
       {
          using (var session = SessionFactory.OpenSession())
          {
-            return session
-               .CreateCriteria( typeof( ProjectStatus ) )
-               .Add( Restrictions.Or( Restrictions.Eq( "StatusCd", 'A' ), Restrictions.Eq( "Id", selectedId ) ) )
-               .SetProjection( Projections.ProjectionList()
+            var queryModel = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ProjectStatus>()
+            {
+               SelectedId = selectedId
+            };
+
+            return queryModel.GetQuery(session)
+               .Select( Projections.ProjectionList()
                   .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
                   .Add( Projections.Property( "Name" ), "Text" )
                   .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
-               .SetResultTransformer( Transformers.AliasToBean<SelectListItem>() )
-               .AddOrder( Order.Asc( "SortSequence" ) )
+               .TransformUsing( Transformers.AliasToBean<SelectListItem>() )
                .List<SelectListItem>();
+
+            //return session
+            //   .CreateCriteria( typeof( ProjectStatus ) )
+            //   .Add( Restrictions.Or( Restrictions.Eq( "StatusCd", 'A' ), Restrictions.Eq( "Id", selectedId ) ) )
+            //   .SetProjection( Projections.ProjectionList()
+            //      .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
+            //      .Add( Projections.Property( "Name" ), "Text" )
+            //      .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
+            //   .SetResultTransformer( Transformers.AliasToBean<SelectListItem>() )
+            //   .AddOrder( Order.Asc( "SortSequence" ) )
+            //   .List<SelectListItem>();
          }
       }
 

@@ -73,9 +73,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\ActiveSystemObjectsOrdered.cs" />
     <Compile Include="Queries\IDomainObjectQuery.cs" />
-    <Compile Include="Queries\DomainObjects.cs" />
-    <Compile Include="Queries\SystemObjectsOrdered.cs" />
+    <Compile Include="Queries\AllDomainObjects.cs" />
+    <Compile Include="Queries\AllSystemObjectsOrdered.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISecurityRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />

@@ -7,7 +7,7 @@ using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Data.Queries
 {
-   public class SystemObjectsOrdered<ModelT> : DomainObjects<ModelT>
+   public class AllSystemObjectsOrdered<ModelT> : AllDomainObjects<ModelT>
       where ModelT : SystemDomainObject
    {
       public override NHibernate.IQueryOver<ModelT, ModelT> GetQuery( NHibernate.ISession session )

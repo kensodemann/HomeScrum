@@ -61,7 +61,7 @@ namespace HomeScrum.Web.Controllers.Base
 
          using (var session = SessionFactory.OpenSession())
          {
-            var queryModel = new HomeScrum.Data.Queries.SystemObjectsOrdered<ModelT>();
+            var queryModel = new HomeScrum.Data.Queries.AllSystemObjectsOrdered<ModelT>();
             var items = queryModel.GetQuery( session )
                .SelectSystemDomainObjectViewModels<ModelT>();
 
