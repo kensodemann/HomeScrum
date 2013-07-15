@@ -13,9 +13,8 @@
             @Html.LabelFor( model => model.StatusId )
             @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
         </div>
-
-        <p>
-            <input type="submit" value="@ViewBag.EditorButtonLabel" />
-        </p>
     </fieldset>
+    <p>
+        <input type="submit" value="@ViewBag.EditorButtonLabel" />
+    </p>
 }
