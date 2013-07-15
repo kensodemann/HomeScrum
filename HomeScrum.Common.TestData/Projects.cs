@@ -60,6 +60,13 @@ namespace HomeScrum.Common.TestData
                Description = "Make them!",
                Status = open,
                LastModifiedUserRid = Users.ModelData[0].Id
+            },
+            new Project()
+            {
+               Name="TacoBell",
+               Description="Make some tacos",
+               Status=ProjectStatuses.ModelData.First( x => x.StatusCd == 'I' ),
+               LastModifiedUserRid = Users.ModelData[0].Id
             }
          };
 

@@ -342,6 +342,34 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void EditGet_InitializesProjectStatuses_IncludesInactiveStatusIfSelected()
+      {
+         var controller = CreateDatabaseConnectedController();
+         var model = Projects.ModelData
+            .First( x => x.Status.StatusCd == 'I' );
+
+         var result = controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as ProjectEditorViewModel;
+         var expected = ProjectStatuses.ModelData
+            .Where( x => x.StatusCd == 'A' || x.Id == model.Status.Id )
+            .OrderBy( x => x.SortSequence );
+
+         var itemCount = expected.Count();
+         Assert.AreEqual( itemCount, viewModel.Statuses.Count() );
+         for (var i = 0; i < itemCount; i++)
+         {
+            var item = viewModel.Statuses.ElementAt( i );
+            var statusId = new Guid( item.Value );
+            var expectedStatus = expected.ElementAt( i );
+
+            Assert.AreEqual( expectedStatus.Id, statusId );
+            Assert.AreEqual( expectedStatus.Name, item.Text );
+            Assert.IsTrue( (model.Status.Id != statusId && !item.Selected) ||
+                           (model.Status.Id == statusId && item.Selected) );
+         }
+      }
+
+      [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
          var controller = CreateDatabaseMockedController();

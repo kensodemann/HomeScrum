@@ -31,7 +31,7 @@ namespace HomeScrum.Web.Controllers
          {
             return session
                .CreateCriteria( typeof( ProjectStatus ) )
-               .Add( Restrictions.Eq( "StatusCd", 'A' ) )
+               .Add( Restrictions.Or( Restrictions.Eq( "StatusCd", 'A' ), Restrictions.Eq( "Id", selectedId ) ) )
                .SetProjection( Projections.ProjectionList()
                   .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
                   .Add( Projections.Property( "Name" ), "Text" )
