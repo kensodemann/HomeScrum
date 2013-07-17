@@ -8,7 +8,7 @@ using NHibernate;
 using Ninject;
 using Ninject.Extensions.Logging;
 
-namespace HomeScrum.Web.Controllers
+namespace HomeScrum.Web.Controllers.Admin
 {
    public class AcceptanceCriterionStatusesController : SystemDataObjectController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel>
    {

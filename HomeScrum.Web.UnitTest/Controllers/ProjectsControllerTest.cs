@@ -649,6 +649,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _sessionFactory = new Mock<ISessionFactory>();
          _session = new Mock<ISession>();
          var query = new Mock<ICriteria>();
+         var queryOver = new Mock<IQueryOver<ProjectStatus, ProjectStatus>>()
+         {
+            DefaultValue = Moq.DefaultValue.Mock
+         };
          _transaction = new Mock<ITransaction>();
 
          _sessionFactory
@@ -677,6 +681,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          query
             .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
             .Returns( query.Object );
+
+         _session
+            .Setup( x => x.QueryOver<ProjectStatus>() )
+            .Returns( queryOver.Object );
       }
 
       private static void CreateStaticRepositories()

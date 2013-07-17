@@ -1,5 +1,4 @@
-﻿using HomeScrum.Data.Domain;
-using NHibernate;
+﻿using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using System;

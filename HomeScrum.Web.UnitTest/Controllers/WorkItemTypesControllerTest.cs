@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using HomeScrum.Common.Utility;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Controllers.Admin;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
