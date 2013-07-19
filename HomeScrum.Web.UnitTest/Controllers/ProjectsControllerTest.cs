@@ -1,6 +1,10 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.TestData;
-using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.Validators;
@@ -10,18 +14,10 @@ using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Transform;
+using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using NHibernate.Linq;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -58,13 +54,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          ProjectStatuses.Load();
          Projects.Load();
 
-         // Look into clearing these mocks first.
-         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-         foreach (var model in ProjectStatuses.ModelData)
-         {
-            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
-
+         SetupProjectStatusRepository();
          SetupCurrentUser();
          SetupValidator();
          SetupLogger();
@@ -146,7 +136,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = controller.Create( model, _principal.Object );
 
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.GetSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == model.Name )
@@ -183,7 +173,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( model, _principal.Object );
 
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.GetSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == model.Name )
@@ -288,7 +278,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
 
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.GetSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == viewModel.Name )
@@ -356,34 +346,42 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
       }
 
-      //[TestMethod]
-      //public void EditPost_CallsUpdateIfModelValid()
-      //{
-      //   var controller = CreateController();
-      //   var model = Projects.ModelData[2];
-      //   var viewModel = CreateProjectEditorViewModel( model );
+      [TestMethod]
+      public void EditPost_UpdatesDatabaseIfModelValid()
+      {
+         var controller = CreateController();
+         var model = Projects.ModelData[2];
+         var viewModel = CreateProjectEditorViewModel( model );
 
-      //   controller.Edit( viewModel, _principal.Object );
+         viewModel.Name += " Modified";
+         controller.Edit( viewModel, _principal.Object );
 
-      //   _session.Verify( x => x.BeginTransaction(), Times.Once() );
-      //   _transaction.Verify( x => x.Commit(), Times.Once() );
-      //   _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
-      //}
+         using (var session = Database.GetSession())
+         {
+            var item = session.Get<Project>( viewModel.Id );
+            Assert.AreEqual( viewModel.Name, item.Name );
+         }
+      }
 
-      //[TestMethod]
-      //public void EditPost_DoesNotCallUpdateIfModelIsNotValid()
-      //{
-      //   var controller = CreateController();
-      //   var model = Projects.ModelData[2];
-      //   var viewModel = CreateProjectEditorViewModel( model );
+      [TestMethod]
+      public void EditPost_DoesNotUpdateDatabaseIfModelIsNotValid()
+      {
+         var controller = CreateController();
+         var model = Projects.ModelData[2];
+         var viewModel = CreateProjectEditorViewModel( model );
 
-      //   controller.ModelState.AddModelError( "Test", "This is an error" );
-      //   controller.Edit( viewModel, _principal.Object );
+         controller.ModelState.AddModelError( "Test", "This is an error" );
+         var origName = viewModel.Name;
+         viewModel.Name += " Modified";
+         controller.Edit( viewModel, _principal.Object );
 
-      //   _session.Verify( x => x.BeginTransaction(), Times.Never() );
-      //   _transaction.Verify( x => x.Commit(), Times.Never() );
-      //   _session.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
-      //}
+         using (var session = Database.GetSession())
+         {
+            var item = session.Get<Project>( viewModel.Id );
+            Assert.AreNotEqual( viewModel.Name, item.Name );
+            Assert.AreEqual( origName, item.Name );
+         }
+      }
 
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
@@ -494,7 +492,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
 
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.GetSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == viewModel.Name )
@@ -604,6 +602,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
       }
 
+      private static void SetupProjectStatusRepository()
+      {
+         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
+         foreach (var model in ProjectStatuses.ModelData)
+         {
+            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
+      }
+
       private void SetupCurrentUser()
       {
          _userIdentity = new Mock<IIdentity>();
@@ -621,7 +628,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private ProjectsController CreateController()
       {
          var controller = new ProjectsController(
-            _validator.Object, new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
+            _validator.Object, new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, Database.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

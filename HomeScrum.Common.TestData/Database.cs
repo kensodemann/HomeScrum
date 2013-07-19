@@ -9,6 +9,8 @@ namespace HomeScrum.Common.TestData
    public class Database
    {
       private static ISessionFactory _sessionFactory;
+      public static ISessionFactory SessionFactory { get { return _sessionFactory; } }
+
       private static Configuration _configuration;
 
       public static void Initialize()
