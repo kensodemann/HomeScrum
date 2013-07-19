@@ -86,15 +86,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Details_ReturnsViewWithModel()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateDatabaseConnectedController();
          var model = WorkItems.ModelData[2];
 
-         _session.Setup( x => x.Get<WorkItem>( model.Id ) )
-            .Returns( model );
-
          var view = controller.Details( model.Id ) as ViewResult;
-
-         _session.Verify( x => x.Get<WorkItem>( model.Id ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -107,10 +102,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Details_ReturnsHttpNotFoundIfNoModel()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateDatabaseConnectedController();
          var id = Guid.NewGuid();
-
-         _session.Setup( x => x.Get<WorkItem>( id ) ).Returns( null as WorkItem );
 
          var result = controller.Details( id ) as HttpNotFoundResult;
 
@@ -508,17 +501,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       #region Edit GET Tests
       [TestMethod]
-      public void EditGet_CallsGet()
-      {
-         var controller = CreateDatabaseMockedController();
-         Guid id = Guid.NewGuid();
-
-         controller.Edit( id );
-
-         _session.Verify( x => x.Get<WorkItem>( id ), Times.Once() );
-      }
-
-      [TestMethod]
       public void EditGet_ReturnsViewWithModel()
       {
          var controller = CreateDatabaseConnectedController();
@@ -650,8 +632,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
       {
-         var controller = CreateDatabaseMockedController();
-         _session.Setup( x => x.Get<WorkItem>( It.IsAny<Guid>() ) ).Returns( null as WorkItem );
+         var controller = CreateDatabaseConnectedController();
 
          var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
