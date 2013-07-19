@@ -346,16 +346,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          AssertSelectListOrderAndContents( expected, viewModel.Statuses, model.Status.Id );
       }
 
-      //[TestMethod]
-      //public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
-      //{
-      //   var controller = CreateController();
-      //   _session.Setup( x => x.Get<Project>( It.IsAny<Guid>() ) ).Returns( null as Project );
+      [TestMethod]
+      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      {
+         var controller = CreateController();
+         
+         var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
-      //   var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
-
-      //   Assert.IsNotNull( result );
-      //}
+         Assert.IsNotNull( result );
+      }
 
       //[TestMethod]
       //public void EditPost_CallsUpdateIfModelValid()
@@ -479,20 +478,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
-      //[TestMethod]
-      //public void EditPost_SetsLastModifiedUserId()
-      //{
-      //   var controller = CreateController();
-      //   var model = Projects.ModelData[3];
-      //   var viewModel = CreateProjectEditorViewModel( model );
+      [TestMethod]
+      public void EditPost_SetsLastModifiedUserId()
+      {
+         var controller = CreateController();
+         var model = Projects.ModelData[3];
+         var viewModel = CreateProjectEditorViewModel( model );
 
-      //   controller.Edit( viewModel, _principal.Object );
+         var user = Users.ModelData.First( x => x.Id != viewModel.LastModifiedUserId );
+         _userIdentity
+            .Setup( x => x.Name )
+            .Returns( user.UserName );
 
-      //   _userIdentity.Verify();
-      //   _session.Verify( x => x.BeginTransaction(), Times.Once() );
-      //   _transaction.Verify( x => x.Commit(), Times.Once() );
-      //   _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
-      //}
+         controller.Edit( viewModel, _principal.Object );
+
+         _userIdentity.Verify();
+
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            var items = session.Query<Project>()
+               .Where( x => x.Name == viewModel.Name )
+               .ToList();
+
+            Assert.AreEqual( 1, items.Count );
+            Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
+         }
+      }
 
       [TestMethod]
       public void EditGet_ReInitializesProjectStatusesIfModelInvalid_ProjectStatusSelected()
@@ -605,10 +616,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
             UserName = "test",
             FirstName = "Fred"
          };
-
-         _userIdentity
-            .SetupGet( x => x.Name )
-            .Returns( "test" );
       }
 
       private ProjectsController CreateController()
@@ -634,11 +641,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static void CreateStaticRepositories()
       {
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
-         //_projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-         //foreach (var model in ProjectStatuses.ModelData)
-         //{
-         //   _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         //}
       }
       #endregion
    }
