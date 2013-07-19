@@ -7,7 +7,6 @@ using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
@@ -39,7 +38,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Database.Initialize();
          
-
          CreateMockIOCKernel();
          CreateStaticRepositories();
          IntializeMapper();
