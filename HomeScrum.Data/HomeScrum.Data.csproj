@@ -144,6 +144,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Common.Utility\HomeScrum.Common.Utility.csproj">
+      <Project>{bc5f0331-9795-4b3e-ae0b-7d78f8200686}</Project>
+      <Name>HomeScrum.Common.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

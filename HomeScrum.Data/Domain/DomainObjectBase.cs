@@ -24,16 +24,25 @@ namespace HomeScrum.Data.Domain
       public virtual string Description { get; set; }
 
 
+      // TODO: Look at making this an extension.
       public virtual bool IsValidFor( TransactionType transactionType )
       {
          _errorMessages.Clear();
 
-         PerformModelValidations();
+         Validate( transactionType );
 
          return _errorMessages.Count == 0;
       }
 
-      protected virtual void PerformModelValidations()
+      private void Validate( TransactionType transactionType )
+      {
+         PerformDataAnnotationValidations();
+         PerformModelValidations();
+      }
+
+      protected virtual void PerformModelValidations() { }
+
+      private void PerformDataAnnotationValidations()
       {
          var results = new List<ValidationResult>();
          var ctx = new ValidationContext( this );
