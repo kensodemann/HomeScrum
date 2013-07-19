@@ -71,6 +71,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Domains\DataObjectBaseTest.cs" />
+    <Compile Include="Domains\ProjectTest.cs" />
     <Compile Include="Domains\UserTest.cs" />
     <Compile Include="Repositories\ProjectStatusRepositoryTest.cs" />
     <Compile Include="Repositories\SprintStatusRepositoryTest.cs" />

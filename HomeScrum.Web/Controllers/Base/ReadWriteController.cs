@@ -26,9 +26,10 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
       private readonly IValidator<ModelT> _validator;
-      private readonly IPropertyNameTranslator<ModelT, EditorViewModelT> _translator;
       protected IValidator<ModelT> Validator { get { return _validator; } }
 
+      private readonly IPropertyNameTranslator<ModelT, EditorViewModelT> _translator;
+      protected IPropertyNameTranslator<ModelT, EditorViewModelT> PropertyNameTranslator { get { return _translator; } }
 
       //
       // GET: /ModelTs/Create

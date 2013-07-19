@@ -1,4 +1,5 @@
-﻿using HomeScrum.Data.Domain;
+﻿using AutoMapper;
+using HomeScrum.Data.Domain;
 using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
@@ -16,8 +17,8 @@ namespace HomeScrum.Web.Controllers
 {
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
-      public ProjectsController( IValidator<Project> validator, IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( validator, translator, logger, sessionFactory ) { }
+      public ProjectsController( IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( null, translator, logger, sessionFactory ) { }
 
       protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
       {
@@ -34,7 +35,7 @@ namespace HomeScrum.Web.Controllers
                SelectedId = selectedId
             };
 
-            return queryModel.GetQuery(session)
+            return queryModel.GetQuery( session )
                .Select( Projections.ProjectionList()
                   .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
                   .Add( Projections.Property( "Name" ), "Text" )
@@ -53,6 +54,61 @@ namespace HomeScrum.Web.Controllers
             //   .AddOrder( Order.Asc( "SortSequence" ) )
             //   .List<SelectListItem>();
          }
+      }
+
+
+      // TODO: This is just temporary.  Want to move this down so we can get rid of the validators.
+      [HttpPost]
+      public override ActionResult Edit( ProjectEditorViewModel viewModel, IPrincipal user )
+      {
+         var model = Mapper.Map<Project>( viewModel );
+
+         if (ModelState.IsValid)
+         {
+            try
+            {
+               UpdateItem( model, user );
+               return RedirectToAction( () => this.Index() );
+            }
+            catch (InvalidOperationException)
+            {
+               foreach (var message in model.GetErrorMessages())
+               {
+                  var viewModelPropertyName = PropertyNameTranslator.TranslatedName( message.Key );
+                  ModelState.AddModelError( viewModelPropertyName, message.Value );
+               }
+            }
+         }
+
+         PopulateSelectLists( viewModel );
+         return View( viewModel );
+      }
+
+
+      [HttpPost]
+      public override ActionResult Create( ProjectEditorViewModel viewModel, IPrincipal user )
+      {
+         var model = Mapper.Map<Project>( viewModel );
+
+         if (ModelState.IsValid)
+         {
+            try
+            {
+               AddItem( model, user );
+               return RedirectToAction( () => this.Index() );
+            }
+            catch (InvalidOperationException)
+            {
+               foreach (var message in model.GetErrorMessages())
+               {
+                  var viewModelPropertyName = PropertyNameTranslator.TranslatedName( message.Key );
+                  ModelState.AddModelError( viewModelPropertyName, message.Value );
+               }
+            }
+         }
+
+         PopulateSelectLists( viewModel );
+         return View( viewModel );
       }
 
 

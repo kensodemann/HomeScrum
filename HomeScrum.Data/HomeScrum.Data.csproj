@@ -82,6 +82,7 @@
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IWorkItemRepository.cs" />
     <Compile Include="Validators\AcceptanceCriteriaStatusValidator.cs" />
+    <Compile Include="Validators\IValidatable.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Validators\ProjectStatusValidator.cs" />
     <Compile Include="Validators\NullValidator.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Validators\SystemDataObjectValidator.cs" />
     <Compile Include="Validators\TransactionType.cs" />
     <Compile Include="Validators\UserValidator.cs" />
+    <Compile Include="Validators\ValidationListener.cs" />
     <Compile Include="Validators\WorkItemStatusValidator.cs" />
     <Compile Include="Validators\WorkItemTypeValidator.cs" />
     <Compile Include="Validators\WorkItemValidator.cs" />

@@ -7,5 +7,11 @@
     <property name="connection.connection_string_name">HomeScrumData</property>
     <property name="show_sql">true</property>
     <mapping assembly="HomeScrum.Data"/>
+    <event type="pre-insert">
+      <listener class="HomeScrum.Data.Validators.ValidationListener, HomeScrum.Data"/>
+    </event>
+    <event type="pre-update">
+      <listener class="HomeScrum.Data.Validators.ValidationListener, HomeScrum.Data"/>
+    </event>
   </session-factory>
 </hibernate-configuration>

@@ -28,7 +28,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static MoqMockingKernel _iocKernel;
       private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;  // Should go away once the mapper is fixed
 
-      private Mock<IValidator<Project>> _validator;
       private Mock<ILogger> _logger;
 
       private User _currentUser;
@@ -56,7 +55,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          SetupProjectStatusRepository();
          SetupCurrentUser();
-         SetupValidator();
          SetupLogger();
       }
       #endregion
@@ -216,52 +214,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_PassesModelToValidator()
+      public void CreatePost_CopiesMessagesToModelStateIfDatabaseValidationFails()
       {
          var controller = CreateController();
          var viewModel = CreateProjectEditorViewModel();
 
-         controller.Create( viewModel, _principal.Object );
-
-         _validator.Verify( x => x.ModelIsValid( It.Is<Project>( p => p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
-      }
-
-      [TestMethod]
-      public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
-      {
-         var controller = CreateController();
-         var messages = CreateStockErrorMessages();
-         var viewModel = CreateProjectEditorViewModel();
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
-
+         viewModel.Name = "";
          var result = controller.Create( viewModel, _principal.Object );
 
-         Assert.AreEqual( messages.Count, controller.ModelState.Count );
-         foreach (var message in messages)
-         {
-            Assert.IsTrue( controller.ModelState.ContainsKey( message.Key ) );
-         }
+         Assert.AreEqual( 1, controller.ModelState.Count );
+         Assert.IsTrue( controller.ModelState.ContainsKey( "Name" ) );
          Assert.IsTrue( result is ViewResult );
       }
 
-      [TestMethod]
-      public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
-      {
-         var controller = CreateController();
-         var messages = CreateStockErrorMessages();
-         var viewModel = CreateProjectEditorViewModel();
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
-
-         var result = controller.Create( viewModel, _principal.Object );
-
-         Assert.AreEqual( 0, controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
-      }
 
       [TestMethod]
       public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
@@ -418,62 +383,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_PassesModelToValidator()
+      public void EditPost_CopiesMessagesToModelStateIfUpdateFails()
       {
          var controller = CreateController();
          var model = Projects.ModelData[3];
          var viewModel = CreateProjectEditorViewModel( model );
 
-         controller.Edit( viewModel, _principal.Object );
-
-         _validator.Verify( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Update ), Times.Once() );
-      }
-
-      [TestMethod]
-      public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
-      {
-         var controller = CreateController();
-         var messages = CreateStockErrorMessages();
-         var model = Projects.ModelData[3];
-         var viewModel = CreateProjectEditorViewModel( model );
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( false );
-
+         viewModel.Name = "";
          var result = controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( messages.Count, controller.ModelState.Count );
-         foreach (var message in messages)
-         {
-            Assert.IsTrue( controller.ModelState.ContainsKey( message.Key ) );
-         }
+         Assert.AreEqual( 1, controller.ModelState.Count );
+         Assert.IsTrue( controller.ModelState.ContainsKey( "Name" ) );
          Assert.IsTrue( result is ViewResult );
-      }
-
-      [TestMethod]
-      public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
-      {
-         var controller = CreateController();
-         var messages = CreateStockErrorMessages();
-         var model = Projects.ModelData[3];
-         var viewModel = new ProjectEditorViewModel()
-         {
-            Id = model.Id,
-            Name = model.Name,
-            Description = model.Description,
-            LastModifiedUserId = model.LastModifiedUserRid,
-            StatusId = model.Status.Id,
-            StatusName = model.Status.Name
-         };
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), It.IsAny<TransactionType>() ) ).Returns( true );
-
-         var result = controller.Edit( viewModel, _principal.Object );
-
-         Assert.AreEqual( 0, controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -566,16 +487,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Projects.CreateTestModelData( initializeIds: true );
       }
 
-      ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
-      {
-         var messages = new List<KeyValuePair<string, string>>();
-
-         messages.Add( new KeyValuePair<string, string>( "Name", "Name is not unique" ) );
-         messages.Add( new KeyValuePair<string, string>( "SomethingElse", "Another Message" ) );
-
-         return messages;
-      }
-
       private ProjectEditorViewModel CreateProjectEditorViewModel()
       {
          return new ProjectEditorViewModel()
@@ -627,8 +538,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private ProjectsController CreateController()
       {
-         var controller = new ProjectsController(
-            _validator.Object, new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, Database.SessionFactory );
+         var controller = new ProjectsController( new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, Database.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;
@@ -637,12 +547,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void SetupLogger()
       {
          _logger = new Mock<ILogger>();
-      }
-
-      private void SetupValidator()
-      {
-         _validator = new Mock<IValidator<Project>>();
-         _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
       }
 
       private static void CreateStaticRepositories()
