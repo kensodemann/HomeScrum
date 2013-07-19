@@ -44,21 +44,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          Database.Build();
+         Users.Load();
          WorkItemStatuses.Load();
          base.InitializeTest();
       }
 
-      public override ReadWriteController<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel> CreateDatabaseConnectedController()
+      public override ReadWriteController<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel> CreateController()
       {
-         var controller = new WorkItemStatusesController( _validator.Object, new PropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
-         controller.ControllerContext = new ControllerContext();
-
-         return controller;
-      }
-
-      public override ReadWriteController<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel> CreateDatabaseMockedController()
-      {
-         var controller = new WorkItemStatusesController( _validator.Object, new PropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         var controller = new WorkItemStatusesController( new PropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

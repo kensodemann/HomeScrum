@@ -18,7 +18,7 @@ namespace HomeScrum.Web.Controllers
    public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
    {
       public ProjectsController( IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( null, translator, logger, sessionFactory ) { }
+         : base( translator, logger, sessionFactory ) { }
 
       protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
       {

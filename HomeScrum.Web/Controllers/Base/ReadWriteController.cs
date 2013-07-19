@@ -18,15 +18,11 @@ namespace HomeScrum.Web.Controllers.Base
       where ViewModelT : DomainObjectViewModel
       where EditorViewModelT : new()
    {
-      public ReadWriteController( IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
+      public ReadWriteController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( logger, sessionFactory )
       {
-         _validator = validator;
          _translator = translator;
       }
-
-      private readonly IValidator<ModelT> _validator;
-      protected IValidator<ModelT> Validator { get { return _validator; } }
 
       private readonly IPropertyNameTranslator<ModelT, EditorViewModelT> _translator;
       protected IPropertyNameTranslator<ModelT, EditorViewModelT> PropertyNameTranslator { get { return _translator; } }
@@ -47,7 +43,6 @@ namespace HomeScrum.Web.Controllers.Base
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
          var model = Mapper.Map<ModelT>( viewModel );
-         Validate( model, TransactionType.Insert );
 
          if (ModelState.IsValid)
          {
@@ -85,7 +80,6 @@ namespace HomeScrum.Web.Controllers.Base
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
          var model = Mapper.Map<ModelT>( viewModel );
-         Validate( model, TransactionType.Update );
 
          if (ModelState.IsValid)
          {
@@ -138,19 +132,6 @@ namespace HomeScrum.Web.Controllers.Base
          {
             var viewModelPropertyName = _translator.TranslatedName( validationResult.MemberName );
             ModelState.AddModelError( viewModelPropertyName, validationResult.Message );
-         }
-      }
-
-      protected void Validate( ModelT model, TransactionType transactionType )
-      {
-         PerformModelValidations( model );
-
-         if (!Validator.ModelIsValid( model, transactionType ))
-         {
-            foreach (var message in _validator.Messages)
-            {
-               ModelState.AddModelError( message.Key, message.Value );
-            }
          }
       }
    }

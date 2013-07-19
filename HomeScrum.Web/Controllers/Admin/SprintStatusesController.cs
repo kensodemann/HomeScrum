@@ -13,7 +13,7 @@ namespace HomeScrum.Web.Controllers.Admin
    public class SprintStatusesController : SystemDataObjectController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel>
    {
       [Inject]
-      public SprintStatusesController( IValidator<SprintStatus> validator, IPropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( validator, translator, logger, sessionFactory ) { }
+      public SprintStatusesController( IPropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( translator, logger, sessionFactory ) { }
    }
 }

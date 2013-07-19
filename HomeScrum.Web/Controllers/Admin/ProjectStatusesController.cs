@@ -13,7 +13,7 @@ namespace HomeScrum.Web.Controllers.Admin
    public class ProjectStatusesController : SystemDataObjectController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel>
    {
       [Inject]
-      public ProjectStatusesController( IValidator<ProjectStatus> validator, IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( validator, translator, logger , sessionFactory) { }
+      public ProjectStatusesController( IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( translator, logger , sessionFactory) { }
    }
 }

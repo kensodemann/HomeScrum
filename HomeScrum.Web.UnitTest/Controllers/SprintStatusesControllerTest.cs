@@ -44,21 +44,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          Database.Build();
+         Users.Load();
          SprintStatuses.Load();
          base.InitializeTest();
       }
 
-      public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateDatabaseConnectedController()
+      public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateController()
       {
-         var controller = new SprintStatusesController( _validator.Object, new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
-         controller.ControllerContext = new ControllerContext();
-
-         return controller;
-      }
-
-      public override ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateDatabaseMockedController()
-      {
-         var controller = new SprintStatusesController( _validator.Object, new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         var controller = new SprintStatusesController( new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

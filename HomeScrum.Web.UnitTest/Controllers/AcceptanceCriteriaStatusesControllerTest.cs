@@ -44,21 +44,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          Database.Build();
+         Users.Load();
          AcceptanceCriteriaStatuses.Load();
          base.InitializeTest();
       }
 
-      public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateDatabaseConnectedController()
+      public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateController()
       {
-         var controller = new AcceptanceCriterionStatusesController( _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
-         controller.ControllerContext = new ControllerContext();
-
-         return controller;
-      }
-
-      public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateDatabaseMockedController()
-      {
-         var controller = new AcceptanceCriterionStatusesController( _validator.Object, new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         var controller = new AcceptanceCriterionStatusesController( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

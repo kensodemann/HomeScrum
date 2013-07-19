@@ -22,8 +22,8 @@ namespace HomeScrum.Web.Controllers.Base
       where ViewModelT : SystemDomainObjectViewModel
       where EditorViewModelT : SystemDomainObjectViewModel, new()
    {
-      public SystemDataObjectController( IValidator<ModelT> validator, IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( validator, translator, logger, sessionFactory ) { }
+      public SystemDataObjectController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( translator, logger, sessionFactory ) { }
 
 
       //

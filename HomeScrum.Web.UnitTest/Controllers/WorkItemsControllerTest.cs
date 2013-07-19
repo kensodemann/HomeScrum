@@ -1016,7 +1016,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateDatabaseConnectedController()
       {
          var controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
-            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
+            _projectRepository.Object, _userRepository.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;
@@ -1025,7 +1025,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateDatabaseMockedController()
       {
          var controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
-            _projectRepository.Object, _userRepository.Object, _validator.Object, new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object );
+            _projectRepository.Object, _userRepository.Object, new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

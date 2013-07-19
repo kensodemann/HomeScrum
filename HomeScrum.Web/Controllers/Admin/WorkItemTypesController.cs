@@ -13,7 +13,7 @@ namespace HomeScrum.Web.Controllers.Admin
    public class WorkItemTypesController : SystemDataObjectController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel>
    {
       [Inject]
-      public WorkItemTypesController( IValidator<WorkItemType> validator, IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( validator, translator, logger, sessionFactory ) { }
+      public WorkItemTypesController( IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         : base( translator, logger, sessionFactory ) { }
    }
 }
