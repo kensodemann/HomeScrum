@@ -75,39 +75,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( Projects.ModelData.Count(), model.Count() );
       }
 
-      //[TestMethod]
-      //public void Details_ReturnsViewWithModel()
-      //{
-      //   var controller = CreateController();
-      //   var model = Projects.ModelData[2];
+      [TestMethod]
+      public void Details_ReturnsViewWithModel()
+      {
+         var controller = CreateController();
+         var model = Projects.ModelData[2];
 
-      //   _session.Setup( x => x.Get<Project>( model.Id ) )
-      //      .Returns( model );
+         var view = controller.Details( model.Id ) as ViewResult;
 
-      //   var view = controller.Details( model.Id ) as ViewResult;
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( view.Model );
+         Assert.IsInstanceOfType( view.Model, typeof( ProjectViewModel ) );
+         Assert.AreEqual( model.Id, ((ProjectViewModel)view.Model).Id );
+         Assert.AreEqual( model.Name, ((ProjectViewModel)view.Model).Name );
+         Assert.AreEqual( model.Description, ((ProjectViewModel)view.Model).Description );
+      }
 
-      //   _session.Verify( x => x.Get<Project>( model.Id ), Times.Once() );
+      [TestMethod]
+      public void Details_ReturnsHttpNotFoundIfNoModel()
+      {
+         var controller = CreateController();
+         var id = Guid.NewGuid();
 
-      //   Assert.IsNotNull( view );
-      //   Assert.IsNotNull( view.Model );
-      //   Assert.IsInstanceOfType( view.Model, typeof( ProjectViewModel ) );
-      //   Assert.AreEqual( model.Id, ((ProjectViewModel)view.Model).Id );
-      //   Assert.AreEqual( model.Name, ((ProjectViewModel)view.Model).Name );
-      //   Assert.AreEqual( model.Description, ((ProjectViewModel)view.Model).Description );
-      //}
+         var result = controller.Details( id ) as HttpNotFoundResult;
 
-      //[TestMethod]
-      //public void Details_ReturnsHttpNotFoundIfNoModel()
-      //{
-      //   var controller = CreateController();
-      //   var id = Guid.NewGuid();
-
-      //   _session.Setup( x => x.Get<Project>( id ) ).Returns( null as Project );
-
-      //   var result = controller.Details( id ) as HttpNotFoundResult;
-
-      //   Assert.IsNotNull( result );
-      //}
+         Assert.IsNotNull( result );
+      }
 
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
