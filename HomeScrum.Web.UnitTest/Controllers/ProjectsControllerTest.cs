@@ -43,10 +43,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public static void InitiailizeTestClass( TestContext context )
       {
          Database.Initialize();
-         Database.Build();
-         Users.Load();
-         ProjectStatuses.Load();
-         Projects.Load();
+         
 
          CreateMockIOCKernel();
          CreateStaticRepositories();
@@ -56,6 +53,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
+         Database.Build();
+         Users.Load();
+         ProjectStatuses.Load();
+         Projects.Load();
+
+         // Look into clearing these mocks first.
+         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
+         foreach (var model in ProjectStatuses.ModelData)
+         {
+            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         }
+
          SetupCurrentUser();
          SetupValidator();
          SetupLogger();
@@ -130,7 +139,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
+      public void CreatePost_SavesModelIfNewViewModelIsValid()
       {
          var controller = CreateController();
          var model = CreateProjectEditorViewModel();
@@ -166,7 +175,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCallSaveOrCommitAddIfModelIsNotValid()
+      public void CreatePost_DoesNotSaveModelIfModelIsNotValid()
       {
          var controller = CreateController();
          var model = CreateProjectEditorViewModel();
@@ -174,9 +183,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( model, _principal.Object );
 
-         //_session.Verify( x => x.BeginTransaction(), Times.Never() );
-         //_transaction.Verify( x => x.Commit(), Times.Never() );
-         //_session.Verify( x => x.Save( It.IsAny<Project>() ), Times.Never() );
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            var items = session.Query<Project>()
+               .Where( x => x.Name == model.Name )
+               .ToList();
+         }
       }
 
       [TestMethod]
@@ -261,30 +273,31 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
-      //[TestMethod]
-      //public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
-      //{
-      //   var controller = CreateController();
-      //   var viewModel = CreateProjectEditorViewModel();
+      [TestMethod]
+      public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
+      {
+         var controller = CreateController();
+         var viewModel = CreateProjectEditorViewModel();
 
-      //   controller.Create( viewModel, _principal.Object );
+         var user = Users.ModelData[0];
+         _userIdentity
+            .Setup( x => x.Name )
+            .Returns( user.UserName );
 
-      //   _userIdentity.Verify();
-      //   _session.Verify( x => x.BeginTransaction(), Times.Once() );
-      //   _transaction.Verify( x => x.Commit(), Times.Once() );
-      //   _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
-      //}
+         controller.Create( viewModel, _principal.Object );
 
-      //[TestMethod]
-      //public void EditGet_CallsSessionGet()
-      //{
-      //   var controller = CreateController();
+         _userIdentity.Verify();
 
-      //   Guid id = Guid.NewGuid();
-      //   controller.Edit( id );
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            var items = session.Query<Project>()
+               .Where( x => x.Name == viewModel.Name )
+               .ToList();
 
-      //   _session.Verify( x => x.Get<Project>( id ), Times.Once() );
-      //}
+            Assert.AreEqual( 1, items.Count );
+            Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
+         }
+      }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithModel()
@@ -621,11 +634,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static void CreateStaticRepositories()
       {
          _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
-         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-         foreach (var model in ProjectStatuses.ModelData)
-         {
-            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
+         //_projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
+         //foreach (var model in ProjectStatuses.ModelData)
+         //{
+         //   _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+         //}
       }
       #endregion
    }
