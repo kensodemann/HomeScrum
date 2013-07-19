@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using NHibernate.Linq;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -38,11 +39,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
 
-      private Mock<ISessionFactory> _sessionFactory;
-      private Mock<ISession> _session;
-      private Mock<ITransaction> _transaction;
-
-
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
@@ -60,7 +56,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         SetupSessionFactory();
          SetupCurrentUser();
          SetupValidator();
          SetupLogger();
@@ -70,7 +65,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_ReturnsViewWithAllItems()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
 
          var view = controller.Index() as ViewResult;
          var model = view.Model as IEnumerable<DomainObjectViewModel>;
@@ -80,44 +75,44 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( Projects.ModelData.Count(), model.Count() );
       }
 
-      [TestMethod]
-      public void Details_ReturnsViewWithModel()
-      {
-         var controller = CreateDatabaseMockedController();
-         var model = Projects.ModelData[2];
+      //[TestMethod]
+      //public void Details_ReturnsViewWithModel()
+      //{
+      //   var controller = CreateController();
+      //   var model = Projects.ModelData[2];
 
-         _session.Setup( x => x.Get<Project>( model.Id ) )
-            .Returns( model );
+      //   _session.Setup( x => x.Get<Project>( model.Id ) )
+      //      .Returns( model );
 
-         var view = controller.Details( model.Id ) as ViewResult;
+      //   var view = controller.Details( model.Id ) as ViewResult;
 
-         _session.Verify( x => x.Get<Project>( model.Id ), Times.Once() );
+      //   _session.Verify( x => x.Get<Project>( model.Id ), Times.Once() );
 
-         Assert.IsNotNull( view );
-         Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( ProjectViewModel ) );
-         Assert.AreEqual( model.Id, ((ProjectViewModel)view.Model).Id );
-         Assert.AreEqual( model.Name, ((ProjectViewModel)view.Model).Name );
-         Assert.AreEqual( model.Description, ((ProjectViewModel)view.Model).Description );
-      }
+      //   Assert.IsNotNull( view );
+      //   Assert.IsNotNull( view.Model );
+      //   Assert.IsInstanceOfType( view.Model, typeof( ProjectViewModel ) );
+      //   Assert.AreEqual( model.Id, ((ProjectViewModel)view.Model).Id );
+      //   Assert.AreEqual( model.Name, ((ProjectViewModel)view.Model).Name );
+      //   Assert.AreEqual( model.Description, ((ProjectViewModel)view.Model).Description );
+      //}
 
-      [TestMethod]
-      public void Details_ReturnsHttpNotFoundIfNoModel()
-      {
-         var controller = CreateDatabaseMockedController();
-         var id = Guid.NewGuid();
+      //[TestMethod]
+      //public void Details_ReturnsHttpNotFoundIfNoModel()
+      //{
+      //   var controller = CreateController();
+      //   var id = Guid.NewGuid();
 
-         _session.Setup( x => x.Get<Project>( id ) ).Returns( null as Project );
+      //   _session.Setup( x => x.Get<Project>( id ) ).Returns( null as Project );
 
-         var result = controller.Details( id ) as HttpNotFoundResult;
+      //   var result = controller.Details( id ) as HttpNotFoundResult;
 
-         Assert.IsNotNull( result );
-      }
+      //   Assert.IsNotNull( result );
+      //}
 
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
 
          var result = controller.Create() as ViewResult;
 
@@ -129,7 +124,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesProjectStatusList_NothingSelected()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
 
          var expected = ProjectStatuses.ModelData
             .Where( x => x.StatusCd == 'A' )
@@ -144,20 +139,27 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_CallsSaveAndCommitIfNewViewModelIsValid()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
          var result = controller.Create( model, _principal.Object );
 
-         _session.Verify( x => x.BeginTransaction(), Times.Once() );
-         _transaction.Verify( x => x.Commit(), Times.Once() );
-         _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            var items = session.Query<Project>()
+               .Where( x => x.Name == model.Name )
+               .ToList();
+
+            Assert.AreEqual( 1, items.Count );
+            Assert.AreEqual( model.Name, items[0].Name );
+            Assert.AreEqual( model.Description, items[0].Description );
+         }
       }
 
       [TestMethod]
       public void CreatePost_RedirectsToIndexIfModelIsValid()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
          var result = controller.Create( model, _principal.Object ) as RedirectToRouteResult;
@@ -173,21 +175,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCallSaveOrCommitAddIfModelIsNotValid()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( model, _principal.Object );
 
-         _session.Verify( x => x.BeginTransaction(), Times.Never() );
-         _transaction.Verify( x => x.Commit(), Times.Never() );
-         _session.Verify( x => x.Save( It.IsAny<Project>() ), Times.Never() );
+         //_session.Verify( x => x.BeginTransaction(), Times.Never() );
+         //_transaction.Verify( x => x.Commit(), Times.Never() );
+         //_session.Verify( x => x.Save( It.IsAny<Project>() ), Times.Never() );
       }
 
       [TestMethod]
       public void CreatePost_ReturnsViewIfModelIsNotValid()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
          controller.ModelState.AddModelError( "Test", "This is an error" );
@@ -200,7 +202,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_InitializesProjectStatusList_ActiveItemSelected()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
          controller.ModelState.AddModelError( "Test", "This is an error" );
@@ -221,18 +223,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_PassesModelToValidator()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var viewModel = CreateProjectEditorViewModel();
 
          controller.Create( viewModel, _principal.Object );
 
-         _validator.Verify( x => x.ModelIsValid( It.Is<Project>( p => p.Id == viewModel.Id && p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
+         _validator.Verify( x => x.ModelIsValid( It.Is<Project>( p => p.Name == viewModel.Name && p.Description == viewModel.Description ), TransactionType.Insert ), Times.Once() );
       }
 
       [TestMethod]
       public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var messages = CreateStockErrorMessages();
          var viewModel = CreateProjectEditorViewModel();
 
@@ -252,7 +254,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var messages = CreateStockErrorMessages();
          var viewModel = CreateProjectEditorViewModel();
 
@@ -266,35 +268,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
-      [TestMethod]
-      public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
-      {
-         var controller = CreateDatabaseMockedController();
-         var viewModel = CreateProjectEditorViewModel();
+      //[TestMethod]
+      //public void CreatePost_SetsLastModifiedUserIdToCurrentUser()
+      //{
+      //   var controller = CreateController();
+      //   var viewModel = CreateProjectEditorViewModel();
 
-         controller.Create( viewModel, _principal.Object );
+      //   controller.Create( viewModel, _principal.Object );
 
-         _userIdentity.Verify();
-         _session.Verify( x => x.BeginTransaction(), Times.Once() );
-         _transaction.Verify( x => x.Commit(), Times.Once() );
-         _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
-      }
+      //   _userIdentity.Verify();
+      //   _session.Verify( x => x.BeginTransaction(), Times.Once() );
+      //   _transaction.Verify( x => x.Commit(), Times.Once() );
+      //   _session.Verify( x => x.Save( It.Is<Project>( p => p.Id == viewModel.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void EditGet_CallsSessionGet()
-      {
-         var controller = CreateDatabaseMockedController();
+      //[TestMethod]
+      //public void EditGet_CallsSessionGet()
+      //{
+      //   var controller = CreateController();
 
-         Guid id = Guid.NewGuid();
-         controller.Edit( id );
+      //   Guid id = Guid.NewGuid();
+      //   controller.Edit( id );
 
-         _session.Verify( x => x.Get<Project>( id ), Times.Once() );
-      }
+      //   _session.Verify( x => x.Get<Project>( id ), Times.Once() );
+      //}
 
       [TestMethod]
       public void EditGet_ReturnsViewWithModel()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
          var model = Projects.ModelData[3];
 
          var result = controller.Edit( model.Id ) as ViewResult;
@@ -308,7 +310,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProjectStatuses_ProjectStatusSelected()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
          var model = Projects.ModelData[0];
 
          var expected = ProjectStatuses.ModelData
@@ -324,7 +326,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProjectStatuses_IncludesInactiveStatusIfSelected()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
          var model = Projects.ModelData
             .First( x => x.Status.StatusCd == 'I' );
 
@@ -338,50 +340,50 @@ namespace HomeScrum.Web.UnitTest.Controllers
          AssertSelectListOrderAndContents( expected, viewModel.Statuses, model.Status.Id );
       }
 
-      [TestMethod]
-      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
-      {
-         var controller = CreateDatabaseMockedController();
-         _session.Setup( x => x.Get<Project>( It.IsAny<Guid>() ) ).Returns( null as Project );
+      //[TestMethod]
+      //public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      //{
+      //   var controller = CreateController();
+      //   _session.Setup( x => x.Get<Project>( It.IsAny<Guid>() ) ).Returns( null as Project );
 
-         var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+      //   var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
-         Assert.IsNotNull( result );
-      }
+      //   Assert.IsNotNull( result );
+      //}
 
-      [TestMethod]
-      public void EditPost_CallsUpdateIfModelValid()
-      {
-         var controller = CreateDatabaseMockedController();
-         var model = Projects.ModelData[2];
-         var viewModel = CreateProjectEditorViewModel( model );
+      //[TestMethod]
+      //public void EditPost_CallsUpdateIfModelValid()
+      //{
+      //   var controller = CreateController();
+      //   var model = Projects.ModelData[2];
+      //   var viewModel = CreateProjectEditorViewModel( model );
 
-         controller.Edit( viewModel, _principal.Object );
+      //   controller.Edit( viewModel, _principal.Object );
 
-         _session.Verify( x => x.BeginTransaction(), Times.Once() );
-         _transaction.Verify( x => x.Commit(), Times.Once() );
-         _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
-      }
+      //   _session.Verify( x => x.BeginTransaction(), Times.Once() );
+      //   _transaction.Verify( x => x.Commit(), Times.Once() );
+      //   _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id ) ), Times.Once() );
+      //}
 
-      [TestMethod]
-      public void EditPost_DoesNotCallUpdateIfModelIsNotValid()
-      {
-         var controller = CreateDatabaseMockedController();
-         var model = Projects.ModelData[2];
-         var viewModel = CreateProjectEditorViewModel( model );
+      //[TestMethod]
+      //public void EditPost_DoesNotCallUpdateIfModelIsNotValid()
+      //{
+      //   var controller = CreateController();
+      //   var model = Projects.ModelData[2];
+      //   var viewModel = CreateProjectEditorViewModel( model );
 
-         controller.ModelState.AddModelError( "Test", "This is an error" );
-         controller.Edit( viewModel, _principal.Object );
+      //   controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   controller.Edit( viewModel, _principal.Object );
 
-         _session.Verify( x => x.BeginTransaction(), Times.Never() );
-         _transaction.Verify( x => x.Commit(), Times.Never() );
-         _session.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
-      }
+      //   _session.Verify( x => x.BeginTransaction(), Times.Never() );
+      //   _transaction.Verify( x => x.Commit(), Times.Never() );
+      //   _session.Verify( x => x.Update( It.IsAny<Project>() ), Times.Never() );
+      //}
 
       [TestMethod]
       public void EditPost_RedirectsToIndexIfModelIsValid()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = Projects.ModelData[2];
          var viewModel = CreateProjectEditorViewModel( model );
 
@@ -398,7 +400,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ReturnsViewIfModelIsNotValid()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = Projects.ModelData[2];
          var viewModel = CreateProjectEditorViewModel( model );
 
@@ -415,7 +417,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_PassesModelToValidator()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var model = Projects.ModelData[3];
          var viewModel = CreateProjectEditorViewModel( model );
 
@@ -427,7 +429,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var messages = CreateStockErrorMessages();
          var model = Projects.ModelData[3];
          var viewModel = CreateProjectEditorViewModel( model );
@@ -448,7 +450,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
-         var controller = CreateDatabaseMockedController();
+         var controller = CreateController();
          var messages = CreateStockErrorMessages();
          var model = Projects.ModelData[3];
          var viewModel = new ProjectEditorViewModel()
@@ -471,25 +473,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
-      [TestMethod]
-      public void EditPost_SetsLastModifiedUserId()
-      {
-         var controller = CreateDatabaseMockedController();
-         var model = Projects.ModelData[3];
-         var viewModel = CreateProjectEditorViewModel( model );
+      //[TestMethod]
+      //public void EditPost_SetsLastModifiedUserId()
+      //{
+      //   var controller = CreateController();
+      //   var model = Projects.ModelData[3];
+      //   var viewModel = CreateProjectEditorViewModel( model );
 
-         controller.Edit( viewModel, _principal.Object );
+      //   controller.Edit( viewModel, _principal.Object );
 
-         _userIdentity.Verify();
-         _session.Verify( x => x.BeginTransaction(), Times.Once() );
-         _transaction.Verify( x => x.Commit(), Times.Once() );
-         _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
-      }
+      //   _userIdentity.Verify();
+      //   _session.Verify( x => x.BeginTransaction(), Times.Once() );
+      //   _transaction.Verify( x => x.Commit(), Times.Once() );
+      //   _session.Verify( x => x.Update( It.Is<Project>( p => p.Id == model.Id && p.LastModifiedUserRid == _currentUser.Id ) ), Times.Once() );
+      //}
 
       [TestMethod]
       public void EditGet_ReInitializesProjectStatusesIfModelInvalid_ProjectStatusSelected()
       {
-         var controller = CreateDatabaseConnectedController();
+         var controller = CreateController();
          var model = Projects.ModelData[0];
          var viewModel = CreateProjectEditorViewModel( model );
 
@@ -587,8 +589,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void SetupCurrentUser()
       {
-         Mock<ICriteria> _userQuery = new Mock<ICriteria>();
-
          _userIdentity = new Mock<IIdentity>();
          _principal = new Mock<IPrincipal>();
          _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
@@ -600,34 +600,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
             FirstName = "Fred"
          };
 
-         _session
-            .Setup( x => x.CreateCriteria( typeof( User ) ) )
-            .Returns( _userQuery.Object );
-         _userQuery
-            .Setup( x => x.Add( It.IsAny<SimpleExpression>() ) )
-            .Returns( _userQuery.Object );
-         _userQuery
-            .Setup( x => x.UniqueResult() )
-            .Returns( _currentUser );
-
          _userIdentity
             .SetupGet( x => x.Name )
             .Returns( "test" );
       }
 
-      private ProjectsController CreateDatabaseConnectedController()
+      private ProjectsController CreateController()
       {
          var controller = new ProjectsController(
             _validator.Object, new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
-         controller.ControllerContext = new ControllerContext();
-
-         return controller;
-      }
-
-      private ProjectsController CreateDatabaseMockedController()
-      {
-         var controller = new ProjectsController(
-            _validator.Object, new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = new ControllerContext();
 
          return controller;
@@ -642,49 +623,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _validator = new Mock<IValidator<Project>>();
          _validator.Setup( x => x.ModelIsValid( It.IsAny<Project>(), It.IsAny<TransactionType>() ) ).Returns( true );
-      }
-
-      private void SetupSessionFactory()
-      {
-         _sessionFactory = new Mock<ISessionFactory>();
-         _session = new Mock<ISession>();
-         var query = new Mock<ICriteria>();
-         var queryOver = new Mock<IQueryOver<ProjectStatus, ProjectStatus>>()
-         {
-            DefaultValue = Moq.DefaultValue.Mock
-         };
-         _transaction = new Mock<ITransaction>();
-
-         _sessionFactory
-            .Setup( x => x.OpenSession() )
-            .Returns( _session.Object );
-
-         _session
-            .Setup( x => x.BeginTransaction() )
-            .Returns( _transaction.Object );
-
-         _session
-            .Setup( x => x.CreateCriteria( It.IsAny<Type>() ) )
-            .Returns( query.Object );
-         query
-            .Setup( x => x.Add( It.IsAny<ICriterion>() ) )
-            .Returns( query.Object );
-         query
-            .Setup( x => x.List<SelectListItem>() )
-            .Returns( new List<SelectListItem>() );
-         query
-            .Setup( x => x.SetProjection( It.IsAny<ProjectionList>() ) )
-            .Returns( query.Object );
-         query
-            .Setup( x => x.SetResultTransformer( It.IsAny<IResultTransformer>() ) )
-            .Returns( query.Object );
-         query
-            .Setup( x => x.AddOrder( It.IsAny<Order>() ) )
-            .Returns( query.Object );
-
-         _session
-            .Setup( x => x.QueryOver<ProjectStatus>() )
-            .Returns( queryOver.Object );
       }
 
       private static void CreateStaticRepositories()
