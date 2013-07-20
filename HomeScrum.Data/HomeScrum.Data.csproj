@@ -63,6 +63,7 @@
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\ValidatableObject.cs" />
     <Compile Include="Domain\WorkItem.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
     <Compile Include="Domain\WorkItemType.cs" />

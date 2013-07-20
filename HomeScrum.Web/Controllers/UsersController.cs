@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.Validators;
 using HomeScrum.Web.Models.Admin;
+using NHibernate.Linq;
 using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -16,36 +16,48 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( IUserRepository userRepository, ISecurityRepository securityRepository, IValidator<User> validator )
+      public UsersController( ISecurityRepository securityRepository )
       {
-         _userRepository = userRepository;
          _securityRepository = securityRepository;
-         _validator = validator;
       }
 
-      private readonly IUserRepository _userRepository;
       private readonly ISecurityRepository _securityRepository;
-      private readonly IValidator<User> _validator;
 
       //
       // GET: /Users/
       public ActionResult Index()
       {
-         var items = _userRepository.GetAll();
-         return View( Mapper.Map<ICollection<User>, IEnumerable<UserViewModel>>( items ) );
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            var users = session.Query<User>()
+               .Select( x => new UserViewModel()
+                             {
+                                Id = x.Id,
+                                FirstName = x.FirstName,
+                                MiddleName = x.MiddleName,
+                                LastName = x.LastName,
+                                IsActive = (x.StatusCd == 'A'),
+                                UserName = x.UserName
+                             } ).ToList();
+
+            return View( users );
+         }
       }
 
       //
       // GET: /Users/Details/Guid
       public ActionResult Details( Guid id )
       {
-         var model = _userRepository.Get( id );
-
-         if (model == null)
+         using (var session = NHibernateHelper.OpenSession())
          {
-            return HttpNotFound();
+            var model = session.Get<User>( id );
+
+            if (model == null)
+            {
+               return HttpNotFound();
+            }
+            return View( Mapper.Map<UserViewModel>( model ) );
          }
-         return View( Mapper.Map<UserViewModel>( model ) );
       }
 
       //
@@ -60,14 +72,30 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
-         var model = Mapper.Map<User>( viewModel );
-         Validate( model, TransactionType.Insert );
-
          if (ModelState.IsValid)
          {
-            _userRepository.Add( model );
-            _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
-            return RedirectToAction( () => this.Index() );
+            var model = Mapper.Map<User>( viewModel );
+            try
+            {
+               using (var session = NHibernateHelper.OpenSession())
+               {
+                  using (var transaction = session.BeginTransaction())
+                  {
+                     session.Save( model );
+                     transaction.Commit();
+                  }
+               }
+
+               _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
+               return RedirectToAction( () => this.Index() );
+            }
+            catch (InvalidOperationException)
+            {
+               foreach (var message in model.GetErrorMessages())
+               {
+                  ModelState.AddModelError( message.Key, message.Value );
+               }
+            }
          }
 
          return View();
@@ -77,10 +105,13 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id )
       {
-         var model = _userRepository.Get( id );
-         if (model != null)
+         using (var session = NHibernateHelper.OpenSession())
          {
-            return View( Mapper.Map<EditUserViewModel>( model ) );
+            var model = session.Get<User>( id );
+            if (model != null)
+            {
+               return View( Mapper.Map<EditUserViewModel>( model ) );
+            }
          }
 
          return HttpNotFound();
@@ -91,30 +122,31 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public ActionResult Edit( EditUserViewModel viewModel )
       {
-         var model = Mapper.Map<User>( viewModel );
-         Validate( model, TransactionType.Update );
-
          if (ModelState.IsValid)
          {
-            _userRepository.Update( model );
-            return RedirectToAction( () => this.Index() );
-         }
-         else
-         {
-            return View( viewModel );
-         }
-      }
-
-
-      private void Validate( User model, TransactionType transactionType )
-      {
-         if (!_validator.ModelIsValid( model, transactionType ))
-         {
-            foreach (var message in _validator.Messages)
+            var model = Mapper.Map<User>( viewModel );
+            try
             {
-               ModelState.AddModelError( message.Key, message.Value );
+               using (var session = NHibernateHelper.OpenSession())
+               {
+                  using (var transaction = session.BeginTransaction())
+                  {
+                     session.Update( model );
+                     transaction.Commit();
+                  }
+               }
+               return RedirectToAction( () => this.Index() );
+            }
+            catch (InvalidOperationException)
+            {
+               foreach (var message in model.GetErrorMessages())
+               {
+                  ModelState.AddModelError( message.Key, message.Value );
+               }
             }
          }
+
+         return View( viewModel );
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )

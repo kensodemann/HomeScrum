@@ -10,27 +10,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NHibernate.Linq;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
    [TestClass]
    public class UsersControllerTest
    {
-      private Mock<IUserRepository> _userRepository;
       private Mock<ISecurityRepository> _securityRepository;
-      private Mock<IValidator<User>> _validator;
       private UsersController _controller;
 
-      private EditUserViewModel CreateNewEditViewModel()
+      private EditUserViewModel CreateNewEditViewModel( User model )
       {
          return new EditUserViewModel()
          {
-            Id = Guid.NewGuid(),
-            UserName = "ABC",
-            FirstName = "Abe",
-            MiddleName = "Bobby",
-            LastName = "Crabby",
-            IsActive = true
+            Id = model.Id,
+            UserName = model.UserName,
+            FirstName = model.FirstName,
+            MiddleName = model.MiddleName,
+            LastName = model.LastName,
+            IsActive = (model.StatusCd == 'A')
          };
       }
 
@@ -51,43 +50,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public static void InitializeClass( TestContext context )
       {
          MapperConfig.RegisterMappings();
+         Database.Initialize();
       }
 
 
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         Users.CreateTestModelData();
+         Database.Build();
+         Users.Load();
 
-         _userRepository = new Mock<IUserRepository>();
          _securityRepository = new Mock<ISecurityRepository>();
-         _validator = new Mock<IValidator<User>>();
 
-         _validator.Setup( x => x.ModelIsValid( It.IsAny<User>(), It.IsAny<TransactionType>() ) ).Returns( true );
-
-         _controller = new UsersController( _userRepository.Object, _securityRepository.Object, _validator.Object );
+         _controller = new UsersController( _securityRepository.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
-      [TestMethod]
-      public void Index_GetsAllItems()
-      {
-         _controller.Index();
-
-         _userRepository.Verify( x => x.GetAll(), Times.Once() );
-      }
 
       [TestMethod]
       public void Index_ReturnsViewWithModel()
       {
-         _userRepository.Setup( x => x.GetAll() )
-            .Returns( Users.ModelData );
-
          var view = _controller.Index() as ViewResult;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
          Assert.IsInstanceOfType( view.Model, typeof( IEnumerable<UserViewModel> ) );
+         Assert.AreEqual( Users.ModelData.Count(), ((IEnumerable<UserViewModel>)view.Model).Count() );
       }
 
 
@@ -96,12 +84,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = Users.ModelData.ToArray()[2];
 
-         _userRepository.Setup( x => x.Get( model.Id ) )
-            .Returns( model );
-
          var view = _controller.Details( model.Id ) as ViewResult;
-
-         _userRepository.Verify( x => x.Get( model.Id ), Times.Once() );
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( view.Model );
@@ -113,8 +96,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void Details_ReturnsHttpNotFoundIfNoModel()
       {
          var id = Guid.NewGuid();
-
-         _userRepository.Setup( x => x.Get( id ) ).Returns( null as User );
 
          var result = _controller.Details( id ) as HttpNotFoundResult;
 
@@ -131,13 +112,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_CallsRepositoryAddIfNewModelIsValid()
+      public void CreatePost_SavesUserIfModelIsValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
          var result = _controller.Create( viewModel );
 
-         _userRepository.Verify( x => x.Add( It.Is<User>( user => user.UserName == viewModel.UserName ) ), Times.Once() );
+         using (var session = Database.GetSession())
+         {
+            var items = session.Query<User>()
+               .Where( x => x.UserName == viewModel.UserName )
+               .ToList();
+
+            Assert.AreEqual( 1, items.Count );
+            Assert.AreEqual( viewModel.FirstName, items[0].FirstName );
+         }
       }
 
       [TestMethod]
@@ -156,14 +145,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCallRepositoryAddIfModelIsNotValid()
+      public void CreatePost_DoesNotSaveUserIfModelIsNotValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel );
 
-         _userRepository.Verify( x => x.Add( It.IsAny<User>() ), Times.Never() );
+         using (var session = Database.GetSession())
+         {
+            var items = session.Query<User>()
+               .Where( x => x.UserName == viewModel.UserName )
+               .ToList();
+
+            Assert.AreEqual( 0, items.Count );
+         }
       }
 
       [TestMethod]
@@ -178,42 +174,40 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_PassesUserToValidator()
+      public void CreatePost_CopiesMessagesToModelStateIfValidationFails()
       {
-         var model = new CreateUserViewModel();
+         var model = new CreateUserViewModel()
+         {
+            Id = Guid.NewGuid(),
+            FirstName = "Bob",
+            MiddleName = "The",
+            LastName = "Builder",
+            UserName = "BTB",
+            NewPassword = "bogus",
+            ConfirmPassword = "bogus"
+         };
 
-         _controller.Create( model );
-
-         _validator.Verify( x => x.ModelIsValid( It.Is<User>( u => u.Id == model.Id ), TransactionType.Insert ), Times.Once() );
-      }
-
-      [TestMethod]
-      public void CreatePost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
-      {
-         var messages = CreateStockErrorMessages();
-         var model = new CreateUserViewModel();
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<User>( u => u.Id == model.Id ), It.IsAny<TransactionType>() ) ).Returns( false );
-
+         model.FirstName = "";
          var result = _controller.Create( model );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
-         foreach (var message in messages)
-         {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
-         }
+         Assert.AreEqual( 1, _controller.ModelState.Count );
+         Assert.IsTrue( _controller.ModelState.ContainsKey( "FirstName" ) );
          Assert.IsTrue( result is ViewResult );
       }
 
       [TestMethod]
-      public void CreatePost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
+      public void CreatePost_DoesNotCopyMessagesToModelStateIfValidationSucceeds()
       {
-         var messages = CreateStockErrorMessages();
-         var model = new CreateUserViewModel();
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<User>( u => u.Id == model.Id ), It.IsAny<TransactionType>() ) ).Returns( true );
+         var model = new CreateUserViewModel()
+         {
+            Id = Guid.NewGuid(),
+            FirstName = "Bob",
+            MiddleName = "The",
+            LastName = "Builder",
+            UserName = "BTB",
+            NewPassword = "bogus",
+            ConfirmPassword = "bogus"
+         };
 
          var result = _controller.Create( model );
 
@@ -234,20 +228,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Verify( x => x.ChangePassword( model.UserName, "bogus", model.NewPassword ), Times.Once() );
       }
 
-      [TestMethod]
-      public void EditGet_CallsRepositoryGet()
-      {
-         var id = Guid.NewGuid();
-         _controller.Edit( id );
-
-         _userRepository.Verify( x => x.Get( id ), Times.Once() );
-      }
 
       [TestMethod]
       public void EditGet_ReturnsViewWithEditorModel()
       {
          var user = Users.ModelData.ToArray()[3];
-         _userRepository.Setup( x => x.Get( user.Id ) ).Returns( user );
 
          var result = _controller.Edit( user.Id ) as ViewResult;
          Assert.IsNotNull( result );
@@ -259,15 +244,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReturnsNoDataFoundIfUserNotFoundInRepository()
       {
-         _userRepository.Setup( x => x.Get( It.IsAny<Guid>() ) ).Returns( null as User );
-
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
       }
 
       [TestMethod]
-      public void EditPost_CallRepositoryUpdateIfModelValid()
+      public void EditPost_UpdatesUserIfModelValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -280,9 +263,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = (user.StatusCd == 'A')
          };
 
+         model.FirstName += " Modified";
          _controller.Edit( model );
 
-         _userRepository.Verify( x => x.Update( It.Is<User>( u => u.UserName == model.UserName ) ), Times.Once() );
+         using (var session = Database.GetSession())
+         {
+            var item = session.Get<User>( model.Id );
+            Assert.AreEqual( model.FirstName, item.FirstName );
+         }
       }
 
       [TestMethod]
@@ -299,10 +287,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = (user.StatusCd == 'A')
          };
 
+         var origFirstName = model.FirstName;
+         model.FirstName += " Modified";
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( model );
 
-         _userRepository.Verify( x => x.Update( It.IsAny<User>() ), Times.Never() );
+         using (var session = Database.GetSession())
+         {
+            var item = session.Get<User>( model.Id );
+            Assert.AreEqual( origFirstName, item.FirstName );
+            Assert.AreNotEqual( model.FirstName, item.FirstName );
+         }
       }
 
       [TestMethod]
@@ -350,7 +345,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_PassesUserToValidator()
+      public void EditPost_CopiesMessagesToModelStateIfValidationFails()
       {
          var user = Users.ModelData.ToArray()[3];
          var model = new EditUserViewModel()
@@ -363,43 +358,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = (user.StatusCd == 'A')
          };
 
-         _controller.Edit( model );
-
-         _validator.Verify( x => x.ModelIsValid( It.Is<User>( u => u.Id == model.Id ), TransactionType.Update ), Times.Once() );
-      }
-
-      [TestMethod]
-      public void EditPost_CopiesMessagesToModelStateIfValidatorReturnsFalse()
-      {
-         var messages = CreateStockErrorMessages();
-         var user = Users.ModelData.ToArray()[3];
-         var model = new EditUserViewModel()
-         {
-            Id = user.Id,
-            UserName = user.UserName,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            MiddleName = user.MiddleName,
-            IsActive = (user.StatusCd == 'A')
-         };
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<User>( u => u.Id == model.Id ), It.IsAny<TransactionType>() ) ).Returns( false );
-
+         model.FirstName = "";
          var result = _controller.Edit( model );
 
-         Assert.AreEqual( messages.Count, _controller.ModelState.Count );
-         foreach (var message in messages)
-         {
-            Assert.IsTrue( _controller.ModelState.ContainsKey( message.Key ) );
-         }
+         Assert.AreEqual( 1, _controller.ModelState.Count );
+         Assert.IsTrue( _controller.ModelState.ContainsKey( "FirstName" ) );
          Assert.IsTrue( result is ViewResult );
       }
 
       [TestMethod]
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidatorReturnsTrue()
       {
-         var messages = CreateStockErrorMessages();
          var user = Users.ModelData.ToArray()[3];
          var model = new EditUserViewModel()
          {
@@ -410,9 +379,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
             MiddleName = user.MiddleName,
             IsActive = (user.StatusCd == 'A')
          };
-
-         _validator.SetupGet( x => x.Messages ).Returns( messages );
-         _validator.Setup( x => x.ModelIsValid( It.Is<User>( u => u.Id == model.Id ), It.IsAny<TransactionType>() ) ).Returns( true );
 
          var result = _controller.Edit( model );
 
@@ -424,7 +390,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_DoesNotCallsSecurityRepositoryToSetPassword()
       {
-         var model = CreateNewEditViewModel();
+         var model = CreateNewEditViewModel( Users.ModelData[0] );
          model.NewPassword = "something";
          model.ConfirmPassword = model.NewPassword;
 
@@ -433,18 +399,5 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _securityRepository
             .Verify( x => x.ChangePassword( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>() ), Times.Never() );
       }
-
-
-      #region private helpers
-      ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
-      {
-         var messages = new List<KeyValuePair<string, string>>();
-
-         messages.Add( new KeyValuePair<string, string>( "Name", "Name is not unique" ) );
-         messages.Add( new KeyValuePair<string, string>( "SomethingElse", "Another Message" ) );
-
-         return messages;
-      }
-      #endregion
    }
 }

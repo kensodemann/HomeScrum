@@ -5,10 +5,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using HomeScrum.Data.Validators;
 
 namespace HomeScrum.Data.Domain
 {
-   public class User
+   public class User : ValidatableObject
    {
       public virtual Guid Id { get; set; }
 
