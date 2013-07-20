@@ -42,17 +42,6 @@ namespace HomeScrum.Web.Controllers
                   .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
                .TransformUsing( Transformers.AliasToBean<SelectListItem>() )
                .List<SelectListItem>();
-
-            //return session
-            //   .CreateCriteria( typeof( ProjectStatus ) )
-            //   .Add( Restrictions.Or( Restrictions.Eq( "StatusCd", 'A' ), Restrictions.Eq( "Id", selectedId ) ) )
-            //   .SetProjection( Projections.ProjectionList()
-            //      .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
-            //      .Add( Projections.Property( "Name" ), "Text" )
-            //      .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
-            //   .SetResultTransformer( Transformers.AliasToBean<SelectListItem>() )
-            //   .AddOrder( Order.Asc( "SortSequence" ) )
-            //   .List<SelectListItem>();
          }
       }
 

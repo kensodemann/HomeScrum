@@ -914,6 +914,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          foreach (var model in Users.ModelData)
          {
             _userRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
+            _userRepository.Setup( x => x.Get( model.UserName ) ).Returns( model );
          }
       }
 
