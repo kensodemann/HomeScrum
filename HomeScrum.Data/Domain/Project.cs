@@ -6,11 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NHibernate.Linq;
+using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {
    public class Project : DomainObjectBase
    {
+      public Project()
+      {
+         _objectName = "Project";
+      }
+
       [Required]
       public virtual ProjectStatus Status { get; set; }
 
@@ -20,16 +26,7 @@ namespace HomeScrum.Data.Domain
       protected override void PerformModelValidations()
       {
          base.PerformModelValidations();
-
-         using (var session = NHibernateHelper.OpenSession())
-         {
-            if (session.Query<Project>()
-                   .Where( x => x.Id != this.Id && x.Name == this.Name )
-                   .ToList().Count > 0)
-            {
-               _errorMessages.Add( "Name", String.Format( ErrorMessages.NameIsNotUnique, "Project", this.Name ) );
-            }
-         }
+         this.VerifyNameIsUnique();
       }
    }
 }

@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using HomeScrum.Data.Validation;
 
-namespace HomeScrum.Data.Domain
+namespace HomeScrum.Data.Validation
 {
    public class ValidatableObject : IValidatable
    {
       public ValidatableObject()
       {
          _errorMessages = new Dictionary<String, String>();
+         _objectName = "not specified";
       }
+
+
+      protected string _objectName;
+      public virtual string GetObjectName() { return _objectName; }
 
 
       public virtual bool IsValidFor( TransactionType transactionType )
@@ -47,5 +51,9 @@ namespace HomeScrum.Data.Domain
 
       protected IDictionary<String, String> _errorMessages;
       public virtual IDictionary<String, String> GetErrorMessages() { return _errorMessages; }
+      public virtual void AddErrorMessage( string key, string message )
+      {
+         _errorMessages.Add( key, message );
+      }
    }
 }

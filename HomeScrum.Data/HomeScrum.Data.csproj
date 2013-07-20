@@ -63,7 +63,7 @@
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
-    <Compile Include="Domain\ValidatableObject.cs" />
+    <Compile Include="Validation\ValidatableObject.cs" />
     <Compile Include="Domain\WorkItem.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
     <Compile Include="Domain\WorkItemType.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="Validation\IValidatable.cs" />
     <Compile Include="TransactionType.cs" />
     <Compile Include="Validation\ValidationListener.cs" />
+    <Compile Include="Validation\Validations.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ErrorMessages.resx">
