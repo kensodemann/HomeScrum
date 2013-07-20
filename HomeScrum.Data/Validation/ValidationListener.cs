@@ -28,7 +28,7 @@ namespace HomeScrum.Data.Validation
          {
             if (!model.IsValidFor( transactionType ))
             {
-               throw new InvalidOperationException( "The model is not valid for update" );
+               throw new InvalidOperationException( "The model is not valid for " + transactionType.ToString() );
             }
          }
       }
