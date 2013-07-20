@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Principal;
+using System.Web.Mvc;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
@@ -8,10 +10,6 @@ using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {

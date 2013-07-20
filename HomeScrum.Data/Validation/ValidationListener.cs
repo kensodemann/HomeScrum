@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeScrum.Data.Validators
+namespace HomeScrum.Data.Validation
 {
    public class ValidationListener : NHibernate.Event.IPreUpdateEventListener, NHibernate.Event.IPreInsertEventListener
    {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HomeScrum.Data.Validators
+namespace HomeScrum.Data.Validation
 {
    internal interface IValidatable
    {

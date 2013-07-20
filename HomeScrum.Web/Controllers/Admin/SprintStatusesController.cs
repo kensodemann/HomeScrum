@@ -1,6 +1,4 @@
 ﻿using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
-using HomeScrum.Data.Validators;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;

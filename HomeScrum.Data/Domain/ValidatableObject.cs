@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using HomeScrum.Data.Validators;
+using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {

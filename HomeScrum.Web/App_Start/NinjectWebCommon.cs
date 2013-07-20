@@ -3,12 +3,13 @@
 
 namespace HomeScrum.Web.App_Start
 {
+   using System;
+   using System.Web;
    using AutoMapper;
    using HomeScrum.Common.Utility;
    using HomeScrum.Data.Domain;
    using HomeScrum.Data.Repositories;
    using HomeScrum.Data.SqlServer;
-   using HomeScrum.Data.Validators;
    using HomeScrum.Web.Models.Admin;
    using HomeScrum.Web.Models.WorkItems;
    using HomeScrum.Web.Providers;
@@ -17,8 +18,6 @@ namespace HomeScrum.Web.App_Start
    using NHibernate;
    using Ninject;
    using Ninject.Web.Common;
-   using System;
-   using System.Web;
 
    public static class NinjectWebCommon
    {

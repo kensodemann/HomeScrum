@@ -82,9 +82,9 @@
     <Compile Include="Repositories\ISecurityRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IWorkItemRepository.cs" />
-    <Compile Include="Validators\IValidatable.cs" />
-    <Compile Include="Validators\TransactionType.cs" />
-    <Compile Include="Validators\ValidationListener.cs" />
+    <Compile Include="Validation\IValidatable.cs" />
+    <Compile Include="Validation\TransactionType.cs" />
+    <Compile Include="Validation\ValidationListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ErrorMessages.resx">

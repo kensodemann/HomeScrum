@@ -1,19 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Web.Mvc;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
-using HomeScrum.Data.Validators;
+using HomeScrum.Data.SqlServer.Queries;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
-using Ninject;
-using Ninject.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using HomeScrum.Data.SqlServer.Queries;
+using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
-using NHibernate;
+using Ninject;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers
 {
