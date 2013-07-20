@@ -57,61 +57,6 @@ namespace HomeScrum.Web.Controllers
       }
 
 
-      // TODO: This is just temporary.  Want to move this down so we can get rid of the validators.
-      [HttpPost]
-      public override ActionResult Edit( ProjectEditorViewModel viewModel, IPrincipal user )
-      {
-         var model = Mapper.Map<Project>( viewModel );
-
-         if (ModelState.IsValid)
-         {
-            try
-            {
-               UpdateItem( model, user );
-               return RedirectToAction( () => this.Index() );
-            }
-            catch (InvalidOperationException)
-            {
-               foreach (var message in model.GetErrorMessages())
-               {
-                  var viewModelPropertyName = PropertyNameTranslator.TranslatedName( message.Key );
-                  ModelState.AddModelError( viewModelPropertyName, message.Value );
-               }
-            }
-         }
-
-         PopulateSelectLists( viewModel );
-         return View( viewModel );
-      }
-
-
-      [HttpPost]
-      public override ActionResult Create( ProjectEditorViewModel viewModel, IPrincipal user )
-      {
-         var model = Mapper.Map<Project>( viewModel );
-
-         if (ModelState.IsValid)
-         {
-            try
-            {
-               AddItem( model, user );
-               return RedirectToAction( () => this.Index() );
-            }
-            catch (InvalidOperationException)
-            {
-               foreach (var message in model.GetErrorMessages())
-               {
-                  var viewModelPropertyName = PropertyNameTranslator.TranslatedName( message.Key );
-                  ModelState.AddModelError( viewModelPropertyName, message.Value );
-               }
-            }
-         }
-
-         PopulateSelectLists( viewModel );
-         return View( viewModel );
-      }
-
-
       protected override void AddItem( Project model, IPrincipal user )
       {
          model.LastModifiedUserRid = GetUserId( user );

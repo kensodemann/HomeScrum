@@ -42,18 +42,23 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
-         var model = Mapper.Map<ModelT>( viewModel );
-
          if (ModelState.IsValid)
          {
-            AddItem( model, user );
-            return RedirectToAction( () => this.Index() );
+            var model = Mapper.Map<ModelT>( viewModel );
+            try
+            {
+               AddItem( model, user );
+               return RedirectToAction( () => this.Index() );
+            }
+            catch (InvalidOperationException)
+            {
+               TransferErrorMessages( model );
+            }
          }
 
          PopulateSelectLists( viewModel );
          return View( viewModel );
       }
-
 
       //
       // GET: /ModelTs/Edit/Guid
@@ -79,21 +84,32 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
-         var model = Mapper.Map<ModelT>( viewModel );
-
          if (ModelState.IsValid)
          {
-            UpdateItem( model, user );
+            var model = Mapper.Map<ModelT>( viewModel );
+            try
+            {
+               UpdateItem( model, user );
+               return RedirectToAction( () => this.Index() );
+            }
+            catch (InvalidOperationException)
+            {
+               TransferErrorMessages( model );
+            }
+         }
 
-            return RedirectToAction( () => this.Index() );
-         }
-         else
-         {
-            PopulateSelectLists( viewModel );
-            return View( viewModel );
-         }
+         PopulateSelectLists( viewModel );
+         return View( viewModel );
       }
 
+      private void TransferErrorMessages( ModelT model )
+      {
+         foreach (var message in model.GetErrorMessages())
+         {
+            var viewModelPropertyName = PropertyNameTranslator.TranslatedName( message.Key );
+            ModelState.AddModelError( viewModelPropertyName, message.Value );
+         }
+      }
 
       protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
 
