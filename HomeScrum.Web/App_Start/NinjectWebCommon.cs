@@ -63,7 +63,6 @@ namespace HomeScrum.Web.App_Start
       private static void RegisterServices( IKernel kernel )
       {
          RegisterRepositories( kernel );
-         //RegisterValidators( kernel );
          RegisterTranslators( kernel );
          RegisterProviders( kernel );
 
@@ -91,20 +90,6 @@ namespace HomeScrum.Web.App_Start
       {
          kernel.Bind<IRepository<T>>().To( typeof( SimpleSortedRepository<T> ) ).InSingletonScope();
       }
-
-      //private static void RegisterValidators( IKernel kernel )
-      //{
-      //   kernel.Bind<IValidator<AcceptanceCriterionStatus>>().To( typeof( AcceptanceCriteriaStatusValidator ) );
-      //   kernel.Bind<IValidator<ProjectStatus>>().To( typeof( ProjectStatusValidator ) );
-      //   kernel.Bind<IValidator<SprintStatus>>().To( typeof( SprintStatusValidator ) );
-      //   kernel.Bind<IValidator<WorkItemStatus>>().To( typeof( WorkItemStatusValidator ) );
-      //   kernel.Bind<IValidator<WorkItemType>>().To( typeof( WorkItemTypeValidator ) );
-
-      //   kernel.Bind<IValidator<Project>>().To( typeof( ProjectValidator ) );
-      //   kernel.Bind<IValidator<WorkItem>>().To( typeof( WorkItemValidator ) );
-
-      //   kernel.Bind<IValidator<User>>().To( typeof( UserValidator ) );
-      //}
 
       private static void RegisterTranslators( IKernel kernel )
       {
