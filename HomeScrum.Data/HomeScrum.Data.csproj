@@ -83,7 +83,7 @@
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IWorkItemRepository.cs" />
     <Compile Include="Validation\IValidatable.cs" />
-    <Compile Include="Validation\TransactionType.cs" />
+    <Compile Include="TransactionType.cs" />
     <Compile Include="Validation\ValidationListener.cs" />
   </ItemGroup>
   <ItemGroup>
