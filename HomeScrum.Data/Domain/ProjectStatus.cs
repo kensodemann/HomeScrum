@@ -1,14 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {
    public class ProjectStatus : SystemDomainObject
    {
       public virtual bool IsActive { get; set; }
+
+
+      #region Non-POCO
+      public ProjectStatus()
+      {
+         _objectName = "Project Status";
+      }
+
+      protected override void PerformModelValidations()
+      {
+         base.PerformModelValidations();
+         this.VerifyNameIsUnique();
+      }
+      #endregion
    }
 }

@@ -72,6 +72,11 @@
   <ItemGroup>
     <Compile Include="Domains\DataObjectBaseTest.cs" />
     <Compile Include="Domains\ProjectTest.cs" />
+    <Compile Include="Domains\AcceptanceCritionStatusTest.cs" />
+    <Compile Include="Domains\SprintStatusTest.cs" />
+    <Compile Include="Domains\ProjectStatusTest.cs" />
+    <Compile Include="Domains\WorkItemTypeTest.cs" />
+    <Compile Include="Domains\WorkItemStatusTest.cs" />
     <Compile Include="Domains\UserTest.cs" />
     <Compile Include="Repositories\ProjectStatusRepositoryTest.cs" />
     <Compile Include="Repositories\SprintStatusRepositoryTest.cs" />

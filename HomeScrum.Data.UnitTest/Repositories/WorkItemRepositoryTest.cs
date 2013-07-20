@@ -27,12 +27,12 @@ namespace HomeScrum.Data.UnitTest.Repositories
          Database.Build();
          Users.Load();
          WorkItemStatuses.Load();
-         WorkItemTypes.Load();
-         ProjectStatuses.Load();
-         Projects.Load();
+         WorkItemTypes.Load();       
          SprintStatuses.Load();
          //Sprints.Load();
          AcceptanceCriteriaStatuses.Load();
+         ProjectStatuses.Load();
+         Projects.Load();
          WorkItems.Load();
          _logger = new Mock<ILogger>();
          _repository = new WorkItemRepository( _logger.Object );

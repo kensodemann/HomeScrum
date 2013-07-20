@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {
@@ -15,5 +16,12 @@ namespace HomeScrum.Data.Domain
 
       [Required]
       public virtual int SortSequence { get; set; }
+
+
+      //protected override void PerformModelValidations()
+      //{
+      //   base.PerformModelValidations();
+      //   this.VerifyNameIsUnique();
+      //}
    }
 }
