@@ -21,35 +21,30 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [ClassInitialize]
       public static void InitializeClass( TestContext context )
       {
-         Users.CreateTestModelData( initializeIds: true );
-
-         AcceptanceCriteriaStatuses.CreateTestModelData( initializeIds: true );
-         ProjectStatuses.CreateTestModelData( initializeIds: true );
-         SprintStatuses.CreateTestModelData( initializeIds: true );
-         WorkItemStatuses.CreateTestModelData( initializeIds: true );
-         WorkItemTypes.CreateTestModelData( initializeIds: true );
-
-         Projects.CreateTestModelData( initializeIds: true );
-         WorkItems.CreateTestModelData( initializeIds: true );
+         Database.Initialize();
 
          _iocKernel = new MoqMockingKernel();
-         _projectRepository = _iocKernel.GetMock<IRepository<Project>>();
-         _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
-         _userRepository = _iocKernel.GetMock<IUserRepository>();
-         _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
-         _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
-         _workItemRepository = _iocKernel.GetMock<IWorkItemRepository>();
-
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
       }
 
-      private static Mock<IRepository<Project>> _projectRepository;
-      private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;
-      private static Mock<IUserRepository> _userRepository;
-      private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
-      private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
-      private static Mock<IWorkItemRepository> _workItemRepository;
+      [TestInitialize]
+      public void InitializeTest()
+      {
+         Database.Build();
+
+         Users.Load();
+
+         AcceptanceCriteriaStatuses.Load();
+         ProjectStatuses.Load();
+         SprintStatuses.Load();
+         WorkItemStatuses.Load();
+         WorkItemTypes.Load();
+
+         Projects.Load();
+         WorkItems.Load();
+      }
+
       private static MoqMockingKernel _iocKernel;
       #endregion
 
@@ -297,15 +292,11 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             LastModifiedUserId = Users.ModelData[0].Id,
             StatusId = ProjectStatuses.ModelData[0].Id
          };
-         _projectStatusRepository
-            .Setup( x => x.Get( ProjectStatuses.ModelData[0].Id ) )
-            .Returns( ProjectStatuses.ModelData[0] )
-            .Verifiable();
 
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Project ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( Project ) );
-         Assert.AreEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
+         AssertDomainModelsEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
       }
       #endregion
 
@@ -365,46 +356,34 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             ParentWorkItemId = WorkItems.ModelData[0].Id,
             ParentWorkItemName = WorkItems.ModelData[0].Name
          };
-         _projectRepository
-            .Setup( x => x.Get( Projects.ModelData[0].Id ) )
-            .Returns( Projects.ModelData[0] )
-            .Verifiable();
-         _workItemStatusRepository
-            .Setup( x => x.Get( WorkItemStatuses.ModelData[0].Id ) )
-            .Returns( WorkItemStatuses.ModelData[0] )
-            .Verifiable();
-         _workItemTypeRepository
-            .Setup( x => x.Get( WorkItemTypes.ModelData[1].Id ) )
-            .Returns( WorkItemTypes.ModelData[1] )
-            .Verifiable();
-         _workItemRepository
-            .Setup( x => x.Get( WorkItems.ModelData[0].Id ) )
-            .Returns( WorkItems.ModelData[0] )
-            .Verifiable();
-         _userRepository
-            .Setup( x => x.Get( Users.ModelData[0].Id ) )
-            .Returns( Users.ModelData[0] )
-            .Verifiable();
-         _userRepository
-            .Setup( x => x.Get( Users.ModelData[1].Id ) )
-            .Returns( Users.ModelData[1] )
-            .Verifiable();
-         
 
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItem ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( WorkItem ) );
-         Assert.AreEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
-         Assert.AreEqual( WorkItemTypes.ModelData[1], ((WorkItem)domainModel).WorkItemType );
-         Assert.AreEqual( Projects.ModelData[0], ((WorkItem)domainModel).Project );
-         Assert.AreEqual( Users.ModelData[0], ((WorkItem)domainModel).AssignedToUser );
-         Assert.AreEqual( Users.ModelData[1], ((WorkItem)domainModel).CreatedByUser );
-         Assert.AreEqual( WorkItems.ModelData[0], ((WorkItem)domainModel).ParentWorkItem );
-         _workItemStatusRepository.Verify();
-         _workItemTypeRepository.Verify();
-         _projectRepository.Verify();
-         _userRepository.Verify();
-         _workItemRepository.Verify();
+         AssertDomainModelsEqual( WorkItemStatuses.ModelData[0], ((WorkItem)domainModel).Status );
+         AssertDomainModelsEqual( WorkItemTypes.ModelData[1], ((WorkItem)domainModel).WorkItemType );
+         AssertDomainModelsEqual( Projects.ModelData[0], ((WorkItem)domainModel).Project );
+         AssertUsersEqual( Users.ModelData[0], ((WorkItem)domainModel).AssignedToUser );
+         AssertUsersEqual( Users.ModelData[1], ((WorkItem)domainModel).CreatedByUser );
+         AssertDomainModelsEqual( WorkItems.ModelData[0], ((WorkItem)domainModel).ParentWorkItem );
+      }
+      #endregion
+
+
+      #region Private Helpers
+      private void AssertDomainModelsEqual( DomainObjectBase expected, DomainObjectBase actual )
+      {
+         Assert.AreEqual( expected.Id, actual.Id );
+         Assert.AreEqual( expected.Name, actual.Name );
+         Assert.AreEqual( expected.Description, actual.Description );
+      }
+
+      private void AssertUsersEqual(User expected, User actual)
+      {
+         Assert.AreEqual( expected.Id, actual.Id );
+         Assert.AreEqual( expected.FirstName, actual.FirstName );
+         Assert.AreEqual( expected.LastName, actual.LastName );
+         Assert.AreEqual( expected.UserName, actual.UserName );
       }
       #endregion
    }

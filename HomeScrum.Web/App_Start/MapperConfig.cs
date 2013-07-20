@@ -7,6 +7,7 @@ using HomeScrum.Web.Models.WorkItems;
 using Ninject;
 using System;
 using AutoMapper.Mappers;
+using HomeScrum.Common.Utility;
 
 namespace HomeScrum.Web
 {
@@ -36,17 +37,17 @@ namespace HomeScrum.Web
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
-            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<RepositoryItemResolver<ProjectStatus>>().FromMember( src => src.StatusId ) )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<ProjectStatus>>().FromMember( src => src.StatusId ) )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
-            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<RepositoryItemResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
-            .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<RepositoryItemResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
-            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<RepositoryItemResolver<Project>>().FromMember( src => src.ProjectId ) )
-            .ForMember( dest => dest.ParentWorkItem, opt => opt.ResolveUsing<WorkItemResolver>().FromMember( src => src.ParentWorkItemId ) )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
+            .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<DomainModelResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
+            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) )
+            .ForMember( dest => dest.ParentWorkItem, opt => opt.ResolveUsing <DomainModelResolver<WorkItem>>().FromMember( src => src.ParentWorkItemId ) )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
-            .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<UserResolver>().FromMember( src => src.CreatedByUserId ) )
-            .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<UserResolver>().FromMember( src => src.AssignedToUserId ) )
+            .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.CreatedByUserId ) )
+            .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.AssignedToUserId ) )
             .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ConstructUsingServiceLocator();
@@ -136,43 +137,15 @@ namespace HomeScrum.Web
          }
       }
 
-      public class RepositoryItemResolver<ModelT> : ValueResolver<Guid, ModelT>
+      public class DomainModelResolver<ModelT> : ValueResolver<Guid, ModelT>
       {
-         [Inject]
-         public RepositoryItemResolver( IRepository<ModelT> repository )
-         {
-            _repository = repository;
-         }
-         private readonly IRepository<ModelT> _repository;
-
-
          protected override ModelT ResolveCore( Guid sourceId )
          {
-            ModelT model = _repository.Get( sourceId );
-            return model;
-         }
-      }
-
-      public class WorkItemResolver : RepositoryItemResolver<WorkItem>
-      {
-         [Inject]
-         public WorkItemResolver( IWorkItemRepository repository )
-            : base( repository ) { }
-      }
-
-      public class UserResolver : ValueResolver<Guid, User>
-      {
-         [Inject]
-         public UserResolver( IUserRepository repository )
-         {
-            _repository = repository;
-         }
-         private readonly IUserRepository _repository;
-
-         protected override User ResolveCore( Guid sourceId )
-         {
-            User model = _repository.Get( sourceId );
-            return model;
+            using (var session = NHibernateHelper.OpenSession())
+            {
+               ModelT model = session.Get<ModelT>( sourceId );
+               return model;
+            }
          }
       }
       #endregion
