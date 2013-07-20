@@ -25,7 +25,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       #region Test Setup
       private static MoqMockingKernel _iocKernel;
-      private static Mock<IRepository<ProjectStatus>> _projectStatusRepository;  // Should go away once the mapper is fixed
 
       private Mock<ILogger> _logger;
 
@@ -39,7 +38,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Database.Initialize();
          
          CreateMockIOCKernel();
-         CreateStaticRepositories();
          IntializeMapper();
       }
 
@@ -51,7 +49,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          ProjectStatuses.Load();
          Projects.Load();
 
-         SetupProjectStatusRepository();
          SetupCurrentUser();
          SetupLogger();
       }
@@ -511,15 +508,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
       }
 
-      private static void SetupProjectStatusRepository()
-      {
-         _projectStatusRepository.Setup( x => x.GetAll() ).Returns( ProjectStatuses.ModelData );
-         foreach (var model in ProjectStatuses.ModelData)
-         {
-            _projectStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
-      }
-
       private void SetupCurrentUser()
       {
          _userIdentity = new Mock<IIdentity>();
@@ -545,11 +533,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void SetupLogger()
       {
          _logger = new Mock<ILogger>();
-      }
-
-      private static void CreateStaticRepositories()
-      {
-         _projectStatusRepository = _iocKernel.GetMock<IRepository<ProjectStatus>>();
       }
       #endregion
    }
