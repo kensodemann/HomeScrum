@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer.Queries;
@@ -10,6 +12,10 @@ using NHibernate.Criterion;
 using NHibernate.Transform;
 using Ninject;
 using Ninject.Extensions.Logging;
+using NHibernate.Linq;
+using System.Linq;
+using System.Collections.Generic;
+using HomeScrum.Web.Extensions;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -39,7 +45,7 @@ namespace HomeScrum.Web.Controllers
 
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
-         viewModel.Statuses = _statusRepository.GetAll().ToSelectList( viewModel.StatusId );
+         viewModel.Statuses = CreateSelectList<WorkItemStatus>( viewModel.StatusId );
          viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = _projectRepository.GetAll().ToSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
@@ -47,19 +53,42 @@ namespace HomeScrum.Web.Controllers
          base.PopulateSelectLists( viewModel );
       }
 
+      private IEnumerable<SelectListItem> CreateSelectList<ModelT>( Guid selectedId )
+         where ModelT : SystemDomainObject
+      {
+         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>(){SelectedId = selectedId};
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            return query
+               .GetLinqQuery( session )
+               .SelectSelectListItems<ModelT>( selectedId );
+         }
+      }
+
       protected override void AddItem( WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         model.LastModifiedUserRid = GetUserId( user.Identity.Name );
          base.AddItem( model, user );
       }
 
       protected override void UpdateItem( WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = _userRepository.Get( user.Identity.Name ).Id;
+         model.LastModifiedUserRid = GetUserId( user.Identity.Name );
          base.UpdateItem( model, user );
       }
+
+      private Guid GetUserId( string userName )
+      {
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            return session.Query<User>()
+               .Where( x => x.UserName == userName )
+               .ToList().First().Id;
+         }
+      }
+
 
       private void ClearNonAllowedItemsInModel( WorkItem model )
       {

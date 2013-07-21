@@ -1,12 +1,7 @@
-﻿using HomeScrum.Data.Domain;
+﻿using System.Linq;
+using HomeScrum.Data.Domain;
 using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Transform;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NHibernate.Linq;
 
 namespace HomeScrum.Data.Queries
 {
@@ -18,6 +13,11 @@ namespace HomeScrum.Data.Queries
          var query = session.QueryOver<ModelT>();
 
          return query;
+      }
+
+      public virtual IQueryable<ModelT> GetLinqQuery( ISession session )
+      {
+         return session.Query<ModelT>();
       }
    }
 }

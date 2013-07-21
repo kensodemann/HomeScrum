@@ -15,5 +15,11 @@ namespace HomeScrum.Data.Queries
          return base.GetQuery( session )
             .OrderBy( x => x.SortSequence ).Asc;
       }
+
+      public override IQueryable<ModelT> GetLinqQuery( NHibernate.ISession session )
+      {
+         return base.GetLinqQuery( session )
+            .OrderBy( x => x.SortSequence );
+      }
    }
 }

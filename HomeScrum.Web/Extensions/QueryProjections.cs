@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Extensions
 {
@@ -40,6 +41,17 @@ namespace HomeScrum.Web.Extensions
                .Add( Projections.Property<SourceT>( x => x.IsPredefined ).WithAlias( () => viewModel.IsPredefined ) ) )
             .TransformUsing( Transformers.AliasToBean<SystemDomainObjectViewModel>() )
             .List<SystemDomainObjectViewModel>();
+      }
+
+      public static IList<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )
+         where SourceT : DomainObjectBase
+      {
+         return query.Select( x => new SelectListItem()
+                                   {
+                                      Value = x.Id.ToString(),
+                                      Text = x.Name,
+                                      Selected = (x.Id == selectedId)
+                                   } ).ToList();
       }
    }
 }

@@ -142,7 +142,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.Statuses.Count() );
          foreach (var item in model.Statuses)
          {
-            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var status = WorkItemStatuses.ModelData.First( x => x.Id == new Guid( item.Value ) );
             Assert.AreEqual( status.Name, item.Text );
             Assert.IsFalse( item.Selected );
          }
@@ -160,7 +160,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), model.WorkItemTypes.Count() );
          foreach (var item in model.WorkItemTypes)
          {
-            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id == new Guid( item.Value ) );
             Assert.AreEqual( workItemType.Name, item.Text );
             Assert.IsFalse( item.Selected );
          }
@@ -182,14 +182,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             if (isFirst)
             {
-               Assert.AreEqual( default( Guid ).ToString(), item.Value );
+               Assert.AreEqual( default( Guid ), new Guid( item.Value ) );
                Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
                Assert.IsFalse( item.Selected );
                isFirst = false;
             }
             else
             {
-               var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+               var project = Projects.ModelData.First( x => x.Id == new Guid( item.Value ) );
                Assert.AreEqual( project.Name, item.Text );
                Assert.IsFalse( item.Selected );
             }
@@ -218,7 +218,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
             else
             {
-               var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+               var user = Users.ModelData.First( x => x.Id == new Guid( item.Value ) );
                Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
                Assert.IsFalse( item.Selected );
             }
@@ -244,7 +244,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
             else
             {
-               var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
+               var workItem = WorkItems.ModelData.First( x => x.Id == new Guid( item.Value ) );
                Assert.AreEqual( workItem.Name, item.Text );
                Assert.IsFalse( item.Selected );
             }
@@ -340,9 +340,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.Statuses.Count() );
          foreach (var item in returnedModel.Statuses)
          {
-            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var status = WorkItemStatuses.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (item.Value == viewModel.StatusId.ToString()) ? item.Selected : !item.Selected );
+            Assert.IsTrue( (itemId == viewModel.StatusId) ? item.Selected : !item.Selected );
          }
       }
 
@@ -360,9 +361,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.WorkItemTypes.Count() );
          foreach (var item in returnedModel.WorkItemTypes)
          {
-            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( workItemType.Name, item.Text );
-            Assert.IsTrue( (item.Value == viewModel.WorkItemTypeId.ToString()) ? item.Selected : !item.Selected );
+            Assert.IsTrue( (itemId == viewModel.WorkItemTypeId) ? item.Selected : !item.Selected );
          }
       }
 
@@ -381,9 +383,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (int i = 1; i < returnedModel.Projects.Count(); i++)
          {
             var item = returnedModel.Projects.ElementAt( i );
-            var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var project = Projects.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( project.Name, item.Text );
-            Assert.IsTrue( (item.Value == viewModel.ProjectId.ToString()) ? item.Selected : !item.Selected );
+            Assert.IsTrue( (itemId == viewModel.ProjectId) ? item.Selected : !item.Selected );
          }
       }
 
@@ -402,9 +405,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (int i = 1; i < returnedModel.AssignedToUsers.Count(); i++)
          {
             var item = returnedModel.AssignedToUsers.ElementAt( i );
-            var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var user = Users.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
-            Assert.IsTrue( (item.Value == viewModel.AssignedToUserId.ToString()) ? item.Selected : !item.Selected );
+            Assert.IsTrue( (itemId == viewModel.AssignedToUserId) ? item.Selected : !item.Selected );
          }
       }
 
@@ -529,10 +533,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
          foreach (var item in viewModel.Statuses)
          {
-            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var status = WorkItemStatuses.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Status.Id != itemId && !item.Selected) ||
+                           (model.Status.Id == itemId && item.Selected) );
          }
       }
 
@@ -548,10 +553,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
          foreach (var item in viewModel.WorkItemTypes)
          {
-            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( workItemType.Name, item.Text );
-            Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.WorkItemType.Id != itemId && !item.Selected) ||
+                           (model.WorkItemType.Id == itemId && item.Selected) );
          }
       }
 
@@ -570,10 +576,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (int i = 1; i < viewModel.Projects.Count(); i++)
          {
             var item = viewModel.Projects.ElementAt( i );
-            var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var project = Projects.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( project.Name, item.Text );
-            Assert.IsTrue( (model.Project.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.Project.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
+                           (model.Project.Id == itemId && item.Selected) );
          }
       }
 
@@ -592,10 +599,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (int i = 1; i < viewModel.AssignedToUsers.Count(); i++)
          {
             var item = viewModel.AssignedToUsers.ElementAt( i );
-            var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var user = Users.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
-            Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.AssignedToUser.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.AssignedToUser.Id != itemId && !item.Selected) ||
+                           (model.AssignedToUser.Id == itemId && item.Selected) );
          }
       }
 
@@ -618,10 +626,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
             else
             {
-               var workItem = WorkItems.ModelData.First( x => x.Id.ToString() == item.Value );
+               var itemId = new Guid( item.Value );
+               var workItem = WorkItems.ModelData.First( x => x.Id == itemId );
                Assert.AreEqual( workItem.Name, item.Text );
-               Assert.IsTrue( (model.ParentWorkItem.Id.ToString() != item.Value && !item.Selected) ||
-                              (model.ParentWorkItem.Id.ToString() == item.Value && item.Selected) );
+               Assert.IsTrue( (model.ParentWorkItem.Id != itemId && !item.Selected) ||
+                              (model.ParentWorkItem.Id == itemId && item.Selected) );
             }
          }
       }
@@ -721,7 +730,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name = "";
          var result = controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual(1, controller.ModelState.Count );
+         Assert.AreEqual( 1, controller.ModelState.Count );
          Assert.IsTrue( controller.ModelState.ContainsKey( "Name" ) );
          Assert.IsTrue( result is ViewResult );
       }
@@ -779,10 +788,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
          foreach (var item in viewModel.Statuses)
          {
-            var status = WorkItemStatuses.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var status = WorkItemStatuses.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.IsTrue( (model.Status.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.Status.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Status.Id != itemId && !item.Selected) ||
+                           (model.Status.Id == itemId && item.Selected) );
          }
       }
 
@@ -799,10 +809,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
          foreach (var item in viewModel.WorkItemTypes)
          {
-            var workItemType = WorkItemTypes.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( workItemType.Name, item.Text );
-            Assert.IsTrue( (model.WorkItemType.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.WorkItemType.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.WorkItemType.Id != itemId && !item.Selected) ||
+                           (model.WorkItemType.Id == itemId && item.Selected) );
          }
       }
 
@@ -822,10 +833,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (int i = 1; i < viewModel.Projects.Count(); i++)
          {
             var item = viewModel.Projects.ElementAt( i );
-            var project = Projects.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var project = Projects.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( project.Name, item.Text );
-            Assert.IsTrue( (model.Project.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.Project.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
+                           (model.Project.Id == itemId && item.Selected) );
          }
       }
 
@@ -845,10 +857,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (int i = 1; i < viewModel.AssignedToUsers.Count(); i++)
          {
             var item = viewModel.AssignedToUsers.ElementAt( i );
-            var user = Users.ModelData.First( x => x.Id.ToString() == item.Value );
+            var itemId = new Guid( item.Value );
+            var user = Users.ModelData.First( x => x.Id == itemId );
             Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
-            Assert.IsTrue( (model.AssignedToUser.Id.ToString() != item.Value && !item.Selected) ||
-                           (model.AssignedToUser.Id.ToString() == item.Value && item.Selected) );
+            Assert.IsTrue( (model.AssignedToUser.Id != itemId && !item.Selected) ||
+                           (model.AssignedToUser.Id == itemId && item.Selected) );
          }
       }
 
@@ -864,7 +877,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          using (var session = Database.GetSession())
          {
-            var item = session.Get<WorkItem>(viewModel.Id);
+            var item = session.Get<WorkItem>( viewModel.Id );
             Assert.IsNull( item.AssignedToUser );
          }
       }
