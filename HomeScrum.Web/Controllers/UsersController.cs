@@ -16,12 +16,12 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( ISecurityService securityRepository )
+      public UsersController( ISecurityService securityService )
       {
-         _securityRepository = securityRepository;
+         _securityService = securityService;
       }
 
-      private readonly ISecurityService _securityRepository;
+      private readonly ISecurityService _securityService;
 
       //
       // GET: /Users/
@@ -86,7 +86,7 @@ namespace HomeScrum.Web.Controllers
                   }
                }
 
-               _securityRepository.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
+               _securityService.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
                return RedirectToAction( () => this.Index() );
             }
             catch (InvalidOperationException)

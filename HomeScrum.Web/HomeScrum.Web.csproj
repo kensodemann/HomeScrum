@@ -208,7 +208,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DisplayStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\QueryProjections.cs" />
     <Compile Include="Extensions\SelectListItemWithAttributes.cs" />
