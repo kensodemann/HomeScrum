@@ -46,7 +46,7 @@ namespace HomeScrum.Web.Controllers
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
          viewModel.Statuses = CreateSelectList<WorkItemStatus>( viewModel.StatusId );
-         viewModel.WorkItemTypes = _workItemTypeRepository.GetAll().ToSelectList( viewModel.WorkItemTypeId );
+         viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = _projectRepository.GetAll().ToSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
          viewModel.ProductBacklogItems = _workItemRepository.GetOpenProductBacklog().ToSelectList( allowUnassigned: true, selectedId: viewModel.ParentWorkItemId );
@@ -62,6 +62,17 @@ namespace HomeScrum.Web.Controllers
             return query
                .GetLinqQuery( session )
                .SelectSelectListItems<ModelT>( selectedId );
+         }
+      }
+
+      private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( Guid selectedId )
+      {
+         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemType>() { SelectedId = selectedId };
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            return query
+               .GetLinqQuery( session )
+               .SelectSelectListItems( selectedId );
          }
       }
 

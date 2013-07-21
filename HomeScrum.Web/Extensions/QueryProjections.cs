@@ -53,5 +53,21 @@ namespace HomeScrum.Web.Extensions
                                       Selected = (x.Id == selectedId)
                                    } ).ToList();
       }
+
+      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItemType> query, Guid selectedId )
+      {
+         return query.Select( item => new SelectListItemWithAttributes()
+                                      {
+                                         Value = item.Id.ToString(),
+                                         Text = item.Name,
+                                         Selected = item.Id == selectedId,
+                                         DataAttributes = new Dictionary<string, string>()
+                                                          {
+                                                             { "CanBeAssigned", item.IsTask ? "True" : "False" },
+                                                             { "CanHaveParent", item.IsTask ? "True" : "False" },
+                                                             { "CanHaveChildren", item.IsTask? "False" : "True" }
+                                                          }
+                                      } ).ToList();
+      }
    }
 }
