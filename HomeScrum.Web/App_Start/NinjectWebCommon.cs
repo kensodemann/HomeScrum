@@ -79,7 +79,7 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IRepository<Project>>().To( typeof( ProjectRepository ) ).InSingletonScope();
          kernel.Bind<IWorkItemRepository>().To( typeof( WorkItemRepository ) ).InSingletonScope();
 
-         kernel.Bind<IUserRepository>().To( typeof( UserRepository ) ).InSingletonScope();
+         //kernel.Bind<IUserRepository>().To( typeof( UserRepository ) ).InSingletonScope();
          kernel.Bind<ISecurityRepository>().To( typeof( SecurityRepository ) ).InSingletonScope();
 
          kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
