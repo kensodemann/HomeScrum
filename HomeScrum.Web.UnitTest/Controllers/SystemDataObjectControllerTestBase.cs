@@ -82,7 +82,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void UpdateSortOrders_DoesNotUpdateIdsNotInRepository()
+      public void UpdateSortOrders_DoesNotUpdateIdsNot()
       {
          var controller = CreateController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
          var ids = TestObjectIdList();

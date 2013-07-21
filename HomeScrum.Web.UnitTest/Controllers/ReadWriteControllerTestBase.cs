@@ -220,7 +220,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReturnsNoDataFoundIfModelNotFoundInRepository()
+      public void EditGet_ReturnsNoDataFoundIfModelNotFound()
       {
          var controller = CreateController();
 

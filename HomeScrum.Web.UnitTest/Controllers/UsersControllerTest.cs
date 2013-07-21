@@ -216,7 +216,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_CallsSecurityRepositoryToSetPassword()
+      public void CreatePost_CallsSecurityServiceToSetPassword()
       {
          var model = CreateNewCreateViewModel();
          model.NewPassword = "NewPassword";
@@ -241,7 +241,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReturnsNoDataFoundIfUserNotFoundInRepository()
+      public void EditGet_ReturnsNoDataFoundIfUserNotFound()
       {
          var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
@@ -273,7 +273,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_DoesNotCallRepositoryUpdateIfModelIsNotValid()
+      public void EditPost_DoesNotSaveModelIfModelIsNotValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -387,7 +387,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_DoesNotCallsSecurityRepositoryToSetPassword()
+      public void EditPost_DoesNotCallsSecurityServiceToSetPassword()
       {
          var model = CreateNewEditViewModel( Users.ModelData[0] );
          model.NewPassword = "something";
