@@ -24,7 +24,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public class WorkItemsControllerTest
    {
       #region Test Setup
-      private static Mock<IRepository<Project>> _projectRepository;
       private static Mock<IUserRepository> _userRepository;
       private static MoqMockingKernel _iocKernel;
 
@@ -57,7 +56,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          AcceptanceCriteriaStatuses.Load();
          WorkItems.Load();
 
-         SetupProjectRepo();
          SetupUserRepo();
 
          SetupCurrentUser();
@@ -171,24 +169,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ) + 1, model.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ), model.Projects.Count() );
 
-         bool isFirst = true;
          foreach (var item in model.Projects)
          {
-            if (isFirst)
-            {
-               Assert.AreEqual( default( Guid ), new Guid( item.Value ) );
-               Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
-               Assert.IsFalse( item.Selected );
-               isFirst = false;
-            }
-            else
-            {
-               var project = Projects.ModelData.First( x => x.Id == new Guid( item.Value ) );
-               Assert.AreEqual( project.Name, item.Text );
-               Assert.IsFalse( item.Selected );
-            }
+            var project = Projects.ModelData.First( x => x.Id == new Guid( item.Value ) );
+            Assert.AreEqual( project.Name, item.Text );
+            Assert.IsFalse( item.Selected );
          }
       }
 
@@ -375,8 +362,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, returnedModel.Projects.Count() );
-         for (int i = 1; i < returnedModel.Projects.Count(); i++)
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) , returnedModel.Projects.Count() );
+         for (int i = 0; i < returnedModel.Projects.Count(); i++)
          {
             var item = returnedModel.Projects.ElementAt( i );
             var itemId = new Guid( item.Value );
@@ -566,10 +553,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, viewModel.Projects.Count() );
-         //
-         // Skip the first item (null item) 
-         for (int i = 1; i < viewModel.Projects.Count(); i++)
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) , viewModel.Projects.Count() );
+
+         for (int i = 0; i < viewModel.Projects.Count(); i++)
          {
             var item = viewModel.Projects.ElementAt( i );
             var itemId = new Guid( item.Value );
@@ -719,7 +705,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_CopiesMessagesToModelStateIfValidationFails()
       {
          var controller = CreateController();
-         var messages = CreateStockErrorMessages();
          var model = WorkItems.ModelData[3];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
@@ -735,7 +720,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditPost_DoesNotCopyMessagesToModelStateIfValidationSucceeds()
       {
          var controller = CreateController();
-         var messages = CreateStockErrorMessages();
          var model = WorkItems.ModelData[3];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
@@ -823,9 +807,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) + 1, viewModel.Projects.Count() );
-         //
-         // Skip the first item (null item) 
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+
          for (int i = 1; i < viewModel.Projects.Count(); i++)
          {
             var item = viewModel.Projects.ElementAt( i );
@@ -911,7 +894,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private static void CreateStaticRepositories()
       {
-         _projectRepository = _iocKernel.GetMock<IRepository<Project>>();
          _userRepository = _iocKernel.GetMock<IUserRepository>();
       }
 
@@ -923,25 +905,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
             _userRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
             _userRepository.Setup( x => x.Get( model.UserName ) ).Returns( model );
          }
-      }
-
-      private static void SetupProjectRepo()
-      {
-         _projectRepository.Setup( x => x.GetAll() ).Returns( Projects.ModelData );
-         foreach (var model in Projects.ModelData)
-         {
-            _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
-      }
-
-      ICollection<KeyValuePair<string, string>> CreateStockErrorMessages()
-      {
-         var messages = new List<KeyValuePair<string, string>>();
-
-         messages.Add( new KeyValuePair<string, string>( "Name", "Name is not unique" ) );
-         messages.Add( new KeyValuePair<string, string>( "SomethingElse", "Another Message" ) );
-
-         return messages;
       }
 
       private WorkItemEditorViewModel CreateWorkItemEditorViewModel()
@@ -1004,7 +967,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateController()
       {
          var controller = new WorkItemsController( _workItemRepository.Object,
-            _projectRepository.Object, _userRepository.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
+            _userRepository.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

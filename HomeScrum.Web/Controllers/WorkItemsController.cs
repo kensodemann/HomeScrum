@@ -23,17 +23,15 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public WorkItemsController( IWorkItemRepository repository,
-         IRepository<Project> projectRepository, IUserRepository userRepository, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         IUserRepository userRepository, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory )
       {
-         _projectRepository = projectRepository;
          _userRepository = userRepository;
          _workItemQuery = new WorkItemQuery();
          _sessionFactory = sessionFactory;
          _workItemRepository = repository;
       }
 
-      private IRepository<Project> _projectRepository;
       private IUserRepository _userRepository;
       private WorkItemQuery _workItemQuery;
       private ISessionFactory _sessionFactory;
@@ -43,7 +41,7 @@ namespace HomeScrum.Web.Controllers
       {
          viewModel.Statuses = CreateSelectList<WorkItemStatus>( viewModel.StatusId );
          viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( viewModel.WorkItemTypeId );
-         viewModel.Projects = _projectRepository.GetAll().ToSelectList( viewModel.ProjectId );
+         viewModel.Projects = CreateProjectsSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
          viewModel.ProductBacklogItems = _workItemRepository.GetOpenProductBacklog().ToSelectList( allowUnassigned: true, selectedId: viewModel.ParentWorkItemId );
          base.PopulateSelectLists( viewModel );
@@ -52,7 +50,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItem> CreateSelectList<ModelT>( Guid selectedId )
          where ModelT : SystemDomainObject
       {
-         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>(){SelectedId = selectedId};
+         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>() { SelectedId = selectedId };
          using (var session = NHibernateHelper.OpenSession())
          {
             return query
@@ -69,6 +67,18 @@ namespace HomeScrum.Web.Controllers
             return query
                .GetLinqQuery( session )
                .SelectSelectListItems( selectedId );
+         }
+      }
+
+      private IEnumerable<SelectListItem> CreateProjectsSelectList( Guid selectedId )
+      {
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            return session.Query<Project>()
+               .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+               .OrderBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name.ToUpper() )
+               .SelectSelectListItems<Project>( selectedId );
          }
       }
 
