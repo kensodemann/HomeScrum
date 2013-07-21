@@ -63,7 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityRepository.cs" />
     <Compile Include="SimpleSortedRepository.cs" />
-    <Compile Include="WorkItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

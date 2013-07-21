@@ -80,7 +80,6 @@
     <Compile Include="Queries\AllSystemObjectsOrdered.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISecurityRepository.cs" />
-    <Compile Include="Repositories\IWorkItemRepository.cs" />
     <Compile Include="Validation\IValidatable.cs" />
     <Compile Include="TransactionType.cs" />
     <Compile Include="Validation\ValidationListener.cs" />
