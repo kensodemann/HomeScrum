@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
@@ -9,13 +11,10 @@ using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Linq;
 using NHibernate.Transform;
 using Ninject;
 using Ninject.Extensions.Logging;
-using NHibernate.Linq;
-using System.Linq;
-using System.Collections.Generic;
-using HomeScrum.Web.Extensions;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -23,16 +22,14 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public WorkItemsController( IWorkItemRepository repository,
-         IUserRepository userRepository, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+         IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory )
       {
-         _userRepository = userRepository;
          _workItemQuery = new WorkItemQuery();
          _sessionFactory = sessionFactory;
          _workItemRepository = repository;
       }
 
-      private IUserRepository _userRepository;
       private WorkItemQuery _workItemQuery;
       private ISessionFactory _sessionFactory;
       private IWorkItemRepository _workItemRepository;
@@ -42,7 +39,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.Statuses = CreateSelectList<WorkItemStatus>( viewModel.StatusId );
          viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = CreateProjectsSelectList( viewModel.ProjectId );
-         viewModel.AssignedToUsers = _userRepository.GetAll().ToSelectList( allowUnassigned: true, selectedId: viewModel.AssignedToUserId );
+         viewModel.AssignedToUsers = CreateUserSelectList( viewModel.AssignedToUserId );
          viewModel.ProductBacklogItems = _workItemRepository.GetOpenProductBacklog().ToSelectList( allowUnassigned: true, selectedId: viewModel.ParentWorkItemId );
          base.PopulateSelectLists( viewModel );
       }
@@ -51,7 +48,7 @@ namespace HomeScrum.Web.Controllers
          where ModelT : SystemDomainObject
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>() { SelectedId = selectedId };
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             return query
                .GetLinqQuery( session )
@@ -62,7 +59,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( Guid selectedId )
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemType>() { SelectedId = selectedId };
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             return query
                .GetLinqQuery( session )
@@ -72,13 +69,34 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItem> CreateProjectsSelectList( Guid selectedId )
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             return session.Query<Project>()
                .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
                .OrderBy( x => x.Status.SortSequence )
                .ThenBy( x => x.Name.ToUpper() )
                .SelectSelectListItems<Project>( selectedId );
+         }
+      }
+
+      private IEnumerable<SelectListItem> CreateUserSelectList( Guid selectedId )
+      {
+         using (var session = _sessionFactory.OpenSession())
+         {
+            var users = session.Query<User>()
+               .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+               .OrderBy( x => x.LastName.ToUpper() )
+               .ThenBy( x => x.FirstName.ToUpper() )
+               .SelectSelectListItems( selectedId );
+
+            users.Insert( 0, new SelectListItem()
+                             {
+                                Value = default( Guid ).ToString(),
+                                Text = DisplayStrings.NotAssigned,
+                                Selected = (selectedId == default( Guid ))
+                             } );
+
+            return users;
          }
       }
 
@@ -121,7 +139,7 @@ namespace HomeScrum.Web.Controllers
       {
          // The base Create() does a validation before calling AddItem().
          // This data must be set before the validation.
-         viewModel.CreatedByUserId = _userRepository.Get( user.Identity.Name ).Id;
+         viewModel.CreatedByUserId = GetUserId( user.Identity.Name );
          return base.Create( viewModel, user );
       }
 

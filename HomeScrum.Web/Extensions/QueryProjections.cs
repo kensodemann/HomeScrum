@@ -69,5 +69,15 @@ namespace HomeScrum.Web.Extensions
                                                           }
                                       } ).ToList();
       }
+
+      public static IList<SelectListItem> SelectSelectListItems( this IQueryable<User> query, Guid selectedId )
+      {
+         return query.Select( item => new SelectListItem()
+                                      {
+                                         Value = item.Id.ToString(),
+                                         Text = (String.IsNullOrWhiteSpace( item.LastName ) ? "" : item.LastName + ", ") + item.FirstName,
+                                         Selected = item.Id == selectedId
+                                      } ).ToList();
+      }
    }
 }

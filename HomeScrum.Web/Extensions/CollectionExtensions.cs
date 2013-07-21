@@ -1,22 +1,14 @@
-﻿using HomeScrum.Data.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using HomeScrum.Common.Utility;
+using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Web.Extensions
 {
    public static class CollectionExtensions
    {
-      public class CaseInsensitiveComparer : IComparer<string>
-      {
-         public int Compare( string x, string y )
-         {
-            return string.Compare( x, y, StringComparison.OrdinalIgnoreCase );
-         }
-      }
-
       public static IEnumerable<SelectListItem> ToSelectList<ModelT>( this IEnumerable<ModelT> collection, Guid selectedId = default( Guid ) )
          where ModelT : SystemDomainObject
       {

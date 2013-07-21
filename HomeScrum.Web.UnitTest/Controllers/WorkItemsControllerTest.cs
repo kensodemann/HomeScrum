@@ -24,7 +24,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public class WorkItemsControllerTest
    {
       #region Test Setup
-      private static Mock<IUserRepository> _userRepository;
       private static MoqMockingKernel _iocKernel;
 
       private Mock<IWorkItemRepository> _workItemRepository;
@@ -40,7 +39,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Database.Initialize();
 
          CreateMockIOCKernel();
-         CreateStaticRepositories();
          IntializeMapper();
       }
 
@@ -55,8 +53,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Projects.Load();
          AcceptanceCriteriaStatuses.Load();
          WorkItems.Load();
-
-         SetupUserRepo();
 
          SetupCurrentUser();
          SetupWorkItemRepository();
@@ -180,7 +176,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreateGet_InitializesUserList_NothingSelected()
+      public void CreateGet_InitializesUserList_UassignedSelected()
       {
          var controller = CreateController();
 
@@ -197,7 +193,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             {
                Assert.AreEqual( default( Guid ).ToString(), item.Value );
                Assert.AreEqual( DisplayStrings.NotAssigned, item.Text );
-               Assert.IsFalse( item.Selected );
+               Assert.IsTrue( item.Selected );
             }
             else
             {
@@ -892,21 +888,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          MapperConfig.RegisterMappings();
       }
 
-      private static void CreateStaticRepositories()
-      {
-         _userRepository = _iocKernel.GetMock<IUserRepository>();
-      }
-
-      private static void SetupUserRepo()
-      {
-         _userRepository.Setup( x => x.GetAll() ).Returns( Users.ModelData );
-         foreach (var model in Users.ModelData)
-         {
-            _userRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-            _userRepository.Setup( x => x.Get( model.UserName ) ).Returns( model );
-         }
-      }
-
       private WorkItemEditorViewModel CreateWorkItemEditorViewModel()
       {
          return new WorkItemEditorViewModel()
@@ -956,9 +937,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          // In other places where we use a random user, we use the first active one.
          // Use the first inactive user here just to ensure it is a different user.
          _currentUser = Users.ModelData.First( x => x.StatusCd == 'I' );
-         _userRepository
-            .Setup( x => x.Get( _currentUser.UserName ) )
-            .Returns( _currentUser );
          _userIdentity
             .SetupGet( x => x.Name )
             .Returns( _currentUser.UserName );
@@ -967,7 +945,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateController()
       {
          var controller = new WorkItemsController( _workItemRepository.Object,
-            _userRepository.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
+            new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;
