@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HomeScrum.Data.SqlServer;
 using HomeScrum.Data.Domain;
 using Moq;
 using Ninject.Extensions.Logging;

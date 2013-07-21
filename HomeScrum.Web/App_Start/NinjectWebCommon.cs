@@ -9,7 +9,7 @@ namespace HomeScrum.Web.App_Start
    using HomeScrum.Common.Utility;
    using HomeScrum.Data.Domain;
    using HomeScrum.Data.Repositories;
-   using HomeScrum.Data.SqlServer;
+   using HomeScrum.Data.Services;
    using HomeScrum.Web.Models.Admin;
    using HomeScrum.Web.Models.WorkItems;
    using HomeScrum.Web.Providers;
@@ -70,7 +70,7 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         kernel.Bind<ISecurityRepository>().To( typeof( SecurityRepository ) ).InSingletonScope();
+         kernel.Bind<ISecurityService>().To( typeof( SecurityService ) ).InSingletonScope();
 
          kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
       }

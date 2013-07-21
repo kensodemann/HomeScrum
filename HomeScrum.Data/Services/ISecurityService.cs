@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Repositories
 {
-   public interface ISecurityRepository
+   public interface ISecurityService
    {
       bool IsValidLogin( string userName, string password );
       bool ChangePassword( string userName, string oldPassword, string newPassword );

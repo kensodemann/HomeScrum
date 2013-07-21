@@ -16,7 +16,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    [TestClass]
    public class UsersControllerTest
    {
-      private Mock<ISecurityRepository> _securityRepository;
+      private Mock<ISecurityService> _securityService;
       private UsersController _controller;
 
       private EditUserViewModel CreateNewEditViewModel( User model )
@@ -59,9 +59,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Database.Build();
          Users.Load();
 
-         _securityRepository = new Mock<ISecurityRepository>();
+         _securityService = new Mock<ISecurityService>();
 
-         _controller = new UsersController( _securityRepository.Object );
+         _controller = new UsersController( _securityService.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -223,7 +223,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( model );
 
-         _securityRepository
+         _securityService
             .Verify( x => x.ChangePassword( model.UserName, "bogus", model.NewPassword ), Times.Once() );
       }
 
@@ -395,7 +395,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( model );
 
-         _securityRepository
+         _securityService
             .Verify( x => x.ChangePassword( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>() ), Times.Never() );
       }
    }

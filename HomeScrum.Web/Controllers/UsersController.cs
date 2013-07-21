@@ -16,12 +16,12 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( ISecurityRepository securityRepository )
+      public UsersController( ISecurityService securityRepository )
       {
          _securityRepository = securityRepository;
       }
 
-      private readonly ISecurityRepository _securityRepository;
+      private readonly ISecurityService _securityRepository;
 
       //
       // GET: /Users/

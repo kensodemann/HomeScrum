@@ -12,25 +12,25 @@ namespace HomeScrum.Web.Providers
    public class HomeScrumMembershipProvider : ExtendedMembershipProvider
    {
       public HomeScrumMembershipProvider() :
-         this( DependencyResolver.Current.GetService<ISecurityRepository>() ) { }
+         this( DependencyResolver.Current.GetService<ISecurityService>() ) { }
 
-      public HomeScrumMembershipProvider( ISecurityRepository securityRepository )
+      public HomeScrumMembershipProvider( ISecurityService securityService )
       {
-         _securityRepository = securityRepository;
+         _securityService = securityService;
       }
 
 
-      private ISecurityRepository _securityRepository;
+      private ISecurityService _securityService;
 
 
       public override bool ValidateUser( string username, string password )
       {
-         return _securityRepository.IsValidLogin( username, password );
+         return _securityService.IsValidLogin( username, password );
       }
 
       public override bool ChangePassword( string username, string oldPassword, string newPassword )
       {
-         return _securityRepository.ChangePassword( username, oldPassword, newPassword );
+         return _securityService.ChangePassword( username, oldPassword, newPassword );
       }
 
       // NOTE: This is required by WebSecurity.ChangePassword().  We are not really taking advantage of

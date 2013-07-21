@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.SqlServer.Queries;
+using HomeScrum.Data.Queries;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;

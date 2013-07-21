@@ -94,10 +94,6 @@
       <Project>{bc28d6b5-11da-4311-9dbe-f08d3b8002d9}</Project>
       <Name>HomeScrum.Common.TestData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HomeScrum.Data.SqlServer\HomeScrum.Data.SqlServer.csproj">
-      <Project>{6b0b91f7-d752-4d5d-b3d2-bdc17c17a4a5}</Project>
-      <Name>HomeScrum.Data.SqlServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
       <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
       <Name>HomeScrum.Data</Name>

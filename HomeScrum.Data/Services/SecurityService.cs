@@ -4,12 +4,12 @@ using NHibernate;
 using Ninject;
 using Ninject.Extensions.Logging;
 
-namespace HomeScrum.Data.SqlServer
+namespace HomeScrum.Data.Services
 {
-   public class SecurityRepository : ISecurityRepository
+   public class SecurityService : ISecurityService
    {
       [Inject]
-      public SecurityRepository( ILogger logger )
+      public SecurityService( ILogger logger )
       {
          _logger = logger;
       }
