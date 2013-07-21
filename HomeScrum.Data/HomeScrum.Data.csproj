@@ -78,7 +78,6 @@
     <Compile Include="Queries\IDomainObjectQuery.cs" />
     <Compile Include="Queries\AllDomainObjects.cs" />
     <Compile Include="Queries\AllSystemObjectsOrdered.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISecurityRepository.cs" />
     <Compile Include="Validation\IValidatable.cs" />
     <Compile Include="TransactionType.cs" />

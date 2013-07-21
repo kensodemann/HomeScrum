@@ -70,25 +70,10 @@ namespace HomeScrum.Web.App_Start
 
       private static void RegisterRepositories( IKernel kernel )
       {
-         //BindSimpleSortRepository<AcceptanceCriterionStatus>( kernel );
-         //BindSimpleSortRepository<ProjectStatus>( kernel );
-         //BindSimpleSortRepository<SprintStatus>( kernel );
-         //BindSimpleSortRepository<WorkItemStatus>( kernel );
-         //BindSimpleSortRepository<WorkItemType>( kernel );
-
-         //kernel.Bind<IRepository<Project>>().To( typeof( ProjectRepository ) ).InSingletonScope();
-         //kernel.Bind<IWorkItemRepository>().To( typeof( WorkItemRepository ) ).InSingletonScope();
-
-         //kernel.Bind<IUserRepository>().To( typeof( UserRepository ) ).InSingletonScope();
          kernel.Bind<ISecurityRepository>().To( typeof( SecurityRepository ) ).InSingletonScope();
 
          kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
       }
-
-      //private static void BindSimpleSortRepository<T>( IKernel kernel )
-      //{
-      //   kernel.Bind<IRepository<T>>().To( typeof( SimpleSortedRepository<T> ) ).InSingletonScope();
-      //}
 
       private static void RegisterTranslators( IKernel kernel )
       {

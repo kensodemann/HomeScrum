@@ -24,7 +24,7 @@ namespace HomeScrum.Data.TestConsole
          //PrintAllProjectStatuses();
          //PrintAllAcceptanceCriteriaStatuses();
 
-         PrintAllProjects();
+         //PrintAllProjects();
 
          //var repository = new SecurityRepository();
          //Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
@@ -34,84 +34,84 @@ namespace HomeScrum.Data.TestConsole
          //Console.WriteLine( repository.IsValidLogin( "admin", "admin" ) ? "Yes" : "No" );
       }
 
-      private static void PrintAllWorkItemTypes()
-      {
-         var repository = new SimpleSortedRepository<WorkItemType>(_logger.Object);
-         var workItemTypes = repository.GetAll();
+      //private static void PrintAllWorkItemTypes()
+      //{
+      //   var repository = new SimpleSortedRepository<WorkItemType>(_logger.Object);
+      //   var workItemTypes = repository.GetAll();
 
-         Console.WriteLine( "Work Item Types: " + workItemTypes.Count().ToString() );
+      //   Console.WriteLine( "Work Item Types: " + workItemTypes.Count().ToString() );
 
-         foreach (var workItemType in workItemTypes)
-         {
-            PrintWorkItemType( workItemType );
-         }
-      }
+      //   foreach (var workItemType in workItemTypes)
+      //   {
+      //      PrintWorkItemType( workItemType );
+      //   }
+      //}
 
-      private static void PrintAllWorkItemStatuses()
-      {
-         var repository = new SimpleSortedRepository<WorkItemStatus>( _logger.Object );
-         var statuses = repository.GetAll();
+      //private static void PrintAllWorkItemStatuses()
+      //{
+      //   var repository = new SimpleSortedRepository<WorkItemStatus>( _logger.Object );
+      //   var statuses = repository.GetAll();
 
-         Console.WriteLine( "Work Item Statuses: " + statuses.Count().ToString() );
+      //   Console.WriteLine( "Work Item Statuses: " + statuses.Count().ToString() );
 
-         foreach (var status in statuses)
-         {
-            PrintWorkItemStatus( status );
-         }
-      }
+      //   foreach (var status in statuses)
+      //   {
+      //      PrintWorkItemStatus( status );
+      //   }
+      //}
 
-      private static void PrintAllSprintStatuses()
-      {
-         var repository = new SimpleSortedRepository<SprintStatus>( _logger.Object );
-         var statuses = repository.GetAll();
+      //private static void PrintAllSprintStatuses()
+      //{
+      //   var repository = new SimpleSortedRepository<SprintStatus>( _logger.Object );
+      //   var statuses = repository.GetAll();
 
-         Console.WriteLine( "Sprint Statuses: " + statuses.Count().ToString() );
+      //   Console.WriteLine( "Sprint Statuses: " + statuses.Count().ToString() );
 
-         foreach (var status in statuses)
-         {
-            PrintSprintStatus( status );
-         }
-      }
+      //   foreach (var status in statuses)
+      //   {
+      //      PrintSprintStatus( status );
+      //   }
+      //}
 
-      private static void PrintAllProjectStatuses()
-      {
-         var repository = new SimpleSortedRepository<ProjectStatus>( _logger.Object );
-         var statuses = repository.GetAll();
+      //private static void PrintAllProjectStatuses()
+      //{
+      //   var repository = new SimpleSortedRepository<ProjectStatus>( _logger.Object );
+      //   var statuses = repository.GetAll();
 
-         Console.WriteLine( "Project Statuses: " + statuses.Count().ToString() );
+      //   Console.WriteLine( "Project Statuses: " + statuses.Count().ToString() );
 
-         foreach (var status in statuses)
-         {
-            PrintProjectStatus( status );
-         }
-      }
+      //   foreach (var status in statuses)
+      //   {
+      //      PrintProjectStatus( status );
+      //   }
+      //}
 
-      private static void PrintAllAcceptanceCriteriaStatuses()
-      {
-         var repository = new SimpleSortedRepository<AcceptanceCriterionStatus>( _logger.Object );
-         var statuses = repository.GetAll();
+      //private static void PrintAllAcceptanceCriteriaStatuses()
+      //{
+      //   var repository = new SimpleSortedRepository<AcceptanceCriterionStatus>( _logger.Object );
+      //   var statuses = repository.GetAll();
 
-         Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );
+      //   Console.WriteLine( "Acceptance Criteria Statuses: " + statuses.Count().ToString() );
 
-         foreach (var status in statuses)
-         {
-            PrintAcceptanceCriteriaStatus( status );
-         }
-      }
+      //   foreach (var status in statuses)
+      //   {
+      //      PrintAcceptanceCriteriaStatus( status );
+      //   }
+      //}
 
-      private static void PrintAllProjects()
-      {
-         //var repository = new Repository<Project, Guid>();
-         var repository = new ProjectRepository( _logger.Object );
-         var projects = repository.GetAll();
+      //private static void PrintAllProjects()
+      //{
+      //   //var repository = new Repository<Project, Guid>();
+      //   var repository = new ProjectRepository( _logger.Object );
+      //   var projects = repository.GetAll();
 
-         Console.WriteLine( "Projects: " + projects.Count().ToString() );
+      //   Console.WriteLine( "Projects: " + projects.Count().ToString() );
 
-         foreach (var project in projects)
-         {
-            PrintProject( project );
-         }
-      }
+      //   foreach (var project in projects)
+      //   {
+      //      PrintProject( project );
+      //   }
+      //}
 
       static void PrintWorkItemType( WorkItemType workItemType )
       {
