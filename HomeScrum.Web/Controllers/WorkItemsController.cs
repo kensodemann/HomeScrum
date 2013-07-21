@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
 using HomeScrum.Data.SqlServer.Queries;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
@@ -21,18 +20,15 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemViewModel, WorkItemEditorViewModel>
    {
       [Inject]
-      public WorkItemsController( IWorkItemRepository repository,
-         IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
+      public WorkItemsController( IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory )
       {
          _workItemQuery = new WorkItemQuery();
          _sessionFactory = sessionFactory;
-         _workItemRepository = repository;
       }
 
       private WorkItemQuery _workItemQuery;
       private ISessionFactory _sessionFactory;
-      private IWorkItemRepository _workItemRepository;
 
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
@@ -40,7 +36,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( viewModel.WorkItemTypeId );
          viewModel.Projects = CreateProjectsSelectList( viewModel.ProjectId );
          viewModel.AssignedToUsers = CreateUserSelectList( viewModel.AssignedToUserId );
-         viewModel.ProductBacklogItems = _workItemRepository.GetOpenProductBacklog().ToSelectList( allowUnassigned: true, selectedId: viewModel.ParentWorkItemId );
+         viewModel.ProductBacklogItems = CreateProductBacklogSelectList( viewModel.ParentWorkItemId );
          base.PopulateSelectLists( viewModel );
       }
 
@@ -97,6 +93,32 @@ namespace HomeScrum.Web.Controllers
                              } );
 
             return users;
+         }
+      }
+
+      private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( Guid selectedId )
+      {
+         using (var session = _sessionFactory.OpenSession())
+         {
+            var backlog = session.Query<WorkItem>()
+               .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+                             x.WorkItemType.StatusCd == 'A' && !x.WorkItemType.IsTask) || x.Id == selectedId )
+               .OrderBy( x => x.WorkItemType.SortSequence )
+               .ThenBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name.ToUpper() )
+               .SelectSelectListItems( selectedId );
+
+            backlog.Insert( 0, new SelectListItemWithAttributes()
+                               {
+                                  Value = default( Guid ).ToString(),
+                                  Text = DisplayStrings.NotAssigned,
+                                  Selected = (selectedId == default( Guid )),
+                                  DataAttributes = new Dictionary<string, string>()
+                                                   {
+                                                      { "ProjectId", default( Guid ).ToString() }
+                                                   }
+                               } );
+            return backlog;
          }
       }
 

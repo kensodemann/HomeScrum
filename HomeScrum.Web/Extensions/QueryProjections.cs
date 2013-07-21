@@ -79,5 +79,19 @@ namespace HomeScrum.Web.Extensions
                                          Selected = item.Id == selectedId
                                       } ).ToList();
       }
+
+      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItem> query, Guid selectedId )
+      {
+         return query.Select( item => new SelectListItemWithAttributes()
+                                      {
+                                         Value = item.Id.ToString(),
+                                         Text = item.Name,
+                                         Selected = item.Id == selectedId,
+                                         DataAttributes = new Dictionary<string, string>()
+                                         {
+                                            { "ProjectId", item.Project.Id.ToString() }
+                                         }
+                                      } ).ToList();
+      }
    }
 }

@@ -25,8 +25,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       #region Test Setup
       private static MoqMockingKernel _iocKernel;
-
-      private Mock<IWorkItemRepository> _workItemRepository;
       private Mock<ILogger> _logger;
 
       private User _currentUser;
@@ -55,7 +53,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          WorkItems.Load();
 
          SetupCurrentUser();
-         SetupWorkItemRepository();
          SetupLogger();
       }
       #endregion
@@ -944,17 +941,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private WorkItemsController CreateController()
       {
-         var controller = new WorkItemsController( _workItemRepository.Object,
-            new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
+         var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;
-      }
-
-      private void SetupWorkItemRepository()
-      {
-         _workItemRepository = new Mock<IWorkItemRepository>();
-         _workItemRepository.Setup( x => x.GetOpenProductBacklog() ).Returns( WorkItems.ModelData.Where( x => !x.WorkItemType.IsTask && x.Status.IsOpenStatus ).ToList() );
       }
 
       private void SetupLogger()
