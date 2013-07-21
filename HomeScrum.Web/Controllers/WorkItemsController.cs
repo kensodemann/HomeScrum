@@ -22,12 +22,10 @@ namespace HomeScrum.Web.Controllers
    public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemViewModel, WorkItemEditorViewModel>
    {
       [Inject]
-      public WorkItemsController( IWorkItemRepository repository, IRepository<WorkItemStatus> statusRepository, IRepository<WorkItemType> workItemTypeRepository,
+      public WorkItemsController( IWorkItemRepository repository,
          IRepository<Project> projectRepository, IUserRepository userRepository, IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory )
       {
-         _statusRepository = statusRepository;
-         _workItemTypeRepository = workItemTypeRepository;
          _projectRepository = projectRepository;
          _userRepository = userRepository;
          _workItemQuery = new WorkItemQuery();
@@ -35,8 +33,6 @@ namespace HomeScrum.Web.Controllers
          _workItemRepository = repository;
       }
 
-      private IRepository<WorkItemStatus> _statusRepository;
-      private IRepository<WorkItemType> _workItemTypeRepository;
       private IRepository<Project> _projectRepository;
       private IUserRepository _userRepository;
       private WorkItemQuery _workItemQuery;

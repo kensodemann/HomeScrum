@@ -24,8 +24,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public class WorkItemsControllerTest
    {
       #region Test Setup
-      private static Mock<IRepository<WorkItemStatus>> _workItemStatusRepository;
-      private static Mock<IRepository<WorkItemType>> _workItemTypeRepository;
       private static Mock<IRepository<Project>> _projectRepository;
       private static Mock<IUserRepository> _userRepository;
       private static MoqMockingKernel _iocKernel;
@@ -59,8 +57,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          AcceptanceCriteriaStatuses.Load();
          WorkItems.Load();
 
-         SetupWorkItemStatusRepo();
-         SetupWorkItemTypeRepo();
          SetupProjectRepo();
          SetupUserRepo();
 
@@ -915,8 +911,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private static void CreateStaticRepositories()
       {
-         _workItemStatusRepository = _iocKernel.GetMock<IRepository<WorkItemStatus>>();
-         _workItemTypeRepository = _iocKernel.GetMock<IRepository<WorkItemType>>();
          _projectRepository = _iocKernel.GetMock<IRepository<Project>>();
          _userRepository = _iocKernel.GetMock<IUserRepository>();
       }
@@ -937,24 +931,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          foreach (var model in Projects.ModelData)
          {
             _projectRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
-      }
-
-      private static void SetupWorkItemTypeRepo()
-      {
-         _workItemTypeRepository.Setup( x => x.GetAll() ).Returns( WorkItemTypes.ModelData );
-         foreach (var model in WorkItemTypes.ModelData)
-         {
-            _workItemTypeRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
-         }
-      }
-
-      private static void SetupWorkItemStatusRepo()
-      {
-         _workItemStatusRepository.Setup( x => x.GetAll() ).Returns( WorkItemStatuses.ModelData );
-         foreach (var model in WorkItemStatuses.ModelData)
-         {
-            _workItemStatusRepository.Setup( x => x.Get( model.Id ) ).Returns( model );
          }
       }
 
@@ -1027,7 +1003,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private WorkItemsController CreateController()
       {
-         var controller = new WorkItemsController( _workItemRepository.Object, _workItemStatusRepository.Object, _workItemTypeRepository.Object,
+         var controller = new WorkItemsController( _workItemRepository.Object,
             _projectRepository.Object, _userRepository.Object, new WorkItemPropertyNameTranslator(), _logger.Object, NHibernateHelper.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
