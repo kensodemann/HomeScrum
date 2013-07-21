@@ -61,22 +61,10 @@ namespace HomeScrum.Web.App_Start
       /// <param name="kernel">The kernel.</param>
       private static void RegisterServices( IKernel kernel )
       {
-         RegisterRepositories( kernel );
-         RegisterTranslators( kernel );
-         RegisterProviders( kernel );
-
-         Mapper.Initialize( map => map.ConstructServicesUsing( x => kernel.Get( x ) ) );
-      }
-
-      private static void RegisterRepositories( IKernel kernel )
-      {
          kernel.Bind<ISecurityService>().To( typeof( SecurityService ) ).InSingletonScope();
 
          kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
-      }
 
-      private static void RegisterTranslators( IKernel kernel )
-      {
          kernel.Bind<IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>>()
@@ -87,16 +75,13 @@ namespace HomeScrum.Web.App_Start
             .ToConstant( new PropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>() );
-
          kernel.Bind<IPropertyNameTranslator<Project, ProjectEditorViewModel>>().ToConstant( new ProjectPropertyNameTranslator() );
          kernel.Bind<IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel>>().ToConstant( new WorkItemPropertyNameTranslator() );
-
          kernel.Bind<IPropertyNameTranslator<User, UserEditorViewModel>>().ToConstant( new PropertyNameTranslator<User, UserEditorViewModel>() );
-      }
 
-      private static void RegisterProviders( IKernel kernel )
-      {
          kernel.Bind<IWebSecurity>().ToConstant( new WebSecurityWrapper() );
+
+         Mapper.Initialize( map => map.ConstructServicesUsing( x => kernel.Get( x ) ) );
       }
    }
 }
