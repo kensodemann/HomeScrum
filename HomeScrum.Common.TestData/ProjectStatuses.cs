@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
       {
          ModelData = new[]
          {
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="Open",
                Description="Active Project",
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             },
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="Inactive",
                Description="No longer active",
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=2
             },
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="Closed",
                Description="The project is closed",
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="Waiting",
                Description="Awaiting Customer Approval",
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="Deleted",
                Description="The project no longer exists",
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=5
             },
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="Active",
                Description="The project is active",
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new ProjectStatus ()
+            new ProjectStatus( Database.SessionFactory )
             {
                Name="On Hold",
                Description="The project is waiting for something",

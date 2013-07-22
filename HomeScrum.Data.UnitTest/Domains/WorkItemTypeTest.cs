@@ -25,7 +25,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfDifferentItemWithSameNameExists()
       {
-         var item = new WorkItemType()
+         var item = new WorkItemType( Database.SessionFactory )
          {
             Id = Guid.NewGuid(),
             Name = WorkItemTypes.ModelData[0].Name,

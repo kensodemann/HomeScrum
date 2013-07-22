@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
       {
          ModelData = new[]
          {
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="Pre Planning",
                Description="The sprint is set up for the future",
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=1
             },
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="Planning",
                Description="In Planning",
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=2
             },
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="In Process",
                Description="The sprint is the active one",
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="Retrospective",
                Description="The sprint is complete and a retrospective is being done",
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="Closed",
                Description="The sprint and retrospective are both complete",
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=5
             },
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="Released",
                Description="The output of the sprint has been released to customers",
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new SprintStatus ()
+            new SprintStatus( Database.SessionFactory )
             {
                Name="New",
                Description="The sprint is newly created",

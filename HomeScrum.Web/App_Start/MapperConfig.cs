@@ -26,22 +26,29 @@ namespace HomeScrum.Web
       private static void MapEditorViewModelsToDomains()
       {
          Mapper.CreateMap<AcceptanceCriterionStatusEditorViewModel, AcceptanceCriterionStatus>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<ProjectStatusEditorViewModel, ProjectStatus>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemTypeEditorViewModel, WorkItemType>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<ProjectStatus>>().FromMember( src => src.StatusId ) )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<WorkItemEditorViewModel, WorkItem>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
             .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<DomainModelResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
             .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) )
@@ -54,8 +61,10 @@ namespace HomeScrum.Web
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.IsActive ) );
          Mapper.CreateMap<EditUserViewModel, User>()
+            .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.IsActive ) );
       }
 

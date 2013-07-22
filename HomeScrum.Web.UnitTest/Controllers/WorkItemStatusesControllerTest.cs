@@ -41,8 +41,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
-         Database.Initialize();
-         MapperConfig.RegisterMappings();
+         ReadWriteControllerTestBase<WorkItemStatus, WorkItemStatusViewModel, WorkItemStatusEditorViewModel>.InitializeClass( context );
       }
 
       [TestInitialize]

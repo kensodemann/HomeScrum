@@ -1,32 +1,42 @@
-﻿using HomeScrum.Common.Utility;
+﻿using HomeScrum.Data.Validation;
+using NHibernate;
+using Ninject;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NHibernate.Linq;
-using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {
    public class Project : DomainObjectBase
    {
-      public Project()
-      {
-         _objectName = "Project";
-      }
-
       [Required]
       public virtual ProjectStatus Status { get; set; }
 
       public virtual Guid LastModifiedUserRid { get; set; }
 
 
+      #region Non-POCO stuff
+      public Project()
+         : this( null ) { }
+
+      [Inject]
+      public Project( ISessionFactory sessionFactory )
+         : base( sessionFactory )
+      {
+         _objectName = "Project";
+      }
+
       protected override void PerformModelValidations()
       {
          base.PerformModelValidations();
-         this.VerifyNameIsUnique();
+
+         if (_sessionFactory != null)
+         {
+            using (var session = _sessionFactory.OpenSession())
+            {
+               this.VerifyNameIsUnique( session );
+            }
+         }
       }
+      #endregion
    }
 }

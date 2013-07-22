@@ -1,13 +1,20 @@
 ﻿using HomeScrum.Data.Validation;
+using NHibernate;
+using Ninject;
 
 namespace HomeScrum.Data.Domain
 {
    public class SprintStatus : SystemDomainObject
    {
-     public virtual bool IsOpenStatus { get; set; }
+      public virtual bool IsOpenStatus { get; set; }
 
       #region Non-POCO
       public SprintStatus()
+         : this( null ) { }
+
+      [Inject]
+      public SprintStatus( ISessionFactory sessionFactory )
+         : base( sessionFactory )
       {
          _objectName = "Sprint Status";
       }
@@ -15,7 +22,14 @@ namespace HomeScrum.Data.Domain
       protected override void PerformModelValidations()
       {
          base.PerformModelValidations();
-         this.VerifyNameIsUnique();
+
+         if (_sessionFactory != null)
+         {
+            using (var session = _sessionFactory.OpenSession())
+            {
+               this.VerifyNameIsUnique( session );
+            }
+         }
       }
       #endregion
    }

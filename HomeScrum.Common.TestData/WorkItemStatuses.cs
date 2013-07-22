@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
       {
          ModelData = new[]
          {
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="New",
                Description="The Item is brand new",
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Planning",
                Description="The Item is in planning and estimation",
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=2
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Assigned",
                Description="The Item is assigned for work",
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="In Process",
                Description="The Item is being worked on",
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="On Hold",
                Description="The Item was started but cannot be worked on",
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=5
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Ready for Test",
                Description="The Item is ready to be tested",
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Complete",
                Description="The Item is done",
@@ -92,7 +92,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=7
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Cancelled",
                Description="The Item is no longer needed",
@@ -101,7 +101,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=8
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Waiting for Test",
                Description="The item is queued up to be tested.",
@@ -110,7 +110,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=9
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="In Design",
                Description="The task is being designed",
@@ -119,7 +119,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=10
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="In Functional",
                Description="Functional Specifications are being drawn up",
@@ -128,7 +128,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=11
             },
-            new WorkItemStatus ()
+            new WorkItemStatus( Database.SessionFactory )
             {
                Name="Estimating",
                Description="This task is being estimated",

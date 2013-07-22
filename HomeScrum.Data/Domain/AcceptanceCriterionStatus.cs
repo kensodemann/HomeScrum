@@ -1,4 +1,6 @@
 ﻿using HomeScrum.Data.Validation;
+using NHibernate;
+using Ninject;
 
 namespace HomeScrum.Data.Domain
 {
@@ -8,6 +10,11 @@ namespace HomeScrum.Data.Domain
 
       #region Non-POCO
       public AcceptanceCriterionStatus()
+         : this( null ) { }
+
+      [Inject]
+      public AcceptanceCriterionStatus( ISessionFactory sessionFactory )
+         : base( sessionFactory )
       {
          _objectName = "Acceptance Criterion Status";
       }
@@ -15,7 +22,14 @@ namespace HomeScrum.Data.Domain
       protected override void PerformModelValidations()
       {
          base.PerformModelValidations();
-         this.VerifyNameIsUnique();
+
+         if (_sessionFactory != null)
+         {
+            using (var session = _sessionFactory.OpenSession())
+            {
+               this.VerifyNameIsUnique( session );
+            }
+         }
       }
       #endregion
    }

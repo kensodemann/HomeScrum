@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
    public class ProjectHistory : DomainObjectBase
    {
+      public ProjectHistory()
+         : base( null ) { }
+
       public virtual Guid LastModifiedUserRid { get; set; }
 
       public virtual ProjectStatus ProjectStatus { get; set; }

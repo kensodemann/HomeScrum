@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate;
 using NHibernate.Linq;
 using Ninject.Extensions.Logging;
+using Ninject;
+using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -20,6 +24,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       where EditorViewModelT : DomainObjectViewModel, new()
    {
       #region Test Setup
+      private static MoqMockingKernel _iocKernel;
+
       protected Mock<ILogger> _logger;
       protected IPrincipal FakeUser = new GenericPrincipal( new GenericIdentity( "ken", "Forms" ), null );
 
@@ -46,7 +52,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          };
       }
 
+      public static void InitializeClass( TestContext ctx )
+      {
+         Database.Initialize();
+
+         CreateMockIOCKernel();
+         IntializeMapper();
+      }
+
+      private static void CreateMockIOCKernel()
+      {
+         _iocKernel = new MoqMockingKernel();
+         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
+      }
+
+      private static void IntializeMapper()
+      {
+         Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
+         MapperConfig.RegisterMappings();
+      }
+
       public virtual void InitializeTest()
+      {
+         BuildMocks();
+      }
+
+      private void BuildMocks()
       {
          _logger = new Mock<ILogger>();
       }

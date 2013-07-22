@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HomeScrum.Data.Validation;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {
    public class User : ValidatableObject
    {
+      public User()
+         : base( null ) { }
+
       public virtual Guid Id { get; set; }
 
       [Required( ErrorMessageResourceName = "UserNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]

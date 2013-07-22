@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Data.Domain
 {
    public class WorkItem : DomainObjectBase
    {
+      public WorkItem()
+         : base( null ) { }
+
       [Required]
       public virtual WorkItemStatus Status { get; set; }
 

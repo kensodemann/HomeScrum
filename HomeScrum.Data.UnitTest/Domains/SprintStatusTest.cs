@@ -25,7 +25,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfDifferentItemWithSameNameExists()
       {
-         var item = new SprintStatus()
+         var item = new SprintStatus( Database.SessionFactory )
          {
             Id = Guid.NewGuid(),
             Name = SprintStatuses.ModelData[0].Name,

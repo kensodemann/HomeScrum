@@ -28,7 +28,7 @@ namespace HomeScrum.Common.TestData
       {
          ModelData = new[]
          {
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Unverified",
                Description="Not yet verified",
@@ -37,7 +37,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             }, 
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Accepted",
                Description="This criteria has been met.",
@@ -46,7 +46,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=2
             },
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Rejected",
                Description="This criteria has not been met.",
@@ -55,7 +55,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="In Test",
                Description="This criteria is currently being tested.",
@@ -64,7 +64,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Inconclusive",
                Description="It is not possible to test this criteria",
@@ -73,7 +73,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=5
             },
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Open",
                Description="Criteria is open",
@@ -82,7 +82,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Closed",
                Description="Criteria is closed",
@@ -91,7 +91,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=7
             },
-            new AcceptanceCriterionStatus ()
+            new AcceptanceCriterionStatus( Database.SessionFactory )
             {
                Name="Inactive",
                Description="Criteria is inactive",

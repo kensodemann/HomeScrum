@@ -17,8 +17,8 @@ namespace HomeScrum.Common.TestData
          using (ISession session = Database.OpenSession())
          using (ITransaction transaction = session.BeginTransaction())
          {
-            foreach (var status in ModelData)
-               session.Save( status );
+            foreach (var user in ModelData)
+               session.Save( user );
             transaction.Commit();
          }
       }

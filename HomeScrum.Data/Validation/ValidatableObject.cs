@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NHibernate;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,15 +8,17 @@ namespace HomeScrum.Data.Validation
 {
    public class ValidatableObject : IValidatable
    {
-      public ValidatableObject()
+      public ValidatableObject(ISessionFactory sessionFactory)
       {
          _errorMessages = new Dictionary<String, String>();
          _objectName = "not specified";
+         _sessionFactory = sessionFactory;
       }
 
 
       protected string _objectName;
       public virtual string GetObjectName() { return _objectName; }
+      protected readonly ISessionFactory _sessionFactory;
 
 
       public virtual bool IsValidFor( TransactionType transactionType )

@@ -29,7 +29,7 @@ namespace HomeScrum.Common.TestData
       {
          ModelData = new[]
          {
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="PBI",
                Description="Product Backlog Item",
@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=5
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="CR",
                Description="Customer Request",
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="SBI",
                Description="Sprint Backlog Item",
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             },          
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="Bug",
                Description="A problem with the software or design",
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=2
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="Issue",
                Description="A problem in the process that is blocking someone",
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="Design Goal",
                Description="The output of this task is a design item",
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="CFP",
                Description="Customer Funded PBI",
@@ -92,7 +92,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=7
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="IFP",
                Description="Internally Funded PBI",
@@ -101,7 +101,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=8
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="WO",
                Description="Work Order",
@@ -110,7 +110,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=9
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="PL",
                Description="Problem Log",
@@ -119,7 +119,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=10
             },
-            new WorkItemType ()
+            new WorkItemType( Database.SessionFactory )
             {
                Name="Step",
                Description="A specific step required to complete and CFP or IFP",

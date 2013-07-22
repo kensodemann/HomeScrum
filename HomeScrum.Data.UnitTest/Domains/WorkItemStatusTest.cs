@@ -25,7 +25,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfDifferentItemWithSameNameExists()
       {
-         var item = new WorkItemStatus()
+         var item = new WorkItemStatus( Database.SessionFactory )
          {
             Id = Guid.NewGuid(),
             Name = WorkItemStatuses.ModelData[0].Name,
@@ -45,7 +45,16 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsValid_IfExistingValidItem()
       {
-         var item = WorkItemStatuses.ModelData[0];
+         var item = new WorkItemStatus( Database.SessionFactory )
+         {
+            Id = WorkItemStatuses.ModelData[0].Id,
+            Name = WorkItemStatuses.ModelData[0].Name,
+            Description = WorkItemStatuses.ModelData[0].Description,
+            IsOpenStatus = WorkItemStatuses.ModelData[0].IsOpenStatus,
+            SortSequence = WorkItemStatuses.ModelData[0].SortSequence,
+            StatusCd = WorkItemStatuses.ModelData[0].StatusCd,
+            IsPredefined = WorkItemStatuses.ModelData[0].IsPredefined
+         };
 
          Assert.IsTrue( item.IsValidFor( TransactionType.All ) );
          var messages = item.GetErrorMessages();

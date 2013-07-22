@@ -30,35 +30,35 @@ namespace HomeScrum.Common.TestData
 
          ModelData = new[]
          {
-            new Project ()
+            new Project( Database.SessionFactory )
             {
                Name="Home Scrum",
                Description = "This project right here",
                Status = open,
                LastModifiedUserRid = Users.ModelData[0].Id
             },
-            new Project ()
+            new Project( Database.SessionFactory )
             {
                Name="PRepS",
                Description = "An old problem reporting system",
                Status = closed,
                LastModifiedUserRid = Users.ModelData[1].Id
             },
-            new Project ()
+            new Project( Database.SessionFactory )
             {
                Name="MathWar",
                Description = "A flash card math learning game",
                Status = inactive,
                LastModifiedUserRid = Users.ModelData[2].Id
             },
-            new Project ()
+            new Project( Database.SessionFactory )
             {
                Name="Sandwiches",
                Description = "Make them!",
                Status = open,
                LastModifiedUserRid = Users.ModelData[0].Id
             },
-            new Project()
+            new Project( Database.SessionFactory )
             {
                Name="TacoBell",
                Description="Make some tacos",

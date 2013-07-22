@@ -11,7 +11,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfNameNotSpecified()
       {
-         var model = new DomainObjectBase()
+         var model = new DomainObjectBase( null )
          {
             Id = Guid.NewGuid(),
             Description = "This is a description"
@@ -26,7 +26,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfNameIsTooLong()
       {
-         var model = new DomainObjectBase()
+         var model = new DomainObjectBase( null )
          {
             Id = Guid.NewGuid(),
             Name = "012345678901234567890123456789012345678901234567890",
@@ -42,7 +42,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsValid_IfEverythingIsValid()
       {
-         var model = new DomainObjectBase()
+         var model = new DomainObjectBase( null )
          {
             Id = Guid.NewGuid(),
             Name = "01234567890123456789012345678901234567890123456789",

@@ -25,7 +25,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfDifferentItemWithSameNameExists()
       {
-         var item = new AcceptanceCriterionStatus()
+         var item = new AcceptanceCriterionStatus( Database.SessionFactory )
          {
             Id = Guid.NewGuid(),
             Name = AcceptanceCriteriaStatuses.ModelData[0].Name,

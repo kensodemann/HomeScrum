@@ -26,7 +26,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfNoProjectStatusAssigned()
       {
-         var project = new Project()
+         var project = new Project( Database.SessionFactory )
          {
             Id = Guid.NewGuid(),
             Name = "New Project",
@@ -42,7 +42,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfDifferentProjectWithSameNameExists()
       {
-         var project = new Project()
+         var project = new Project( Database.SessionFactory )
          {
             Id = Guid.NewGuid(),
             Name = Projects.ModelData[0].Name,

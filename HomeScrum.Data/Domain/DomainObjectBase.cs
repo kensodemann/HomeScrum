@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HomeScrum.Data.Validation;
+using NHibernate;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HomeScrum.Data.Validation;
 
 namespace HomeScrum.Data.Domain
 {
    public class DomainObjectBase : ValidatableObject
    {
+      public DomainObjectBase( ISessionFactory sessionFactory )
+         : base( sessionFactory ) { }
+
       public virtual Guid Id { get; set; }
 
       [Required( ErrorMessageResourceName = "NameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
