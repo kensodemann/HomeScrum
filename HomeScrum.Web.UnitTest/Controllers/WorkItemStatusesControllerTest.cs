@@ -1,14 +1,15 @@
 ﻿using HomeScrum.Common.TestData;
+using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
-using HomeScrum.Web.Controllers;
+using HomeScrum.Web.Controllers.Admin;
+using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NHibernate.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
-using HomeScrum.Web.Controllers.Base;
-using HomeScrum.Common.Utility;
-using HomeScrum.Web.Controllers.Admin;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers
@@ -18,7 +19,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<WorkItemStatus> GetAllModels()
       {
-         return WorkItemStatuses.ModelData;
+         using (var session = NHibernateHelper.OpenSession())
+         {
+            return session.Query<WorkItemStatus>()
+               .OrderBy( x => x.SortSequence )
+               .ToList();
+         }
       }
 
       protected override WorkItemStatus CreateNewModel()

@@ -39,8 +39,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
 
-         var ids = TestObjectIdList();
-         //SetupSessionGets();
+         var ids = GetObjectIdList();
 
          var result = controller.UpdateSortOrders( ids ) as EmptyResult;
 
@@ -51,53 +50,59 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void UpdateSortOrders_DoesNotUpdateSortOrders_IfNoOrdersHaveChanged()
       {
          var controller = CreateController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
-         var ids = TestObjectIdList();
-         //SetupSessionGets();
+         var expectedIds = GetObjectIdList();
 
-         var result = controller.UpdateSortOrders( ids );
+         var result = controller.UpdateSortOrders( expectedIds );
 
-         //_session.Verify( x => x.BeginTransaction(), Times.Once() );
-         //_transaction.Verify( x => x.Commit(), Times.Once() );
-         //_session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
+         var actualIds = GetObjectIdList();
+
+         for (int i = 0; i < actualIds.Count; i++)
+         {
+            Assert.AreEqual( expectedIds[i], actualIds[i], String.Format( "Index: %d", i ) );
+         }
       }
 
       [TestMethod]
       public void UpdateSortOrders_UpdatesSortOrders_IfNodeOrdersChanged()
       {
          var controller = CreateController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
-         var ids = TestObjectIdList();
-         var swapId = ids[2];
-         ids[2] = ids[4];
-         ids[4] = swapId;
+         var expectedIds = GetObjectIdList();
+         var swapId = expectedIds[2];
+         expectedIds[2] = expectedIds[4];
+         expectedIds[4] = swapId;
 
-         //SetupSessionGets();
+         var results = controller.UpdateSortOrders( expectedIds );
 
-         var results = controller.UpdateSortOrders( ids );
+         var actualIds = GetObjectIdList();
 
-         //_session.Verify( x => x.BeginTransaction(), Times.Once() );
-         //_transaction.Verify( x => x.Commit(), Times.Once() );
-         //_session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Exactly( 2 ) );
-         //_session.Verify( x => x.Update( It.Is<ModelT>( m => m.Id.ToString() == ids[2] && m.SortSequence == 3 ) ), Times.Once() );
-         //_session.Verify( x => x.Update( It.Is<ModelT>( m => m.Id.ToString() == ids[4] && m.SortSequence == 5 ) ), Times.Once() );
+         for (int i = 0; i < actualIds.Count; i++)
+         {
+            Assert.AreEqual( expectedIds[i], actualIds[i], String.Format( "Index: {0}", i ) );
+         }
       }
 
       [TestMethod]
       public void UpdateSortOrders_DoesNotUpdateIdsNot()
       {
          var controller = CreateController() as SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT>;
-         var ids = TestObjectIdList();
-         //SetupSessionGets();
+         var expectedIds = GetObjectIdList();
+         var testIds = GetObjectIdList();
          var newId = Guid.NewGuid();
-         //_session.Setup( x => x.Get<ModelT>( newId ) ).Returns( null as ModelT );
-         ids.Add( newId.ToString() );
 
-         var results = controller.UpdateSortOrders( ids );
+         testIds.Add( newId.ToString() );
 
-         //_session.Verify( x => x.Update( It.IsAny<ModelT>() ), Times.Never() );
+         var results = controller.UpdateSortOrders( testIds );
+
+         var actualIds = GetObjectIdList();
+
+         for (int i = 0; i < actualIds.Count; i++)
+         {
+            Assert.AreEqual( expectedIds[i], actualIds[i], String.Format( "Index: {0}", i ) );
+         }
       }
 
       #region Private Helpers
-      private List<string> TestObjectIdList()
+      private List<string> GetObjectIdList()
       {
          return GetAllModels()
             .OrderBy( x => x.SortSequence )
