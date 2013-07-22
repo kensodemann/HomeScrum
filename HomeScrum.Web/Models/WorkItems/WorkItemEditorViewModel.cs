@@ -10,6 +10,13 @@ namespace HomeScrum.Web.Models.WorkItems
 {
    public class WorkItemEditorViewModel : Base.DomainObjectViewModel
    {
+      public WorkItemEditorViewModel()
+      {
+         this.Tasks = new List<WorkItemIndexViewModel>();
+      }
+
+
+
       [Display( Name = "WorkItemStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }
