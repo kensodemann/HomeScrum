@@ -39,6 +39,6 @@ namespace HomeScrum.Web.Models.WorkItems
       public string ParentWorkItemName { get; set; }
       public IEnumerable<SelectListItemWithAttributes> ProductBacklogItems { get; set; }
 
-      public IEnumerable<WorkItemViewModel> Tasks { get; set; }
+      public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
    }
 }

@@ -44,7 +44,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
             .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<DomainModelResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
             .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) )
-            .ForMember( dest => dest.ParentWorkItem, opt => opt.ResolveUsing <DomainModelResolver<WorkItem>>().FromMember( src => src.ParentWorkItemId ) )
+            .ForMember( dest => dest.ParentWorkItem, opt => opt.ResolveUsing<DomainModelResolver<WorkItem>>().FromMember( src => src.ParentWorkItemId ) )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.CreatedByUserId ) )
             .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.AssignedToUserId ) )
@@ -114,6 +114,11 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) )
             .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
             .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
+         // TODO: IsOpenStatus should go away to be replaced by just IsComplete.
+         Mapper.CreateMap<WorkItem, WorkItemIndexViewModel>()
+            .ForMember( dest => dest.IsOpenStatus, opt => opt.MapFrom( src => src.Status.IsOpenStatus ) )
+            .ForMember( dest => dest.IsComplete, opt => opt.Ignore() );
+         //.ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) );
 
          Mapper.CreateMap<User, UserViewModel>()
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
