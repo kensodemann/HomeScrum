@@ -42,7 +42,7 @@ namespace HomeScrum.Common.TestData
          new SchemaExport( _configuration ).Execute( false, true, false );
       }
 
-      public static ISession GetSession()
+      public static ISession OpenSession()
       {
          return _sessionFactory.OpenSession();
       }

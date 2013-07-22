@@ -1,7 +1,7 @@
-[assembly: WebActivator.PreApplicationStartMethod( typeof( HomeScrum.Web.App_Start.NinjectWebCommon ), "Start" )]
-[assembly: WebActivator.ApplicationShutdownMethodAttribute( typeof( HomeScrum.Web.App_Start.NinjectWebCommon ), "Stop" )]
+[assembly: WebActivator.PreApplicationStartMethod( typeof( HomeScrum.Web.NinjectWebCommon ), "Start" )]
+[assembly: WebActivator.ApplicationShutdownMethodAttribute( typeof( HomeScrum.Web.NinjectWebCommon ), "Stop" )]
 
-namespace HomeScrum.Web.App_Start
+namespace HomeScrum.Web
 {
    using System;
    using System.Web;
@@ -22,6 +22,8 @@ namespace HomeScrum.Web.App_Start
    public static class NinjectWebCommon
    {
       private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+
+      public static IKernel Kernel { get { return bootstrapper.Kernel; } }
 
       /// <summary>
       /// Starts the application
@@ -52,6 +54,7 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
          RegisterServices( kernel );
+
          return kernel;
       }
 
@@ -63,7 +66,7 @@ namespace HomeScrum.Web.App_Start
       {
          kernel.Bind<ISecurityService>().To( typeof( SecurityService ) ).InSingletonScope();
 
-         kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
+         //kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
 
          kernel.Bind<IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>() );
@@ -80,6 +83,9 @@ namespace HomeScrum.Web.App_Start
          kernel.Bind<IPropertyNameTranslator<User, UserEditorViewModel>>().ToConstant( new PropertyNameTranslator<User, UserEditorViewModel>() );
 
          kernel.Bind<IWebSecurity>().ToConstant( new WebSecurityWrapper() );
+
+         // Only needed if actually doing injections from NHibernate...
+         //kernel.Bind<NHibernate.Proxy.IProxyFactory>().To( typeof( NHibernate.Proxy.DefaultProxyFactory ) ).InSingletonScope();
 
          Mapper.Initialize( map => map.ConstructServicesUsing( x => kernel.Get( x ) ) );
       }

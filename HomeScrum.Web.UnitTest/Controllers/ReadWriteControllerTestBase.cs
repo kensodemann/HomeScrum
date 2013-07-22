@@ -115,7 +115,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = controller.Create( viewModel, FakeUser );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var items = session.Query<ModelT>()
                .Where( x => x.Name == viewModel.Name )
@@ -153,7 +153,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( viewModel, FakeUser );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var items = session.Query<ModelT>()
                .Where( x => x.Name == viewModel.Name )
@@ -239,7 +239,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, FakeUser );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var item = session.Get<ModelT>( viewModel.Id );
             Assert.AreEqual( viewModel.Name, item.Name );
@@ -258,7 +258,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, FakeUser );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var item = session.Get<ModelT>( viewModel.Id );
             Assert.AreNotEqual( viewModel.Name, item.Name );

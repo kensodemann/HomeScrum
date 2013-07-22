@@ -9,17 +9,20 @@ namespace HomeScrum.Data.Services
    public class SecurityService : ISecurityService
    {
       [Inject]
-      public SecurityService( ILogger logger )
+      public SecurityService( ILogger logger, ISessionFactory sessionFactory )
       {
          _logger = logger;
+         _sessionFactory = sessionFactory;
       }
 
       private readonly ILogger _logger;
       private ILogger Log { get { return _logger; } }
 
+      private readonly ISessionFactory _sessionFactory;
+
       public bool IsValidLogin( string userName, string password )
       {
-         using (ISession session = NHibernateHelper.OpenSession())
+         using (ISession session = _sessionFactory.OpenSession())
          {
             var result = session.GetNamedQuery( "ValidateUser" )
                .SetString( "userName", userName )
@@ -37,7 +40,7 @@ namespace HomeScrum.Data.Services
             return false;
          }
 
-         using (ISession session = NHibernateHelper.OpenSession())
+         using (ISession session = _sessionFactory.OpenSession())
          {
             using (ITransaction transaction = session.BeginTransaction())
             {

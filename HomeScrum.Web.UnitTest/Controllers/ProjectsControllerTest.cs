@@ -17,6 +17,7 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
+using NHibernate;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -129,7 +130,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = controller.Create( model, _principal.Object );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == model.Name )
@@ -166,7 +167,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( model, _principal.Object );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == model.Name )
@@ -238,7 +239,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == viewModel.Name )
@@ -316,7 +317,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var item = session.Get<Project>( viewModel.Id );
             Assert.AreEqual( viewModel.Name, item.Name );
@@ -335,7 +336,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var item = session.Get<Project>( viewModel.Id );
             Assert.AreNotEqual( viewModel.Name, item.Name );
@@ -408,7 +409,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
 
-         using (var session = Database.GetSession())
+         using (var session = Database.OpenSession())
          {
             var items = session.Query<Project>()
                .Where( x => x.Name == viewModel.Name )
@@ -467,6 +468,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static void CreateMockIOCKernel()
       {
          _iocKernel = new MoqMockingKernel();
+         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
       }
 
       private static void IntializeMapper()

@@ -7,6 +7,7 @@ using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate;
 using Ninject;
 using Ninject.MockingKernel.Moq;
 using System;
@@ -24,6 +25,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Database.Initialize();
 
          _iocKernel = new MoqMockingKernel();
+         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
       }

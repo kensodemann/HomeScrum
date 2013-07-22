@@ -9,6 +9,7 @@ using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
 using NHibernate.Linq;
 using Ninject;
+using NHibernate;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -16,18 +17,20 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( ISecurityService securityService )
+      public UsersController( ISecurityService securityService, ISessionFactory sessionFactory )
       {
          _securityService = securityService;
+         _sessionFactory = sessionFactory;
       }
 
       private readonly ISecurityService _securityService;
+      private readonly ISessionFactory _sessionFactory;
 
       //
       // GET: /Users/
       public ActionResult Index()
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             var users = session.Query<User>()
                .Select( x => new UserViewModel()
@@ -48,7 +51,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Details/Guid
       public ActionResult Details( Guid id )
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             var model = session.Get<User>( id );
 
@@ -77,7 +80,7 @@ namespace HomeScrum.Web.Controllers
             var model = Mapper.Map<User>( viewModel );
             try
             {
-               using (var session = NHibernateHelper.OpenSession())
+               using (var session = _sessionFactory.OpenSession())
                {
                   using (var transaction = session.BeginTransaction())
                   {
@@ -105,7 +108,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id )
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = _sessionFactory.OpenSession())
          {
             var model = session.Get<User>( id );
             if (model != null)
@@ -127,7 +130,7 @@ namespace HomeScrum.Web.Controllers
             var model = Mapper.Map<User>( viewModel );
             try
             {
-               using (var session = NHibernateHelper.OpenSession())
+               using (var session = _sessionFactory.OpenSession())
                {
                   using (var transaction = session.BeginTransaction())
                   {

@@ -1,5 +1,4 @@
 ﻿using HomeScrum.Common.TestData;
-using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers.Admin;
 using HomeScrum.Web.Controllers.Base;
@@ -19,7 +18,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<WorkItemType> GetAllModels()
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.OpenSession())
          {
             return session.Query<WorkItemType>()
                .OrderBy( x => x.SortSequence )
@@ -58,7 +57,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public override ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel> CreateController()
       {
-         var controller = new WorkItemTypesController( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
+         var controller = new WorkItemTypesController( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, Database.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

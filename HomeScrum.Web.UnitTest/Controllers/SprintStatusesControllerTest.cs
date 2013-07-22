@@ -1,5 +1,4 @@
 ﻿using HomeScrum.Common.TestData;
-using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers.Admin;
 using HomeScrum.Web.Models.Admin;
@@ -18,7 +17,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<SprintStatus> GetAllModels()
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.OpenSession())
          {
             return session.Query<SprintStatus>()
                .OrderBy( x => x.SortSequence )
@@ -56,7 +55,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateController()
       {
-         var controller = new SprintStatusesController( new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
+         var controller = new SprintStatusesController( new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, Database.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

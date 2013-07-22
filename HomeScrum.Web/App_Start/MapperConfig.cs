@@ -8,6 +8,7 @@ using Ninject;
 using System;
 using AutoMapper.Mappers;
 using HomeScrum.Common.Utility;
+using NHibernate;
 
 namespace HomeScrum.Web
 {
@@ -141,9 +142,17 @@ namespace HomeScrum.Web
 
       public class DomainModelResolver<ModelT> : ValueResolver<Guid, ModelT>
       {
+         [Inject]
+         public DomainModelResolver( ISessionFactory sessionFactory )
+         {
+            _sessionFactory = sessionFactory;
+         }
+
+         private readonly ISessionFactory _sessionFactory;
+
          protected override ModelT ResolveCore( Guid sourceId )
          {
-            using (var session = NHibernateHelper.OpenSession())
+            using (var session = _sessionFactory.OpenSession())
             {
                ModelT model = session.Get<ModelT>( sourceId );
                return model;

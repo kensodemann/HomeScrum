@@ -11,7 +11,7 @@ namespace HomeScrum.Common.TestData
       {
          CreateTestModelData();
 
-         using (ISession session = Database.GetSession())
+         using (ISession session = Database.OpenSession())
          using (ITransaction transaction = session.BeginTransaction())
          {
             foreach (var project in ModelData)

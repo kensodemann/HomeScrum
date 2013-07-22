@@ -19,7 +19,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<AcceptanceCriterionStatus> GetAllModels()
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = Database.OpenSession())
          {
             return session.Query<AcceptanceCriterionStatus>()
                .OrderBy( x => x.SortSequence )
@@ -57,7 +57,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateController()
       {
-         var controller = new AcceptanceCriterionStatusesController( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, NHibernateHelper.SessionFactory );
+         var controller = new AcceptanceCriterionStatusesController( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, Database.SessionFactory );
          controller.ControllerContext = new ControllerContext();
 
          return controller;

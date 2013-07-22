@@ -13,7 +13,7 @@ namespace HomeScrum.Common.TestData
       public static void Load()
       {
          CreateTestModelData();
-         using (ISession session = Database.GetSession())
+         using (ISession session = Database.OpenSession())
          using (ITransaction transaction = session.BeginTransaction())
          {
             foreach (var status in ModelData)
