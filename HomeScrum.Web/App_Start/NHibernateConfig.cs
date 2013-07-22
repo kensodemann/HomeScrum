@@ -18,8 +18,9 @@ namespace HomeScrum.Web
          // uncommenting this line and setting up a proxy factory in Ninject setup would do it.
          //
          //NHibernate.Cfg.Environment.BytecodeProvider = new NinjectBytecodeProvider( iocKernel );
-         
+
          var configuration = new Configuration();
+         configuration.SetProperty( NHibernate.Cfg.Environment.CurrentSessionContextClass, "web" );
          configuration.Configure();
          var sessionFactory = configuration.BuildSessionFactory();
 
