@@ -72,7 +72,6 @@
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
-    <Compile Include="Queries\WorkItemQuery.cs" />
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Validation\ValidatableObject.cs" />
     <Compile Include="Domain\WorkItem.cs" />
@@ -86,7 +85,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\ActiveSystemObjectsOrdered.cs" />
-    <Compile Include="Queries\IDomainObjectQuery.cs" />
     <Compile Include="Queries\AllDomainObjects.cs" />
     <Compile Include="Queries\AllSystemObjectsOrdered.cs" />
     <Compile Include="Services\ISecurityService.cs" />

@@ -21,15 +21,44 @@ namespace HomeScrum.Web.Controllers
    {
       [Inject]
       public WorkItemsController( IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( translator, logger, sessionFactory )
+         : base( translator, logger, sessionFactory ) { }
+
+      //
+      // POST: /WorkItem/Create
+      public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {
-         _workItemQuery = new WorkItemQuery();
-         _sessionFactory = sessionFactory;
+         // The base Create() does a validation before calling AddItem().
+         // This data must be set before the validation.
+         viewModel.CreatedByUserId = GetUserId( user.Identity.Name );
+         return base.Create( viewModel, user );
       }
 
-      private WorkItemQuery _workItemQuery;
-      private ISessionFactory _sessionFactory;
+      //
+      // GET: /WorkItems/
+      public override System.Web.Mvc.ActionResult Index()
+      {
+         using (var session = SessionFactory.OpenSession())
+         {
+            var workItems = session.Query<WorkItem>()
+               .OrderBy( x => x.WorkItemType.SortSequence )
+               .ThenBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name.ToUpper() )
+               .Select( x => new WorkItemIndexViewModel()
+                             {
+                                Id = x.Id,
+                                Name = x.Name,
+                                WorkItemTypeName = x.WorkItemType.Name,
+                                StatusName = x.Status.Name,
+                                IsComplete = !x.Status.IsOpenStatus
+                             } )
+               .ToList();
 
+            return View( workItems );
+         }
+      }
+
+
+      #region Select Lists
       protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
       {
          viewModel.Statuses = CreateSelectList<WorkItemStatus>( viewModel.StatusId );
@@ -44,7 +73,7 @@ namespace HomeScrum.Web.Controllers
          where ModelT : SystemDomainObject
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>() { SelectedId = selectedId };
-         using (var session = _sessionFactory.OpenSession())
+         using (var session = SessionFactory.OpenSession())
          {
             return query
                .GetLinqQuery( session )
@@ -55,7 +84,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( Guid selectedId )
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemType>() { SelectedId = selectedId };
-         using (var session = _sessionFactory.OpenSession())
+         using (var session = SessionFactory.OpenSession())
          {
             return query
                .GetLinqQuery( session )
@@ -65,7 +94,7 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItem> CreateProjectsSelectList( Guid selectedId )
       {
-         using (var session = _sessionFactory.OpenSession())
+         using (var session = SessionFactory.OpenSession())
          {
             return session.Query<Project>()
                .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
@@ -77,7 +106,7 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItem> CreateUserSelectList( Guid selectedId )
       {
-         using (var session = _sessionFactory.OpenSession())
+         using (var session = SessionFactory.OpenSession())
          {
             var users = session.Query<User>()
                .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
@@ -98,7 +127,7 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( Guid selectedId )
       {
-         using (var session = _sessionFactory.OpenSession())
+         using (var session = SessionFactory.OpenSession())
          {
             var backlog = session.Query<WorkItem>()
                .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
@@ -121,24 +150,26 @@ namespace HomeScrum.Web.Controllers
             return backlog;
          }
       }
+      #endregion
 
-      protected override void AddItem( WorkItem model, System.Security.Principal.IPrincipal user )
+
+      protected override void Save( WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
          model.LastModifiedUserRid = GetUserId( user.Identity.Name );
-         base.AddItem( model, user );
+         base.Save( model, user );
       }
 
-      protected override void UpdateItem( WorkItem model, System.Security.Principal.IPrincipal user )
+      protected override void Update( WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
          model.LastModifiedUserRid = GetUserId( user.Identity.Name );
-         base.UpdateItem( model, user );
+         base.Update( model, user );
       }
 
       private Guid GetUserId( string userName )
       {
-         using (var session = NHibernateHelper.OpenSession())
+         using (var session = SessionFactory.OpenSession())
          {
             return session.Query<User>()
                .Where( x => x.UserName == userName )
@@ -146,43 +177,12 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
-
       private void ClearNonAllowedItemsInModel( WorkItem model )
       {
          if (!model.WorkItemType.IsTask)
          {
             model.AssignedToUser = null;
-         }
-      }
-
-      //
-      // POST: /WorkItem/Create
-      public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
-      {
-         // The base Create() does a validation before calling AddItem().
-         // This data must be set before the validation.
-         viewModel.CreatedByUserId = GetUserId( user.Identity.Name );
-         return base.Create( viewModel, user );
-      }
-
-      //
-      // GET: /WorkItems/
-      public override System.Web.Mvc.ActionResult Index()
-      {
-         using (var session = _sessionFactory.OpenSession())
-         {
-            var query = _workItemQuery.GetQuery( session );
-            query.SetProjection(
-               Projections.ProjectionList()
-                  .Add( Projections.Property( "Id" ), "Id" )
-                  .Add( Projections.Property( "Name" ), "Name" )
-                  .Add( Projections.Property( "wit.Name" ), "WorkItemTypeName" )
-                  .Add( Projections.Property( "stat.Name" ), "StatusName" )
-                  .Add( Projections.Property( "stat.IsOpenStatus" ), "IsOpenStatus" ) )  // find better way to get IsCompleted
-               .SetResultTransformer( Transformers.AliasToBean<WorkItemIndexViewModel>() );
-            var workItems = query.List<WorkItemIndexViewModel>();
-
-            return View( workItems );
+            model.ParentWorkItem = null;
          }
       }
    }

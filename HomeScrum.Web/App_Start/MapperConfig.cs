@@ -114,11 +114,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) )
             .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
             .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
-         // TODO: IsOpenStatus should go away to be replaced by just IsComplete.
          Mapper.CreateMap<WorkItem, WorkItemIndexViewModel>()
-            .ForMember( dest => dest.IsOpenStatus, opt => opt.MapFrom( src => src.Status.IsOpenStatus ) )
-            .ForMember( dest => dest.IsComplete, opt => opt.Ignore() );
-         //.ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) );
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) );
 
          Mapper.CreateMap<User, UserViewModel>()
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );

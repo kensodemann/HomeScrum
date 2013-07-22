@@ -44,16 +44,16 @@ namespace HomeScrum.Web.Controllers
       }
 
 
-      protected override void AddItem( Project model, IPrincipal user )
+      protected override void Save( Project model, IPrincipal user )
       {
          model.LastModifiedUserRid = GetUserId( user );
-         base.AddItem( model, user );
+         base.Save( model, user );
       }
 
-      protected override void UpdateItem( Project model, IPrincipal user )
+      protected override void Update( Project model, IPrincipal user )
       {
          model.LastModifiedUserRid = GetUserId( user );
-         base.UpdateItem( model, user );
+         base.Update( model, user );
       }
 
       private Guid GetUserId( IPrincipal p )

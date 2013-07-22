@@ -45,7 +45,7 @@ namespace HomeScrum.Web.Controllers.Base
             var model = Mapper.Map<ModelT>( viewModel );
             try
             {
-               AddItem( model, user );
+               Save( model, user );
                return RedirectToAction( () => this.Index() );
             }
             catch (InvalidOperationException)
@@ -87,7 +87,7 @@ namespace HomeScrum.Web.Controllers.Base
             var model = Mapper.Map<ModelT>( viewModel );
             try
             {
-               UpdateItem( model, user );
+               Update( model, user );
                return RedirectToAction( () => this.Index() );
             }
             catch (InvalidOperationException)
@@ -112,7 +112,7 @@ namespace HomeScrum.Web.Controllers.Base
       protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
 
 
-      protected virtual void AddItem( ModelT model, IPrincipal user )
+      protected virtual void Save( ModelT model, IPrincipal user )
       {
          using (var session = SessionFactory.OpenSession())
          {
@@ -125,7 +125,7 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
-      protected virtual void UpdateItem( ModelT model, IPrincipal user )
+      protected virtual void Update( ModelT model, IPrincipal user )
       {
          using (var session = SessionFactory.OpenSession())
          {
