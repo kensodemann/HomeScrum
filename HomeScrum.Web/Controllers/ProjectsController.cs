@@ -43,22 +43,20 @@ namespace HomeScrum.Web.Controllers
       }
 
 
-      protected override void Save( Project model, IPrincipal user )
+      protected override void Save( ISession session, Project model, IPrincipal user )
       {
-         model.LastModifiedUserRid = GetUserId( user );
-         base.Save( model, user );
+         model.LastModifiedUserRid = GetUserId( session, user );
+         base.Save( session, model, user );
       }
 
-      protected override void Update( Project model, IPrincipal user )
+      protected override void Update( ISession session, Project model, IPrincipal user )
       {
-         model.LastModifiedUserRid = GetUserId( user );
-         base.Update( model, user );
+         model.LastModifiedUserRid = GetUserId( session, user );
+         base.Update( session, model, user );
       }
 
-      private Guid GetUserId( IPrincipal p )
+      private Guid GetUserId( ISession session, IPrincipal p )
       {
-         var session = SessionFactory.GetCurrentSession();
-
          var user = session
             .CreateCriteria( typeof( User ) )
             .Add( Expression.Eq( "UserName", p.Identity.Name ) )

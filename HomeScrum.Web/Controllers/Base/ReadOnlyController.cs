@@ -8,6 +8,7 @@ using NHibernate.Criterion;
 using NHibernate.Transform;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 
@@ -40,34 +41,41 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/
       public virtual ActionResult Index()
       {
+         IEnumerable<DomainObjectViewModel> items;
          Log.Debug( "Index()" );
 
-         using (var session = SessionFactory.OpenSession())
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<ModelT>();
-            var items = queryModel.GetQuery( session )
+            items = queryModel.GetQuery( session )
                .SelectDomainObjectViewModels<ModelT>();
- 
-            return View( items );
+
+            transaction.Commit();
          }
+
+         return View( items );
       }
 
       //
       // GET: /ModelTs/Details/Guid
       public virtual ActionResult Details( Guid id )
       {
+         ModelT model;
          Log.Debug( "Details(%s)", id.ToString() );
 
-         using (var session = SessionFactory.OpenSession())
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var model = session.Get<ModelT>( id );
-
-            if (model == null)
-            {
-               return HttpNotFound();
-            }
-            return View( Mapper.Map<ViewModelT>( model ) );
+            model = session.Get<ModelT>( id );
+            transaction.Commit();
          }
+
+         if (model == null)
+         {
+            return HttpNotFound();
+         }
+         return View( Mapper.Map<ViewModelT>( model ) );
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )

@@ -43,9 +43,14 @@ namespace HomeScrum.Web.Controllers.Base
          if (ModelState.IsValid)
          {
             var model = Mapper.Map<ModelT>( viewModel );
+            var session = SessionFactory.GetCurrentSession();
             try
             {
-               Save( model, user );
+               using (var transaction = session.BeginTransaction())
+               {
+                  Save( session, model, user );
+                  transaction.Commit();
+               }
                return RedirectToAction( () => this.Index() );
             }
             catch (InvalidOperationException)
@@ -62,19 +67,23 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id )
       {
-         using (var session = SessionFactory.OpenSession())
+         ModelT model;
+
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var model = session.Get<ModelT>( id );
-
-            if (model != null)
-            {
-               var viewModel = Mapper.Map<EditorViewModelT>( model );
-               PopulateSelectLists( viewModel );
-               return View( viewModel );
-            }
-
-            return HttpNotFound();
+            model = session.Get<ModelT>( id );
+            transaction.Commit();
          }
+
+         if (model != null)
+         {
+            var viewModel = Mapper.Map<EditorViewModelT>( model );
+            PopulateSelectLists( viewModel );
+            return View( viewModel );
+         }
+
+         return HttpNotFound();
       }
 
       //
@@ -85,9 +94,14 @@ namespace HomeScrum.Web.Controllers.Base
          if (ModelState.IsValid)
          {
             var model = Mapper.Map<ModelT>( viewModel );
+            var session = SessionFactory.GetCurrentSession();
             try
             {
-               Update( model, user );
+               using (var transaction = session.BeginTransaction())
+               {
+                  Update( session, model, user );
+                  transaction.Commit();
+               }
                return RedirectToAction( () => this.Index() );
             }
             catch (InvalidOperationException)
@@ -112,41 +126,15 @@ namespace HomeScrum.Web.Controllers.Base
       protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
 
 
-      protected virtual void Save( ModelT model, IPrincipal user )
+      protected virtual void Save( ISession session, ModelT model, IPrincipal user )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            using (var transaction = session.BeginTransaction())
-            {
-               session.Save( model );
-               transaction.Commit();
-            }
-         }
+         session.Save( model );
       }
 
 
-      protected virtual void Update( ModelT model, IPrincipal user )
+      protected virtual void Update( ISession session, ModelT model, IPrincipal user )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            using (var transaction = session.BeginTransaction())
-            {
-               session.Update( model );
-               transaction.Commit();
-            }
-         }
-      }
-
-
-      protected virtual void PerformModelValidations( ModelT model )
-      {
-         ModelMetadata metadata = ModelMetadataProviders.Current.GetMetadataForType( () => model, typeof( ModelT ) );
-
-         foreach (ModelValidationResult validationResult in ModelValidator.GetModelValidator( metadata, this.ControllerContext ).Validate( null ))
-         {
-            var viewModelPropertyName = _translator.TranslatedName( validationResult.MemberName );
-            ModelState.AddModelError( viewModelPropertyName, validationResult.Message );
-         }
+         session.Update( model );
       }
    }
 }

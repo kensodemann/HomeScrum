@@ -29,7 +29,8 @@ namespace HomeScrum.Web.Controllers
       {
          // The base Create() does a validation before calling AddItem().
          // This data must be set before the validation.
-         viewModel.CreatedByUserId = GetUserId( user.Identity.Name );
+         var session = SessionFactory.GetCurrentSession();
+         viewModel.CreatedByUserId = GetUserId( session, user.Identity.Name );
          return base.Create( viewModel, user );
       }
 
@@ -37,9 +38,12 @@ namespace HomeScrum.Web.Controllers
       // GET: /WorkItems/
       public override System.Web.Mvc.ActionResult Index()
       {
-         using (var session = SessionFactory.OpenSession())
+         IEnumerable<WorkItemIndexViewModel> workItems;
+
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var workItems = session.Query<WorkItem>()
+            workItems = session.Query<WorkItem>()
                .OrderBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
                .ThenBy( x => x.Name.ToUpper() )
@@ -53,8 +57,10 @@ namespace HomeScrum.Web.Controllers
                              } )
                .ToList();
 
-            return View( workItems );
+            transaction.Commit();
          }
+
+         return View( workItems );
       }
 
 
@@ -153,28 +159,25 @@ namespace HomeScrum.Web.Controllers
       #endregion
 
 
-      protected override void Save( WorkItem model, System.Security.Principal.IPrincipal user )
+      protected override void Save( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = GetUserId( user.Identity.Name );
-         base.Save( model, user );
+         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         base.Save( session, model, user );
       }
 
-      protected override void Update( WorkItem model, System.Security.Principal.IPrincipal user )
+      protected override void Update( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = GetUserId( user.Identity.Name );
-         base.Update( model, user );
+         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         base.Update( session, model, user );
       }
 
-      private Guid GetUserId( string userName )
+      private Guid GetUserId( ISession session, string userName )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            return session.Query<User>()
-               .Where( x => x.UserName == userName )
-               .ToList().First().Id;
-         }
+         return session.Query<User>()
+            .Where( x => x.UserName == userName )
+            .ToList().First().Id;
       }
 
       private void ClearNonAllowedItemsInModel( WorkItem model )
