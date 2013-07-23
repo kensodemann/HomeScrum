@@ -41,7 +41,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             FirstName = "Abe",
             MiddleName = "Bobby",
             LastName = "Crabby",
-            IsActive = true
+            IsActive = true,
+            NewPassword = "apassword"
          };
       }
 
@@ -224,19 +225,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          Assert.IsTrue( result is RedirectToRouteResult );
       }
-
-      [TestMethod]
-      public void CreatePost_CallsSecurityServiceToSetPassword()
-      {
-         var model = CreateNewCreateViewModel();
-         model.NewPassword = "NewPassword";
-
-         _controller.Create( model );
-
-         _securityService
-            .Verify( x => x.ChangePassword( model.UserName, "bogus", model.NewPassword ), Times.Once() );
-      }
-
 
       [TestMethod]
       public void EditGet_ReturnsViewWithEditorModel()

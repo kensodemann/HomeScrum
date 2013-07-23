@@ -10,6 +10,7 @@ using HomeScrum.Web.Models.Admin;
 using NHibernate.Linq;
 using Ninject;
 using NHibernate;
+using System.Collections.Generic;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -30,9 +31,12 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/
       public ActionResult Index()
       {
-         using (var session = _sessionFactory.OpenSession())
+         IEnumerable<UserViewModel> users;
+
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var users = session.Query<User>()
+            users = session.Query<User>()
                .Select( x => new UserViewModel()
                              {
                                 Id = x.Id,
@@ -43,24 +47,31 @@ namespace HomeScrum.Web.Controllers
                                 UserName = x.UserName
                              } ).ToList();
 
-            return View( users );
+            transaction.Commit();
          }
+
+         return View( users );
       }
 
       //
       // GET: /Users/Details/Guid
       public ActionResult Details( Guid id )
       {
-         using (var session = _sessionFactory.OpenSession())
-         {
-            var model = session.Get<User>( id );
+         User model;
 
-            if (model == null)
-            {
-               return HttpNotFound();
-            }
-            return View( Mapper.Map<UserViewModel>( model ) );
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            model = session.Get<User>( id );
+            transaction.Commit();
          }
+
+         if (model == null)
+         {
+            return HttpNotFound();
+         }
+
+         return View( Mapper.Map<UserViewModel>( model ) );
       }
 
       //
@@ -78,18 +89,16 @@ namespace HomeScrum.Web.Controllers
          if (ModelState.IsValid)
          {
             var model = Mapper.Map<User>( viewModel );
+            model.SetPassword( viewModel.NewPassword );
+
             try
             {
-               using (var session = _sessionFactory.OpenSession())
+               var session = _sessionFactory.GetCurrentSession();
+               using (var transaction = session.BeginTransaction())
                {
-                  using (var transaction = session.BeginTransaction())
-                  {
-                     session.Save( model );
-                     transaction.Commit();
-                  }
+                  session.Save( model );
+                  transaction.Commit();
                }
-
-               _securityService.ChangePassword( viewModel.UserName, "bogus", viewModel.NewPassword );
                return RedirectToAction( () => this.Index() );
             }
             catch (InvalidOperationException)
@@ -130,13 +139,11 @@ namespace HomeScrum.Web.Controllers
             var model = Mapper.Map<User>( viewModel );
             try
             {
-               using (var session = _sessionFactory.OpenSession())
+               var session = _sessionFactory.GetCurrentSession();
+               using (var transaction = session.BeginTransaction())
                {
-                  using (var transaction = session.BeginTransaction())
-                  {
-                     session.Update( model );
-                     transaction.Commit();
-                  }
+                  session.Update( model );
+                  transaction.Commit();
                }
                return RedirectToAction( () => this.Index() );
             }

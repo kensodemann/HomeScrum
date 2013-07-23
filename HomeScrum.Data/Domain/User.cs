@@ -30,10 +30,15 @@ namespace HomeScrum.Data.Domain
       {
          get
          {
-            var sha1 = SHA1.Create();
-            return sha1.ComputeHash( Encoding.Default.GetBytes( "bogus" ) );
+            return _password;
          }
          set { _password = value; }
+      }
+
+      public virtual void SetPassword( string rawPassword )
+      {
+         var sha1 = SHA1.Create();
+         Password = sha1.ComputeHash( Encoding.Default.GetBytes(rawPassword ) );
       }
    }
 }

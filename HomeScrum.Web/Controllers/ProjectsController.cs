@@ -26,22 +26,20 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItem> ActiveProjectStatuses( Guid selectedId )
       {
-         //using (var session = SessionFactory.OpenSession())
-         //{
-         var session = SessionFactory.GetCurrentSession();
-            var queryModel = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ProjectStatus>()
-            {
-               SelectedId = selectedId
-            };
+         var queryModel = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ProjectStatus>()
+         {
+            SelectedId = selectedId
+         };
 
-            return queryModel.GetQuery( session )
-               .Select( Projections.ProjectionList()
-                  .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
-                  .Add( Projections.Property( "Name" ), "Text" )
-                  .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
-               .TransformUsing( Transformers.AliasToBean<SelectListItem>() )
-               .List<SelectListItem>();
-         //}
+         var session = SessionFactory.GetCurrentSession();
+
+         return queryModel.GetQuery( session )
+            .Select( Projections.ProjectionList()
+               .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
+               .Add( Projections.Property( "Name" ), "Text" )
+               .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
+            .TransformUsing( Transformers.AliasToBean<SelectListItem>() )
+            .List<SelectListItem>();
       }
 
 
@@ -59,14 +57,13 @@ namespace HomeScrum.Web.Controllers
 
       private Guid GetUserId( IPrincipal p )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            var user = session
-               .CreateCriteria( typeof( User ) )
-               .Add( Expression.Eq( "UserName", p.Identity.Name ) )
-               .UniqueResult() as User;
-            return user == null ? default( Guid ) : user.Id;
-         }
+         var session = SessionFactory.GetCurrentSession();
+
+         var user = session
+            .CreateCriteria( typeof( User ) )
+            .Add( Expression.Eq( "UserName", p.Identity.Name ) )
+            .UniqueResult() as User;
+         return user == null ? default( Guid ) : user.Id;
       }
    }
 }
