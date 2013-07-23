@@ -101,7 +101,6 @@
   <ItemGroup>
     <Compile Include="Controllers\AcceptanceCriteriaStatusesControllerTest.cs" />
     <Compile Include="Controllers\ReadWriteControllerTestBase.cs" />
-    <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\ProjectsControllerTest.cs" />
     <Compile Include="Controllers\SystemDataObjectControllerTestBase.cs" />
     <Compile Include="Controllers\WorkItemsControllerTest.cs" />

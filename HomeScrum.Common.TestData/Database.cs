@@ -1,5 +1,6 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Context;
 using NHibernate.Tool.hbm2ddl;
 using System;
 using System.Data.SqlClient;
@@ -34,6 +35,7 @@ namespace HomeScrum.Common.TestData
       private static void LoadConfiguration()
       {
          _configuration = new Configuration();
+         _configuration.SetProperty( NHibernate.Cfg.Environment.CurrentSessionContextClass, typeof( CallSessionContext ).FullName );
          _configuration.Configure();
       }
 

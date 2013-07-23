@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate;
+using NHibernate.Context;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using NHibernate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -43,15 +43,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestInitialize]
-      public virtual void InitializeTest()
+      public void InitializeTest()
       {
-         Database.Build();
-         Users.Load();
-         ProjectStatuses.Load();
-         Projects.Load();
+         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
+
+         BuildDatabase();
 
          SetupCurrentUser();
          SetupLogger();
+      }
+
+      [TestCleanup]
+      public void CleanupTest()
+      {
+         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
+         session.Dispose();
       }
       #endregion
 
@@ -463,6 +469,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
                Assert.IsFalse( currentActualStatus.Selected, "Status should not be selected" );
             }
          }
+      }
+
+
+      private static void BuildDatabase()
+      {
+         Database.Build();
+         Users.Load();
+         ProjectStatuses.Load();
+         Projects.Load();
       }
 
       private static void CreateMockIOCKernel()

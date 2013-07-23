@@ -4,6 +4,7 @@ using HomeScrum.Web.Controllers.Admin;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NHibernate.Context;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,10 +47,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public override void InitializeTest()
       {
+         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
          Database.Build();
          Users.Load();
          SprintStatuses.Load();
          base.InitializeTest();
+      }
+
+      [TestCleanup]
+      public void CleanupTest()
+      {
+         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
+         session.Dispose();
       }
 
       public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateController()

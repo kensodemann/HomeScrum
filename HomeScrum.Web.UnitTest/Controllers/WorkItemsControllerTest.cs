@@ -7,6 +7,7 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
+using NHibernate.Context;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
@@ -42,6 +43,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
+         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
+         BuildDatabase();
+         SetupCurrentUser();
+         SetupLogger();
+      }
+
+      private static void BuildDatabase()
+      {
          Database.Build();
          Users.Load();
          WorkItemStatuses.Load();
@@ -50,9 +59,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Projects.Load();
          AcceptanceCriteriaStatuses.Load();
          WorkItems.Load();
+      }
 
-         SetupCurrentUser();
-         SetupLogger();
+      [TestCleanup]
+      public void CleanupTest()
+      {
+         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
+         session.Dispose();
       }
       #endregion
 

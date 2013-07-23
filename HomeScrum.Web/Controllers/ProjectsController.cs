@@ -26,8 +26,9 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItem> ActiveProjectStatuses( Guid selectedId )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
+         //using (var session = SessionFactory.OpenSession())
+         //{
+         var session = SessionFactory.GetCurrentSession();
             var queryModel = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ProjectStatus>()
             {
                SelectedId = selectedId
@@ -40,7 +41,7 @@ namespace HomeScrum.Web.Controllers
                   .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
                .TransformUsing( Transformers.AliasToBean<SelectListItem>() )
                .List<SelectListItem>();
-         }
+         //}
       }
 
 

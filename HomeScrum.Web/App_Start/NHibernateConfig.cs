@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using HomeScrum.Common.Utility;
 using NHibernate;
+using NHibernate.Context;
 
 namespace HomeScrum.Web
 {
@@ -20,7 +21,7 @@ namespace HomeScrum.Web
          //NHibernate.Cfg.Environment.BytecodeProvider = new NinjectBytecodeProvider( iocKernel );
 
          var configuration = new Configuration();
-         configuration.SetProperty( NHibernate.Cfg.Environment.CurrentSessionContextClass, "web" );
+         configuration.SetProperty( NHibernate.Cfg.Environment.CurrentSessionContextClass, typeof( WebSessionContext ).FullName );
          configuration.Configure();
          var sessionFactory = configuration.BuildSessionFactory();
 

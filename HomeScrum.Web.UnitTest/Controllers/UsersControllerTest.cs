@@ -5,6 +5,7 @@ using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate.Context;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
+         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
+
          Database.Build();
          Users.Load();
 
@@ -63,6 +66,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller = new UsersController( _securityService.Object, Database.SessionFactory );
          _controller.ControllerContext = new ControllerContext();
+      }
+
+      [TestCleanup]
+      public void CleanupTest()
+      {
+         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
+         session.Dispose();
       }
 
 
