@@ -31,12 +31,10 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/
       public ActionResult Index()
       {
-         IEnumerable<UserViewModel> users;
-
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            users = session.Query<User>()
+            var users = session.Query<User>()
                .Select( x => new UserViewModel()
                              {
                                 Id = x.Id,
@@ -48,30 +46,27 @@ namespace HomeScrum.Web.Controllers
                              } ).ToList();
 
             transaction.Commit();
+            return View( users );
          }
-
-         return View( users );
       }
 
       //
       // GET: /Users/Details/Guid
       public ActionResult Details( Guid id )
       {
-         User model;
-
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            model = session.Get<User>( id );
+            var model = session.Get<User>( id );
             transaction.Commit();
-         }
 
-         if (model == null)
-         {
-            return HttpNotFound();
-         }
+            if (model == null)
+            {
+               return HttpNotFound();
+            }
 
-         return View( Mapper.Map<UserViewModel>( model ) );
+            return View( Mapper.Map<UserViewModel>( model ) );
+         }
       }
 
       //
@@ -86,42 +81,42 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
-         if (ModelState.IsValid)
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var model = Mapper.Map<User>( viewModel );
-            model.SetPassword( viewModel.NewPassword );
-
-            try
+            if (ModelState.IsValid)
             {
-               var session = _sessionFactory.GetCurrentSession();
-               using (var transaction = session.BeginTransaction())
+               var model = Mapper.Map<User>( viewModel );
+               model.SetPassword( viewModel.NewPassword );
+
+               if (model.IsValidFor( Data.TransactionType.Insert ))
                {
                   session.Save( model );
                   transaction.Commit();
+                  return RedirectToAction( () => this.Index() );
                }
-               return RedirectToAction( () => this.Index() );
-            }
-            catch (InvalidOperationException)
-            {
+
                foreach (var message in model.GetErrorMessages())
                {
                   ModelState.AddModelError( message.Key, message.Value );
                }
             }
-         }
 
-         return View();
+            return View();
+         }
       }
 
       //
       // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id )
       {
-         using (var session = _sessionFactory.OpenSession())
+         var session = _sessionFactory.OpenSession();
+         using (var transaction = session.BeginTransaction())
          {
             var model = session.Get<User>( id );
             if (model != null)
             {
+               transaction.Commit();
                return View( Mapper.Map<EditUserViewModel>( model ) );
             }
          }
@@ -134,29 +129,27 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public ActionResult Edit( EditUserViewModel viewModel )
       {
-         if (ModelState.IsValid)
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var model = Mapper.Map<User>( viewModel );
-            try
+            if (ModelState.IsValid)
             {
-               var session = _sessionFactory.GetCurrentSession();
-               using (var transaction = session.BeginTransaction())
+               var model = Mapper.Map<User>( viewModel );
+               if (model.IsValidFor( Data.TransactionType.Update ))
                {
                   session.Update( model );
                   transaction.Commit();
+                  return RedirectToAction( () => this.Index() );
                }
-               return RedirectToAction( () => this.Index() );
-            }
-            catch (InvalidOperationException)
-            {
+
                foreach (var message in model.GetErrorMessages())
                {
                   ModelState.AddModelError( message.Key, message.Value );
                }
             }
-         }
 
-         return View( viewModel );
+            return View( viewModel );
+         }
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )

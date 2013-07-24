@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HomeScrum.Common.Utility;
-using HomeScrum.Data.Domain;
-using NHibernate.Linq;
+﻿using HomeScrum.Data.Domain;
 using NHibernate;
+using NHibernate.Linq;
+using System;
+using System.Linq;
 
 namespace HomeScrum.Data.Validation
 {
