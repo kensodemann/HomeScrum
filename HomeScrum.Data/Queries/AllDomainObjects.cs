@@ -1,21 +1,14 @@
-﻿using System.Linq;
-using HomeScrum.Data.Domain;
+﻿using HomeScrum.Data.Domain;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
 namespace HomeScrum.Data.Queries
 {
    public class AllDomainObjects<ModelT>
       where ModelT : DomainObjectBase
    {
-      public virtual IQueryOver<ModelT,ModelT> GetQuery( ISession session )
-      {
-         var query = session.QueryOver<ModelT>();
-
-         return query;
-      }
-
-      public virtual IQueryable<ModelT> GetLinqQuery( ISession session )
+      public virtual IQueryable<ModelT> GetQuery( ISession session )
       {
          return session.Query<ModelT>();
       }

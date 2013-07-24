@@ -4,8 +4,6 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Base;
 using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Transform;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;

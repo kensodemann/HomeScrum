@@ -29,7 +29,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<ILogger> _logger;
 
-      private User _currentUser;
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
 
@@ -531,12 +530,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _principal = new Mock<IPrincipal>();
          _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
 
-         _currentUser = new User()
-         {
-            Id = Guid.NewGuid(),
-            UserName = "test",
-            FirstName = "Fred"
-         };
+         // In other places where we use a random user, we use the first active one.
+         // Use the first inactive user here just to ensure it is a different user.
+         var currentUser = Users.ModelData.First( x => x.StatusCd == 'I' );
+         _userIdentity
+            .SetupGet( x => x.Name )
+            .Returns( currentUser.UserName );
       }
 
       private ProjectsController CreateController()

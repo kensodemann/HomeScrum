@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Web.Mvc;
-using HomeScrum.Data.Domain;
+﻿using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Transform;
+using NHibernate.Linq;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -32,12 +33,7 @@ namespace HomeScrum.Web.Controllers
          };
 
          return queryModel.GetQuery( session )
-            .Select( Projections.ProjectionList()
-               .Add( Projections.Cast( NHibernateUtil.String, Projections.Property( "Id" ) ), "Value" )
-               .Add( Projections.Property( "Name" ), "Text" )
-               .Add( Projections.Conditional( Restrictions.Eq( "Id", selectedId ), Projections.Constant( true ), Projections.Constant( false ) ), "Selected" ) )
-            .TransformUsing( Transformers.AliasToBean<SelectListItem>() )
-            .List<SelectListItem>();
+            .SelectSelectListItems( selectedId );
       }
 
 
@@ -55,11 +51,8 @@ namespace HomeScrum.Web.Controllers
 
       private Guid GetUserId( ISession session, IPrincipal p )
       {
-         var user = session
-            .CreateCriteria( typeof( User ) )
-            .Add( Expression.Eq( "UserName", p.Identity.Name ) )
-            .UniqueResult() as User;
-         return user == null ? default( Guid ) : user.Id;
+         return session.Query<User>()
+            .Single( x => x.UserName == p.Identity.Name ).Id;
       }
    }
 }

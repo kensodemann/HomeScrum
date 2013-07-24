@@ -53,8 +53,8 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            var queryModel = new HomeScrum.Data.Queries.AllSystemObjectsOrdered<ModelT>();
-            var items = queryModel.GetQuery( session )
+            var query = new HomeScrum.Data.Queries.AllSystemObjectsOrdered<ModelT>();
+            var items = query.GetQuery( session )
                .SelectSystemDomainObjectViewModels<ModelT>();
 
             transaction.Commit();

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using HomeScrum.Data.Domain;
+﻿using HomeScrum.Data.Domain;
 using NHibernate;
+using System;
+using System.Linq;
 
 namespace HomeScrum.Data.Queries
 {
@@ -10,15 +10,9 @@ namespace HomeScrum.Data.Queries
    {
       public Guid SelectedId { get; set; }
 
-      public override NHibernate.IQueryOver<ModelT, ModelT> GetQuery( ISession session )
+      public override IQueryable<ModelT> GetQuery( ISession session )
       {
          return base.GetQuery( session )
-            .Where( x => x.StatusCd == 'A' || x.Id == this.SelectedId );
-      }
-
-      public override IQueryable<ModelT> GetLinqQuery( ISession session )
-      {
-         return base.GetLinqQuery( session )
             .Where( x => x.StatusCd == 'A' || x.Id == this.SelectedId );
       }
    }

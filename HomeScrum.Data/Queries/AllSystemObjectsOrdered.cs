@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HomeScrum.Data.Domain;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Data.Queries
 {
    public class AllSystemObjectsOrdered<ModelT> : AllDomainObjects<ModelT>
       where ModelT : SystemDomainObject
    {
-      public override NHibernate.IQueryOver<ModelT, ModelT> GetQuery( NHibernate.ISession session )
+      public override IQueryable<ModelT> GetQuery( NHibernate.ISession session )
       {
          return base.GetQuery( session )
-            .OrderBy( x => x.SortSequence ).Asc;
-      }
-
-      public override IQueryable<ModelT> GetLinqQuery( NHibernate.ISession session )
-      {
-         return base.GetLinqQuery( session )
             .OrderBy( x => x.SortSequence );
       }
    }

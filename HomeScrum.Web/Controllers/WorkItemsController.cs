@@ -74,7 +74,7 @@ namespace HomeScrum.Web.Controllers
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>() { SelectedId = selectedId };
 
          return query
-            .GetLinqQuery( session )
+            .GetQuery( session )
             .SelectSelectListItems<ModelT>( selectedId );
       }
 
@@ -83,7 +83,7 @@ namespace HomeScrum.Web.Controllers
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemType>() { SelectedId = selectedId };
 
          return query
-            .GetLinqQuery( session )
+            .GetQuery( session )
             .SelectSelectListItems( selectedId );
       }
 
@@ -156,8 +156,7 @@ namespace HomeScrum.Web.Controllers
       private Guid GetUserId( ISession session, string userName )
       {
          return session.Query<User>()
-            .Where( x => x.UserName == userName )
-            .ToList().First().Id;
+            .Single( x => x.UserName == userName ).Id;
       }
 
       private void ClearNonAllowedItemsInModel( WorkItem model )
