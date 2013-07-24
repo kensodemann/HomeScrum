@@ -162,8 +162,10 @@ namespace HomeScrum.Web
          protected override ModelT ResolveCore( Guid sourceId )
          {
             using (var session = _sessionFactory.OpenSession())
+            using (var tranaction = session.BeginTransaction())
             {
                ModelT model = session.Get<ModelT>( sourceId );
+               tranaction.Commit();
                return model;
             }
          }
