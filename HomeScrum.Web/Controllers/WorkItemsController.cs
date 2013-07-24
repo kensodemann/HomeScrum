@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using HomeScrum.Common.Utility;
-using HomeScrum.Data.Domain;
-using HomeScrum.Data.Queries;
+﻿using HomeScrum.Data.Domain;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
 using NHibernate;
-using NHibernate.Criterion;
 using NHibernate.Linq;
-using NHibernate.Transform;
 using Ninject;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -36,14 +32,12 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/
-      public override System.Web.Mvc.ActionResult Index()
+      public override ActionResult Index()
       {
-         IEnumerable<WorkItemIndexViewModel> workItems;
-
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            workItems = session.Query<WorkItem>()
+            var workItems = session.Query<WorkItem>()
                .OrderBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
                .ThenBy( x => x.Name.ToUpper() )
@@ -58,9 +52,8 @@ namespace HomeScrum.Web.Controllers
                .ToList();
 
             transaction.Commit();
+            return View( workItems );
          }
-
-         return View( workItems );
       }
 
 
