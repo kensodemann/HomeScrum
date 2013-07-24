@@ -412,7 +412,7 @@
     <Content Include="Views\WorkItemStatuses\Edit.cshtml" />
     <Content Include="Views\SprintStatuses\Create.cshtml" />
     <Content Include="Views\SprintStatuses\Edit.cshtml" />
-    <Content Include="Views\Shared\_SystemDataObjectList.cshtml" />
+    <Content Include="Views\Shared\_SystemDomainObjectList.cshtml" />
     <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
     <Content Include="Views\WorkItemStatuses\_Editor.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\_Editor.cshtml" />
@@ -425,7 +425,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Shared\_EditTemplate.cshtml" />
     <Content Include="Views\Shared\_CreateTemplate.cshtml" />
-    <Content Include="Views\Shared\_DataObjectBaseEditor.cshtml" />
+    <Content Include="Views\Shared\_DomainObjectBaseEditor.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\_Editor.cshtml" />
     <Content Include="Views\Projects\Create.cshtml" />
@@ -437,6 +437,7 @@
     <Content Include="Views\WorkItems\_Editor.cshtml" />
     <Content Include="Views\WorkItems\Edit.cshtml" />
     <Content Include="Views\Shared\_WorkItemList.cshtml" />
+    <Content Include="Views\Shared\_SystemDomainObjectEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

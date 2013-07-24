@@ -1,0 +1,7 @@
+﻿@model HomeScrum.Web.Models.Base.SystemDomainObjectViewModel
+
+@Html.Partial( "_DomainObjectBaseEditor", Model )
+
+<fieldset>
+    @Html.HiddenFor( x => x.SortSequence )
+</fieldset>
