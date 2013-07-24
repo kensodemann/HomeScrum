@@ -12,7 +12,7 @@ namespace HomeScrum.Web.Controllers.Base
 {
    public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
       : ReadOnlyController<ModelT, ViewModelT>
-      where ModelT : DomainObjectBase
+      where ModelT : DomainObjectBase, HomeScrum.Data.Validation.IValidatable
       where ViewModelT : DomainObjectViewModel
       where EditorViewModelT : new()
    {
@@ -40,27 +40,25 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
-         if (ModelState.IsValid)
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var model = Mapper.Map<ModelT>( viewModel );
-            var session = SessionFactory.GetCurrentSession();
-            try
+            if (ModelState.IsValid)
             {
-               using (var transaction = session.BeginTransaction())
+               var model = Mapper.Map<ModelT>( viewModel );
+               if (model.IsValidFor( Data.TransactionType.Insert ))
                {
                   Save( session, model, user );
                   transaction.Commit();
+                  return RedirectToAction( () => this.Index() );
                }
-               return RedirectToAction( () => this.Index() );
-            }
-            catch (InvalidOperationException)
-            {
                TransferErrorMessages( model );
             }
-         }
 
-         PopulateSelectLists( viewModel );
-         return View( viewModel );
+            PopulateSelectLists( viewModel );
+            transaction.Commit();
+            return View( viewModel );
+         }
       }
 
       //
@@ -91,27 +89,25 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
-         if (ModelState.IsValid)
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            var model = Mapper.Map<ModelT>( viewModel );
-            var session = SessionFactory.GetCurrentSession();
-            try
+            if (ModelState.IsValid)
             {
-               using (var transaction = session.BeginTransaction())
+               var model = Mapper.Map<ModelT>( viewModel );
+               if (model.IsValidFor( Data.TransactionType.Update ))
                {
                   Update( session, model, user );
                   transaction.Commit();
+                  return RedirectToAction( () => this.Index() );
                }
-               return RedirectToAction( () => this.Index() );
-            }
-            catch (InvalidOperationException)
-            {
                TransferErrorMessages( model );
             }
-         }
 
-         PopulateSelectLists( viewModel );
-         return View( viewModel );
+            PopulateSelectLists( viewModel );
+            transaction.Commit();
+            return View( viewModel );
+         }
       }
 
       private void TransferErrorMessages( ModelT model )
