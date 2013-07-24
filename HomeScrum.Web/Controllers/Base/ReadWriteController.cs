@@ -69,20 +69,19 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id )
       {
-         ModelT model;
-
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            model = session.Get<ModelT>( id );
-            transaction.Commit();
-         }
+            var model = session.Get<ModelT>( id );
 
-         if (model != null)
-         {
-            var viewModel = Mapper.Map<EditorViewModelT>( model );
-            PopulateSelectLists( session, viewModel );
-            return View( viewModel );
+            if (model != null)
+            {
+               var viewModel = Mapper.Map<EditorViewModelT>( model );
+               PopulateSelectLists( session, viewModel );
+               transaction.Commit();
+               return View( viewModel );
+            }
+            transaction.Commit();
          }
 
          return HttpNotFound();
