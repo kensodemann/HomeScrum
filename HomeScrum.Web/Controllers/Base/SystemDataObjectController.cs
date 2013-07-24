@@ -24,23 +24,21 @@ namespace HomeScrum.Web.Controllers.Base
       [HttpPost]
       public ActionResult UpdateSortOrders( IEnumerable<string> itemIds )
       {
-         using (var session = SessionFactory.OpenSession())
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
-            using (var transaction = session.BeginTransaction())
+            var idIndex = 0;
+            foreach (var id in itemIds)
             {
-               var idIndex = 0;
-               foreach (var id in itemIds)
+               var item = session.Get<ModelT>( new Guid( id ) );
+               idIndex++;
+               if (item != null && item.SortSequence != idIndex)
                {
-                  var item = session.Get<ModelT>( new Guid( id ) );
-                  idIndex++;
-                  if (item != null && item.SortSequence != idIndex)
-                  {
-                     item.SortSequence = idIndex;
-                     session.Update( item );
-                  }
+                  item.SortSequence = idIndex;
+                  session.Update( item );
                }
-               transaction.Commit();
             }
+            transaction.Commit();
          }
 
          return new EmptyResult();
@@ -52,12 +50,14 @@ namespace HomeScrum.Web.Controllers.Base
       {
          Log.Debug( "Index()" );
 
-         using (var session = SessionFactory.OpenSession())
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             var queryModel = new HomeScrum.Data.Queries.AllSystemObjectsOrdered<ModelT>();
             var items = queryModel.GetQuery( session )
                .SelectSystemDomainObjectViewModels<ModelT>();
 
+            transaction.Commit();
             return View( items );
          }
 

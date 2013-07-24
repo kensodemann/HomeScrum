@@ -110,7 +110,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id )
       {
-         var session = _sessionFactory.OpenSession();
+         var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
             var model = session.Get<User>( id );
