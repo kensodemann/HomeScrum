@@ -65,96 +65,83 @@ namespace HomeScrum.Web.Controllers
 
 
       #region Select Lists
-      protected override void PopulateSelectLists( WorkItemEditorViewModel viewModel )
+      protected override void PopulateSelectLists( ISession session, WorkItemEditorViewModel viewModel )
       {
-         viewModel.Statuses = CreateSelectList<WorkItemStatus>( viewModel.StatusId );
-         viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( viewModel.WorkItemTypeId );
-         viewModel.Projects = CreateProjectsSelectList( viewModel.ProjectId );
-         viewModel.AssignedToUsers = CreateUserSelectList( viewModel.AssignedToUserId );
-         viewModel.ProductBacklogItems = CreateProductBacklogSelectList( viewModel.ParentWorkItemId );
-         base.PopulateSelectLists( viewModel );
+         viewModel.Statuses = CreateSelectList<WorkItemStatus>( session, viewModel.StatusId );
+         viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( session, viewModel.WorkItemTypeId );
+         viewModel.Projects = CreateProjectsSelectList( session, viewModel.ProjectId );
+         viewModel.AssignedToUsers = CreateUserSelectList( session, viewModel.AssignedToUserId );
+         viewModel.ProductBacklogItems = CreateProductBacklogSelectList( session, viewModel.ParentWorkItemId );
+         base.PopulateSelectLists( session, viewModel );
       }
 
-      private IEnumerable<SelectListItem> CreateSelectList<ModelT>( Guid selectedId )
+      private IEnumerable<SelectListItem> CreateSelectList<ModelT>( ISession session, Guid selectedId )
          where ModelT : SystemDomainObject
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>() { SelectedId = selectedId };
-         using (var session = SessionFactory.OpenSession())
-         {
-            return query
-               .GetLinqQuery( session )
-               .SelectSelectListItems<ModelT>( selectedId );
-         }
+
+         return query
+            .GetLinqQuery( session )
+            .SelectSelectListItems<ModelT>( selectedId );
       }
 
-      private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( Guid selectedId )
+      private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( ISession session, Guid selectedId )
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemType>() { SelectedId = selectedId };
-         using (var session = SessionFactory.OpenSession())
-         {
-            return query
-               .GetLinqQuery( session )
-               .SelectSelectListItems( selectedId );
-         }
+
+         return query
+            .GetLinqQuery( session )
+            .SelectSelectListItems( selectedId );
       }
 
-      private IEnumerable<SelectListItem> CreateProjectsSelectList( Guid selectedId )
+      private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            return session.Query<Project>()
-               .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
-               .OrderBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name.ToUpper() )
-               .SelectSelectListItems<Project>( selectedId );
-         }
+         return session.Query<Project>()
+             .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+             .OrderBy( x => x.Status.SortSequence )
+             .ThenBy( x => x.Name.ToUpper() )
+             .SelectSelectListItems<Project>( selectedId );
       }
 
-      private IEnumerable<SelectListItem> CreateUserSelectList( Guid selectedId )
+      private IEnumerable<SelectListItem> CreateUserSelectList( ISession session, Guid selectedId )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            var users = session.Query<User>()
-               .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
-               .OrderBy( x => x.LastName.ToUpper() )
-               .ThenBy( x => x.FirstName.ToUpper() )
-               .SelectSelectListItems( selectedId );
+         var users = session.Query<User>()
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+            .OrderBy( x => x.LastName.ToUpper() )
+            .ThenBy( x => x.FirstName.ToUpper() )
+            .SelectSelectListItems( selectedId );
 
-            users.Insert( 0, new SelectListItem()
-                             {
-                                Value = default( Guid ).ToString(),
-                                Text = DisplayStrings.NotAssigned,
-                                Selected = (selectedId == default( Guid ))
-                             } );
+         users.Insert( 0, new SelectListItem()
+                          {
+                             Value = default( Guid ).ToString(),
+                             Text = DisplayStrings.NotAssigned,
+                             Selected = (selectedId == default( Guid ))
+                          } );
 
-            return users;
-         }
+         return users;
       }
 
-      private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( Guid selectedId )
+      private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( ISession session, Guid selectedId )
       {
-         using (var session = SessionFactory.OpenSession())
-         {
-            var backlog = session.Query<WorkItem>()
-               .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
-                             x.WorkItemType.StatusCd == 'A' && !x.WorkItemType.IsTask) || x.Id == selectedId )
-               .OrderBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name.ToUpper() )
-               .SelectSelectListItems( selectedId );
+         var backlog = session.Query<WorkItem>()
+              .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+                            x.WorkItemType.StatusCd == 'A' && !x.WorkItemType.IsTask) || x.Id == selectedId )
+              .OrderBy( x => x.WorkItemType.SortSequence )
+              .ThenBy( x => x.Status.SortSequence )
+              .ThenBy( x => x.Name.ToUpper() )
+              .SelectSelectListItems( selectedId );
 
-            backlog.Insert( 0, new SelectListItemWithAttributes()
-                               {
-                                  Value = default( Guid ).ToString(),
-                                  Text = DisplayStrings.NotAssigned,
-                                  Selected = (selectedId == default( Guid )),
-                                  DataAttributes = new Dictionary<string, string>()
+         backlog.Insert( 0, new SelectListItemWithAttributes()
+                            {
+                               Value = default( Guid ).ToString(),
+                               Text = DisplayStrings.NotAssigned,
+                               Selected = (selectedId == default( Guid )),
+                               DataAttributes = new Dictionary<string, string>()
                                                    {
                                                       { "ProjectId", default( Guid ).ToString() }
                                                    }
-                               } );
-            return backlog;
-         }
+                            } );
+         return backlog;
       }
       #endregion
 

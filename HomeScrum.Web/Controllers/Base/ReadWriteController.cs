@@ -30,8 +30,12 @@ namespace HomeScrum.Web.Controllers.Base
       public virtual ActionResult Create()
       {
          var viewModel = new EditorViewModelT();
-
-         PopulateSelectLists( viewModel );
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            PopulateSelectLists( session, viewModel );
+            transaction.Commit();
+         }
          return View( viewModel );
       }
 
@@ -55,7 +59,7 @@ namespace HomeScrum.Web.Controllers.Base
                TransferErrorMessages( model );
             }
 
-            PopulateSelectLists( viewModel );
+            PopulateSelectLists( session, viewModel );
             transaction.Commit();
             return View( viewModel );
          }
@@ -77,7 +81,7 @@ namespace HomeScrum.Web.Controllers.Base
          if (model != null)
          {
             var viewModel = Mapper.Map<EditorViewModelT>( model );
-            PopulateSelectLists( viewModel );
+            PopulateSelectLists( session, viewModel );
             return View( viewModel );
          }
 
@@ -104,7 +108,7 @@ namespace HomeScrum.Web.Controllers.Base
                TransferErrorMessages( model );
             }
 
-            PopulateSelectLists( viewModel );
+            PopulateSelectLists( session, viewModel );
             transaction.Commit();
             return View( viewModel );
          }
@@ -119,7 +123,7 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
-      protected virtual void PopulateSelectLists( EditorViewModelT viewModel ) { }
+      protected virtual void PopulateSelectLists( ISession session, EditorViewModelT viewModel ) { }
 
 
       protected virtual void Save( ISession session, ModelT model, IPrincipal user )

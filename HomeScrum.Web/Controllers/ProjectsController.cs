@@ -18,20 +18,18 @@ namespace HomeScrum.Web.Controllers
       public ProjectsController( IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
-      protected override void PopulateSelectLists( ProjectEditorViewModel viewModel )
+      protected override void PopulateSelectLists( ISession session, ProjectEditorViewModel viewModel )
       {
-         base.PopulateSelectLists( viewModel );
-         viewModel.Statuses = ActiveProjectStatuses( viewModel.StatusId );
+         base.PopulateSelectLists( session, viewModel );
+         viewModel.Statuses = ActiveProjectStatuses( session, viewModel.StatusId );
       }
 
-      private IEnumerable<SelectListItem> ActiveProjectStatuses( Guid selectedId )
+      private IEnumerable<SelectListItem> ActiveProjectStatuses( ISession session, Guid selectedId )
       {
          var queryModel = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ProjectStatus>()
          {
             SelectedId = selectedId
          };
-
-         var session = SessionFactory.GetCurrentSession();
 
          return queryModel.GetQuery( session )
             .Select( Projections.ProjectionList()
