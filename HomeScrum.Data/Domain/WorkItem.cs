@@ -33,6 +33,6 @@ namespace HomeScrum.Data.Domain
 
       public virtual IEnumerable<AcceptanceCriterion> AcceptanceCriteria { get; set; }
 
-      public virtual IEnumerable<WorkItem> Tasks { get; set; }
+      //public virtual IEnumerable<WorkItem> Tasks { get; set; }
    }
 }

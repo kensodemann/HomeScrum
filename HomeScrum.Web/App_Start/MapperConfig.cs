@@ -57,7 +57,6 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.CreatedByUserId ) )
             .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.AssignedToUserId ) )
             .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
-            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
@@ -91,7 +90,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
             .ForMember( dest => dest.AssignedToUsers, opt => opt.Ignore() )
-            .ForMember( dest => dest.ProductBacklogItems, opt => opt.Ignore() );
+            .ForMember( dest => dest.ProductBacklogItems, opt => opt.Ignore() )
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )

@@ -56,17 +56,17 @@
     <set name="AcceptanceCriteria"
          inverse="true"
          cascade="all-delete-orphan"
-         lazy="false">
+         lazy="true">
       <key column="WorkItemRid"/>
       <one-to-many class="AcceptanceCriterion"/>
     </set>
 
-    <set name="Tasks"
+    <!--<set name="Tasks"
          inverse="true"
          cascade="none"
          lazy="false">
       <key column="ParentWorkItemRid"/>
       <one-to-many class="WorkItem"/>
-    </set>
+    </set>-->
   </class>
 </hibernate-mapping>
