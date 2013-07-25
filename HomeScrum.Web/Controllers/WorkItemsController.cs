@@ -1,4 +1,5 @@
-﻿using HomeScrum.Data.Domain;
+﻿using AutoMapper;
+using HomeScrum.Data.Domain;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
@@ -8,6 +9,7 @@ using Ninject;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -137,6 +139,34 @@ namespace HomeScrum.Web.Controllers
          return backlog;
       }
       #endregion
+
+
+      protected override WorkItemEditorViewModel GetViewModel( ISession session, Guid id )
+      {
+         var viewModel = base.GetViewModel( session, id );
+
+         if (viewModel != null)
+         {
+            viewModel.Tasks =
+               session.Query<WorkItem>()
+                  .Where( x => x.ParentWorkItem.Id == id )
+                  .OrderBy( x => x.Status.SortSequence )
+                  .ThenBy( x => x.WorkItemType.SortSequence )
+                  .ThenBy( x => x.Name.ToUpper() )
+                  .Select( x => new WorkItemIndexViewModel()
+                                {
+                                   Id = x.Id,
+                                   Name = x.Name,
+                                   Description = x.Description,
+                                   StatusName = x.Status.Name,
+                                   WorkItemTypeName = x.WorkItemType.Name,
+                                   IsComplete = !x.Status.IsOpenStatus
+                                } )
+                  .ToList();
+         }
+
+         return viewModel;
+      }
 
 
       protected override void Save( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
