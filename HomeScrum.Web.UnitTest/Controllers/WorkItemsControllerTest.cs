@@ -366,7 +366,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) , returnedModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), returnedModel.Projects.Count() );
          for (int i = 0; i < returnedModel.Projects.Count(); i++)
          {
             var item = returnedModel.Projects.ElementAt( i );
@@ -557,7 +557,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ) , viewModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
 
          for (int i = 0; i < viewModel.Projects.Count(); i++)
          {
@@ -881,6 +881,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( viewModel.AssignedToUserId, item.AssignedToUser.Id );
          }
       }
+
+      [TestMethod]
+      public void EditPost_ClearsParent_IfParentIsNotAllowedForType()
+      {
+         var controller = CreateController();
+         var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != default( Guid ) );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+
+         controller.Edit( viewModel, _principal.Object );
+
+         using (var session = Database.OpenSession())
+         {
+            var item = session.Get<WorkItem>( viewModel.Id );
+            Assert.IsNull( item.ParentWorkItem );
+         }
+      }
       #endregion
 
 
@@ -933,7 +950,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
             CreatedByUserId = workItem.CreatedByUser.Id,
             CreatedByUserUserName = workItem.CreatedByUser.UserName,
             ProjectId = (workItem.Project == null) ? default( Guid ) : workItem.Project.Id,
-            ProjectName = (workItem.Project == null) ? null : workItem.Project.Name
+            ProjectName = (workItem.Project == null) ? null : workItem.Project.Name,
+            ParentWorkItemId = (workItem.ParentWorkItem == null) ? default( Guid ) : workItem.ParentWorkItem.Id,
+            ParentWorkItemName = (workItem.ParentWorkItem == null) ? null : workItem.ParentWorkItem.Name
          };
       }
 
