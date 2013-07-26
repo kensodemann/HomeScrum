@@ -615,6 +615,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
          }
       }
+
+      [TestMethod]
+      public void EditGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var modelId = WorkItems.ModelData[0].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Edit(modelId, "Edit", parentId.ToString())).Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual("Edit", viewModel.CallingAction);
+         Assert.AreEqual(parentId, viewModel.CallingId);
+      }
       #endregion
 
 

@@ -59,6 +59,21 @@ namespace HomeScrum.Web.Controllers
       }
 
 
+      public ActionResult Edit( Guid id, string callingAction, string callingId )
+      {
+         var result = Edit( id );
+
+         if (result is ViewResult)
+         {
+            var viewModel = ((ViewResult)result).Model as WorkItemEditorViewModel;
+            viewModel.CallingId = new Guid( callingId );
+            viewModel.CallingAction = callingAction;
+         }
+
+         return result;
+      }
+
+
       #region Select Lists
       protected override void PopulateSelectLists( ISession session, WorkItemEditorViewModel viewModel )
       {
