@@ -84,7 +84,6 @@ namespace HomeScrum.Common.TestData
          //    ** Cancelled
          //
          var workItem = CreateWorkItem( "Add Unit Tests", "We have been bad programmers and have not been using TDD.  Get what we have tested.", pbi, planning, homeScrum );
-         //OpenTaskList();
          var childWorkItem = CreateChildTask( workItem, "Examine Content", "Create catelog of our currently untested code.", sbi, newWorkItem );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
@@ -94,11 +93,9 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
          AddAcceptanceCriteria( childWorkItem, "Passing", "All tests pass", unverified );
          CloseCriteriaList( childWorkItem );
-         //CloseTaskList( workItem );
-
+         
          workItem = CreateWorkItem( "Sprint Retrospective", "As a manager, I want to gather information on what went well with a sprint and what did not in order to improve the process",
             pbi, assigned, homeScrum );
-         //OpenTaskList();
          childWorkItem = CreateChildTask( workItem, "No Retrospetive", "We need to design a retrospective", issue, complete );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Before Close", "Must have before close of sprint", accepted );
@@ -127,10 +124,8 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Can Delete", "Removing item is allowed", unverified );
          AddAcceptanceCriteria( childWorkItem, "Moves to Next Sprint", "Is viewable while setting up next sprint", unverified );
          CloseCriteriaList( childWorkItem );
-         //CloseTaskList( workItem );
 
          workItem = CreateWorkItem( "Problem Report Printing", "As a user, I want to be able to print hard copies of problem reports", pbi, complete, preps );
-         //OpenTaskList();
          childWorkItem = CreateChildTask( workItem, "No Line Feeds", "The current ASCII printing does not contain line feeds", bug, cancelled );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Line Breaks", "Each line is on its own line", unverified );
@@ -152,10 +147,8 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Text Bold", "The user can choose if the body text is bold or regular", accepted );
          AddAcceptanceCriteria( childWorkItem, "Text Default", "The body text settings default to Verdana, 10 point, regular", accepted );
          CloseCriteriaList( childWorkItem );
-         //CloseTaskList( workItem );
-
+         
          workItem = CreateWorkItem( "Hummus Sandwich", "As a vegan, I want a tasty, tasty sandwich without any animal product in it", pbi, assigned, sandwiches );
-         //OpenTaskList();
          childWorkItem = CreateChildTask( workItem, "All Meat", "All of your sandwiches contain dead animals, nothing for vegans to eat", bug, assigned );
          childWorkItem = CreateChildTask( workItem, "Make Hummus", "Make Hummus", sbi, assigned );
          OpenCriteriaList();
@@ -177,10 +170,8 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "No animal products", "The sandwich does not contain any animal by-product such as milk, egg, or cheese", unverified );
          AddAcceptanceCriteria( childWorkItem, "Tasty", "The sandwich tastes good", unverified );
          CloseCriteriaList( childWorkItem );
-         //CloseTaskList( workItem );
-
+         
          workItem = CreateWorkItem( "Burndown Chart", "As a user, I want a quick and easy indication of the progress of work on a sprint", customerRequest, assigned, homeScrum );
-         //OpenTaskList();
          childWorkItem = CreateChildTask( workItem, "Burndown Store", "Create a table that is used to store the burndown", sbi, newWorkItem );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Information", "At a minimum, contains sprint, date, and remaining", unverified );
@@ -191,13 +182,10 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Accurate", "Routine accurately calculates the remaining value for each active sprint", unverified );
          AddAcceptanceCriteria( childWorkItem, "Store", "Routine stores the calculated value in the burndown table", unverified );
          CloseCriteriaList( childWorkItem );
-         //CloseTaskList( workItem );
-
+         
          workItem = CreateWorkItem( "Quadratic Equations", "As a parent, I want to teach my child to sovle quadradic equations", customerRequest, cancelled, mathWar );
-         //OpenTaskList();
          childWorkItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete );
-         //CloseTaskList( workItem );
-
+         
          // 2 PBI's and 3 CR's without tasks
          //    ** New (3)
          //    ** Planning (2)
@@ -388,17 +376,6 @@ namespace HomeScrum.Common.TestData
          return workItem;
       }
 
-      //private static void OpenTaskList()
-      //{
-      //   _tasks = new List<WorkItem>();
-      //}
-
-      //private static void CloseTaskList( WorkItem backlogItem )
-      //{
-      //   backlogItem.Tasks = _tasks.ToArray();
-      //   _tasks = null;
-      //}
-
       private static WorkItem CreateChildTask( WorkItem backlogItem, string name, string description, WorkItemType wit, WorkItemStatus status )
       {
          var workItem = new WorkItem()
@@ -414,7 +391,6 @@ namespace HomeScrum.Common.TestData
          };
 
          _workItems.Add( workItem );
-         //_tasks.Add( workItem );
 
          return workItem;
       }
