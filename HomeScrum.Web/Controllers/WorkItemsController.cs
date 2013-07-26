@@ -73,6 +73,19 @@ namespace HomeScrum.Web.Controllers
          return result;
       }
 
+      [HttpPost]
+      public ActionResult EditTask( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
+      {
+         var result = base.Edit( viewModel, user );
+
+         if (result is RedirectToRouteResult && viewModel.CallingAction != null)
+         {
+            return RedirectToAction( viewModel.CallingAction, new { id = viewModel.CallingId.ToString() } );
+         }
+
+         return result;
+      }
+
 
       #region Select Lists
       protected override void PopulateSelectLists( ISession session, WorkItemEditorViewModel viewModel )

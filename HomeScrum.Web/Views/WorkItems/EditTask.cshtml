@@ -1,0 +1,17 @@
+﻿@model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
+
+@{
+    ViewBag.EditorButtonLabel = "Save";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial( "_Editor", Model )
+
+<div>
+    @Html.ActionLink( "Back to List", "Edit", new { id = Model.CallingId.ToString() } )
+</div>
+
+@section Scripts {
+    @Scripts.Render( "~/bundles/jqueryval" )
+}
