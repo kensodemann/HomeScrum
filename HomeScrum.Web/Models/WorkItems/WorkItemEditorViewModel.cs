@@ -47,5 +47,8 @@ namespace HomeScrum.Web.Models.WorkItems
       public IEnumerable<SelectListItemWithAttributes> ProductBacklogItems { get; set; }
 
       public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
+
+      public string CallingAction { get; set; }
+      public Guid CallingId { get; set; }
    }
 }

@@ -91,7 +91,9 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
             .ForMember( dest => dest.AssignedToUsers, opt => opt.Ignore() )
             .ForMember( dest => dest.ProductBacklogItems, opt => opt.Ignore() )
-            .ForMember( dest => dest.Tasks, opt => opt.Ignore() );
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
              .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
