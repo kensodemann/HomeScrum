@@ -622,7 +622,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var modelId = WorkItems.ModelData[0].Id;
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.EditTask(modelId, "Edit", parentId.ToString())).Model as WorkItemEditorViewModel;
+         var viewModel = ((ViewResult)_controller.Edit(modelId, "Edit", parentId.ToString())).Model as WorkItemEditorViewModel;
 
          Assert.AreEqual("Edit", viewModel.CallingAction);
          Assert.AreEqual(parentId, viewModel.CallingId);

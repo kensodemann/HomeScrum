@@ -27,7 +27,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Create
-      public virtual ActionResult Create()
+      public virtual ActionResult Create( string callingAction = null, string callingId = null )
       {
          var viewModel = new EditorViewModelT();
          var session = SessionFactory.GetCurrentSession();
@@ -67,7 +67,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Edit/Guid
-      public virtual ActionResult Edit( Guid id )
+      public virtual ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())

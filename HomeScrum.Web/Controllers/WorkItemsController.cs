@@ -58,23 +58,26 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
-
-      public ActionResult EditTask( Guid id, string callingAction, string callingId )
+      //
+      // GET: /WorkItems/Edit/Guid
+      public override ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
-         var result = Edit( id );
+         var result = base.Edit( id );
 
          if (result is ViewResult)
          {
             var viewModel = ((ViewResult)result).Model as WorkItemEditorViewModel;
-            viewModel.CallingId = new Guid( callingId );
+            viewModel.CallingId = callingId == null ? default( Guid ) : new Guid( callingId );
             viewModel.CallingAction = callingAction;
          }
 
          return result;
       }
 
+      //
+      // POST: /WorkItems/Edit/Guid
       [HttpPost]
-      public ActionResult EditTask( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
+      public override ActionResult Edit( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {
          var result = base.Edit( viewModel, user );
 
