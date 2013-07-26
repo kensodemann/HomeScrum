@@ -14,7 +14,7 @@ namespace HomeScrum.Web.Controllers.Base
       : ReadOnlyController<ModelT, ViewModelT>
       where ModelT : DomainObjectBase, HomeScrum.Data.Validation.IValidatable
       where ViewModelT : DomainObjectViewModel
-      where EditorViewModelT : new()
+      where EditorViewModelT : DomainObjectViewModel, new()
    {
       public ReadWriteController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( logger, sessionFactory )
@@ -54,7 +54,9 @@ namespace HomeScrum.Web.Controllers.Base
                {
                   Save( session, model, user );
                   transaction.Commit();
-                  return RedirectToAction( () => this.Index() );
+                  return viewModel.CallingAction != null
+                     ? RedirectToAction( viewModel.CallingAction, new { id = viewModel.CallingId.ToString() } )
+                     : RedirectToAction( () => this.Index() );
                }
                TransferErrorMessages( model );
             }
@@ -76,6 +78,8 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
+               viewModel.CallingAction = callingAction;
+               viewModel.CallingId = (callingId != null) ? new Guid( callingId ) : default( Guid );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
                return View( viewModel );
@@ -101,7 +105,9 @@ namespace HomeScrum.Web.Controllers.Base
                {
                   Update( session, model, user );
                   transaction.Commit();
-                  return RedirectToAction( () => this.Index() );
+                  return viewModel.CallingAction != null
+                     ? RedirectToAction( viewModel.CallingAction, new { id = viewModel.CallingId.ToString() } )
+                     : RedirectToAction( () => this.Index() );
                }
                TransferErrorMessages( model );
             }

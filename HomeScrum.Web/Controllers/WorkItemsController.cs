@@ -58,37 +58,6 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
-      //
-      // GET: /WorkItems/Edit/Guid
-      public override ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
-      {
-         var result = base.Edit( id );
-
-         if (result is ViewResult)
-         {
-            var viewModel = ((ViewResult)result).Model as WorkItemEditorViewModel;
-            viewModel.CallingId = callingId == null ? default( Guid ) : new Guid( callingId );
-            viewModel.CallingAction = callingAction;
-         }
-
-         return result;
-      }
-
-      //
-      // POST: /WorkItems/Edit/Guid
-      [HttpPost]
-      public override ActionResult Edit( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
-      {
-         var result = base.Edit( viewModel, user );
-
-         if (result is RedirectToRouteResult && viewModel.CallingAction != null)
-         {
-            return RedirectToAction( viewModel.CallingAction, new { id = viewModel.CallingId.ToString() } );
-         }
-
-         return result;
-      }
-
 
       #region Select Lists
       protected override void PopulateSelectLists( ISession session, WorkItemEditorViewModel viewModel )
