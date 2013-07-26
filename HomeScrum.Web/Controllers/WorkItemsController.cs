@@ -59,7 +59,7 @@ namespace HomeScrum.Web.Controllers
       }
 
 
-      public ActionResult Edit( Guid id, string callingAction, string callingId )
+      public ActionResult EditTask( Guid id, string callingAction, string callingId )
       {
          var result = Edit( id );
 
