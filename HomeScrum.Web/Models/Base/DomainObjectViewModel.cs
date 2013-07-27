@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.Base
 {
-   public class DomainObjectViewModel
+   public class DomainObjectViewModel : ViewModelBase
    {
       public Guid Id { get; set; }
 
@@ -16,11 +16,5 @@ namespace HomeScrum.Web.Models.Base
       [Display( Name = "Description", Prompt = "DescriptionPrompt", ResourceType = typeof( DisplayStrings ) )]
       [UIHint( "MultilineText" )]
       public virtual string Description { get; set; }
-
-
-      #region Navigation Properties
-      public string CallingAction { get; set; }
-      public Guid CallingId { get; set; }
-      #endregion
    }
 }

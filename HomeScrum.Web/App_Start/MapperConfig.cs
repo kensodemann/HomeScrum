@@ -99,7 +99,8 @@ namespace HomeScrum.Web
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
-            .ForMember( dest => dest.CallingId, opt => opt.Ignore() ).ForMember( dest => dest.Statuses, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
             .ForMember( dest => dest.AssignedToUsers, opt => opt.Ignore() )
@@ -107,10 +108,14 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() );
 
          Mapper.CreateMap<User, CreateUserViewModel>()
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<User, EditUserViewModel>()
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
@@ -159,6 +164,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) );
 
          Mapper.CreateMap<User, UserViewModel>()
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
       }
 

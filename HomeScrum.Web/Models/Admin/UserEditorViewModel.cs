@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HomeScrum.Web.Models.Base;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public abstract class UserEditorViewModel
+   public abstract class UserEditorViewModel : ViewModelBase
    {
       public Guid Id { get; set; }
 
