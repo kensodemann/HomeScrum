@@ -2,6 +2,17 @@
 
 @{
     ViewBag.Title = "Create New User";
+    ViewBag.EditorButtonLabel = "Create";
 }
 
-@Html.Partial( "_CreateTemplate", Model )
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial( "_Editor", Model )
+
+<div>
+    @Html.ActionLink( "Cancel", "Index" )
+</div>
+
+@section Scripts {
+    @Scripts.Render( "~/bundles/jqueryval" )
+}
