@@ -71,7 +71,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Users/Create
-      public ActionResult Create()
+      public ActionResult Create( string callingAction = null, string callingId = null )
       {
          return View();
       }
@@ -108,7 +108,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Users/Edit/Guid
-      public ActionResult Edit( Guid id )
+      public ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
@@ -116,8 +116,13 @@ namespace HomeScrum.Web.Controllers
             var model = session.Get<User>( id );
             if (model != null)
             {
+               var viewModel = Mapper.Map<EditUserViewModel>( model );
+               Guid parsedCallingId;
+               Guid.TryParse( callingId, out parsedCallingId );
+               viewModel.CallingId = parsedCallingId;
+               viewModel.CallingAction = callingAction;
                transaction.Commit();
-               return View( Mapper.Map<EditUserViewModel>( model ) );
+               return View( viewModel );
             }
          }
 

@@ -2,18 +2,7 @@
 
 @{
     ViewBag.Title = "Edit User";
-    ViewBag.EditorButtonLabel = "Save";
 }
 
 
-<h2>@ViewBag.Title</h2>
-
-@Html.Partial( "_Editor", Model )
-
-<div>
-    @Html.ActionLink( "Cancel", "Index" )
-</div>
-
-@section Scripts {
-    @Scripts.Render( "~/bundles/jqueryval" )
-}
+@Html.Partial("_EditTemplate", Model)

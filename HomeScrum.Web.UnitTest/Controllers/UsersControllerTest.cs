@@ -247,6 +247,31 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void EditGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var id = Users.ModelData.ToArray()[0].Id;
+
+         var result = _controller.Edit( id ) as ViewResult;
+         var viewModel = result.Model as EditUserViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsCallingActionAndId_IfSupplied()
+      {
+         var id = Users.ModelData.ToArray()[0].Id;
+         var callingId = Guid.NewGuid();
+
+         var result = _controller.Edit( id, "Details", callingId.ToString() ) as ViewResult;
+         var viewModel = result.Model as EditUserViewModel;
+
+         Assert.AreEqual( viewModel.CallingAction, "Details" );
+         Assert.AreEqual( callingId, viewModel.CallingId );
+      }
+
+      [TestMethod]
       public void EditPost_UpdatesUserIfModelValid()
       {
          var user = Users.ModelData.ToArray()[2];

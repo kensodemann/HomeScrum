@@ -617,6 +617,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void EditGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var id = WorkItems.ModelData[0].Id;
+
+         var viewModel = ((ViewResult)_controller.Edit( id )).Model as WorkItemEditorViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
       public void EditGet_AddsCallingActionAndId_IfSpecified()
       {
          var modelId = WorkItems.ModelData[0].Id;
