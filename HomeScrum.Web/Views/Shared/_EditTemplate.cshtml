@@ -1,4 +1,4 @@
-﻿@model Object
+﻿@model HomeScrum.Web.Models.Base.DomainObjectViewModel
 
 
 @{
@@ -10,7 +10,8 @@
 @Html.Partial( "_Editor", Model )
 
 <div>
-    @Html.ActionLink( "Back to List", "Index" )
+    @Html.ActionLink( "Cancel", Model.CallingAction ?? "Index",
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
 </div>
 
 @section Scripts {

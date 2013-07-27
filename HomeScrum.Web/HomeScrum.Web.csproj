@@ -438,7 +438,6 @@
     <Content Include="Views\WorkItems\Edit.cshtml" />
     <Content Include="Views\Shared\_WorkItemList.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectEditor.cshtml" />
-    <Content Include="Views\WorkItems\EditTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
