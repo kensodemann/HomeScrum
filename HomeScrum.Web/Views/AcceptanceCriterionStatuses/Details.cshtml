@@ -46,6 +46,6 @@
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink( "Edit", "Edit", new { id = Model.Id } ) |
+    @Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() } ) |
     @Html.ActionLink( "Done", "Index" )
 </p>
