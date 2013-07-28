@@ -33,6 +33,10 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
+            Guid parsedId;
+            Guid.TryParse( callingId, out parsedId );
+            viewModel.CallingId = parsedId;
+            viewModel.CallingAction = callingAction;
             PopulateSelectLists( session, viewModel );
             transaction.Commit();
          }

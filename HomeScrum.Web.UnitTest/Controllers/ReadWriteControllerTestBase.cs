@@ -139,6 +139,29 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var controller = CreateController();
+         
+         var viewModel = ((ViewResult)controller.Create(  )).Model as ViewModelBase;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var controller = CreateController();
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)controller.Create( "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
       public void CreatePost_SavesModelIfNewViewModelIsValid()
       {
          var controller = CreateController();
@@ -258,6 +281,31 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void EditGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[3].Id;
+
+         var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[3].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
       }
 
       [TestMethod]

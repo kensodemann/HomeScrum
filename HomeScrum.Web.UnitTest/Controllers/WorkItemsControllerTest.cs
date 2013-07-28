@@ -225,6 +225,26 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
          }
       }
+
+      [TestMethod]
+      public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var viewModel = ((ViewResult)_controller.Create()).Model as WorkItemEditorViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
       #endregion
 
 
