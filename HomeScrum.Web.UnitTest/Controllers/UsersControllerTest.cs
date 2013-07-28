@@ -113,12 +113,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreateGet_ReturnsViewWithoutModel()
+      public void CreateGet_ReturnsViewWithViewModel()
       {
          var result = _controller.Create() as ViewResult;
 
          Assert.IsNotNull( result );
-         Assert.IsNull( result.Model );
+         Assert.IsInstanceOfType( result.Model, typeof( CreateUserViewModel ) );
+      }
+
+      [TestMethod]
+      public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var viewModel = ((ViewResult)_controller.Create()).Model as CreateUserViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
       }
 
       [TestMethod]

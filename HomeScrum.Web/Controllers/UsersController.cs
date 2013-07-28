@@ -73,7 +73,14 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Create
       public ActionResult Create( string callingAction = null, string callingId = null )
       {
-         return View();
+         var viewModel = new CreateUserViewModel();
+
+         Guid parsedId;
+         Guid.TryParse( callingId, out parsedId );
+         viewModel.CallingId = parsedId;
+         viewModel.CallingAction = callingAction;
+
+         return View( viewModel );
       }
 
       //
