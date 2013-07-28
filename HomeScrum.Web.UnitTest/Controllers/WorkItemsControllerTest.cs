@@ -915,6 +915,26 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region Remove Parent Tests
+      [TestMethod]
+      public void RemoveParent_MakesParentIdNull_IfWorkItemFound()
+      {
+      }
+
+      public void RemoveParent_ReturnsToView_IfWorkItemNotFound()
+      {
+      }
+
+      public void RemoveParent_ReturnsToCallingAction_IfSpecified()
+      {
+      }
+
+      public void RemoveParent_ReturnsToIndex_IfNoCallingActionSpecified()
+      {
+      }
+      #endregion
+
+
       #region private helpers
       private static void CreateMockIOCKernel()
       {
