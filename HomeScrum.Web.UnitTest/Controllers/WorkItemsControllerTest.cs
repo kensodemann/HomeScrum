@@ -921,7 +921,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
       }
 
-      public void RemoveParent_ReturnsToView_IfWorkItemNotFound()
+      public void RemoveParent_ReturnsViewResult_IfWorkItemNotFound()
       {
       }
 
