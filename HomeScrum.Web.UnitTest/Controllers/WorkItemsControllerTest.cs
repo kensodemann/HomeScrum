@@ -653,10 +653,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var modelId = WorkItems.ModelData[0].Id;
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Edit(modelId, "Edit", parentId.ToString())).Model as WorkItemEditorViewModel;
+         var viewModel = ((ViewResult)_controller.Edit( modelId, "Edit", parentId.ToString() )).Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual("Edit", viewModel.CallingAction);
-         Assert.AreEqual(parentId, viewModel.CallingId);
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
       }
       #endregion
 
@@ -919,17 +919,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void RemoveParent_MakesParentIdNull_IfWorkItemFound()
       {
+         var id = WorkItems.ModelData.First( x => x.ParentWorkItem != null ).Id;
+
+         _controller.RemoveParent( id );
+
+         using (var session = Database.OpenSession())
+         {
+            var item = session.Get<WorkItem>( id );
+            Assert.IsNotNull( item );
+            Assert.IsNull( item.ParentWorkItem );
+         }
       }
 
-      public void RemoveParent_ReturnsViewResult_IfWorkItemNotFound()
+      [TestMethod]
+      public void RemoveParent_ReturnsRedirectResult_IfWorkItemNotFound()
+      {
+         var id = Guid.NewGuid();
+
+         var result = _controller.RemoveParent( id );
+
+         Assert.IsInstanceOfType( result, typeof( RedirectToRouteResult ) );
+      }
+
+      [TestMethod]
+      public void RemoveParent_RedirectsToCallingAction_IfSpecified()
       {
       }
 
-      public void RemoveParent_ReturnsToCallingAction_IfSpecified()
-      {
-      }
-
-      public void RemoveParent_ReturnsToIndex_IfNoCallingActionSpecified()
+      [TestMethod]
+      public void RemoveParent_RedirectsToIndex_IfNoCallingActionSpecified()
       {
       }
       #endregion

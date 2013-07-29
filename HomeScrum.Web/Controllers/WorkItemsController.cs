@@ -58,6 +58,36 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
+      //
+      // GET: /WorkItems/RemoveParent/Id
+      public virtual ActionResult RemoveParent( Guid id, string callingAction = null, string callingId = null )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            try
+            {
+               var workItem = session.Get<WorkItem>( id );
+               if (workItem != null)
+               {
+                  workItem.ParentWorkItem = null;
+                  session.Save( workItem );
+               }
+            }
+            catch (Exception e)
+            {
+               transaction.Rollback();
+               Log.Error( e, "Attempting to remove parent" );
+            }
+            finally
+            {
+               transaction.Commit();
+            }
+         }
+
+         return RedirectToAction( "Index" );
+      }
+
 
       #region Select Lists
       protected override void PopulateSelectLists( ISession session, WorkItemEditorViewModel viewModel )
