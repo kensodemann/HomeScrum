@@ -944,11 +944,24 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void RemoveParent_RedirectsToCallingAction_IfSpecified()
       {
+         var id = WorkItems.ModelData.First( x => x.ParentWorkItem != null ).Id;
+         var callingId = Guid.NewGuid();
+
+         var result = _controller.RemoveParent( id, "Edit", callingId.ToString() ) as RedirectToRouteResult;
+
+         Assert.AreEqual( 2, result.RouteValues.Count );
+         Assert.AreEqual( "Edit", result.RouteValues["action"] );
+         Assert.AreEqual( callingId.ToString(), result.RouteValues["id"] );
       }
 
       [TestMethod]
       public void RemoveParent_RedirectsToIndex_IfNoCallingActionSpecified()
       {
+         var id = WorkItems.ModelData.First( x => x.ParentWorkItem != null ).Id;
+
+         var result = _controller.RemoveParent( id ) as RedirectToRouteResult;
+         Assert.AreEqual( 1, result.RouteValues.Count );
+         Assert.AreEqual( "Index", result.RouteValues["action"] );
       }
       #endregion
 

@@ -85,7 +85,8 @@ namespace HomeScrum.Web.Controllers
             }
          }
 
-         return RedirectToAction( "Index" );
+         return RedirectToAction( callingAction ?? "Index",
+            callingId == null ? null : new { id = callingId.ToString() } );
       }
 
 
