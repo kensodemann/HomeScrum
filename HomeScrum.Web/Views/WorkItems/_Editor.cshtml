@@ -82,7 +82,9 @@
                     </td>
                     <td>
                         @Html.ActionLink( "Edit", "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
-            @Html.ActionLink( "Details", "Details", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
+                        @Html.ActionLink( "Details", "Details", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
+                        @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
+                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
                     </td>
                 </tr>
             }
