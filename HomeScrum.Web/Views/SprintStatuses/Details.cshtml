@@ -46,5 +46,6 @@
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }) |
-    @Html.ActionLink("Done", "Index")
+    @Html.ActionLink( "Done", Model.CallingAction ?? "Index",
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
 </p>
