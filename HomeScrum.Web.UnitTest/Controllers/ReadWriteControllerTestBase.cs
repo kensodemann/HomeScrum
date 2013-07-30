@@ -101,7 +101,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       [TestMethod]
-      public void Details_ReturnsViewWithModel()
+      public void DetailsGet_ReturnsViewWithModel()
       {
          var controller = CreateController();
          var model = GetAllModels().ToArray()[2];
@@ -117,7 +117,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void Details_ReturnsHttpNotFoundIfNoModel()
+      public void DetailsGet_ReturnsHttpNotFoundIfNoModel()
       {
          var controller = CreateController();
          var id = Guid.NewGuid();
@@ -125,6 +125,31 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Details( id ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void DetailsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[2].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)controller.Details( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_LeavesCallingActionAndIdAsDefault_IfNotSpecified()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[2].Id;
+
+         var viewModel = ((ViewResult)controller.Details( id )).Model as ViewModelBase;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
 
       [TestMethod]
@@ -142,8 +167,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
       {
          var controller = CreateController();
-         
-         var viewModel = ((ViewResult)controller.Create(  )).Model as ViewModelBase;
+
+         var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( default( Guid ), viewModel.CallingId );

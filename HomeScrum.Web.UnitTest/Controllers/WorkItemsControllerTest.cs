@@ -112,6 +112,31 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( result );
       }
+
+      [TestMethod]
+      public void DetailsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var controller = CreateController();
+         var id = WorkItems.ModelData[2].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)controller.Details( id, "Edit", parentId.ToString() )).Model as WorkItemViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_LeavesCallingActionAndIdAsDefault_IfNotSpecified()
+      {
+         var controller = CreateController();
+         var id = WorkItems.ModelData[2].Id;
+
+         var viewModel = ((ViewResult)controller.Details( id )).Model as WorkItemViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
       #endregion
 
 

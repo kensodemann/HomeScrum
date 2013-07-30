@@ -57,7 +57,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Details/Guid
-      public virtual ActionResult Details( Guid id )
+      public virtual ActionResult Details( Guid id, string callingAction = null, string callingId = null )
       {
          ModelT model;
          Log.Debug( "Details(%s)", id.ToString() );
@@ -73,7 +73,13 @@ namespace HomeScrum.Web.Controllers.Base
          {
             return HttpNotFound();
          }
-         return View( Mapper.Map<ViewModelT>( model ) );
+
+         var viewModel = Mapper.Map<ViewModelT>( model );
+         Guid parsedId;
+         Guid.TryParse( callingId, out parsedId );
+         viewModel.CallingAction = callingAction;
+         viewModel.CallingId = parsedId;
+         return View( viewModel );
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
