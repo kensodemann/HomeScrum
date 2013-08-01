@@ -2,6 +2,7 @@
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
+using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,6 +31,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
 
+      protected Mock<ControllerContext> _controllerConext;
+      protected Stack<NavigationData> _navigationStack;
+
       WorkItemsController _controller;
 
       [ClassInitialize]
@@ -48,6 +52,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          BuildDatabase();
          SetupCurrentUser();
          SetupLogger();
+         SetupControllerContext();
 
          _controller = CreateController();
       }
@@ -1063,7 +1068,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateController()
       {
          var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, Database.SessionFactory );
-         controller.ControllerContext = new ControllerContext();
+         controller.ControllerContext = _controllerConext.Object;
 
          return controller;
       }
@@ -1071,6 +1076,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void SetupLogger()
       {
          _logger = new Mock<ILogger>();
+      }
+
+      private void SetupControllerContext()
+      {
+         _controllerConext = new Mock<ControllerContext>();
+         _controllerConext
+            .SetupSet( x => x.HttpContext.Session["NavigationStack"] = It.IsAny<Stack<NavigationData>>() )
+            .Callback( ( string name, object m ) => { _navigationStack = (Stack<NavigationData>)m; } );
+         _controllerConext
+            .Setup( x => x.HttpContext.Session["NavigationStack"] )
+            .Returns( () => _navigationStack );
       }
       #endregion
    }

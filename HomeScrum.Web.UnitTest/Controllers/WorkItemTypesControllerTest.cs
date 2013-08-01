@@ -65,7 +65,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel> CreateController()
       {
          var controller = new WorkItemTypesController( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, Database.SessionFactory );
-         controller.ControllerContext = new ControllerContext();
+         controller.ControllerContext = _controllerConext.Object;
 
          return controller;
       }

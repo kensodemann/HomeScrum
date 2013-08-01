@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web.Mvc;
+using System.Web;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -28,6 +29,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       protected Mock<ILogger> _logger;
       protected IPrincipal FakeUser = new GenericPrincipal( new GenericIdentity( "ken", "Forms" ), null );
+
+      protected Mock<ControllerContext> _controllerConext;
+      protected Stack<NavigationData> _navigationStack;
 
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
@@ -80,6 +84,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void BuildMocks()
       {
          _logger = new Mock<ILogger>();
+
+         _controllerConext = new Mock<ControllerContext>();
+         _controllerConext
+            .SetupSet( x => x.HttpContext.Session["NavigationStack"] = It.IsAny<Stack<NavigationData>>() )
+            .Callback( ( string name, object m ) => { _navigationStack = (Stack<NavigationData>)m; } );
+         _controllerConext
+            .Setup( x => x.HttpContext.Session["NavigationStack"] )
+            .Returns( () => _navigationStack );
       }
 
       public abstract ReadWriteController<ModelT, ViewModelT, EditorViewModelT> CreateController();
@@ -150,6 +162,33 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PushesToNavigationStack_IfCallingDataGiven()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[3].Id;
+         var parentId = Guid.NewGuid();
+
+         controller.Details( id, "Index" );
+         var viewModel = ((ViewResult)controller.Details( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 2, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
       }
 
       [TestMethod]
@@ -328,6 +367,33 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          var viewModel = ((ViewResult)controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_PushesToNavigationStack_IfCallingDataGiven()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[3].Id;
+         var parentId = Guid.NewGuid();
+
+         controller.Edit( id, "Index" );
+         var viewModel = ((ViewResult)controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 2, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.AreEqual( Guid.Empty, new Guid( navData.Id ) );
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );

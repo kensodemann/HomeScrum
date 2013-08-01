@@ -75,11 +75,61 @@ namespace HomeScrum.Web.Controllers.Base
          }
 
          var viewModel = Mapper.Map<ViewModelT>( model );
+
+         // This needs to be:
+         // If callingAction/Id
+         //   push and peek
+         // else
+         //   pop and peek
+
+         if (callingAction != null)
+         {
+            PushNavigationData( callingAction, callingId );
+         }
          Guid parsedId;
          Guid.TryParse( callingId, out parsedId );
          viewModel.CallingAction = callingAction;
          viewModel.CallingId = parsedId;
          return View( viewModel );
+      }
+
+      protected void PushNavigationData( string callingAction, string callingId )
+      {
+         var stack = Session["NavigationStack"] as Stack<NavigationData>;
+         if (stack == null)
+         {
+            stack = new Stack<NavigationData>();
+         }
+         stack.Push( new NavigationData() { Action = callingAction, Id = callingId } );
+         Session["NavigationStack"] = stack;
+      }
+
+      protected void PopNavigationData()
+      {
+         var stack = Session["NavigationStack"] as Stack<NavigationData>;
+         if (stack != null && stack.Count != 0)
+         {
+            stack.Pop();
+            Session["NavigationStack"] = stack;
+         }
+      }
+
+      protected void PeekNavigationData(ViewModelBase viewModel)
+      {
+         var stack = Session["NavigationStack"] as Stack<NavigationData>;
+         if (stack != null && stack.Count != 0)
+         {
+            var data = stack.Peek();
+            Guid parsedId;
+            Guid.TryParse( data.Id, out parsedId );
+            viewModel.CallingAction = data.Action;
+            viewModel.CallingId = parsedId;
+         }
+         else
+         {
+            viewModel.CallingAction = null;
+            viewModel.CallingId = Guid.Empty;
+         }
       }
 
       protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )

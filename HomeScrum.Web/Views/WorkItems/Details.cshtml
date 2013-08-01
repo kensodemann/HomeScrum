@@ -53,7 +53,8 @@
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() } ) |
+    @*@Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() } )*@ |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id, CallingAction = Model.CallingAction ?? "Index", CallingId = Model.CallingId.ToString() }) |
     @Html.ActionLink( "Done", Model.CallingAction ?? "Index",
        (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
 </p>
