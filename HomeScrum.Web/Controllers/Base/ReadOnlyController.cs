@@ -101,6 +101,16 @@ namespace HomeScrum.Web.Controllers.Base
          {
             stack = new Stack<NavigationData>();
          }
+
+         if (stack.Count != 0)
+         {
+            var top = stack.Peek();
+            if (top.Action == callingAction && top.Id == callingId)
+            {
+               return;
+            }
+         }
+         
          stack.Push( new NavigationData() { Action = callingAction, Id = callingId } );
          Session["NavigationStack"] = stack;
       }
