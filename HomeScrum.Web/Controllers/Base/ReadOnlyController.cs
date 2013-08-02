@@ -76,24 +76,25 @@ namespace HomeScrum.Web.Controllers.Base
 
          var viewModel = Mapper.Map<ViewModelT>( model );
 
-         // This needs to be:
-         // If callingAction/Id
-         //   push and peek
-         // else
-         //   pop and peek
+         UpdateNavigationStack( viewModel, callingAction, callingId );
 
+         return View( viewModel );
+      }
+
+      protected void UpdateNavigationStack( ViewModelBase viewModel, string callingAction, string callingId )
+      {
          if (callingAction != null)
          {
             PushNavigationData( callingAction, callingId );
          }
-         Guid parsedId;
-         Guid.TryParse( callingId, out parsedId );
-         viewModel.CallingAction = callingAction;
-         viewModel.CallingId = parsedId;
-         return View( viewModel );
+         else
+         {
+            PopNavigationData();
+         }
+         PeekNavigationData( viewModel );
       }
 
-      protected void PushNavigationData( string callingAction, string callingId )
+      private void PushNavigationData( string callingAction, string callingId )
       {
          var stack = Session["NavigationStack"] as Stack<NavigationData>;
          if (stack == null)
@@ -104,7 +105,7 @@ namespace HomeScrum.Web.Controllers.Base
          Session["NavigationStack"] = stack;
       }
 
-      protected void PopNavigationData()
+      private void PopNavigationData()
       {
          var stack = Session["NavigationStack"] as Stack<NavigationData>;
          if (stack != null && stack.Count != 0)
@@ -114,7 +115,7 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
-      protected void PeekNavigationData(ViewModelBase viewModel)
+      private void PeekNavigationData( ViewModelBase viewModel )
       {
          var stack = Session["NavigationStack"] as Stack<NavigationData>;
          if (stack != null && stack.Count != 0)

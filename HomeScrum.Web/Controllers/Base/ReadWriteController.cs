@@ -39,10 +39,7 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            Guid parsedId;
-            Guid.TryParse( callingId, out parsedId );
-            viewModel.CallingId = parsedId;
-            viewModel.CallingAction = callingAction;
+            UpdateNavigationStack( viewModel, callingAction, callingId );
             PopulateSelectLists( session, viewModel );
             transaction.Commit();
          }
@@ -94,8 +91,7 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
-               viewModel.CallingAction = callingAction;
-               viewModel.CallingId = (callingId != null) ? new Guid( callingId ) : default( Guid );
+               UpdateNavigationStack( viewModel, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
                return View( viewModel );
