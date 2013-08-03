@@ -10,7 +10,7 @@ namespace HomeScrum.Web
       {
          bundles.Add( new ScriptBundle( "~/bundles/myScripts" )
             .Include( "~/Scripts/myUIExtensions.js" ) );
-         
+
          bundles.Add( new ScriptBundle( "~/bundles/jquery" )
             .Include( "~/Scripts/jquery-{version}.js" )
             .Include( "~/Scripts/jquery.storage.js" )
@@ -25,12 +25,14 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/modernizr" ).Include(
                      "~/Scripts/modernizr-*" ) );
 
+         bundles.Add( new StyleBundle( "~/Content/themes/cupertino/css" ).Include(
+                     "~/Content/themes/cupertino/jquery-ui.css" ) );
+
          bundles.Add( new StyleBundle( "~/Content/css" )
             .Include( "~/Content/Site.css" )
             .Include( "~/Content/Detail.css" )
             .Include( "~/Content/Editor.css" )
-            .Include( "~/Content/HeaderFooter.css" )
-            .Include( "~/Content/themes/cupertino/jquery-ui.css" ) );
+            .Include( "~/Content/HeaderFooter.css" ) );
       }
    }
 }
