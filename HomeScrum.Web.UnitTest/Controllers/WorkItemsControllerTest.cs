@@ -436,6 +436,42 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void CreateGet_SelectsProductBacklogItem_IfParentWorkItemIdSpecified()
+      {
+         var backlogItems = WorkItems.ModelData
+            .Where( x => x.Status.IsOpenStatus && x.Status.StatusCd == 'A' && !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' )
+            .ToList();
+         var backlogItemId = backlogItems.ElementAt( 2 ).Id;
+         var result = _controller.Create( parentId: backlogItemId.ToString() ) as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( backlogItems.Count() + 1, model.ProductBacklogItems.Count() );
+         for (int i = 0; i < model.ProductBacklogItems.Count(); i++)
+         {
+            var item = model.ProductBacklogItems.ElementAt( i );
+            if (i == 0)
+            {
+               Assert.AreEqual( default( Guid ).ToString(), item.Value );
+            }
+            else
+            {
+               var workItem = backlogItems.First( x => x.Id == new Guid( item.Value ) );
+               backlogItems.Remove( workItem );
+               Assert.AreEqual( workItem.Name, item.Text );
+               if (workItem.Id == backlogItemId)
+               {
+                  Assert.IsTrue( item.Selected, "Backlog Item should be selected" );
+               }
+               else
+               {
+                  Assert.IsFalse( item.Selected, "Backlog Item should not be selected" );
+               }
+            }
+         }
+      }
       #endregion
 
 
@@ -673,6 +709,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
       #endregion
+
+
+
 
 
       #region Edit GET Tests

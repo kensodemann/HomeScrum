@@ -22,6 +22,27 @@ namespace HomeScrum.Web.Controllers
          : base( translator, logger, sessionFactory ) { }
 
       //
+      // GET: /WorkItem/Create
+      public override ActionResult Create( string callingAction = null, string callingId = null, string parentId = null )
+      {
+         Guid parsedId;
+
+         var view = base.Create( callingAction, callingId, parentId ) as ViewResult;
+
+         if (Guid.TryParse( parentId, out parsedId ))
+         {
+            var backlogItem = ((WorkItemEditorViewModel)view.Model).ProductBacklogItems.FirstOrDefault( x => new Guid( x.Value ) == parsedId );
+            if (backlogItem != null)
+            {
+               backlogItem.Selected = true;
+            }
+         }
+
+         return view;
+      }
+
+
+      //
       // POST: /WorkItem/Create
       public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {

@@ -27,14 +27,8 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Create
-      public virtual ActionResult Create( string callingAction = null, string callingId = null )
+      public virtual ActionResult Create( string callingAction = null, string callingId = null, string parentWorkItemId = null )
       {
-         // This needs to have:
-         // If callingAction/Id
-         //   push and peek
-         // else
-         //   pop and peek
-
          var viewModel = new EditorViewModelT();
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
@@ -78,12 +72,6 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
-         // This needs to have:
-         // If callingAction/Id
-         //   push and peek
-         // else
-         //   pop and peek
-
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
