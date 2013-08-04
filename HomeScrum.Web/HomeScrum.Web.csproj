@@ -443,6 +443,8 @@
     <Content Include="Views\Shared\_DetailsTemplate.cshtml" />
     <Content Include="Views\WorkItems\_Details.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
+    <Content Include="Views\WorkItemStatuses\_Details.cshtml" />
+    <Content Include="Views\WorkItemTypes\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
