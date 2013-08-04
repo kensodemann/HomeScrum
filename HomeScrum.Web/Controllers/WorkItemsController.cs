@@ -28,13 +28,21 @@ namespace HomeScrum.Web.Controllers
          Guid parsedId;
 
          var view = base.Create( callingAction, callingId, parentId ) as ViewResult;
+         var model = (WorkItemEditorViewModel)view.Model; 
 
          if (Guid.TryParse( parentId, out parsedId ))
          {
-            var backlogItem = ((WorkItemEditorViewModel)view.Model).ProductBacklogItems.FirstOrDefault( x => new Guid( x.Value ) == parsedId );
+            var backlogItem = model.ProductBacklogItems.FirstOrDefault( x => x.Selected );
+            if (backlogItem != null)
+            {
+               backlogItem.Selected = false;
+            }
+
+            backlogItem = model.ProductBacklogItems.FirstOrDefault( x => new Guid( x.Value ) == parsedId );
             if (backlogItem != null)
             {
                backlogItem.Selected = true;
+               model.ParentWorkItemId = parsedId;
             }
          }
 

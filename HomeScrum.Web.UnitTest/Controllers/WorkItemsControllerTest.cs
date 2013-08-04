@@ -454,7 +454,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             var item = model.ProductBacklogItems.ElementAt( i );
             if (i == 0)
             {
-               Assert.AreEqual( default( Guid ).ToString(), item.Value );
+               Assert.AreEqual( Guid.Empty.ToString(), item.Value );
+               Assert.IsFalse( item.Selected, "Not Assigned should not be selected" );
             }
             else
             {

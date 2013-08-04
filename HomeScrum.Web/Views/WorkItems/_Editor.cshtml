@@ -93,6 +93,7 @@
  
     <p>
         <input type="submit" value="@ViewBag.EditorButtonLabel" />
+        @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
     </p>
     
     <script>
@@ -120,9 +121,11 @@
             var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
             if (canHaveChildren == "True") {
                 $("#TaskListDiv").show(effect);
+                $("#CreateNewTask").show(effect);
             }
             else {
                 $("#TaskListDiv").hide(effect);
+                $("#CreateNewTask").hide(effect);
             }
         }
 
@@ -161,6 +164,8 @@
         }
 
         $(function () {
+            $("#CreateNewTask").button();
+
             ShowHideDataItems();
             LimitBacklogItems();
 
