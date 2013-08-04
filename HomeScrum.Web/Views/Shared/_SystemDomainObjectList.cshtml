@@ -45,7 +45,7 @@
 <script>
     function postSortData(controllerName) {
         $.ajax({
-            url: '/' + controllerName + '/UpdateSortOrders/',
+            url: controllerName + '/UpdateSortOrders/',
             data: { itemIds: $(".ListBody").sortable('toArray') },
             type: 'post',
             traditional: true
