@@ -1,0 +1,35 @@
+﻿@model HomeScrum.Web.Models.WorkItems.WorkItemViewModel
+
+@Html.Partial( "_DomainObjectBaseDetails", Model )
+
+<fieldset>
+    <legend>WorkItemViewModel</legend>
+
+    <div class="displayLabel" id="StatusLabel">
+        @Html.DisplayNameFor( model => model.StatusName )
+    </div>
+    <div class="displayField" id="Status">
+        @Html.DisplayFor( model => model.StatusName )
+    </div>
+
+    <div class="displayLabel" id="ProjectLabel">
+        @Html.DisplayNameFor( model => model.ProjectName )
+    </div>
+    <div class="displayField" id="Project">
+        @Html.DisplayFor( model => model.ProjectName )
+    </div>
+
+    <div class="displayLabel" id="CreatedByUserNameLabel">
+        @Html.DisplayNameFor( model => model.CreatedByUserName )
+    </div>
+    <div class="displayField" id="CreatedByUserName">
+        @Html.DisplayFor( model => model.CreatedByUserName )
+    </div>
+
+    <div class="displayLabel" id="AssinedToUserNameLabel">
+        @Html.DisplayNameFor( model => model.AssignedToUserName )
+    </div>
+    <div class="displayField" id="AssigneToUserName">
+        @Html.DisplayFor( model => model.AssignedToUserName )
+    </div>
+</fieldset>
