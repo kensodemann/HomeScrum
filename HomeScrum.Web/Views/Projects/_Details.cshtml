@@ -1,0 +1,14 @@
+﻿@model HomeScrum.Web.Models.Admin.ProjectViewModel
+
+@Html.Partial( "_DomainObjectBaseDetails", Model )
+
+<fieldset>
+    <legend>Project</legend>
+
+    <div class="displayLabel">
+         @Html.DisplayNameFor(model => model.StatusName)
+    </div>
+    <div class="displayField">
+        @Html.DisplayFor(model => model.StatusName)
+    </div>
+</fieldset>
