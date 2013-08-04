@@ -29,5 +29,7 @@ namespace HomeScrum.Web.Models.WorkItems
       public string ParentWorkItemName { get; set; }
 
       public IEnumerable<AcceptanceCriterionViewModel> AcceptanceCriteria { get; set; }
+
+      public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
    }
 }

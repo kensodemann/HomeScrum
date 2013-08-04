@@ -75,7 +75,7 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            var viewModel = GetViewModel( session, id );
+            var viewModel = GetEditorViewModel( session, id );
 
             if (viewModel != null)
             {
@@ -129,17 +129,10 @@ namespace HomeScrum.Web.Controllers.Base
 
       protected virtual void PopulateSelectLists( ISession session, EditorViewModelT viewModel ) { }
 
-      protected virtual EditorViewModelT GetViewModel( ISession session, Guid id )
+      protected virtual EditorViewModelT GetEditorViewModel( ISession session, Guid id )
       {
-         EditorViewModelT viewModel = default( EditorViewModelT );
          var model = session.Get<ModelT>( id );
-
-         if (model != null)
-         {
-            viewModel = Mapper.Map<EditorViewModelT>( model );
-         }
-
-         return viewModel;
+         return (model != null) ? Mapper.Map<EditorViewModelT>( model ) : null;
       }
 
       protected virtual void Save( ISession session, ModelT model, IPrincipal user )

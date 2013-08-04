@@ -28,7 +28,7 @@ namespace HomeScrum.Web.Controllers
          Guid parsedId;
 
          var view = base.Create( callingAction, callingId, parentId ) as ViewResult;
-         var model = (WorkItemEditorViewModel)view.Model; 
+         var model = (WorkItemEditorViewModel)view.Model;
 
          if (Guid.TryParse( parentId, out parsedId ))
          {
@@ -201,31 +201,46 @@ namespace HomeScrum.Web.Controllers
       #endregion
 
 
-      protected override WorkItemEditorViewModel GetViewModel( ISession session, Guid id )
+      protected override WorkItemEditorViewModel GetEditorViewModel( ISession session, Guid id )
+      {
+         var viewModel = base.GetEditorViewModel( session, id );
+
+         if (viewModel != null)
+         {
+            viewModel.Tasks = GetChildTasks( session, id );
+         }
+
+         return viewModel;
+      }
+
+      protected override WorkItemViewModel GetViewModel( ISession session, Guid id )
       {
          var viewModel = base.GetViewModel( session, id );
 
          if (viewModel != null)
          {
-            viewModel.Tasks =
-               session.Query<WorkItem>()
-                  .Where( x => x.ParentWorkItem.Id == id )
-                  .OrderBy( x => x.Status.SortSequence )
-                  .ThenBy( x => x.WorkItemType.SortSequence )
-                  .ThenBy( x => x.Name.ToUpper() )
-                  .Select( x => new WorkItemIndexViewModel()
-                                {
-                                   Id = x.Id,
-                                   Name = x.Name,
-                                   Description = x.Description,
-                                   StatusName = x.Status.Name,
-                                   WorkItemTypeName = x.WorkItemType.Name,
-                                   IsComplete = !x.Status.IsOpenStatus
-                                } )
-                  .ToList();
+            viewModel.Tasks = GetChildTasks( session, id );
          }
 
          return viewModel;
+      }
+
+      private IEnumerable<WorkItemIndexViewModel> GetChildTasks( ISession session, Guid id )
+      {
+         return session.Query<WorkItem>()
+            .Where( x => x.ParentWorkItem.Id == id )
+            .OrderBy( x => x.Status.SortSequence )
+            .ThenBy( x => x.WorkItemType.SortSequence )
+            .ThenBy( x => x.Name.ToUpper() )
+            .Select( x => new WorkItemIndexViewModel()
+            {
+               Id = x.Id,
+               Name = x.Name,
+               Description = x.Description,
+               StatusName = x.Status.Name,
+               WorkItemTypeName = x.WorkItemType.Name,
+               IsComplete = !x.Status.IsOpenStatus
+            } ).ToList();
       }
 
 

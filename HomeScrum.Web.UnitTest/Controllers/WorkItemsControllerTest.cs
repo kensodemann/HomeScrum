@@ -224,6 +224,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void DetailsGet_PopulatesTaskList_IfChildTasksExist()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedChildWorkItems = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+
+         var result = _controller.Details( parentId ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
+         foreach (var child in expectedChildWorkItems)
+         {
+            Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
+         }
+      }
       #endregion
 
 
@@ -710,9 +732,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
       #endregion
-
-
-
 
 
       #region Edit GET Tests

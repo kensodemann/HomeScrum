@@ -153,6 +153,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() );
          Mapper.CreateMap<WorkItem, WorkItemViewModel>()
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) )
