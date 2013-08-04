@@ -1,51 +1,7 @@
 ﻿@model HomeScrum.Web.Models.Admin.ProjectStatusViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Project Status";
 }
 
-<h2>Details</h2>
-
-<fieldset>
-    <legend>ProjectStatus</legend>
-
-    <div class="displayLabel" id="NameLabel">
-        @Html.DisplayNameFor( model => model.Name )
-    </div>
-    <div class="displayField" id="Name">
-        @Html.DisplayFor( model => model.Name )
-    </div>
-
-    <div class="displayLabel" id="DescriptionLabel">
-        @Html.DisplayNameFor( model => model.Description )
-    </div>
-    <div class="displayLongTextField" id="Description">
-        @Html.DisplayFor( model => model.Description )
-    </div>
-
-    <div class="displayCheckBox" id="AllowUse">
-        @Html.DisplayFor( model => model.AllowUse )
-    </div>
-    <div class="displayCheckBoxLabel" id="AllowUseLabel">
-        @Html.DisplayNameFor( model => model.AllowUse )
-    </div>
-
-    <div class="displayCheckBox" id="IsActive">
-        @Html.DisplayFor( model => model.IsActive )
-    </div>
-    <div class="displayCheckBoxLabel" id="IsActiveLabel">
-        @Html.DisplayNameFor( model => model.IsActive )
-    </div>
-
-    <div class="displayCheckBox" id="IsPredefined">
-        @Html.DisplayFor( model => model.IsPredefined )
-    </div>
-    <div class="displayCheckBoxLabel" id="IsPredefinedLabel">
-        @Html.DisplayNameFor( model => model.IsPredefined )
-    </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }) |
-    @Html.ActionLink( "Done", Model.CallingAction ?? "Index",
-       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
-</p>
+@Html.Partial( "_DetailsTemplate", Model )
