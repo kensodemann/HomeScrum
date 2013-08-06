@@ -445,7 +445,6 @@
     <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
     <Content Include="Views\WorkItemStatuses\_Details.cshtml" />
     <Content Include="Views\WorkItemTypes\_Details.cshtml" />
-    <Content Include="Views\Users\_Details.cshtml" />
     <Content Include="Views\SprintStatuses\_Details.cshtml" />
     <Content Include="Views\ProjectStatuses\_Details.cshtml" />
     <Content Include="Views\Projects\_Details.cshtml" />
