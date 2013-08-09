@@ -19,12 +19,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<WorkItemType> GetAllModels()
       {
-         using (var session = Database.OpenSession())
-         {
-            return session.Query<WorkItemType>()
-               .OrderBy( x => x.SortSequence )
-               .ToList();
-         }
+         var models = _session.Query<WorkItemType>()
+            .OrderBy( x => x.SortSequence )
+            .ToList();
+
+         _session.Clear();
+         return models;
       }
 
       protected override WorkItemType CreateNewModel()
@@ -48,23 +48,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public override void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
-         Database.Build();
-         Users.Load();
-         WorkItemTypes.Load();
          base.InitializeTest();
+
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
+         WorkItemTypes.Load( _sessionFactory.Object );
       }
 
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
 
       public override ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel> CreateController()
       {
-         var controller = new WorkItemTypesController( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, Database.SessionFactory );
+         var controller = new WorkItemTypesController( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;

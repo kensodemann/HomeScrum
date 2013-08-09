@@ -50,15 +50,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          base.InitializeTest();
-         CurrentSessionContext.Bind( _session );       
+         
          BuildDatabase();
       }
 
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
 
       public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateController()

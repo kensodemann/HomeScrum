@@ -48,8 +48,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          base.InitializeTest();
-         CurrentSessionContext.Bind( _session );
-
+         
          Database.Build( _session );
          Users.Load( _sessionFactory.Object );
          SprintStatuses.Load( _sessionFactory.Object );
@@ -63,7 +62,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateController()
       {
-         var controller = new SprintStatusesController( new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, Database.SessionFactory );
+         var controller = new SprintStatusesController( new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;

@@ -19,12 +19,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<ProjectStatus> GetAllModels()
       {
-         using (var session = Database.OpenSession())
-         {
-            return session.Query<ProjectStatus>()
-               .OrderBy( x => x.SortSequence )
-               .ToList();
-         }
+         var models = _session.Query<ProjectStatus>()
+            .OrderBy( x => x.SortSequence )
+            .ToList();
+
+         _session.Clear();
+         return models;
       }
 
       protected override ProjectStatus CreateNewModel()
@@ -48,23 +48,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public override void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
-         Database.Build();
-         Users.Load();
-         ProjectStatuses.Load();
          base.InitializeTest();
+         
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
+         ProjectStatuses.Load( _sessionFactory.Object );
       }
 
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
 
       public override ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel> CreateController()
       {
-         var controller = new ProjectStatusesController( new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>(), _logger.Object, Database.SessionFactory );
+         var controller = new ProjectStatusesController( new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;
