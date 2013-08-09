@@ -49,8 +49,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public override void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
          base.InitializeTest();
+         CurrentSessionContext.Bind( _session );       
          BuildDatabase();
       }
 

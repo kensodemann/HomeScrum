@@ -18,12 +18,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<SprintStatus> GetAllModels()
       {
-         using (var session = Database.OpenSession())
-         {
-            return session.Query<SprintStatus>()
-               .OrderBy( x => x.SortSequence )
-               .ToList();
-         }
+         var models = _session.Query<SprintStatus>()
+            .OrderBy( x => x.SortSequence )
+            .ToList();
+
+         _session.Clear();
+         return models;
       }
 
       protected override SprintStatus CreateNewModel()
@@ -47,18 +47,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public override void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
-         Database.Build();
-         Users.Load();
-         SprintStatuses.Load();
          base.InitializeTest();
+         CurrentSessionContext.Bind( _session );
+
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
+         SprintStatuses.Load( _sessionFactory.Object );
       }
 
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
 
       public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateController()
