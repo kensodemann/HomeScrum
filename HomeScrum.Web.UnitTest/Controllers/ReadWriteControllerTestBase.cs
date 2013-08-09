@@ -36,6 +36,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       protected abstract ICollection<ModelT> GetAllModels();
       protected abstract ModelT CreateNewModel();
 
+      protected ISession _session;
+      protected Mock<ISessionFactory> _sessionFactory;
+
       protected virtual EditorViewModelT CreateEditorViewModel( ModelT model )
       {
          return new EditorViewModelT()
@@ -79,6 +82,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public virtual void InitializeTest()
       {
          BuildMocks();
+         SetupNHibernateSession();
       }
 
       private void BuildMocks()
@@ -92,6 +96,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controllerConext
             .Setup( x => x.HttpContext.Session["NavigationStack"] )
             .Returns( () => _navigationStack );
+
+         _sessionFactory = new Mock<ISessionFactory>();
+      }
+
+      private void SetupNHibernateSession()
+      {
+         _session = Database.SessionFactory.OpenSession();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
       }
 
       public abstract ReadWriteController<ModelT, ViewModelT, EditorViewModelT> CreateController();

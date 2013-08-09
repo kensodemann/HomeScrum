@@ -31,6 +31,7 @@ namespace HomeScrum.Common.TestData
                session.Save( project );
             transaction.Commit();
          }
+         session.Clear();
       }
 
       public static Project[] ModelData { get; private set; }

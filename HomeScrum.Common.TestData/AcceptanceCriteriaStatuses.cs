@@ -32,6 +32,7 @@ namespace HomeScrum.Common.TestData
                session.Save( status );
             transaction.Commit();
          }
+         session.Clear();
       }
 
       public static AcceptanceCriterionStatus[] ModelData { get; private set; }

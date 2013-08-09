@@ -27,6 +27,12 @@ namespace HomeScrum.Data.UnitTest.Domains
          ProjectStatuses.Load(_sessionFactory.Object);
       }
 
+      [TestCleanup]
+      public void CleanupTest()
+      {
+         _session.Dispose();
+      }
+
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
 

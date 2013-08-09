@@ -34,6 +34,7 @@ namespace HomeScrum.Common.TestData
                session.Save( user );
             transaction.Commit();
          }
+         session.Clear();
       }
 
       public static User[] ModelData { get; private set; }

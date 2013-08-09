@@ -14,8 +14,8 @@ namespace HomeScrum.Common.TestData
       {
          CreateTestModelData();
 
-         using (ISession session = Database.OpenSession())
-         using (ITransaction transaction = session.BeginTransaction())
+         using (var session = Database.OpenSession())
+         using (var transaction = session.BeginTransaction())
          {
             foreach (var workItem in ModelData)
                session.Save( workItem );
@@ -23,10 +23,23 @@ namespace HomeScrum.Common.TestData
          }
       }
 
+      public static void Load(ISessionFactory sessionFactory)
+      {
+         CreateTestModelData();
+
+         var session = sessionFactory.GetCurrentSession();
+         using (ITransaction transaction = session.BeginTransaction())
+         {
+            foreach (var workItem in ModelData)
+               session.Save( workItem );
+            transaction.Commit();
+         }
+         session.Clear();
+      }
+
       private static List<WorkItem> _workItems;
       public static WorkItem[] ModelData { get { return _workItems.ToArray(); } }
 
-      private static List<WorkItem> _tasks;
       private static List<AcceptanceCriterion> _criteria;
 
       private static Project homeScrum;

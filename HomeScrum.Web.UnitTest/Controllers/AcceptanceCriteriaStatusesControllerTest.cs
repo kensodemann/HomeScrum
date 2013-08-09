@@ -20,12 +20,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       protected override ICollection<AcceptanceCriterionStatus> GetAllModels()
       {
-         using (var session = Database.OpenSession())
-         {
-            return session.Query<AcceptanceCriterionStatus>()
-               .OrderBy( x => x.SortSequence )
-               .ToList();
-         }
+         var models = _session.Query<AcceptanceCriterionStatus>()
+            .OrderBy( x => x.SortSequence )
+            .ToList();
+         _session.Clear();
+
+         return models;
       }
 
       protected override AcceptanceCriterionStatus CreateNewModel()
@@ -50,10 +50,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
-         BuildDatabase();
          base.InitializeTest();
+         BuildDatabase();
       }
-      
+
       [TestCleanup]
       public void CleanupTest()
       {
@@ -63,17 +63,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateController()
       {
-         var controller = new AcceptanceCriterionStatusesController( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, Database.SessionFactory );
+         var controller = new AcceptanceCriterionStatusesController( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;
       }
 
-      private static void BuildDatabase()
+      private void BuildDatabase()
       {
-         Database.Build();
-         Users.Load();
-         AcceptanceCriteriaStatuses.Load();
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
+         AcceptanceCriteriaStatuses.Load( _sessionFactory.Object );
       }
 
    }

@@ -34,6 +34,7 @@ namespace HomeScrum.Common.TestData
                session.Save( status );
             transaction.Commit();
          }
+         session.Clear();
       }
 
       public static WorkItemStatus[] ModelData { get; private set; }
