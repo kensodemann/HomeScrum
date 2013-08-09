@@ -2,6 +2,8 @@
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NHibernate;
+using Moq;
 
 namespace HomeScrum.Data.UnitTest.Domains
 {
@@ -17,15 +19,22 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestInitialize]
       public void InitializeTest()
       {
+         _session = Database.OpenSession();
+         _sessionFactory = new Mock<ISessionFactory>();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
+
          Database.Build();
          WorkItemStatuses.Load();
       }
+
+      private ISession _session;
+      private Mock<ISessionFactory> _sessionFactory;
 
 
       [TestMethod]
       public void IsNotValid_IfDifferentItemWithSameNameExists()
       {
-         var item = new WorkItemStatus( Database.SessionFactory )
+         var item = new WorkItemStatus( _sessionFactory.Object )
          {
             Id = Guid.NewGuid(),
             Name = WorkItemStatuses.ModelData[0].Name,
@@ -45,7 +54,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsValid_IfExistingValidItem()
       {
-         var item = new WorkItemStatus( Database.SessionFactory )
+         var item = new WorkItemStatus( _sessionFactory.Object )
          {
             Id = WorkItemStatuses.ModelData[0].Id,
             Name = WorkItemStatuses.ModelData[0].Name,

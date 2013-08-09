@@ -21,7 +21,6 @@ namespace HomeScrum.Data.UnitTest.Domains
       {
          _session = Database.OpenSession();
          _sessionFactory = new Mock<ISessionFactory>();
-         _sessionFactory.Setup( x => x.OpenSession() ).Returns( _session );
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
 
          Database.Build( _session );
