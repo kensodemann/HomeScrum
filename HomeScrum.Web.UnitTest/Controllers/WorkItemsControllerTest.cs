@@ -31,24 +31,29 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
 
-      protected Mock<ControllerContext> _controllerConext;
-      protected Stack<NavigationData> _navigationStack;
+      private Mock<ControllerContext> _controllerConext;
+      private Stack<NavigationData> _navigationStack;
 
-      WorkItemsController _controller;
+      private ISession _session;
+      private Mock<ISessionFactory> _sessionFactory;
+
+      private WorkItemsController _controller;
 
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
          Database.Initialize();
 
-         CreateMockIOCKernel();
          IntializeMapper();
       }
 
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
+         //CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
+         SetupSession();
+         CreateMockIOCKernel();
+
          BuildDatabase();
          SetupCurrentUser();
          SetupLogger();
@@ -57,23 +62,29 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller = CreateController();
       }
 
-      private static void BuildDatabase()
+      private void BuildDatabase()
       {
-         Database.Build();
-         Users.Load();
-         WorkItemStatuses.Load();
-         WorkItemTypes.Load();
-         ProjectStatuses.Load();
-         Projects.Load();
-         AcceptanceCriteriaStatuses.Load();
-         WorkItems.Load();
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
+         WorkItemStatuses.Load( _sessionFactory.Object );
+         WorkItemTypes.Load( _sessionFactory.Object );
+         ProjectStatuses.Load( _sessionFactory.Object );
+         Projects.Load( _sessionFactory.Object );
+         AcceptanceCriteriaStatuses.Load( _sessionFactory.Object );
+         WorkItems.Load( _sessionFactory.Object );
+      }
+
+      private void SetupSession()
+      {
+         _session = Database.SessionFactory.OpenSession();
+         _sessionFactory = new Mock<ISessionFactory>();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
       }
 
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
       #endregion
 
@@ -506,16 +517,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<WorkItem>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<WorkItem>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( viewModel.Name, items[0].Name );
-            Assert.AreEqual( viewModel.Description, items[0].Description );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( viewModel.Name, items[0].Name );
+         Assert.AreEqual( viewModel.Description, items[0].Description );
       }
 
       [TestMethod]
@@ -541,14 +550,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<WorkItem>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<WorkItem>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 0, items.Count );
-         }
+         Assert.AreEqual( 0, items.Count );
       }
 
       [TestMethod]
@@ -682,16 +689,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<WorkItem>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<WorkItem>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
-            Assert.AreEqual( user.Id, items[0].CreatedByUser.Id );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
+         Assert.AreEqual( user.Id, items[0].CreatedByUser.Id );
       }
 
       [TestMethod]
@@ -702,15 +707,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<WorkItem>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<WorkItem>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.IsNull( items[0].AssignedToUser );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.IsNull( items[0].AssignedToUser );
       }
 
       [TestMethod]
@@ -721,15 +724,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<WorkItem>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<WorkItem>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( viewModel.AssignedToUserId, items[0].AssignedToUser.Id );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( viewModel.AssignedToUserId, items[0].AssignedToUser.Id );
       }
       #endregion
 
@@ -1003,11 +1004,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          _controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<WorkItem>( viewModel.Id );
-            Assert.AreEqual( viewModel.Name, item.Name );
-         }
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( viewModel.Name, item.Name );
       }
 
       [TestMethod]
@@ -1021,12 +1020,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          _controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<WorkItem>( viewModel.Id );
-            Assert.AreNotEqual( viewModel.Name, item.Name );
-            Assert.AreEqual( origName, item.Name );
-         }
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreNotEqual( viewModel.Name, item.Name );
+         Assert.AreEqual( origName, item.Name );
       }
 
       [TestMethod]
@@ -1101,15 +1098,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<WorkItem>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<WorkItem>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
       }
 
       [TestMethod]
@@ -1206,11 +1201,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<WorkItem>( viewModel.Id );
-            Assert.IsNull( item.AssignedToUser );
-         }
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.IsNull( item.AssignedToUser );
       }
 
       [TestMethod]
@@ -1222,11 +1215,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<WorkItem>( viewModel.Id );
-            Assert.AreEqual( viewModel.AssignedToUserId, item.AssignedToUser.Id );
-         }
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( viewModel.AssignedToUserId, item.AssignedToUser.Id );
       }
 
       [TestMethod]
@@ -1238,11 +1229,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<WorkItem>( viewModel.Id );
-            Assert.IsNull( item.ParentWorkItem );
-         }
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.IsNull( item.ParentWorkItem );
       }
       #endregion
 
@@ -1255,12 +1244,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.RemoveParent( id );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<WorkItem>( id );
-            Assert.IsNotNull( item );
-            Assert.IsNull( item.ParentWorkItem );
-         }
+         _session.Clear();
+         var item = _session.Get<WorkItem>( id );
+         Assert.IsNotNull( item );
+         Assert.IsNull( item.ParentWorkItem );
       }
 
       [TestMethod]
@@ -1299,10 +1286,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       #region private helpers
-      private static void CreateMockIOCKernel()
+      private void CreateMockIOCKernel()
       {
          _iocKernel = new MoqMockingKernel();
-         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
+         _iocKernel.Bind<ISessionFactory>().ToConstant( _sessionFactory.Object );
       }
 
       private static void IntializeMapper()
@@ -1369,7 +1356,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private WorkItemsController CreateController()
       {
-         var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, Database.SessionFactory );
+         var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;

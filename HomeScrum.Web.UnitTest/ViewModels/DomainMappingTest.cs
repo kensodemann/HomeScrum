@@ -24,8 +24,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       {
          Database.Initialize();
 
-         _iocKernel = new MoqMockingKernel();
-         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
+
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
       }
@@ -33,20 +32,29 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       [TestInitialize]
       public void InitializeTest()
       {
-         Database.Build();
+         _session = Database.SessionFactory.OpenSession();
+         _sessionFactory = new Mock<ISessionFactory>();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
 
-         Users.Load();
+         _iocKernel = new MoqMockingKernel();
+         _iocKernel.Bind<ISessionFactory>().ToConstant( _sessionFactory.Object );
 
-         AcceptanceCriteriaStatuses.Load();
-         ProjectStatuses.Load();
-         SprintStatuses.Load();
-         WorkItemStatuses.Load();
-         WorkItemTypes.Load();
+         Database.Build( _session );
 
-         Projects.Load();
-         WorkItems.Load();
+         Users.Load( _sessionFactory.Object );
+
+         AcceptanceCriteriaStatuses.Load( _sessionFactory.Object );
+         ProjectStatuses.Load( _sessionFactory.Object );
+         SprintStatuses.Load( _sessionFactory.Object );
+         WorkItemStatuses.Load( _sessionFactory.Object );
+         WorkItemTypes.Load( _sessionFactory.Object );
+
+         Projects.Load( _sessionFactory.Object );
+         WorkItems.Load( _sessionFactory.Object );
       }
 
+      private ISession _session;
+      private Mock<ISessionFactory> _sessionFactory;
       private static MoqMockingKernel _iocKernel;
       #endregion
 
@@ -380,7 +388,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( expected.Description, actual.Description );
       }
 
-      private void AssertUsersEqual(User expected, User actual)
+      private void AssertUsersEqual( User expected, User actual )
       {
          Assert.AreEqual( expected.Id, actual.Id );
          Assert.AreEqual( expected.FirstName, actual.FirstName );
