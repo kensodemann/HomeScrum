@@ -12,10 +12,23 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
-         CreateTestModelData();
+         CreateTestModelData( Database.SessionFactory );
 
-         using (ISession session = Database.OpenSession())
-         using (ITransaction transaction = session.BeginTransaction())
+         using (var session = Database.OpenSession())
+         using (var transaction = session.BeginTransaction())
+         {
+            foreach (var status in ModelData)
+               session.Save( status );
+            transaction.Commit();
+         }
+      }
+
+      public static void Load( ISessionFactory sessionFactory )
+      {
+         CreateTestModelData( sessionFactory );
+
+         var session = sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             foreach (var status in ModelData)
                session.Save( status );
@@ -25,11 +38,11 @@ namespace HomeScrum.Common.TestData
 
       public static SprintStatus[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( bool initializeIds = false )
+      public static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
       {
          ModelData = new[]
          {
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="Pre Planning",
                Description="The sprint is set up for the future",
@@ -38,7 +51,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=1
             },
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="Planning",
                Description="In Planning",
@@ -47,7 +60,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=2
             },
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="In Process",
                Description="The sprint is the active one",
@@ -56,7 +69,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="Retrospective",
                Description="The sprint is complete and a retrospective is being done",
@@ -65,7 +78,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="Closed",
                Description="The sprint and retrospective are both complete",
@@ -74,7 +87,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=5
             },
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="Released",
                Description="The output of the sprint has been released to customers",
@@ -83,7 +96,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new SprintStatus( Database.SessionFactory )
+            new SprintStatus( sessionFactory )
             {
                Name="New",
                Description="The sprint is newly created",

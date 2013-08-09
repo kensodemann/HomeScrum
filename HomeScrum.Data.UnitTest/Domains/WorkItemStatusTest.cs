@@ -23,8 +23,8 @@ namespace HomeScrum.Data.UnitTest.Domains
          _sessionFactory = new Mock<ISessionFactory>();
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
 
-         Database.Build();
-         WorkItemStatuses.Load();
+         Database.Build( _session );
+         WorkItemStatuses.Load( _sessionFactory.Object );
       }
 
       private ISession _session;
