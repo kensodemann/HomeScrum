@@ -39,9 +39,16 @@ namespace HomeScrum.Common.TestData
          _configuration.Configure();
       }
 
-      public static void Build()
+      public static void Build( ISession session = null )
       {
-         new SchemaExport( _configuration ).Execute( false, true, false );
+         if (session == null)
+         {
+            new SchemaExport( _configuration ).Execute( false, true, false );
+         }
+         else
+         {
+            new SchemaExport( _configuration ).Execute( false, true, false, session.Connection, null );
+         }
       }
 
       public static ISession OpenSession()

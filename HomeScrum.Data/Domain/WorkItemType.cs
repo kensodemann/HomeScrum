@@ -24,10 +24,8 @@ namespace HomeScrum.Data.Domain
 
          if (_sessionFactory != null)
          {
-            using (var session = _sessionFactory.OpenSession())
-            {
-               this.VerifyNameIsUnique( session );
-            }
+            var session = _sessionFactory.GetCurrentSession();
+            this.VerifyNameIsUnique( session );
          }
       }
       #endregion
