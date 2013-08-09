@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HomeScrum.Data.Domain;
 using HomeScrum.Common.TestData;
+using NHibernate;
+using Moq;
 
 namespace HomeScrum.Data.UnitTest.Domains
 {
@@ -17,16 +19,23 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestInitialize]
       public void InitializeTest()
       {
-         Database.Build();
-         Users.Load();
-         ProjectStatuses.Load();
-         Projects.Load();
+         _session = Database.OpenSession();
+         _sessionFactory = new Mock<ISessionFactory>();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
+
+         Database.Build(_session);
+         Users.Load(_sessionFactory.Object);
+         ProjectStatuses.Load(_sessionFactory.Object);
+         Projects.Load(_sessionFactory.Object);
       }
+
+      private ISession _session;
+      private Mock<ISessionFactory> _sessionFactory;
 
       [TestMethod]
       public void IsNotValid_IfNoProjectStatusAssigned()
       {
-         var project = new Project( Database.SessionFactory )
+         var project = new Project( _sessionFactory.Object )
          {
             Id = Guid.NewGuid(),
             Name = "New Project",
@@ -42,7 +51,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestMethod]
       public void IsNotValid_IfDifferentProjectWithSameNameExists()
       {
-         var project = new Project( Database.SessionFactory )
+         var project = new Project( _sessionFactory.Object )
          {
             Id = Guid.NewGuid(),
             Name = Projects.ModelData[0].Name,

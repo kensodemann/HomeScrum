@@ -39,7 +39,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public static void InitiailizeTestClass( TestContext context )
       {
          Database.Initialize();
-         
+
          CreateMockIOCKernel();
          IntializeMapper();
       }
@@ -496,7 +496,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_ReturnsNoDataFoundIfModelNotFound()
       {
          var controller = CreateController();
-         
+
          var result = controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
 
          Assert.IsNotNull( result );
@@ -767,7 +767,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Users.CreateTestModelData( initializeIds: true );
          ProjectStatuses.CreateTestModelData( Database.SessionFactory, initializeIds: true );
-         Projects.CreateTestModelData( initializeIds: true );
+         Projects.CreateTestModelData( Database.SessionFactory, initializeIds: true );
       }
 
       private ProjectEditorViewModel CreateProjectEditorViewModel()

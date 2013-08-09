@@ -14,8 +14,21 @@ namespace HomeScrum.Common.TestData
       {
          CreateTestModelData();
 
-         using (ISession session = Database.OpenSession())
-         using (ITransaction transaction = session.BeginTransaction())
+         using (var session = Database.OpenSession())
+         using (var transaction = session.BeginTransaction())
+         {
+            foreach (var user in ModelData)
+               session.Save( user );
+            transaction.Commit();
+         }
+      }
+
+      public static void Load( ISessionFactory sessionFactory )
+      {
+         CreateTestModelData();
+
+         var session = sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             foreach (var user in ModelData)
                session.Save( user );

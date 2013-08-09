@@ -9,10 +9,23 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
-         CreateTestModelData();
+         CreateTestModelData( Database.SessionFactory );
 
-         using (ISession session = Database.OpenSession())
-         using (ITransaction transaction = session.BeginTransaction())
+         using (var session = Database.OpenSession())
+         using (var transaction = session.BeginTransaction())
+         {
+            foreach (var project in ModelData)
+               session.Save( project );
+            transaction.Commit();
+         }
+      }
+
+      public static void Load( ISessionFactory sessionFactory )
+      {
+         CreateTestModelData( sessionFactory );
+
+         var session = sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             foreach (var project in ModelData)
                session.Save( project );
@@ -22,7 +35,7 @@ namespace HomeScrum.Common.TestData
 
       public static Project[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( bool initializeIds = false )
+      public static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
       {
          var open = ProjectStatuses.ModelData.First( x => x.Name == "Open" );
          var inactive = ProjectStatuses.ModelData.First( x => x.Name == "Inactive" );
@@ -30,35 +43,35 @@ namespace HomeScrum.Common.TestData
 
          ModelData = new[]
          {
-            new Project( Database.SessionFactory )
+            new Project( sessionFactory )
             {
                Name="Home Scrum",
                Description = "This project right here",
                Status = open,
                LastModifiedUserRid = Users.ModelData[0].Id
             },
-            new Project( Database.SessionFactory )
+            new Project( sessionFactory )
             {
                Name="PRepS",
                Description = "An old problem reporting system",
                Status = closed,
                LastModifiedUserRid = Users.ModelData[1].Id
             },
-            new Project( Database.SessionFactory )
+            new Project( sessionFactory )
             {
                Name="MathWar",
                Description = "A flash card math learning game",
                Status = inactive,
                LastModifiedUserRid = Users.ModelData[2].Id
             },
-            new Project( Database.SessionFactory )
+            new Project( sessionFactory )
             {
                Name="Sandwiches",
                Description = "Make them!",
                Status = open,
                LastModifiedUserRid = Users.ModelData[0].Id
             },
-            new Project( Database.SessionFactory )
+            new Project( sessionFactory )
             {
                Name="TacoBell",
                Description="Make some tacos",
