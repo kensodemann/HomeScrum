@@ -12,9 +12,21 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
-         CreateTestModelData();
-         using (ISession session = Database.OpenSession())
-         using (ITransaction transaction = session.BeginTransaction())
+         CreateTestModelData(Database.SessionFactory);
+         using (var session = Database.OpenSession())
+         using (var transaction = session.BeginTransaction())
+         {
+            foreach (var status in ModelData)
+               session.Save( status );
+            transaction.Commit();
+         }
+      }
+
+      public static void Load(ISessionFactory sessionFactory)
+      {
+         CreateTestModelData(sessionFactory);
+         var session = sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             foreach (var status in ModelData)
                session.Save( status );
@@ -24,11 +36,11 @@ namespace HomeScrum.Common.TestData
 
       public static AcceptanceCriterionStatus[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( bool initializeIds = false )
+      public static void CreateTestModelData(ISessionFactory sessionFactory, bool initializeIds = false )
       {
          ModelData = new[]
          {
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Unverified",
                Description="Not yet verified",
@@ -37,7 +49,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             }, 
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Accepted",
                Description="This criteria has been met.",
@@ -46,7 +58,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=2
             },
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Rejected",
                Description="This criteria has not been met.",
@@ -55,7 +67,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="In Test",
                Description="This criteria is currently being tested.",
@@ -64,7 +76,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Inconclusive",
                Description="It is not possible to test this criteria",
@@ -73,7 +85,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=5
             },
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Open",
                Description="Criteria is open",
@@ -82,7 +94,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Closed",
                Description="Criteria is closed",
@@ -91,7 +103,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=7
             },
-            new AcceptanceCriterionStatus( Database.SessionFactory )
+            new AcceptanceCriterionStatus( sessionFactory )
             {
                Name="Inactive",
                Description="Criteria is inactive",
