@@ -5,6 +5,7 @@ using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NHibernate;
 using NHibernate.Context;
 using NHibernate.Linq;
 using System;
@@ -19,6 +20,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
    {
       private Mock<ISecurityService> _securityService;
       private UsersController _controller;
+
+      private ISession _session;
+      private Mock<ISessionFactory> _sessionFactory;
 
       private EditUserViewModel CreateNewEditViewModel( User model )
       {
@@ -58,22 +62,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
+         _session = Database.SessionFactory.OpenSession();
+         _sessionFactory = new Mock<ISessionFactory>();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
 
-         Database.Build();
-         Users.Load();
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
 
          _securityService = new Mock<ISecurityService>();
 
-         _controller = new UsersController( _securityService.Object, Database.SessionFactory );
+         _controller = new UsersController( _securityService.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
 
 
@@ -148,15 +153,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = _controller.Create( viewModel );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<User>()
-               .Where( x => x.UserName == viewModel.UserName )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<User>()
+            .Where( x => x.UserName == viewModel.UserName )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( viewModel.FirstName, items[0].FirstName );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( viewModel.FirstName, items[0].FirstName );
       }
 
       [TestMethod]
@@ -182,14 +185,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<User>()
-               .Where( x => x.UserName == viewModel.UserName )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<User>()
+            .Where( x => x.UserName == viewModel.UserName )
+            .ToList();
 
-            Assert.AreEqual( 0, items.Count );
-         }
+         Assert.AreEqual( 0, items.Count );
       }
 
       [TestMethod]
@@ -308,11 +309,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          model.FirstName += " Modified";
          _controller.Edit( model );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<User>( model.Id );
-            Assert.AreEqual( model.FirstName, item.FirstName );
-         }
+         _session.Clear();
+         var item = _session.Get<User>( model.Id );
+         Assert.AreEqual( model.FirstName, item.FirstName );
       }
 
       [TestMethod]
@@ -334,12 +333,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          _controller.Edit( model );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<User>( model.Id );
-            Assert.AreEqual( origFirstName, item.FirstName );
-            Assert.AreNotEqual( model.FirstName, item.FirstName );
-         }
+         _session.Clear();
+         var item = _session.Get<User>( model.Id );
+         Assert.AreEqual( origFirstName, item.FirstName );
+         Assert.AreNotEqual( model.FirstName, item.FirstName );
       }
 
       [TestMethod]
