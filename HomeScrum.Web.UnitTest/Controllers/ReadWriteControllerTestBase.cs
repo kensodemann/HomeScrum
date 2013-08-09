@@ -63,14 +63,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Database.Initialize();
 
-         CreateMockIOCKernel();
          IntializeMapper();
       }
 
-      private static void CreateMockIOCKernel()
+      private void CreateMockIOCKernel()
       {
          _iocKernel = new MoqMockingKernel();
-         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
+         _iocKernel.Bind<ISessionFactory>().ToConstant( _sessionFactory.Object );
       }
 
       private static void IntializeMapper()
@@ -82,6 +81,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public virtual void InitializeTest()
       {
          BuildMocks();
+         CreateMockIOCKernel();
          SetupNHibernateSession();
       }
 
@@ -379,16 +379,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = controller.Create( viewModel, FakeUser );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<ModelT>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<ModelT>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( viewModel.Name, items[0].Name );
-            Assert.AreEqual( viewModel.Description, items[0].Description );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( viewModel.Name, items[0].Name );
+         Assert.AreEqual( viewModel.Description, items[0].Description );
       }
 
       [TestMethod]
@@ -417,14 +415,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( viewModel, FakeUser );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<ModelT>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<ModelT>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 0, items.Count );
-         }
+         Assert.AreEqual( 0, items.Count );
       }
 
       [TestMethod]
@@ -610,11 +606,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, FakeUser );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<ModelT>( viewModel.Id );
-            Assert.AreEqual( viewModel.Name, item.Name );
-         }
+         _session.Clear();
+         var item = _session.Get<ModelT>( viewModel.Id );
+         Assert.AreEqual( viewModel.Name, item.Name );
       }
 
       [TestMethod]
@@ -629,12 +623,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, FakeUser );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<ModelT>( viewModel.Id );
-            Assert.AreNotEqual( viewModel.Name, item.Name );
-            Assert.AreEqual( origName, item.Name );
-         }
+         _session.Clear();
+         var item = _session.Get<ModelT>( viewModel.Id );
+         Assert.AreNotEqual( viewModel.Name, item.Name );
+         Assert.AreEqual( origName, item.Name );
       }
 
       [TestMethod]
