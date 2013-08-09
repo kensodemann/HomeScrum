@@ -29,26 +29,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<ILogger> _logger;
 
-      protected Mock<ControllerContext> _controllerConext;
-      protected Stack<NavigationData> _navigationStack;
+      private Mock<ControllerContext> _controllerConext;
+      private Stack<NavigationData> _navigationStack;
 
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
+
+      private ISession _session;
+      private Mock<ISessionFactory> _sessionFactory;
 
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
          Database.Initialize();
 
-         CreateMockIOCKernel();
          IntializeMapper();
       }
 
       [TestInitialize]
       public void InitializeTest()
       {
-         CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
-
+         SetupSession();
+         CreateMockIOCKernel();
          BuildDatabase();
 
          SetupCurrentUser();
@@ -59,8 +61,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestCleanup]
       public void CleanupTest()
       {
-         var session = CurrentSessionContext.Unbind( Database.SessionFactory );
-         session.Dispose();
+         _session.Dispose();
       }
       #endregion
 
@@ -325,16 +326,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var result = controller.Create( model, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<Project>()
-               .Where( x => x.Name == model.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<Project>()
+            .Where( x => x.Name == model.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( model.Name, items[0].Name );
-            Assert.AreEqual( model.Description, items[0].Description );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( model.Name, items[0].Name );
+         Assert.AreEqual( model.Description, items[0].Description );
       }
 
       [TestMethod]
@@ -362,12 +361,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( model, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<Project>()
-               .Where( x => x.Name == model.Name )
-               .ToList();
-         }
+         _session.Clear();
+         var items = _session.Query<Project>()
+            .Where( x => x.Name == model.Name )
+            .ToList();
       }
 
       [TestMethod]
@@ -434,15 +431,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<Project>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<Project>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
       }
 
       [TestMethod]
@@ -594,11 +589,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<Project>( viewModel.Id );
-            Assert.AreEqual( viewModel.Name, item.Name );
-         }
+         _session.Clear();
+         var item = _session.Get<Project>( viewModel.Id );
+         Assert.AreEqual( viewModel.Name, item.Name );
       }
 
       [TestMethod]
@@ -613,12 +606,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          viewModel.Name += " Modified";
          controller.Edit( viewModel, _principal.Object );
 
-         using (var session = Database.OpenSession())
-         {
-            var item = session.Get<Project>( viewModel.Id );
-            Assert.AreNotEqual( viewModel.Name, item.Name );
-            Assert.AreEqual( origName, item.Name );
-         }
+         _session.Clear();
+         var item = _session.Get<Project>( viewModel.Id );
+         Assert.AreNotEqual( viewModel.Name, item.Name );
+         Assert.AreEqual( origName, item.Name );
       }
 
       [TestMethod]
@@ -686,15 +677,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _userIdentity.Verify();
 
-         using (var session = Database.OpenSession())
-         {
-            var items = session.Query<Project>()
-               .Where( x => x.Name == viewModel.Name )
-               .ToList();
+         _session.Clear();
+         var items = _session.Query<Project>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-            Assert.AreEqual( 1, items.Count );
-            Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
-         }
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
       }
 
       [TestMethod]
@@ -743,31 +732,24 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
 
-      private static void BuildDatabase()
+      private void BuildDatabase()
       {
-         Database.Build();
-         Users.Load();
-         ProjectStatuses.Load();
-         Projects.Load();
+         Database.Build( _session );
+         Users.Load( _sessionFactory.Object );
+         ProjectStatuses.Load( _sessionFactory.Object );
+         Projects.Load( _sessionFactory.Object );
       }
 
-      private static void CreateMockIOCKernel()
+      private void CreateMockIOCKernel()
       {
          _iocKernel = new MoqMockingKernel();
-         _iocKernel.Bind<ISessionFactory>().ToConstant( Database.SessionFactory );
+         _iocKernel.Bind<ISessionFactory>().ToConstant( _sessionFactory.Object );
       }
 
       private static void IntializeMapper()
       {
          Mapper.Initialize( map => map.ConstructServicesUsing( x => _iocKernel.Get( x ) ) );
          MapperConfig.RegisterMappings();
-      }
-
-      private static void InitializeTestData()
-      {
-         Users.CreateTestModelData( initializeIds: true );
-         ProjectStatuses.CreateTestModelData( Database.SessionFactory, initializeIds: true );
-         Projects.CreateTestModelData( Database.SessionFactory, initializeIds: true );
       }
 
       private ProjectEditorViewModel CreateProjectEditorViewModel()
@@ -812,7 +794,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private ProjectsController CreateController()
       {
-         var controller = new ProjectsController( new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, Database.SessionFactory );
+         var controller = new ProjectsController( new PropertyNameTranslator<Project, ProjectEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;
@@ -832,6 +814,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controllerConext
             .Setup( x => x.HttpContext.Session["NavigationStack"] )
             .Returns( () => _navigationStack );
+      }
+
+      private void SetupSession()
+      {
+         _session = Database.SessionFactory.OpenSession();
+         _sessionFactory = new Mock<ISessionFactory>();
+         _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
       }
       #endregion
    }
