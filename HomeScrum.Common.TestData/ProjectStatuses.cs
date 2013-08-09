@@ -12,10 +12,23 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load()
       {
-         CreateTestModelData();
+         CreateTestModelData( Database.SessionFactory );
 
-         using (ISession session = Database.OpenSession())
-         using (ITransaction transaction = session.BeginTransaction())
+         using (var session = Database.OpenSession())
+         using (var transaction = session.BeginTransaction())
+         {
+            foreach (var status in ModelData)
+               session.Save( status );
+            transaction.Commit();
+         }
+      }
+
+      public static void Load( ISessionFactory sessionFactory )
+      {
+         CreateTestModelData( sessionFactory );
+
+         var session = sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
          {
             foreach (var status in ModelData)
                session.Save( status );
@@ -25,11 +38,11 @@ namespace HomeScrum.Common.TestData
 
       public static ProjectStatus[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( bool initializeIds = false )
+      public static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
       {
          ModelData = new[]
          {
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="Open",
                Description="Active Project",
@@ -38,7 +51,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=1
             },
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="Inactive",
                Description="No longer active",
@@ -47,7 +60,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=2
             },
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="Closed",
                Description="The project is closed",
@@ -56,7 +69,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=true,
                SortSequence=3
             },
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="Waiting",
                Description="Awaiting Customer Approval",
@@ -65,7 +78,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=4
             },
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="Deleted",
                Description="The project no longer exists",
@@ -74,7 +87,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=5
             },
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="Active",
                Description="The project is active",
@@ -83,7 +96,7 @@ namespace HomeScrum.Common.TestData
                IsPredefined=false,
                SortSequence=6
             },
-            new ProjectStatus( Database.SessionFactory )
+            new ProjectStatus( sessionFactory )
             {
                Name="On Hold",
                Description="The project is waiting for something",

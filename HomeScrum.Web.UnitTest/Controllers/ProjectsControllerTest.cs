@@ -766,7 +766,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private static void InitializeTestData()
       {
          Users.CreateTestModelData( initializeIds: true );
-         ProjectStatuses.CreateTestModelData( initializeIds: true );
+         ProjectStatuses.CreateTestModelData( Database.SessionFactory, initializeIds: true );
          Projects.CreateTestModelData( initializeIds: true );
       }
 
