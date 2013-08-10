@@ -15,6 +15,10 @@
               type="YesNo"/>
     <property name="IsPredefined"
               type="YesNo"/>
+    <property name="BacklogIsClosed"
+              type="YesNo"/>
+    <property name="TaskListIsClosed"
+              type="YesNo"/>
     <property name="SortSequence"/>
   </class>
 

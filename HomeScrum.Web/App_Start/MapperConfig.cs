@@ -33,6 +33,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>()
             .ConstructUsingServiceLocator()
+            .ForMember( dest => dest.BacklogIsClosed, opt => opt.Ignore() )
+            .ForMember( dest => dest.TaskListIsClosed, opt => opt.Ignore() )
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>()
             .ConstructUsingServiceLocator()

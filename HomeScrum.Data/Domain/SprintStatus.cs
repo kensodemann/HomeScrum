@@ -7,6 +7,8 @@ namespace HomeScrum.Data.Domain
    public class SprintStatus : SystemDomainObject
    {
       public virtual bool IsOpenStatus { get; set; }
+      public virtual bool BacklogIsClosed { get; set; }
+      public virtual bool TaskListIsClosed { get; set; }
 
       #region Non-POCO
       public SprintStatus()
