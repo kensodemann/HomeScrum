@@ -735,8 +735,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void BuildDatabase()
       {
          Database.Build( _session );
-         Users.Load( _sessionFactory.Object );
-         ProjectStatuses.Load( _sessionFactory.Object );
          Projects.Load( _sessionFactory.Object );
       }
 

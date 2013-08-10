@@ -21,7 +21,11 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      private static void LoadDependencies( ISessionFactory sessionFactory ) { }
+      private static void LoadDependencies( ISessionFactory sessionFactory )
+      {
+         Users.Load( sessionFactory );
+         ProjectStatuses.Load( sessionFactory );
+      }
 
       public static Project[] ModelData { get; private set; }
 

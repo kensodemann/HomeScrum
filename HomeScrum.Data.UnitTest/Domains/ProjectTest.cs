@@ -19,14 +19,17 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestInitialize]
       public void InitializeTest()
       {
+         SetupSession();
+
+         Database.Build( _session );
+         Projects.Load( _sessionFactory.Object );
+      }
+
+      private void SetupSession()
+      {
          _session = Database.SessionFactory.OpenSession();
          _sessionFactory = new Mock<ISessionFactory>();
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
-
-         Database.Build(_session);
-         Users.Load(_sessionFactory.Object);
-         ProjectStatuses.Load(_sessionFactory.Object);
-         Projects.Load(_sessionFactory.Object);
       }
 
       [TestCleanup]
