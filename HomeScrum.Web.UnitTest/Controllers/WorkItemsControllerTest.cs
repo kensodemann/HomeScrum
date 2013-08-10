@@ -65,12 +65,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void BuildDatabase()
       {
          Database.Build( _session );
-         Users.Load( _sessionFactory.Object );
-         WorkItemStatuses.Load( _sessionFactory.Object );
-         WorkItemTypes.Load( _sessionFactory.Object );
-         ProjectStatuses.Load( _sessionFactory.Object );
-         Projects.Load( _sessionFactory.Object );
-         AcceptanceCriteriaStatuses.Load( _sessionFactory.Object );
          WorkItems.Load( _sessionFactory.Object );
       }
 

@@ -22,7 +22,14 @@ namespace HomeScrum.Common.TestData
          }
       }
 
-      private static void LoadDependencies( ISessionFactory sessionFactory ) { }
+      private static void LoadDependencies( ISessionFactory sessionFactory )
+      {
+         Users.Load( sessionFactory );
+         WorkItemStatuses.Load( sessionFactory );
+         WorkItemTypes.Load( sessionFactory );
+         Projects.Load( sessionFactory );
+         AcceptanceCriteriaStatuses.Load( sessionFactory );
+      }
 
       private static List<WorkItem> _workItems;
       public static WorkItem[] ModelData { get { return _workItems.ToArray(); } }
