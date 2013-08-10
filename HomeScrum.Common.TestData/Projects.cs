@@ -7,19 +7,6 @@ namespace HomeScrum.Common.TestData
 {
    public class Projects
    {
-      public static void Load()
-      {
-         CreateTestModelData( Database.SessionFactory );
-
-         using (var session = Database.OpenSession())
-         using (var transaction = session.BeginTransaction())
-         {
-            foreach (var project in ModelData)
-               session.Save( project );
-            transaction.Commit();
-         }
-      }
-
       public static void Load( ISessionFactory sessionFactory )
       {
          CreateTestModelData( sessionFactory );

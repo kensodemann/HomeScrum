@@ -19,7 +19,7 @@ namespace HomeScrum.Data.UnitTest.Domains
       [TestInitialize]
       public void InitializeTest()
       {
-         _session = Database.OpenSession();
+         _session = Database.SessionFactory.OpenSession();
          _sessionFactory = new Mock<ISessionFactory>();
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
 

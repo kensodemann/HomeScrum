@@ -50,10 +50,5 @@ namespace HomeScrum.Common.TestData
             new SchemaExport( _configuration ).Execute( false, true, false, session.Connection, null );
          }
       }
-
-      public static ISession OpenSession()
-      {
-         return _sessionFactory.OpenSession();
-      }
    }
 }

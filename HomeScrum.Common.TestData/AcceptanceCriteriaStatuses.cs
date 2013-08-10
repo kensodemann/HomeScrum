@@ -10,18 +10,6 @@ namespace HomeScrum.Common.TestData
 {
    public class AcceptanceCriteriaStatuses
    {
-      public static void Load()
-      {
-         CreateTestModelData(Database.SessionFactory);
-         using (var session = Database.OpenSession())
-         using (var transaction = session.BeginTransaction())
-         {
-            foreach (var status in ModelData)
-               session.Save( status );
-            transaction.Commit();
-         }
-      }
-
       public static void Load(ISessionFactory sessionFactory)
       {
          CreateTestModelData(sessionFactory);

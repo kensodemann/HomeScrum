@@ -10,19 +10,6 @@ namespace HomeScrum.Common.TestData
 {
    public class WorkItemTypes
    {
-      public static void Load()
-      {
-         CreateTestModelData( Database.SessionFactory );
-
-         using (var session = Database.OpenSession())
-         using (var transaction = session.BeginTransaction())
-         {
-            foreach (var workItemType in ModelData)
-               session.Save( workItemType );
-            transaction.Commit();
-         }
-      }
-
       public static void Load( ISessionFactory sessionFactory )
       {
          CreateTestModelData( sessionFactory );
