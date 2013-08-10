@@ -157,6 +157,8 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.IsInstanceOfType( viewModel, typeof( SprintStatusViewModel ) );
          Assert.IsTrue( ((SprintStatusViewModel)viewModel).AllowUse );
+         Assert.AreEqual( ((SprintStatusViewModel)viewModel).CanAddBacklogItems, !domainModel.BacklogIsClosed );
+         Assert.AreEqual( ((SprintStatusViewModel)viewModel).CanAddTaskListItems, !domainModel.TaskListIsClosed );
       }
 
       [TestMethod]
@@ -167,6 +169,8 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.IsInstanceOfType( viewModel, typeof( SprintStatusEditorViewModel ) );
          Assert.IsFalse( ((SprintStatusEditorViewModel)viewModel).AllowUse );
+         Assert.AreEqual( ((SprintStatusEditorViewModel)viewModel).CanAddBacklogItems, !domainModel.BacklogIsClosed );
+         Assert.AreEqual( ((SprintStatusEditorViewModel)viewModel).CanAddTaskListItems, !domainModel.TaskListIsClosed );
       }
 
       [TestMethod]
@@ -179,12 +183,16 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Description = "This is a test",
             IsOpenStatus = true,
             IsPredefined = false,
-            AllowUse = true
+            AllowUse = true,
+            CanAddBacklogItems = false,
+            CanAddTaskListItems = true
          };
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( SprintStatus ) );
 
          Assert.IsInstanceOfType( domainModel, typeof( SprintStatus ) );
          Assert.AreEqual( 'A', ((SprintStatus)domainModel).StatusCd );
+         Assert.IsTrue( ((SprintStatus)domainModel).BacklogIsClosed );
+         Assert.IsFalse( ((SprintStatus)domainModel).TaskListIsClosed );
       }
       #endregion
 

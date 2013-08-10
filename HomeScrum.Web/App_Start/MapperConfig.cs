@@ -33,8 +33,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<SprintStatusEditorViewModel, SprintStatus>()
             .ConstructUsingServiceLocator()
-            .ForMember( dest => dest.BacklogIsClosed, opt => opt.Ignore() )
-            .ForMember( dest => dest.TaskListIsClosed, opt => opt.Ignore() )
+            .ForMember( dest => dest.BacklogIsClosed, opt => opt.MapFrom( src => !src.CanAddBacklogItems ) )
+            .ForMember( dest => dest.TaskListIsClosed, opt => opt.MapFrom( src => !src.CanAddTaskListItems ) )
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
          Mapper.CreateMap<WorkItemStatusEditorViewModel, WorkItemStatus>()
             .ConstructUsingServiceLocator()
@@ -83,8 +83,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusEditorViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.Ignore() )
-            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.Ignore() )
+            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.MapFrom( src => !src.BacklogIsClosed ) )
+            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.MapFrom( src => !src.TaskListIsClosed ) )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusEditorViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
@@ -139,8 +139,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.Ignore() )
-            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.Ignore() )
+            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.MapFrom( src => !src.BacklogIsClosed ) )
+            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.MapFrom( src => !src.TaskListIsClosed ) )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
