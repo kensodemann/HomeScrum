@@ -1,28 +1,28 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.Test.Utility;
+using HomeScrum.Data.Domain;
 using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Common.TestData
 {
    public class WorkItems
    {
-     public static void Load(ISessionFactory sessionFactory)
+      public static void Load( ISessionFactory sessionFactory )
       {
-         CreateTestModelData();
+         LoadDependencies( sessionFactory );
 
          var session = sessionFactory.GetCurrentSession();
-         using (ITransaction transaction = session.BeginTransaction())
+
+         if (!session.DataAlreadyLoaded<WorkItem>())
          {
-            foreach (var workItem in ModelData)
-               session.Save( workItem );
-            transaction.Commit();
+            CreateTestModelData();
+            session.LoadIntoDatabase( ModelData );
          }
-         session.Clear();
       }
+
+      private static void LoadDependencies( ISessionFactory sessionFactory ) { }
 
       private static List<WorkItem> _workItems;
       public static WorkItem[] ModelData { get { return _workItems.ToArray(); } }
@@ -93,7 +93,7 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
          AddAcceptanceCriteria( childWorkItem, "Passing", "All tests pass", unverified );
          CloseCriteriaList( childWorkItem );
-         
+
          workItem = CreateWorkItem( "Sprint Retrospective", "As a manager, I want to gather information on what went well with a sprint and what did not in order to improve the process",
             pbi, assigned, homeScrum );
          childWorkItem = CreateChildTask( workItem, "No Retrospetive", "We need to design a retrospective", issue, complete );
@@ -147,7 +147,7 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Text Bold", "The user can choose if the body text is bold or regular", accepted );
          AddAcceptanceCriteria( childWorkItem, "Text Default", "The body text settings default to Verdana, 10 point, regular", accepted );
          CloseCriteriaList( childWorkItem );
-         
+
          workItem = CreateWorkItem( "Hummus Sandwich", "As a vegan, I want a tasty, tasty sandwich without any animal product in it", pbi, assigned, sandwiches );
          childWorkItem = CreateChildTask( workItem, "All Meat", "All of your sandwiches contain dead animals, nothing for vegans to eat", bug, assigned );
          childWorkItem = CreateChildTask( workItem, "Make Hummus", "Make Hummus", sbi, assigned );
@@ -170,7 +170,7 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "No animal products", "The sandwich does not contain any animal by-product such as milk, egg, or cheese", unverified );
          AddAcceptanceCriteria( childWorkItem, "Tasty", "The sandwich tastes good", unverified );
          CloseCriteriaList( childWorkItem );
-         
+
          workItem = CreateWorkItem( "Burndown Chart", "As a user, I want a quick and easy indication of the progress of work on a sprint", customerRequest, assigned, homeScrum );
          childWorkItem = CreateChildTask( workItem, "Burndown Store", "Create a table that is used to store the burndown", sbi, newWorkItem );
          OpenCriteriaList();
@@ -182,10 +182,10 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Accurate", "Routine accurately calculates the remaining value for each active sprint", unverified );
          AddAcceptanceCriteria( childWorkItem, "Store", "Routine stores the calculated value in the burndown table", unverified );
          CloseCriteriaList( childWorkItem );
-         
+
          workItem = CreateWorkItem( "Quadratic Equations", "As a parent, I want to teach my child to sovle quadradic equations", customerRequest, cancelled, mathWar );
          childWorkItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete );
-         
+
          // 2 PBI's and 3 CR's without tasks
          //    ** New (3)
          //    ** Planning (2)

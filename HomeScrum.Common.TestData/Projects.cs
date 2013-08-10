@@ -1,4 +1,5 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.Test.Utility;
+using HomeScrum.Data.Domain;
 using NHibernate;
 using System;
 using System.Linq;
@@ -9,17 +10,18 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load( ISessionFactory sessionFactory )
       {
-         CreateTestModelData( sessionFactory );
+         LoadDependencies( sessionFactory );
 
          var session = sessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
+
+         if (!session.DataAlreadyLoaded<Project>())
          {
-            foreach (var project in ModelData)
-               session.Save( project );
-            transaction.Commit();
+            CreateTestModelData( sessionFactory );
+            session.LoadIntoDatabase( ModelData );
          }
-         session.Clear();
       }
+
+      private static void LoadDependencies( ISessionFactory sessionFactory ) { }
 
       public static Project[] ModelData { get; private set; }
 

@@ -1,27 +1,26 @@
-﻿using HomeScrum.Data.Domain;
+﻿using HomeScrum.Common.Test.Utility;
+using HomeScrum.Data.Domain;
 using NHibernate;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeScrum.Common.TestData
 {
    public class AcceptanceCriteriaStatuses
    {
-      public static void Load(ISessionFactory sessionFactory)
+      public static void Load( ISessionFactory sessionFactory )
       {
-         CreateTestModelData(sessionFactory);
+         LoadDependencies( sessionFactory );
+
          var session = sessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
+
+         if (!session.DataAlreadyLoaded<AcceptanceCriterionStatus>())
          {
-            foreach (var status in ModelData)
-               session.Save( status );
-            transaction.Commit();
+            CreateTestModelData( sessionFactory );
+            session.LoadIntoDatabase( ModelData );
          }
-         session.Clear();
       }
+
+      private static void LoadDependencies( ISessionFactory sessionFactory ) { }
 
       public static AcceptanceCriterionStatus[] ModelData { get; private set; }
 

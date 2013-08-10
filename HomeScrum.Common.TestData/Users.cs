@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HomeScrum.Common.Test.Utility;
 using HomeScrum.Data.Domain;
 using NHibernate;
+using System;
 
 namespace HomeScrum.Common.TestData
 {
@@ -12,17 +9,18 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load( ISessionFactory sessionFactory )
       {
-         CreateTestModelData();
+         LoadDependencies( sessionFactory );
 
          var session = sessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
+
+         if (!session.DataAlreadyLoaded<User>())
          {
-            foreach (var user in ModelData)
-               session.Save( user );
-            transaction.Commit();
+            CreateTestModelData( );
+            session.LoadIntoDatabase( ModelData );
          }
-         session.Clear();
       }
+
+      private static void LoadDependencies( ISessionFactory sessionFactory ) { }
 
       public static User[] ModelData { get; private set; }
 
