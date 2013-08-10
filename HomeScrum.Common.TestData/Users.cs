@@ -26,7 +26,7 @@ namespace HomeScrum.Common.TestData
 
       public static User[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( bool initializeIds = false )
+      private static void CreateTestModelData( bool initializeIds = false )
       {
          ModelData = new[]
          {

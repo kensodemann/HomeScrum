@@ -50,7 +50,7 @@ namespace HomeScrum.Common.TestData
       private static AcceptanceCriterionStatus accepted;
       private static AcceptanceCriterionStatus rejected;
 
-      public static void CreateTestModelData( bool initializeIds = false )
+      private static void CreateTestModelData( bool initializeIds = false )
       {
          InitializeProjects();
          InitializeWorkItemStatuses();

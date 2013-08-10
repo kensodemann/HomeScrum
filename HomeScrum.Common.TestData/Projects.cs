@@ -23,7 +23,7 @@ namespace HomeScrum.Common.TestData
 
       public static Project[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
+      private static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
       {
          var open = ProjectStatuses.ModelData.First( x => x.Name == "Open" );
          var inactive = ProjectStatuses.ModelData.First( x => x.Name == "Inactive" );

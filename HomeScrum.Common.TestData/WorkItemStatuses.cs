@@ -26,7 +26,7 @@ namespace HomeScrum.Common.TestData
 
       public static WorkItemStatus[] ModelData { get; private set; }
 
-      public static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
+      private static void CreateTestModelData( ISessionFactory sessionFactory, bool initializeIds = false )
       {
          ModelData = new[]
          {
