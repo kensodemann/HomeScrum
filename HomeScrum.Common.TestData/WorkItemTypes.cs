@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Data.Domain;
 using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,17 @@ namespace HomeScrum.Common.TestData
    {
       public static void Load( ISessionFactory sessionFactory )
       {
-         CreateTestModelData( sessionFactory );
+         if (AlreadyLoaded( sessionFactory ))
+         {
+            return;
+         }
 
+         CreateTestModelData( sessionFactory );
+         LoadIntoDatabase( sessionFactory );
+      }
+
+      private static void LoadIntoDatabase( ISessionFactory sessionFactory )
+      {
          var session = sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
@@ -22,6 +32,18 @@ namespace HomeScrum.Common.TestData
             transaction.Commit();
          }
          session.Clear();
+      }
+
+      private static bool AlreadyLoaded( ISessionFactory sessionFactory )
+      {
+         var session = sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var count = session.Query<WorkItemType>().Count();
+            transaction.Commit();
+
+            return count > 0;
+         }
       }
 
       public static WorkItemType[] ModelData { get; private set; }
