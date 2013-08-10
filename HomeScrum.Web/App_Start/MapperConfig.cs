@@ -83,6 +83,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusEditorViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.Ignore() )
+            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.Ignore() )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusEditorViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
@@ -137,6 +139,8 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.Ignore() )
+            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.Ignore() )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<WorkItemStatus, WorkItemStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )

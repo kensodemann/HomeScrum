@@ -171,6 +171,12 @@
   <data name="ProjectStatusIsActive" xml:space="preserve">
     <value>Projects of this status are active</value>
   </data>
+  <data name="SprintStatusAllowNewBacklogItems" xml:space="preserve">
+    <value>Backlog items can be added to sprints of this status</value>
+  </data>
+  <data name="SprintStatusAllowNewTaskListItems" xml:space="preserve">
+    <value>Tasks can be added to sprints of this status</value>
+  </data>
   <data name="SprintStatusIsOpenStatus" xml:space="preserve">
     <value>Sprints with this status are actively being worked on</value>
   </data>
