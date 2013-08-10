@@ -19,6 +19,20 @@
         @Html.DisplayNameFor( model => model.IsOpenStatus )
     </div>
 
+    <div class="displayCheckBox" id="CanAddBacklogItems">
+        @Html.DisplayFor( model => model.CanAddBacklogItems )
+    </div>
+    <div class="displayCheckBoxLabel" id="CanAddBacklogItemsLabel">
+        @Html.DisplayNameFor( model => model.CanAddBacklogItems )
+    </div>
+
+    <div class="displayCheckBox" id="CanAddTaskListItems">
+        @Html.DisplayFor( model => model.CanAddTaskListItems )
+    </div>
+    <div class="displayCheckBoxLabel" id="CanAddTaskListItems">
+        @Html.DisplayNameFor( model => model.CanAddTaskListItems )
+    </div>
+
     <div class="displayCheckBox" id="IsPredefined">
         @Html.DisplayFor( model => model.IsPredefined )
     </div>
