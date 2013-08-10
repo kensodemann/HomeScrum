@@ -32,66 +32,80 @@ namespace HomeScrum.Common.TestData
          {
             new SprintStatus( sessionFactory )
             {
-               Name="Pre Planning",
-               Description="The sprint is set up for the future",
-               StatusCd='A',
-               IsOpenStatus=false,
-               IsPredefined=false,
-               SortSequence=1
+               Name = "Pre Planning",
+               Description = "The sprint is set up for the future",
+               StatusCd = 'A',
+               IsOpenStatus = false,
+               IsPredefined = false,
+               BacklogIsClosed = false,
+               TaskListIsClosed = false,
+               SortSequence = 1
             },
             new SprintStatus( sessionFactory )
             {
-               Name="Planning",
-               Description="In Planning",
-               StatusCd='A',
-               IsOpenStatus=true,
-               IsPredefined=true,
-               SortSequence=2
+               Name = "Planning",
+               Description = "In Planning",
+               StatusCd = 'A',
+               IsOpenStatus = true,
+               IsPredefined = true,
+               BacklogIsClosed = false,
+               TaskListIsClosed = false,
+               SortSequence = 2
             },
             new SprintStatus( sessionFactory )
             {
-               Name="In Process",
-               Description="The sprint is the active one",
-               StatusCd='A',
-               IsOpenStatus=true,
-               IsPredefined=true,
-               SortSequence=3
+               Name = "In Process",
+               Description = "The sprint is the active one",
+               StatusCd = 'A',
+               IsOpenStatus = true,
+               IsPredefined = true,
+               BacklogIsClosed = true,
+               TaskListIsClosed = false,
+               SortSequence = 3
             },
             new SprintStatus( sessionFactory )
             {
-               Name="Retrospective",
-               Description="The sprint is complete and a retrospective is being done",
-               StatusCd='A',
-               IsOpenStatus=true,
-               IsPredefined=false,
-               SortSequence=4
+               Name = "Retrospective",
+               Description = "The sprint is complete and a retrospective is being done",
+               StatusCd = 'A',
+               IsOpenStatus = true,
+               IsPredefined = false,
+               BacklogIsClosed = true,
+               TaskListIsClosed = true,
+               SortSequence = 4
             },
             new SprintStatus( sessionFactory )
             {
-               Name="Closed",
-               Description="The sprint and retrospective are both complete",
-               StatusCd='A',
-               IsOpenStatus=false,
-               IsPredefined=true,
-               SortSequence=5
+               Name = "Closed",
+               Description = "The sprint and retrospective are both complete",
+               StatusCd = 'A',
+               IsOpenStatus = false,
+               IsPredefined = true,
+               BacklogIsClosed = true,
+               TaskListIsClosed = true,
+               SortSequence = 5
             },
             new SprintStatus( sessionFactory )
             {
-               Name="Released",
-               Description="The output of the sprint has been released to customers",
-               StatusCd='I',
-               IsOpenStatus=false,
-               IsPredefined=false,
-               SortSequence=6
+               Name = "Released",
+               Description = "The output of the sprint has been released to customers",
+               StatusCd = 'I',
+               IsOpenStatus = false,
+               IsPredefined = false,
+               BacklogIsClosed = true,
+               TaskListIsClosed = true,
+               SortSequence = 6
             },
             new SprintStatus( sessionFactory )
             {
-               Name="New",
-               Description="The sprint is newly created",
-               StatusCd='I',
-               IsOpenStatus=false,
-               IsPredefined=false,
-               SortSequence=7
+               Name = "New",
+               Description = "The sprint is newly created",
+               StatusCd = 'I',
+               IsOpenStatus = false,
+               IsPredefined = false,
+               BacklogIsClosed = false,
+               TaskListIsClosed = false,
+               SortSequence = 7
             }
          };
 
