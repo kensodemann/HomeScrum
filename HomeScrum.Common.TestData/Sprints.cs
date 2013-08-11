@@ -35,12 +35,14 @@ namespace HomeScrum.Common.TestData
          var project1 = Projects.ModelData.First( x => x.Status.IsActive );
          var project2 = Projects.ModelData.First( x => x.Status.IsActive && x.Id != project1.Id );
          var inactiveProject = Projects.ModelData.First( x => !x.Status.IsActive );
+         var invalidProject = Projects.ModelData.First( x => x.Status.StatusCd != 'A' );
 
          var prePlanning = SprintStatuses.ModelData.First( x => x.Name == "Pre Planning" );
          var planning = SprintStatuses.ModelData.First( x => x.Name == "Planning" );
          var inProcess = SprintStatuses.ModelData.First( x => x.Name == "In Process" );
          var retrospective = SprintStatuses.ModelData.First( x => x.Name == "Retrospective" );
          var closed = SprintStatuses.ModelData.First( x => x.Name == "Closed" );
+         var invalidStatus = SprintStatuses.ModelData.First( x => x.StatusCd != 'A' );
 
          ModelData = new[]
          {
@@ -96,7 +98,7 @@ namespace HomeScrum.Common.TestData
                Project = project1,
                StartDate = null,
                EndDate = null,
-               Goal = "Create editor views",
+               Goal = null,
                LastModifiedUserRid = Users.ModelData[1].Id
             },
             new Sprint()
@@ -141,6 +143,28 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2012, 7, 15),
                EndDate = null,
                Goal = "The project is imploding, attempt to prevent that",
+               LastModifiedUserRid = Users.ModelData[1].Id
+            },
+            new Sprint()
+            {
+               Name = "Valid Project, Inactive Sprint Status",
+               Description = "The project is valid, but the status is not valid for use in the system",
+               Status = invalidStatus,
+               Project = project1,
+               StartDate = new DateTime(2012, 7, 15),
+               EndDate = null,
+               Goal = "I don't know",
+               LastModifiedUserRid = Users.ModelData[1].Id
+            },
+            new Sprint()
+            {
+               Name = "Invalid Project, Vaild Sprint Status",
+               Description = "The third sprint for the inactive project",
+               Status = inProcess,
+               Project = invalidProject,
+               StartDate = new DateTime(2012, 7, 15),
+               EndDate = null,
+               Goal = "I still don't know",
                LastModifiedUserRid = Users.ModelData[1].Id
             }
          };
