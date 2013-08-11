@@ -1,29 +1,32 @@
 ﻿using System;
-using HomeScrum.Common.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using NHibernate;
+using Moq;
+using HomeScrum.Common.TestData;
+using HomeScrum.Data.Domain;
 
-namespace HomeScrum.Web.UnitTest.Controllers
+namespace HomeScrum.Data.UnitTest.Domains
 {
    [TestClass]
-   public class SprintsControllerTest
+   public class SprintTest
    {
-      #region Test Setup
+      #region Test Initialization
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
 
       [ClassInitialize]
-      public static void InitiailizeTestClass( TestContext context )
+      public static void InitializeClass( TestContext ctx )
       {
          Database.Initialize();
       }
-      
+
       [TestInitialize]
       public void InitializeTest()
       {
          SetupSession();
-         BuildDatabase();
+
+         Database.Build( _session );
+         Sprints.Load( _sessionFactory.Object );
       }
 
       private void SetupSession()
@@ -33,13 +36,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
       }
 
-      private void BuildDatabase()
-      {
-         Database.Build( _session );
-         Sprints.Load( _sessionFactory.Object );
-      }
-
-
       [TestCleanup]
       public void CleanupTest()
       {
@@ -48,8 +44,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
       [TestMethod]
-      public void TestMethod1()
+      public void Sprint_CanGet()
       {
+         var id = Sprints.ModelData[1].Id;
+
+         var sprint = _session.Get<Sprint>( id );
+
+         Assert.IsNotNull( sprint );
+         Assert.AreEqual( id, sprint.Id );
+         Assert.AreEqual( Sprints.ModelData[1].Name, sprint.Name );
+         Assert.AreEqual( Sprints.ModelData[1].Description, sprint.Description );
+
+         Assert.IsNotNull( sprint.Status );
+         Assert.IsNotNull( sprint.Project );
       }
    }
 }
