@@ -15,8 +15,6 @@ namespace HomeScrum.Web.Models.WorkItems
          this.Tasks = new List<WorkItemIndexViewModel>();
       }
 
-
-
       [Display( Name = "WorkItemStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }

@@ -9,6 +9,7 @@ using System;
 using AutoMapper.Mappers;
 using HomeScrum.Common.Utility;
 using NHibernate;
+using HomeScrum.Web.Models.Sprints;
 
 namespace HomeScrum.Web
 {
@@ -151,13 +152,22 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
 
+         Mapper.CreateMap<Sprint, SprintViewModel>()
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !src.Status.IsOpenStatus ) )
+            .ForMember( dest => dest.CanAddBacklog, opt => opt.MapFrom( src => !src.Status.BacklogIsClosed ) )
+            .ForMember( dest => dest.CanAddTasks, opt => opt.MapFrom( src => !src.Status.TaskListIsClosed ) );
+
          Mapper.CreateMap<AcceptanceCriterion, AcceptanceCriterionViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.IsAccepted ) );
+
          Mapper.CreateMap<Project, ProjectViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() );
+
          Mapper.CreateMap<WorkItem, WorkItemViewModel>()
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )

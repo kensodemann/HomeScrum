@@ -14,7 +14,6 @@ namespace HomeScrum.Web.Models.WorkItems
       [Display( Name = "WorkItemStatus", ResourceType = typeof( DisplayStrings ) )]
       public string StatusName { get; set; }
 
-      //public bool IsComplete { get { return !IsOpenStatus; } }
       public bool IsComplete { get; set; }
    }
 }

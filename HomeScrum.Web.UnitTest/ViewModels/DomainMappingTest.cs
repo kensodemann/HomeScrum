@@ -4,6 +4,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
+using HomeScrum.Web.Models.Sprints;
 using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -145,6 +146,21 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.IsInstanceOfType( domainModel, typeof( ProjectStatus ) );
          Assert.AreEqual( 'A', ((ProjectStatus)domainModel).StatusCd );
+      }
+      #endregion
+
+      #region Sprint
+      [TestMethod]
+      public void CanMapSprint_DomainToViewModel()
+      {
+         var domainModel = Sprints.ModelData[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( SprintViewModel ) );
+         Assert.AreEqual( ((SprintViewModel)viewModel).ProjectName, domainModel.Project.Name );
+         Assert.AreEqual( ((SprintViewModel)viewModel).StatusName, domainModel.Status.Name );
+         Assert.AreEqual( ((SprintViewModel)viewModel).CanAddBacklog, !domainModel.Status.BacklogIsClosed );
+         Assert.AreEqual( ((SprintViewModel)viewModel).CanAddTasks, !domainModel.Status.TaskListIsClosed );
       }
       #endregion
 
