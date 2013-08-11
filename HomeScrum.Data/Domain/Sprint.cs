@@ -21,9 +21,9 @@ namespace HomeScrum.Data.Domain
 
       public virtual Guid LastModifiedUserRid { get; set; }
 
-      public virtual DateTime StartDate { get; set; }
+      public virtual DateTime? StartDate { get; set; }
 
-      public virtual DateTime EndDate { get; set; }
+      public virtual DateTime? EndDate { get; set; }
 
       #region Non-POCO stuff
       public Sprint()

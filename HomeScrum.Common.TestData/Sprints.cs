@@ -66,6 +66,28 @@ namespace HomeScrum.Common.TestData
                EndDate = new DateTime(2013,3,31),
                Goal = "Develop pattern for the controller classes",
                LastModifiedUserRid = Users.ModelData[1].Id
+            },
+            new Sprint()
+            {
+               Name = "Project 0, Sprint 4",
+               Description = "The forth sprint for the 0th project in the list",
+               Status = SprintStatuses.ModelData.First(x=>x.Name == "Planning"),
+               Project = Projects.ModelData[0],
+               StartDate = new DateTime(2013, 4, 1),
+               EndDate = null,
+               Goal = "Expand controllers",
+               LastModifiedUserRid = Users.ModelData[1].Id
+            },
+            new Sprint()
+            {
+               Name = "Project 0, Sprint 5",
+               Description = "The fifth sprint for the 0th project in the list",
+               Status = SprintStatuses.ModelData.First(x=>x.Name == "Pre Planning"),
+               Project = Projects.ModelData[0],
+               StartDate = null,
+               EndDate = null,
+               Goal = "Create editor views",
+               LastModifiedUserRid = Users.ModelData[1].Id
             }
          };
       }
