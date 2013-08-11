@@ -200,6 +200,7 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\Admin\ProjectStatusesController.cs" />
     <Compile Include="Controllers\Admin\SprintStatusesController.cs" />
+    <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WorkItemsController.cs" />
     <Compile Include="Controllers\Admin\WorkItemStatusesController.cs" />
@@ -237,6 +238,8 @@
     <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
     <Compile Include="Models\Base\ViewModelBase.cs" />
+    <Compile Include="Models\Sprints\SprintEditorViewModel.cs" />
+    <Compile Include="Models\Sprints\SprintViewModel.cs" />
     <Compile Include="Models\WorkItems\AcceptanceCriterionViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemEditorViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemIndexViewModel.cs" />
@@ -452,7 +455,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Sprints\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

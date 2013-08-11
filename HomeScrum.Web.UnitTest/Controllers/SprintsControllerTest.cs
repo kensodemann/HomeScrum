@@ -3,6 +3,15 @@ using HomeScrum.Common.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
+using System.Collections.Generic;
+using HomeScrum.Web.Models.Base;
+using System.Linq;
+using HomeScrum.Web.Controllers;
+using Ninject.Extensions.Logging;
+using HomeScrum.Data.Domain;
+using HomeScrum.Web.Models.Sprints;
+using HomeScrum.Web.Translators;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -13,23 +22,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
 
+      private Mock<ILogger> _logger;
+
+      private SprintsController _controller;
+
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
       {
          Database.Initialize();
       }
-      
+
       [TestInitialize]
       public void InitializeTest()
       {
+         BuildMocks();
          SetupSession();
          BuildDatabase();
+
+         CreateController();
+      }
+
+      private void BuildMocks()
+      {
+         _sessionFactory = new Mock<ISessionFactory>();
+         _logger = new Mock<ILogger>();
       }
 
       private void SetupSession()
       {
          _session = Database.SessionFactory.OpenSession();
-         _sessionFactory = new Mock<ISessionFactory>();
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
       }
 
@@ -37,6 +58,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Database.Build( _session );
          Sprints.Load( _sessionFactory.Object );
+      }
+
+      private void CreateController()
+      {
+         _controller = new SprintsController( new PropertyNameTranslator<Sprint, SprintEditorViewModel>(), _logger.Object, _sessionFactory.Object );
       }
 
 
@@ -48,8 +74,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
       [TestMethod]
-      public void TestMethod1()
+      public void Index_ReturnsViewWithAllItems()
       {
+         var view = _controller.Index() as ViewResult;
+         var model = view.Model as IEnumerable<DomainObjectViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.AreEqual( Sprints.ModelData.Count(), model.Count() );
+
+         foreach (var sprint in Sprints.ModelData)
+         {
+            Assert.IsNotNull( model.FirstOrDefault( x => x.Id == sprint.Id ) );
+         }
       }
    }
 }
