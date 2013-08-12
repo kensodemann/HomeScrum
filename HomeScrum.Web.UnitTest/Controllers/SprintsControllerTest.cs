@@ -144,7 +144,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
       #endregion
 
-      #region Details
+      #region Create GET
+      [TestMethod]
+      public void CreateGet_ReturnsViewWithViewWithModel()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         Assert.IsNotNull( result );
+         var model = result.Model as SprintEditorViewModel;
+         Assert.IsNotNull( model );
+      }
+
+      [TestMethod]
+      public void CreateGet_InitializesWorkItemStatusList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( SprintStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.Statuses.Count() );
+         foreach (var item in model.Statuses)
+         {
+            var status = SprintStatuses.ModelData.First( x => x.Id == new Guid( item.Value ) );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsFalse( item.Selected );
+         }
+      }
+      #endregion
+
+      #region Details GET
       [TestMethod]
       public void DetailsGet_ReturnsViewWithModel()
       {

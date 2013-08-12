@@ -102,6 +102,12 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.LastModifiedUserId, opt => opt.MapFrom( src => src.LastModifiedUserRid ) );
 
+         Mapper.CreateMap<Sprint, SprintEditorViewModel>()
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
+            .ForMember( dest => dest.Projects, opt => opt.Ignore() );
+
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HomeScrum.Web.Extensions;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -16,5 +17,22 @@ namespace HomeScrum.Web.Controllers
     {
        public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
+
+
+       protected override void PopulateSelectLists( ISession session, SprintEditorViewModel viewModel )
+       {
+          viewModel.Statuses = CreateSprintStatusSelectList( session, viewModel.StatusId );
+          base.PopulateSelectLists( session, viewModel );
+       }
+
+       private IEnumerable<SelectListItem> CreateSprintStatusSelectList( ISession session, Guid selectedId )
+       {
+          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<SprintStatus>() { SelectedId = selectedId };
+
+          return query
+             .GetQuery( session )
+             .SelectSelectListItems<SprintStatus>( selectedId );
+       }
+
     }
 }
