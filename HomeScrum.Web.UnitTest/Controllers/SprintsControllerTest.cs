@@ -187,6 +187,102 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsFalse( item.Selected );
          }
       }
+
+      [TestMethod]
+      public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var viewModel = ((ViewResult)_controller.Create()).Model as SprintEditorViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_PushesToNavigationStack_IfCallingDataGiven()
+      {
+         var parentId = Guid.NewGuid();
+
+         _controller.Create( "Index" );
+         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 2, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_DoesNotPush_IfCallingDataAlreadyOnTop()
+      {
+         var parentId = Guid.NewGuid();
+
+         _controller.Create( "Index" );
+         _controller.Create( "Edit", parentId.ToString() );
+         _controller.Create( "Edit", parentId.ToString() );
+         _controller.Create( "Index" );
+         _controller.Create( "Index" );
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 3, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+      }
+
+      [TestMethod]
+      public void CreateGet_PopsFromNavigationStack_IfCallingDataNotGiven()
+      {
+         var parentId = Guid.NewGuid();
+
+         _controller.Create( "Index" );
+         _controller.Create( "Edit", parentId.ToString() );
+         var viewModel = ((ViewResult)_controller.Create()).Model as ViewModelBase;
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 1, stack.Count );
+
+         var navData = stack.Peek();
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Index", viewModel.CallingAction );
+         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
       #endregion
 
       #region Details GET
