@@ -3,6 +3,7 @@ using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Sprints;
 using HomeScrum.Web.Translators;
 using NHibernate;
+using NHibernate.Linq;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace HomeScrum.Web.Controllers
        protected override void PopulateSelectLists( ISession session, SprintEditorViewModel viewModel )
        {
           viewModel.Statuses = CreateSprintStatusSelectList( session, viewModel.StatusId );
+          viewModel.Projects = CreateProjectsSelectList( session, viewModel.ProjectId );
           base.PopulateSelectLists( session, viewModel );
        }
 
@@ -34,5 +36,13 @@ namespace HomeScrum.Web.Controllers
              .SelectSelectListItems<SprintStatus>( selectedId );
        }
 
+       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
+       {
+          return session.Query<Project>()
+              .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+              .OrderBy( x => x.Status.SortSequence )
+              .ThenBy( x => x.Name.ToUpper() )
+              .SelectSelectListItems<Project>( selectedId );
+       }
     }
 }

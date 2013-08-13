@@ -170,6 +170,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsFalse( item.Selected );
          }
       }
+
+      [TestMethod]
+      public void CreateGet_InitializesProjectList_NothingSelected()
+      {
+         var result = _controller.Create() as ViewResult;
+
+         var model = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ), model.Projects.Count() );
+
+         foreach (var item in model.Projects)
+         {
+            var project = Projects.ModelData.First( x => x.Id == new Guid( item.Value ) );
+            Assert.AreEqual( project.Name, item.Text );
+            Assert.IsFalse( item.Selected );
+         }
+      }
       #endregion
 
       #region Details GET
