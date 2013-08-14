@@ -19,6 +19,9 @@ namespace HomeScrum.Web.Models.Sprints
       public string ProjectName { get; set; }
       public IEnumerable<SelectListItem> Projects { get; set; }
 
+      [Display( Name = "Goal", ResourceType = typeof( DisplayStrings ) )]
+      public string Goal { get; set; }
+
       [Display( Name = "StartDate", ResourceType = typeof( DisplayStrings ) )]
       public DateTime StartDate { get; set; }
 

@@ -8,6 +8,7 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
+using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
@@ -126,6 +127,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
       #endregion
 
+
       #region Index
       [TestMethod]
       public void Index_ReturnsViewWithAllItems()
@@ -143,6 +145,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
       #endregion
+
 
       #region Create GET
       [TestMethod]
@@ -285,6 +288,233 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
       #endregion
 
+
+      #region Create POST Tests
+      [TestMethod]
+      public void CreatePost_SavesModelIfModelValid()
+      {
+         var viewModel = CreateSprintEditorViewModel();
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _session.Clear();
+         var items = _session.Query<Sprint>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
+
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( viewModel.Name, items[0].Name );
+         Assert.AreEqual( viewModel.Description, items[0].Description );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      {
+         var viewModel = CreateSprintEditorViewModel();
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 1, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotSaveModelIfModelIsNotValid()
+      {
+         var viewModel = CreateSprintEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object );
+
+         _session.Clear();
+         var items = _session.Query<Sprint>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
+
+         Assert.AreEqual( 0, items.Count );
+      }
+
+      [TestMethod]
+      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      {
+         var viewModel = CreateSprintEditorViewModel();
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( viewModel, result.Model );
+      }
+
+      //[TestMethod]
+      //public void CreatePost_InitializesWorkItemStatusList_ActiveItemSelected()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+      //   var returnedModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.Statuses.Count() );
+      //   foreach (var item in returnedModel.Statuses)
+      //   {
+      //      var itemId = new Guid( item.Value );
+      //      var status = WorkItemStatuses.ModelData.First( x => x.Id == itemId );
+      //      Assert.AreEqual( status.Name, item.Text );
+      //      Assert.IsTrue( (itemId == viewModel.StatusId) ? item.Selected : !item.Selected );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_InitializesWorkItemTypeList_ActiveItemSelected()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+      //   var returnedModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), returnedModel.WorkItemTypes.Count() );
+      //   foreach (var item in returnedModel.WorkItemTypes)
+      //   {
+      //      var itemId = new Guid( item.Value );
+      //      var workItemType = WorkItemTypes.ModelData.First( x => x.Id == itemId );
+      //      Assert.AreEqual( workItemType.Name, item.Text );
+      //      Assert.IsTrue( (itemId == viewModel.WorkItemTypeId) ? item.Selected : !item.Selected );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_InitializesProjectList_ActiveItemSelected()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+      //   var returnedModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), returnedModel.Projects.Count() );
+      //   for (int i = 0; i < returnedModel.Projects.Count(); i++)
+      //   {
+      //      var item = returnedModel.Projects.ElementAt( i );
+      //      var itemId = new Guid( item.Value );
+      //      var project = Projects.ModelData.First( x => x.Id == itemId );
+      //      Assert.AreEqual( project.Name, item.Text );
+      //      Assert.IsTrue( (itemId == viewModel.ProjectId) ? item.Selected : !item.Selected );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_InitializesAssignedToUserList_ActiveItemSelected()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   _controller.ModelState.AddModelError( "Test", "This is an error" );
+      //   var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+
+      //   var returnedModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, returnedModel.AssignedToUsers.Count() );
+      //   for (int i = 1; i < returnedModel.AssignedToUsers.Count(); i++)
+      //   {
+      //      var item = returnedModel.AssignedToUsers.ElementAt( i );
+      //      var itemId = new Guid( item.Value );
+      //      var user = Users.ModelData.First( x => x.Id == itemId );
+      //      Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
+      //      Assert.IsTrue( (itemId == viewModel.AssignedToUserId) ? item.Selected : !item.Selected );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_CopiesMessagesToModelStateIfValidationFails()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   viewModel.Name = "";
+      //   var result = _controller.Create( viewModel, _principal.Object );
+
+      //   Assert.AreEqual( 1, _controller.ModelState.Count );
+      //   Assert.IsTrue( _controller.ModelState.ContainsKey( "Name" ) );
+      //   Assert.IsTrue( result is ViewResult );
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_DoesNotCopyMessagesToModelStateIfValidationSucceeds()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   var result = _controller.Create( viewModel, _principal.Object );
+
+      //   Assert.AreEqual( 0, _controller.ModelState.Count );
+      //   Assert.IsNotNull( result );
+      //   Assert.IsTrue( result is RedirectToRouteResult );
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_SetsLastModifiedAndCreatedByUserIdToCurrentUser()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+
+      //   var user = Users.ModelData[0];
+      //   _userIdentity
+      //      .Setup( x => x.Name )
+      //      .Returns( user.UserName );
+
+      //   _controller.Create( viewModel, _principal.Object );
+
+      //   _session.Clear();
+      //   var items = _session.Query<WorkItem>()
+      //      .Where( x => x.Name == viewModel.Name )
+      //      .ToList();
+
+      //   Assert.AreEqual( 1, items.Count );
+      //   Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
+      //   Assert.AreEqual( user.Id, items[0].CreatedByUser.Id );
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+      //   viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+
+      //   _controller.Create( viewModel, _principal.Object );
+
+      //   _session.Clear();
+      //   var items = _session.Query<WorkItem>()
+      //      .Where( x => x.Name == viewModel.Name )
+      //      .ToList();
+
+      //   Assert.AreEqual( 1, items.Count );
+      //   Assert.IsNull( items[0].AssignedToUser );
+      //}
+
+      //[TestMethod]
+      //public void CreatePost_DoesNotSetAssignedToUserIdToDefault_IfAssignmentsIsAllowedForType()
+      //{
+      //   var viewModel = CreateSprintEditorViewModel();
+      //   viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
+
+      //   _controller.Create( viewModel, _principal.Object );
+
+      //   _session.Clear();
+      //   var items = _session.Query<WorkItem>()
+      //      .Where( x => x.Name == viewModel.Name )
+      //      .ToList();
+
+      //   Assert.AreEqual( 1, items.Count );
+      //   Assert.AreEqual( viewModel.AssignedToUserId, items[0].AssignedToUser.Id );
+      //}
+      #endregion
+
+
       #region Details GET
       [TestMethod]
       public void DetailsGet_ReturnsViewWithModel()
@@ -411,6 +641,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+      #endregion
+
+
+      #region Private Helpers
+      private SprintEditorViewModel CreateSprintEditorViewModel()
+      {
+         return new SprintEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "New Work Item",
+            Description = "This is a test",
+            StatusId = SprintStatuses.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            StatusName = SprintStatuses.ModelData.First( x => x.StatusCd == 'A' ).Name,
+            ProjectId = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Id,
+            ProjectName = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Name,
+            StartDate = new DateTime( 2013, 4, 1 ),
+            EndDate = new DateTime( 2013, 4, 30 )
+         };
       }
       #endregion
    }

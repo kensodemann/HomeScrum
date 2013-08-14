@@ -109,6 +109,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       }
       #endregion
 
+
       #region Project Status
       [TestMethod]
       public void CanMapProjectStatus_DomainToViewModel()
@@ -148,6 +149,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( 'A', ((ProjectStatus)domainModel).StatusCd );
       }
       #endregion
+      
 
       #region Sprint
       [TestMethod]
@@ -157,12 +159,53 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintViewModel ) );
 
          Assert.IsInstanceOfType( viewModel, typeof( SprintViewModel ) );
-         Assert.AreEqual( ((SprintViewModel)viewModel).ProjectName, domainModel.Project.Name );
-         Assert.AreEqual( ((SprintViewModel)viewModel).StatusName, domainModel.Status.Name );
-         Assert.AreEqual( ((SprintViewModel)viewModel).CanAddBacklog, !domainModel.Status.BacklogIsClosed );
-         Assert.AreEqual( ((SprintViewModel)viewModel).CanAddTasks, !domainModel.Status.TaskListIsClosed );
+         Assert.AreEqual( domainModel.Project.Name, ((SprintViewModel)viewModel).ProjectName );
+         Assert.AreEqual( domainModel.Status.Name, ((SprintViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.Status.BacklogIsClosed, !((SprintViewModel)viewModel).CanAddBacklog );
+         Assert.AreEqual( domainModel.Status.TaskListIsClosed, !((SprintViewModel)viewModel).CanAddTasks );
+      }
+
+      [TestMethod]
+      public void CanMapSprint_DomainToEditorViewModel()
+      {
+         var domainModel = Sprints.ModelData[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( SprintEditorViewModel ) );
+         Assert.AreEqual( domainModel.Project.Id, ((SprintEditorViewModel)viewModel).ProjectId );
+         Assert.AreEqual( domainModel.Project.Name, ((SprintEditorViewModel)viewModel).ProjectName );
+         Assert.AreEqual( domainModel.Status.Id, ((SprintEditorViewModel)viewModel).StatusId );
+         Assert.AreEqual( domainModel.Status.Name, ((SprintEditorViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.Goal, ((SprintEditorViewModel)viewModel).Goal );
+      }
+
+      [TestMethod]
+      public void CanMapSprint_EditorViewModelToDomain()
+      {
+         var viewModel = new SprintEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test.",
+            StartDate = new DateTime( 2013, 3, 1 ),
+            EndDate = new DateTime( 2013, 3, 31 ),
+            Goal = "Get this thing tested",
+            ProjectId = Projects.ModelData[2].Id,
+            StatusId = SprintStatuses.ModelData[1].Id
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Sprint ) );
+
+         Assert.AreEqual( viewModel.Id, ((Sprint)domainModel).Id );
+         Assert.AreEqual( viewModel.Name, ((Sprint)domainModel).Name );
+         Assert.AreEqual( viewModel.Description, ((Sprint)domainModel).Description );
+         Assert.AreEqual( viewModel.Goal, ((Sprint)domainModel).Goal );
+         Assert.AreEqual( viewModel.StartDate, ((Sprint)domainModel).StartDate );
+         Assert.AreEqual( viewModel.EndDate, ((Sprint)domainModel).EndDate );
+         Assert.AreEqual( viewModel.StatusId, ((Sprint)domainModel).Status.Id );
+         Assert.AreEqual( viewModel.ProjectId, ((Sprint)domainModel).Project.Id );
       }
       #endregion
+
 
       #region Sprint Status
       [TestMethod]
@@ -212,6 +255,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       }
       #endregion
 
+
       #region Work Item Status
       [TestMethod]
       public void CanMapWorkItemStatus_DomainToViewModel()
@@ -252,6 +296,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       }
       #endregion
 
+
       #region Work Item Type
       [TestMethod]
       public void CanMapWorkItemType_DomainToViewModel()
@@ -291,6 +336,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( 'A', ((WorkItemType)domainModel).StatusCd );
       }
       #endregion
+
 
       #region Project
       [TestMethod]
@@ -333,6 +379,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          AssertDomainModelsEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
       }
       #endregion
+
 
       #region WorkItem
       [TestMethod]

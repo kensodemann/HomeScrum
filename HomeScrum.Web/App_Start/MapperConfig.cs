@@ -44,6 +44,12 @@ namespace HomeScrum.Web
             .ConstructUsingServiceLocator()
             .ForMember( dest => dest.StatusCd, opt => opt.ResolveUsing<BooleanToStatusCdResolver>().FromMember( src => src.AllowUse ) );
 
+         Mapper.CreateMap<SprintEditorViewModel, Sprint>()
+            .ConstructUsingServiceLocator()
+            .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
+            .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<SprintStatus>>().FromMember( src => src.StatusId ) )
+            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) );
+
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
             .ConstructUsingServiceLocator()
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.MapFrom( src => src.LastModifiedUserId ) )
