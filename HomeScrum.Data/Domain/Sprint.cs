@@ -21,6 +21,9 @@ namespace HomeScrum.Data.Domain
 
       public virtual Guid LastModifiedUserRid { get; set; }
 
+      [Required]
+      public virtual User CreatedByUser { get; set; }
+
       public virtual DateTime? StartDate { get; set; }
 
       public virtual DateTime? EndDate { get; set; }

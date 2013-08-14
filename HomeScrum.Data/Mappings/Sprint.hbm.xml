@@ -27,6 +27,15 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
+
+    <property name="LastModifiedUserRid"/>
+    <many-to-one name="CreatedByUser"
+                 class="User"
+                 column="CreatedByUserRid"
+                 lazy="false"
+                 cascade="none"
+                 fetch="join"/>
+    
   </class>
 
 </hibernate-mapping>
