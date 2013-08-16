@@ -151,62 +151,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       #endregion
       
 
-      #region Sprint
-      [TestMethod]
-      public void CanMapSprint_DomainToViewModel()
-      {
-         var domainModel = Sprints.ModelData[0];
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( SprintViewModel ) );
-         Assert.AreEqual( domainModel.Project.Name, ((SprintViewModel)viewModel).ProjectName );
-         Assert.AreEqual( domainModel.Status.Name, ((SprintViewModel)viewModel).StatusName );
-         Assert.AreEqual( domainModel.Status.BacklogIsClosed, !((SprintViewModel)viewModel).CanAddBacklog );
-         Assert.AreEqual( domainModel.Status.TaskListIsClosed, !((SprintViewModel)viewModel).CanAddTasks );
-      }
-
-      [TestMethod]
-      public void CanMapSprint_DomainToEditorViewModel()
-      {
-         var domainModel = Sprints.ModelData[0];
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintEditorViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( SprintEditorViewModel ) );
-         Assert.AreEqual( domainModel.Project.Id, ((SprintEditorViewModel)viewModel).ProjectId );
-         Assert.AreEqual( domainModel.Project.Name, ((SprintEditorViewModel)viewModel).ProjectName );
-         Assert.AreEqual( domainModel.Status.Id, ((SprintEditorViewModel)viewModel).StatusId );
-         Assert.AreEqual( domainModel.Status.Name, ((SprintEditorViewModel)viewModel).StatusName );
-         Assert.AreEqual( domainModel.Goal, ((SprintEditorViewModel)viewModel).Goal );
-      }
-
-      [TestMethod]
-      public void CanMapSprint_EditorViewModelToDomain()
-      {
-         var viewModel = new SprintEditorViewModel()
-         {
-            Id = Guid.NewGuid(),
-            Name = "Test Me",
-            Description = "This is a test.",
-            StartDate = new DateTime( 2013, 3, 1 ),
-            EndDate = new DateTime( 2013, 3, 31 ),
-            Goal = "Get this thing tested",
-            ProjectId = Projects.ModelData[2].Id,
-            StatusId = SprintStatuses.ModelData[1].Id
-         };
-         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Sprint ) );
-
-         Assert.AreEqual( viewModel.Id, ((Sprint)domainModel).Id );
-         Assert.AreEqual( viewModel.Name, ((Sprint)domainModel).Name );
-         Assert.AreEqual( viewModel.Description, ((Sprint)domainModel).Description );
-         Assert.AreEqual( viewModel.Goal, ((Sprint)domainModel).Goal );
-         Assert.AreEqual( viewModel.StartDate, ((Sprint)domainModel).StartDate );
-         Assert.AreEqual( viewModel.EndDate, ((Sprint)domainModel).EndDate );
-         Assert.AreEqual( viewModel.StatusId, ((Sprint)domainModel).Status.Id );
-         Assert.AreEqual( viewModel.ProjectId, ((Sprint)domainModel).Project.Id );
-      }
-      #endregion
-
-
       #region Sprint Status
       [TestMethod]
       public void CanMapSprintStatus_DomainToViewModel()
@@ -377,6 +321,62 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
          Assert.IsInstanceOfType( domainModel, typeof( Project ) );
          AssertDomainModelsEqual( ProjectStatuses.ModelData[0], ((Project)domainModel).Status );
+      }
+      #endregion
+
+
+      #region Sprint
+      [TestMethod]
+      public void CanMapSprint_DomainToViewModel()
+      {
+         var domainModel = Sprints.ModelData[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( SprintViewModel ) );
+         Assert.AreEqual( domainModel.Project.Name, ((SprintViewModel)viewModel).ProjectName );
+         Assert.AreEqual( domainModel.Status.Name, ((SprintViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.Status.BacklogIsClosed, !((SprintViewModel)viewModel).CanAddBacklog );
+         Assert.AreEqual( domainModel.Status.TaskListIsClosed, !((SprintViewModel)viewModel).CanAddTasks );
+      }
+
+      [TestMethod]
+      public void CanMapSprint_DomainToEditorViewModel()
+      {
+         var domainModel = Sprints.ModelData[0];
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintEditorViewModel ) );
+
+         Assert.IsInstanceOfType( viewModel, typeof( SprintEditorViewModel ) );
+         Assert.AreEqual( domainModel.Project.Id, ((SprintEditorViewModel)viewModel).ProjectId );
+         Assert.AreEqual( domainModel.Project.Name, ((SprintEditorViewModel)viewModel).ProjectName );
+         Assert.AreEqual( domainModel.Status.Id, ((SprintEditorViewModel)viewModel).StatusId );
+         Assert.AreEqual( domainModel.Status.Name, ((SprintEditorViewModel)viewModel).StatusName );
+         Assert.AreEqual( domainModel.Goal, ((SprintEditorViewModel)viewModel).Goal );
+      }
+
+      [TestMethod]
+      public void CanMapSprint_EditorViewModelToDomain()
+      {
+         var viewModel = new SprintEditorViewModel()
+         {
+            Id = Guid.NewGuid(),
+            Name = "Test Me",
+            Description = "This is a test.",
+            StartDate = new DateTime( 2013, 3, 1 ),
+            EndDate = new DateTime( 2013, 3, 31 ),
+            Goal = "Get this thing tested",
+            ProjectId = Projects.ModelData[2].Id,
+            StatusId = SprintStatuses.ModelData[1].Id
+         };
+         var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Sprint ) );
+
+         Assert.AreEqual( viewModel.Id, ((Sprint)domainModel).Id );
+         Assert.AreEqual( viewModel.Name, ((Sprint)domainModel).Name );
+         Assert.AreEqual( viewModel.Description, ((Sprint)domainModel).Description );
+         Assert.AreEqual( viewModel.Goal, ((Sprint)domainModel).Goal );
+         Assert.AreEqual( viewModel.StartDate, ((Sprint)domainModel).StartDate );
+         Assert.AreEqual( viewModel.EndDate, ((Sprint)domainModel).EndDate );
+         Assert.AreEqual( viewModel.StatusId, ((Sprint)domainModel).Status.Id );
+         Assert.AreEqual( viewModel.ProjectId, ((Sprint)domainModel).Project.Id );
       }
       #endregion
 

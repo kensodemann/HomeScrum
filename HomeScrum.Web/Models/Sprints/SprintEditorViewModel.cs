@@ -27,5 +27,9 @@ namespace HomeScrum.Web.Models.Sprints
 
       [Display( Name = "EndDate", ResourceType = typeof( DisplayStrings ) )]
       public DateTime EndDate { get; set; }
+
+      public Guid CreatedByUserId { get; set; }
+      [Display( Name = "CreatedByUser", ResourceType = typeof( DisplayStrings ) )]
+      public string CreatedByUserUserName { get; set; }
    }
 }

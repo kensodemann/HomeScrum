@@ -44,5 +44,18 @@ namespace HomeScrum.Web.Controllers
               .ThenBy( x => x.Name.ToUpper() )
               .SelectSelectListItems<Project>( selectedId );
        }
+
+       protected override void Save( ISession session, Sprint model, System.Security.Principal.IPrincipal user )
+       {
+          model.LastModifiedUserRid = GetUserId( session, user.Identity.Name ); 
+          base.Save( session, model, user );
+       }
+
+       // TODO: Make extention to IPrincipal, replace this here and in WorkItem
+       private Guid GetUserId( ISession session, string userName )
+       {
+          return session.Query<User>()
+             .Single( x => x.UserName == userName ).Id;
+       }
     }
 }

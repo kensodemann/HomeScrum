@@ -22,6 +22,32 @@ namespace HomeScrum.Web.Controllers
          : base( translator, logger, sessionFactory ) { }
 
       //
+      // GET: /WorkItems/
+      public override ActionResult Index()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = session.Query<WorkItem>()
+               .OrderBy( x => x.WorkItemType.SortSequence )
+               .ThenBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name.ToUpper() )
+               .Select( x => new WorkItemIndexViewModel()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  WorkItemTypeName = x.WorkItemType.Name,
+                  StatusName = x.Status.Name,
+                  IsComplete = !x.Status.IsOpenStatus
+               } )
+               .ToList();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
       // GET: /WorkItem/Create
       public override ActionResult Create( string callingAction = null, string callingId = null, string parentId = null )
       {
@@ -59,32 +85,6 @@ namespace HomeScrum.Web.Controllers
          var session = SessionFactory.GetCurrentSession();
          viewModel.CreatedByUserId = GetUserId( session, user.Identity.Name );
          return base.Create( viewModel, user );
-      }
-
-      //
-      // GET: /WorkItems/
-      public override ActionResult Index()
-      {
-         var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = session.Query<WorkItem>()
-               .OrderBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name.ToUpper() )
-               .Select( x => new WorkItemIndexViewModel()
-                             {
-                                Id = x.Id,
-                                Name = x.Name,
-                                WorkItemTypeName = x.WorkItemType.Name,
-                                StatusName = x.Status.Name,
-                                IsComplete = !x.Status.IsOpenStatus
-                             } )
-               .ToList();
-
-            transaction.Commit();
-            return View( workItems );
-         }
       }
 
       //

@@ -417,61 +417,27 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( result is RedirectToRouteResult );
       }
 
-      //[TestMethod]
-      //public void CreatePost_SetsLastModifiedAndCreatedByUserIdToCurrentUser()
-      //{
-      //   var viewModel = CreateSprintEditorViewModel();
+      [TestMethod]
+      public void CreatePost_SetsLastModifiedAndCreatedByUserIdToCurrentUser()
+      {
+         var viewModel = CreateSprintEditorViewModel();
 
-      //   var user = Users.ModelData[0];
-      //   _userIdentity
-      //      .Setup( x => x.Name )
-      //      .Returns( user.UserName );
+         var user = Users.ModelData[0];
+         _userIdentity
+            .Setup( x => x.Name )
+            .Returns( user.UserName );
 
-      //   _controller.Create( viewModel, _principal.Object );
+         _controller.Create( viewModel, _principal.Object );
 
-      //   _session.Clear();
-      //   var items = _session.Query<WorkItem>()
-      //      .Where( x => x.Name == viewModel.Name )
-      //      .ToList();
+         _session.Clear();
+         var items = _session.Query<Sprint>()
+            .Where( x => x.Name == viewModel.Name )
+            .ToList();
 
-      //   Assert.AreEqual( 1, items.Count );
-      //   Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
-      //   Assert.AreEqual( user.Id, items[0].CreatedByUser.Id );
-      //}
-
-      //[TestMethod]
-      //public void CreatePost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
-      //{
-      //   var viewModel = CreateSprintEditorViewModel();
-      //   viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
-
-      //   _controller.Create( viewModel, _principal.Object );
-
-      //   _session.Clear();
-      //   var items = _session.Query<WorkItem>()
-      //      .Where( x => x.Name == viewModel.Name )
-      //      .ToList();
-
-      //   Assert.AreEqual( 1, items.Count );
-      //   Assert.IsNull( items[0].AssignedToUser );
-      //}
-
-      //[TestMethod]
-      //public void CreatePost_DoesNotSetAssignedToUserIdToDefault_IfAssignmentsIsAllowedForType()
-      //{
-      //   var viewModel = CreateSprintEditorViewModel();
-      //   viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
-
-      //   _controller.Create( viewModel, _principal.Object );
-
-      //   _session.Clear();
-      //   var items = _session.Query<WorkItem>()
-      //      .Where( x => x.Name == viewModel.Name )
-      //      .ToList();
-
-      //   Assert.AreEqual( 1, items.Count );
-      //   Assert.AreEqual( viewModel.AssignedToUserId, items[0].AssignedToUser.Id );
-      //}
+         Assert.AreEqual( 1, items.Count );
+         Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
+         Assert.AreEqual( user.Id, items[0].CreatedByUser.Id );
+      }
       #endregion
 
 
@@ -618,7 +584,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectId = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Id,
             ProjectName = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Name,
             StartDate = new DateTime( 2013, 4, 1 ),
-            EndDate = new DateTime( 2013, 4, 30 )
+            EndDate = new DateTime( 2013, 4, 30 ),
+            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id
          };
       }
       #endregion
