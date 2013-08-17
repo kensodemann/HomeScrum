@@ -585,45 +585,45 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( model.Id, returnedModel.Id );
       }
 
-      //[TestMethod]
-      //public void EditGet_InitializesWorkItemStatuses_WorkItemStatusSelected()
-      //{
-      //   var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
+      [TestMethod]
+      public void EditGet_InitializesSprintStatuses_SprintStatusSelected()
+      {
+         var model = Sprints.ModelData.First( x => x.Status.StatusCd == 'A' );
 
-      //   var result = _controller.Edit( model.Id ) as ViewResult;
-      //   var viewModel = result.Model as WorkItemEditorViewModel;
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as SprintEditorViewModel;
 
-      //   Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
-      //   foreach (var item in viewModel.Statuses)
-      //   {
-      //      var itemId = new Guid( item.Value );
-      //      var status = WorkItemStatuses.ModelData.First( x => x.Id == itemId );
-      //      Assert.AreEqual( status.Name, item.Text );
-      //      Assert.IsTrue( (model.Status.Id != itemId && !item.Selected) ||
-      //                     (model.Status.Id == itemId && item.Selected) );
-      //   }
-      //}
+         Assert.AreEqual( SprintStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
+         foreach (var item in viewModel.Statuses)
+         {
+            var itemId = new Guid( item.Value );
+            var status = SprintStatuses.ModelData.First( x => x.Id == itemId );
+            Assert.AreEqual( status.Name, item.Text );
+            Assert.IsTrue( (model.Status.Id != itemId && !item.Selected) ||
+                           (model.Status.Id == itemId && item.Selected) );
+         }
+      }
 
-      //[TestMethod]
-      //public void EditGet_InitializesProjects_ProjectSelected()
-      //{
-      //   var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+      [TestMethod]
+      public void EditGet_InitializesProjects_ProjectSelected()
+      {
+         var model = Sprints.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
 
-      //   var result = _controller.Edit( model.Id ) as ViewResult;
-      //   var viewModel = result.Model as WorkItemEditorViewModel;
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as SprintEditorViewModel;
 
-      //   Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
 
-      //   for (int i = 0; i < viewModel.Projects.Count(); i++)
-      //   {
-      //      var item = viewModel.Projects.ElementAt( i );
-      //      var itemId = new Guid( item.Value );
-      //      var project = Projects.ModelData.First( x => x.Id == itemId );
-      //      Assert.AreEqual( project.Name, item.Text );
-      //      Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
-      //                     (model.Project.Id == itemId && item.Selected) );
-      //   }
-      //}
+         for (int i = 0; i < viewModel.Projects.Count(); i++)
+         {
+            var item = viewModel.Projects.ElementAt( i );
+            var itemId = new Guid( item.Value );
+            var project = Projects.ModelData.First( x => x.Id == itemId );
+            Assert.AreEqual( project.Name, item.Text );
+            Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
+                           (model.Project.Id == itemId && item.Selected) );
+         }
+      }
 
       //[TestMethod]
       //public void EditGet_ReturnsNoDataFoundIfModelNotFound()
