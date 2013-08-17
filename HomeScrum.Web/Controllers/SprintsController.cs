@@ -51,6 +51,12 @@ namespace HomeScrum.Web.Controllers
           base.Save( session, model, user );
        }
 
+       protected override void Update( ISession session, Sprint model, System.Security.Principal.IPrincipal user )
+       {
+          model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+          base.Update( session, model, user );
+       }
+
        // TODO: Make extention to IPrincipal, replace this here and in WorkItem
        private Guid GetUserId( ISession session, string userName )
        {
