@@ -15,9 +15,9 @@ namespace HomeScrum.Web.Models.Sprints
       public string ProjectName { get; set; }
 
       [Display( Name = "StartDate", ResourceType = typeof( DisplayStrings ) )]
-      public DateTime StartDate { get; set; }
+      public DateTime? StartDate { get; set; }
 
       [Display( Name = "EndDate", ResourceType = typeof( DisplayStrings ) )]
-      public DateTime EndDate { get; set; }
+      public DateTime? EndDate { get; set; }
    }
 }
