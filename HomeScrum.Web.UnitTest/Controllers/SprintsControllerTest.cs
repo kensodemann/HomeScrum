@@ -289,7 +289,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
-      #region Create POST Tests
+      #region Create POST
       [TestMethod]
       public void CreatePost_SavesModelIfModelValid()
       {
@@ -568,6 +568,197 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+      #endregion
+
+
+      #region Edit GET
+      [TestMethod]
+      public void EditGet_ReturnsViewWithModel()
+      {
+         var model = Sprints.ModelData[3];
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         var returnedModel = result.Model as SprintEditorViewModel;
+         Assert.IsNotNull( returnedModel );
+         Assert.AreEqual( model.Id, returnedModel.Id );
+      }
+
+      //[TestMethod]
+      //public void EditGet_InitializesWorkItemStatuses_WorkItemStatusSelected()
+      //{
+      //   var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
+
+      //   var result = _controller.Edit( model.Id ) as ViewResult;
+      //   var viewModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
+      //   foreach (var item in viewModel.Statuses)
+      //   {
+      //      var itemId = new Guid( item.Value );
+      //      var status = WorkItemStatuses.ModelData.First( x => x.Id == itemId );
+      //      Assert.AreEqual( status.Name, item.Text );
+      //      Assert.IsTrue( (model.Status.Id != itemId && !item.Selected) ||
+      //                     (model.Status.Id == itemId && item.Selected) );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void EditGet_InitializesProjects_ProjectSelected()
+      //{
+      //   var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+
+      //   var result = _controller.Edit( model.Id ) as ViewResult;
+      //   var viewModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+
+      //   for (int i = 0; i < viewModel.Projects.Count(); i++)
+      //   {
+      //      var item = viewModel.Projects.ElementAt( i );
+      //      var itemId = new Guid( item.Value );
+      //      var project = Projects.ModelData.First( x => x.Id == itemId );
+      //      Assert.AreEqual( project.Name, item.Text );
+      //      Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
+      //                     (model.Project.Id == itemId && item.Selected) );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void EditGet_ReturnsNoDataFoundIfModelNotFound()
+      //{
+      //   var result = _controller.Edit( Guid.NewGuid() ) as HttpNotFoundResult;
+
+      //   Assert.IsNotNull( result );
+      //}
+
+      //[TestMethod]
+      //public void EditGet_PopulatesTaskList_IfChildTasksExist()
+      //{
+      //   var parentId = WorkItems.ModelData
+      //      .Where( x => x.ParentWorkItem != null )
+      //      .GroupBy( x => x.ParentWorkItem.Id )
+      //      .Select( g => new { Id = g.Key, Count = g.Count() } )
+      //      .OrderBy( x => x.Count )
+      //      .Last().Id;
+      //   var expectedChildWorkItems = WorkItems.ModelData
+      //      .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+
+      //   var result = _controller.Edit( parentId ) as ViewResult;
+      //   var viewModel = result.Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
+      //   foreach (var child in expectedChildWorkItems)
+      //   {
+      //      Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
+      //   }
+      //}
+
+      //[TestMethod]
+      //public void EditGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      //{
+      //   var id = WorkItems.ModelData[0].Id;
+
+      //   var viewModel = ((ViewResult)_controller.Edit( id )).Model as WorkItemEditorViewModel;
+
+      //   Assert.IsNull( viewModel.CallingAction );
+      //   Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      //}
+
+      //[TestMethod]
+      //public void EditGet_AddsCallingActionAndId_IfSpecified()
+      //{
+      //   var modelId = WorkItems.ModelData[0].Id;
+      //   var parentId = Guid.NewGuid();
+
+      //   var viewModel = ((ViewResult)_controller.Edit( modelId, "Edit", parentId.ToString() )).Model as WorkItemEditorViewModel;
+
+      //   Assert.AreEqual( "Edit", viewModel.CallingAction );
+      //   Assert.AreEqual( parentId, viewModel.CallingId );
+      //}
+
+      //[TestMethod]
+      //public void EditGet_PushesToNavigationStack_IfCallingDataGiven()
+      //{
+      //   var controller = CreateController();
+      //   var id = WorkItems.ModelData[3].Id;
+      //   var parentId = Guid.NewGuid();
+
+      //   controller.Edit( id, "Index" );
+      //   var viewModel = ((ViewResult)controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+
+      //   var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+      //   Assert.IsNotNull( stack );
+      //   Assert.AreEqual( 2, stack.Count );
+
+      //   var navData = stack.Pop();
+      //   Assert.AreEqual( "Edit", navData.Action );
+      //   Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+      //   navData = stack.Peek();
+      //   Assert.AreEqual( "Index", navData.Action );
+      //   Assert.IsNull( navData.Id );
+
+      //   Assert.AreEqual( "Edit", viewModel.CallingAction );
+      //   Assert.AreEqual( parentId, viewModel.CallingId );
+      //}
+
+      //[TestMethod]
+      //public void EditGet_DoesNotPush_IfCallingDataAlreadyOnTop()
+      //{
+      //   var controller = CreateController();
+      //   var id = WorkItems.ModelData[3].Id;
+      //   var parentId = Guid.NewGuid();
+
+      //   controller.Edit( id, "Index" );
+      //   controller.Edit( id, "Edit", parentId.ToString() );
+      //   controller.Edit( id, "Edit", parentId.ToString() );
+      //   controller.Edit( id, "Index" );
+      //   controller.Edit( id, "Index" );
+
+      //   var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+      //   Assert.IsNotNull( stack );
+      //   Assert.AreEqual( 3, stack.Count );
+
+      //   var navData = stack.Pop();
+      //   Assert.AreEqual( "Index", navData.Action );
+      //   Assert.IsNull( navData.Id );
+
+      //   navData = stack.Pop();
+      //   Assert.AreEqual( "Edit", navData.Action );
+      //   Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+      //   navData = stack.Peek();
+      //   Assert.AreEqual( "Index", navData.Action );
+      //   Assert.IsNull( navData.Id );
+      //}
+
+      //[TestMethod]
+      //public void EditGet_PopsFromNavigationStack_IfCallingDataNotGiven()
+      //{
+      //   var controller = CreateController();
+      //   var id = WorkItems.ModelData[3].Id;
+      //   var parentId = Guid.NewGuid();
+
+      //   controller.Edit( id, "Index" );
+      //   controller.Edit( id, "Edit", parentId.ToString() );
+      //   var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
+
+      //   var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+      //   Assert.IsNotNull( stack );
+      //   Assert.AreEqual( 1, stack.Count );
+
+      //   var navData = stack.Peek();
+      //   Assert.AreEqual( "Index", navData.Action );
+      //   Assert.IsNull( navData.Id );
+
+      //   Assert.AreEqual( "Index", viewModel.CallingAction );
+      //   Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      //}
       #endregion
 
 
