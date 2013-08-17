@@ -55,7 +55,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2013, 1, 1),
                EndDate = new DateTime(2013,1,31),
                Goal = "Get the initial design finalized",
-               LastModifiedUserRid = Users.ModelData[0].Id
+               LastModifiedUserRid = Users.ModelData[0].Id,
+               CreatedByUser = Users.ModelData[1]
             },
             new Sprint()
             {
@@ -66,7 +67,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2013, 2, 1),
                EndDate = new DateTime(2013,2,28),
                Goal = "Create Domains Models and ORM Mappings",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
             },
             new Sprint()
             {
@@ -77,7 +79,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2013, 3, 1),
                EndDate = new DateTime(2013,3,31),
                Goal = "Develop pattern for the controller classes",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[0]
             },
             new Sprint()
             {
@@ -88,7 +91,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2013, 4, 1),
                EndDate = null,
                Goal = "Expand controllers",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[2]
             },
             new Sprint()
             {
@@ -99,7 +103,8 @@ namespace HomeScrum.Common.TestData
                StartDate = null,
                EndDate = null,
                Goal = null,
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[0]
             },
             new Sprint()
             {
@@ -110,7 +115,8 @@ namespace HomeScrum.Common.TestData
                StartDate = null,
                EndDate = null,
                Goal = "Create editor views",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
             },
             new Sprint()
             {
@@ -121,7 +127,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2012, 6, 15),
                EndDate = new DateTime(2012,7,14),
                Goal = "Accomplish something",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[0]
             },
             new Sprint()
             {
@@ -132,7 +139,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2012, 7, 15),
                EndDate = new DateTime(2012,8,14),
                Goal = "Accomplish something else",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[2]
             },
             new Sprint()
             {
@@ -143,7 +151,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2012, 7, 15),
                EndDate = null,
                Goal = "The project is imploding, attempt to prevent that",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
             },
             new Sprint()
             {
@@ -154,7 +163,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2012, 7, 15),
                EndDate = null,
                Goal = "I don't know",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
             },
             new Sprint()
             {
@@ -165,7 +175,8 @@ namespace HomeScrum.Common.TestData
                StartDate = new DateTime(2012, 7, 15),
                EndDate = null,
                Goal = "I still don't know",
-               LastModifiedUserRid = Users.ModelData[1].Id
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
             }
          };
       }

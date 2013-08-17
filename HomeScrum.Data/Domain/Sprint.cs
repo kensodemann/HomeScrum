@@ -19,6 +19,7 @@ namespace HomeScrum.Data.Domain
 
       public virtual string Goal { get; set; }
 
+      [Required]
       public virtual Guid LastModifiedUserRid { get; set; }
 
       [Required]
