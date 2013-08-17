@@ -133,7 +133,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void Index_ReturnsViewWithAllItems()
       {
          var view = _controller.Index() as ViewResult;
-         var model = view.Model as IEnumerable<DomainObjectViewModel>;
+         var model = view.Model as IEnumerable<SprintIndexViewModel>;
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( model );

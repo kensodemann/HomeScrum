@@ -138,6 +138,9 @@
   <data name="DescriptionPrompt" xml:space="preserve">
     <value>Enter a short description</value>
   </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>EndDate:</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First Name:</value>
   </data>
@@ -171,6 +174,12 @@
   <data name="ProjectStatusIsActive" xml:space="preserve">
     <value>Projects of this status are active</value>
   </data>
+  <data name="Sprint" xml:space="preserve">
+    <value>Sprint:</value>
+  </data>
+  <data name="SprintStatus" xml:space="preserve">
+    <value>Status:</value>
+  </data>
   <data name="SprintStatusAllowNewBacklogItems" xml:space="preserve">
     <value>Backlog items can be added to sprints of this status</value>
   </data>
@@ -179,6 +188,9 @@
   </data>
   <data name="SprintStatusIsOpenStatus" xml:space="preserve">
     <value>Sprints with this status are actively being worked on</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>StartDate:</value>
   </data>
   <data name="UserIsActive" xml:space="preserve">
     <value>User is active</value>
