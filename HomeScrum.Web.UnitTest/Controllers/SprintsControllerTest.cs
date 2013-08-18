@@ -144,6 +144,37 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsNotNull( model.FirstOrDefault( x => x.Id == sprint.Id ) );
          }
       }
+
+      [TestMethod]
+      public void Index_SortsByProjectStartDateStatus()
+      {
+         var view = _controller.Index() as ViewResult;
+
+         var sprints = view.Model as IEnumerable<SprintIndexViewModel>;
+
+         string previousProject = null;
+         DateTime? previousStartDate = null;
+         int previousStatusSortSeq = 0;
+         foreach (var sprint in sprints)
+         {
+            var model = Sprints.ModelData.First( x => x.Id == sprint.Id );
+            if (previousProject != null)
+            {
+               Assert.IsTrue( String.Compare( previousProject, sprint.ProjectName ) <= 0, "Order by project" );
+               if (previousProject == sprint.ProjectName)
+               {
+                  Assert.IsTrue( previousStartDate <= sprint.StartDate, "Order by date within project" );
+                  if (sprint.StartDate == previousStartDate)
+                  {
+                     Assert.IsTrue( previousStatusSortSeq <= model.Status.SortSequence, "Fall back to status sort" );
+                  }
+               }
+            }
+            previousStatusSortSeq = (sprint.StartDate == previousStartDate) ? model.Status.SortSequence : 0;
+            previousStartDate = (sprint.ProjectName == previousProject) ? sprint.StartDate ?? DateTime.MinValue : DateTime.MinValue;
+            previousProject = sprint.ProjectName;
+         }
+      }
       #endregion
 
 

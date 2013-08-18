@@ -46,6 +46,8 @@ namespace HomeScrum.Common.TestData
 
          ModelData = new[]
          {
+            // NOTE: A couple of these items are intentionally moved around and mixed in
+            //       with sprints for other projects in order to test the ordering.
             new Sprint()
             {
                Name = "Project 1, Sprint 1",
@@ -60,18 +62,6 @@ namespace HomeScrum.Common.TestData
             },
             new Sprint()
             {
-               Name = "Project 1, Sprint 2",
-               Description = "The second sprint for the 1st active project",
-               Status = closed,
-               Project = project1,
-               StartDate = new DateTime(2013, 2, 1),
-               EndDate = new DateTime(2013,2,28),
-               Goal = "Create Domains Models and ORM Mappings",
-               LastModifiedUserRid = Users.ModelData[1].Id,
-               CreatedByUser = Users.ModelData[1]
-            },
-            new Sprint()
-            {
                Name = "Project 1, Sprint 3",
                Description = "The third sprint for the 1st active project",
                Status = retrospective,
@@ -81,6 +71,30 @@ namespace HomeScrum.Common.TestData
                Goal = "Develop pattern for the controller classes",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0]
+            },
+            new Sprint()
+            {
+               Name = "Inactive Project, Sprint 2",
+               Description = "The second sprint for the inactive project",
+               Status = closed,
+               Project = inactiveProject,
+               StartDate = new DateTime(2012, 7, 15),
+               EndDate = new DateTime(2012,8,14),
+               Goal = "Accomplish something else",
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[2]
+            },
+            new Sprint()
+            {
+               Name = "Project 1, Sprint 2",
+               Description = "The second sprint for the 1st active project",
+               Status = closed,
+               Project = project1,
+               StartDate = new DateTime(2013, 2, 1),
+               EndDate = new DateTime(2013,2,28),
+               Goal = "Create Domains Models and ORM Mappings",
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
             },
             new Sprint()
             {
@@ -129,18 +143,6 @@ namespace HomeScrum.Common.TestData
                Goal = "Accomplish something",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0]
-            },
-            new Sprint()
-            {
-               Name = "Inactive Project, Sprint 2",
-               Description = "The second sprint for the inactive project",
-               Status = closed,
-               Project = inactiveProject,
-               StartDate = new DateTime(2012, 7, 15),
-               EndDate = new DateTime(2012,8,14),
-               Goal = "Accomplish something else",
-               LastModifiedUserRid = Users.ModelData[1].Id,
-               CreatedByUser = Users.ModelData[2]
             },
             new Sprint()
             {

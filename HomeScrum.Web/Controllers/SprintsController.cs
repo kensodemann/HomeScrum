@@ -30,6 +30,8 @@ namespace HomeScrum.Web.Controllers
          {
             var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
             items = queryModel.GetQuery( session )
+               .OrderBy( x => x.Project.Name )
+               .ThenBy( x => x.StartDate )
                .Select( x => new SprintIndexViewModel()
                              {
                                 Id = x.Id,
