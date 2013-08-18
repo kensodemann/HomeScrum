@@ -1,0 +1,56 @@
+﻿@model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
+
+@using (Html.BeginForm())
+{
+   @Html.ValidationSummary( true )
+
+   @Html.Partial( "_DomainObjectBaseEditor", Model )
+
+   <fieldset>
+      <legend>Properties</legend>
+
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.ProjectId )
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+      </div>
+
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.Goal )
+         @Html.EditorFor( model => model.Goal )
+         @Html.ValidationMessageFor( model => model.Goal )
+      </div>
+
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.StatusId )
+         @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+      </div>
+
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.StartDate )
+         @Html.EditorFor( model => model.StartDate )
+         @Html.ValidationMessageFor( model => model.StartDate )
+      </div>
+
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.EndDate )
+         @Html.EditorFor( model => model.EndDate )
+         @Html.ValidationMessageFor( model => model.EndDate )
+      </div>
+   </fieldset>
+   <p>
+      <input type="submit" value="@ViewBag.EditorButtonLabel" />
+   </p>
+   
+   <script>
+      $(function () {
+         $("#StartDate").datepicker({
+            changeMonth: true,
+            changeYear: true
+         });
+         $("#EndDate").datepicker({
+            changeMonth: true,
+            changeYear: true
+         });
+      });
+   </script>
+}

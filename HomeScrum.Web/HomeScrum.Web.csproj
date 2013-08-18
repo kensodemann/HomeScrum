@@ -454,6 +454,9 @@
     <Content Include="Views\Projects\_Details.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\_Details.cshtml" />
     <Content Include="Views\Sprints\Index.cshtml" />
+    <Content Include="Views\Sprints\_Editor.cshtml" />
+    <Content Include="Views\Sprints\Edit.cshtml" />
+    <Content Include="Views\Sprints\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

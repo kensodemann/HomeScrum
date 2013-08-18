@@ -147,6 +147,9 @@
   <data name="FirstNamePrompt" xml:space="preserve">
     <value>Enter your first name</value>
   </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Goal:</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Last Name:</value>
   </data>
