@@ -32,6 +32,7 @@ namespace HomeScrum.Web.Controllers
             items = queryModel.GetQuery( session )
                .OrderBy( x => x.Project.Name )
                .ThenBy( x => x.StartDate )
+               .ThenBy( x => x.Status.SortSequence )
                .Select( x => new SprintIndexViewModel()
                              {
                                 Id = x.Id,

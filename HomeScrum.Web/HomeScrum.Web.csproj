@@ -453,10 +453,10 @@
     <Content Include="Views\ProjectStatuses\_Details.cshtml" />
     <Content Include="Views\Projects\_Details.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\_Details.cshtml" />
+    <Content Include="Views\Sprints\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Sprints\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

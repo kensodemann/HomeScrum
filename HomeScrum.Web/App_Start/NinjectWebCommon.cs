@@ -18,6 +18,7 @@ namespace HomeScrum.Web
    using NHibernate;
    using Ninject;
    using Ninject.Web.Common;
+   using HomeScrum.Web.Models.Sprints;
 
    public static class NinjectWebCommon
    {
@@ -66,8 +67,6 @@ namespace HomeScrum.Web
       {
          kernel.Bind<ISecurityService>().To( typeof( SecurityService ) ).InSingletonScope();
 
-         //kernel.Bind<ISessionFactory>().ToConstant( NHibernateHelper.SessionFactory );
-
          kernel.Bind<IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>>()
@@ -79,6 +78,8 @@ namespace HomeScrum.Web
          kernel.Bind<IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<Project, ProjectEditorViewModel>>().ToConstant( new ProjectPropertyNameTranslator() );
+         kernel.Bind<IPropertyNameTranslator<Sprint, SprintEditorViewModel>>()
+            .ToConstant( new PropertyNameTranslator<Sprint, SprintEditorViewModel>() );
          kernel.Bind<IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel>>().ToConstant( new WorkItemPropertyNameTranslator() );
          kernel.Bind<IPropertyNameTranslator<User, UserEditorViewModel>>().ToConstant( new PropertyNameTranslator<User, UserEditorViewModel>() );
 
