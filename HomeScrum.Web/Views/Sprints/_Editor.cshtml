@@ -4,14 +4,15 @@
 {
    @Html.ValidationSummary( true )
 
-   @Html.Partial( "_DomainObjectBaseEditor", Model )
+@*@Html.Partial( "_DomainObjectBaseEditor", Model )*@
 
    <fieldset>
-      <legend>Properties</legend>
+      <legend>Basic Information</legend>
 
       <div class="formSingleLineEdit">
-         @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+         @Html.LabelFor( model => model.Name )
+         @Html.EditorFor( model => model.Name )
+         @Html.ValidationMessageFor( model => model.Name )
       </div>
 
       <div class="formSingleLineEdit">
@@ -20,18 +21,34 @@
          @Html.ValidationMessageFor( model => model.Goal )
       </div>
 
-      <div class="formSingleLineEdit">
+      <div class="formLongText">
+         @Html.LabelFor( model => model.Description )
+         @Html.EditorFor( model => model.Description )
+         @Html.ValidationMessageFor( model => model.Description )
+      </div>
+
+   </fieldset>
+   
+   <fieldset>
+      <legend>Properties</legend>
+
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.ProjectId )
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+      </div>
+
+      <div class="formSelectList">
          @Html.LabelFor( model => model.StatusId )
          @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
       </div>
 
-      <div class="formSingleLineEdit">
+      <div class="formSelectList">
          @Html.LabelFor( model => model.StartDate )
          @Html.EditorFor( model => model.StartDate )
          @Html.ValidationMessageFor( model => model.StartDate )
       </div>
 
-      <div class="formSingleLineEdit">
+      <div class="formSelectList">
          @Html.LabelFor( model => model.EndDate )
          @Html.EditorFor( model => model.EndDate )
          @Html.ValidationMessageFor( model => model.EndDate )
