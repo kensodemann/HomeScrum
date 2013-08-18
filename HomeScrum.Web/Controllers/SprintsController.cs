@@ -19,7 +19,8 @@ namespace HomeScrum.Web.Controllers
       public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
-
+      //
+      // GET: /Sprints/
       public override System.Web.Mvc.ActionResult Index()
       {
          IEnumerable<SprintIndexViewModel> items;
@@ -48,6 +49,16 @@ namespace HomeScrum.Web.Controllers
          }
 
          return View( items );
+      }
+
+
+      //
+      // POST: /Sprints/Create
+      public override ActionResult Create( SprintEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         viewModel.CreatedByUserId = GetUserId( session, user.Identity.Name );
+         return base.Create( viewModel, user );
       }
 
 

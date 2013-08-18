@@ -452,6 +452,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_SetsLastModifiedAndCreatedByUserIdToCurrentUser()
       {
          var viewModel = CreateSprintEditorViewModel();
+         viewModel.CreatedByUserId = Guid.Empty;
+         viewModel.CreatedByUserUserName = null;
 
          var user = Users.ModelData[0];
          _userIdentity
