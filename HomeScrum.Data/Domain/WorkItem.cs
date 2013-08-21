@@ -21,7 +21,7 @@ namespace HomeScrum.Data.Domain
 
       public virtual WorkItem ParentWorkItem { get; set; }
 
-      //public virtual Sprint Sprint { get; set; }
+      public virtual Sprint Sprint { get; set; }
 
       [Required]
       public virtual Guid LastModifiedUserRid { get; set; }
