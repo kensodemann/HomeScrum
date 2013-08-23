@@ -1,10 +1,5 @@
-﻿using NHibernate.Cfg;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using HomeScrum.Common.Utility;
-using NHibernate;
+﻿using NHibernate;
+using NHibernate.Cfg;
 using NHibernate.Context;
 
 namespace HomeScrum.Web
