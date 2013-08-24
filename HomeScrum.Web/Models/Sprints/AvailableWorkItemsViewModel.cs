@@ -11,6 +11,9 @@ namespace HomeScrum.Web.Models.Sprints
       [Display( Name = "WorkItemType", ResourceType = typeof( DisplayStrings ) )]
       public string WorkItemTypeName { get; set; }
 
+      [Display( Name = "Status", ResourceType = typeof( DisplayStrings ) )]
+      public string StatusName { get; set; }
+
       public bool IsInTargetSprint { get; set; }
 
       public Guid TargetSprintRid { get; set; }

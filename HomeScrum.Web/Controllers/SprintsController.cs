@@ -83,6 +83,7 @@ namespace HomeScrum.Web.Controllers
                                 Description = x.Description,
                                 TargetSprintRid = sprintId,
                                 WorkItemTypeName = x.WorkItemType.Name,
+                                StatusName = x.Status.Name,
                                 IsInTargetSprint = x.Sprint != null
                              } );
 
