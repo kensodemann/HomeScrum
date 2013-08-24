@@ -139,7 +139,7 @@
     <value>Enter a short description</value>
   </data>
   <data name="EndDate" xml:space="preserve">
-    <value>EndDate:</value>
+    <value>End Date:</value>
   </data>
   <data name="FirstName" xml:space="preserve">
     <value>First Name:</value>
@@ -193,7 +193,7 @@
     <value>Sprints with this status are actively being worked on</value>
   </data>
   <data name="StartDate" xml:space="preserve">
-    <value>StartDate:</value>
+    <value>Start Date:</value>
   </data>
   <data name="UserIsActive" xml:space="preserve">
     <value>User is active</value>
