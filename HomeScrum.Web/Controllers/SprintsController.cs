@@ -74,6 +74,8 @@ namespace HomeScrum.Web.Controllers
                .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
+               .ThenBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name )
                .Select( x => new AvailableWorkItemsViewModel()
                              {
                                 Id = x.Id,
