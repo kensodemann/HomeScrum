@@ -160,6 +160,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include:.
+        /// </summary>
+        public static string IsInTargetSprint {
+            get {
+                return ResourceManager.GetString("IsInTargetSprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name:.
         /// </summary>
         public static string LastName {

@@ -5,3 +5,5 @@
 }
 
 @Html.Partial( "_EditTemplate", Model )
+
+@Html.ActionLink( "Add Backlog Items", "AddBacklogItems", new { Id = Model.Id } )

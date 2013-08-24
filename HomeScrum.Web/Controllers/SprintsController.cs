@@ -64,14 +64,14 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddBacklogItems
-      public virtual ActionResult AddBacklogItems( Guid sprintId )
+      public virtual ActionResult AddBacklogItems( Guid id )
       {
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
          {
-            var projectId = session.Query<Sprint>().Single( x => x.Id == sprintId ).Project.Id;
+            var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             var items = session.Query<WorkItem>()
-               .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) )
+               .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
@@ -81,11 +81,11 @@ namespace HomeScrum.Web.Controllers
                                 Id = x.Id,
                                 Name = x.Name,
                                 Description = x.Description,
-                                TargetSprintRid = sprintId,
+                                TargetSprintRid = id,
                                 WorkItemTypeName = x.WorkItemType.Name,
                                 StatusName = x.Status.Name,
                                 IsInTargetSprint = x.Sprint != null
-                             } );
+                             } ).ToList();
 
             tx.Commit();
 

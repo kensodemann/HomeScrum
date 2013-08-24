@@ -150,6 +150,9 @@
   <data name="Goal" xml:space="preserve">
     <value>Goal:</value>
   </data>
+  <data name="IsInTargetSprint" xml:space="preserve">
+    <value>Include:</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Last Name:</value>
   </data>
