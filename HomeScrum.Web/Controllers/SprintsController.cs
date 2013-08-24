@@ -93,6 +93,14 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
+      //
+      // POST: /Sprints/5/AddBacklogItems
+      [HttpPost]
+      public virtual ActionResult AddBacklogItems( IList<AvailableWorkItemsViewModel> backlogItems )
+      {
+         return 
+      }
+
 
       protected override void PopulateSelectLists( ISession session, SprintEditorViewModel viewModel )
       {
