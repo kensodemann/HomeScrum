@@ -6,6 +6,14 @@ using System.Linq;
 
 namespace HomeScrum.Common.TestData
 {
+   /// <summary>
+   /// Test Projects are:
+   ///   * Home Scrum - open
+   ///   * PRepS - closed
+   ///   * MathWar - inactive
+   ///   * Sandwiches - open
+   ///   * TacoBell - Project with a status that is not valid for use
+   /// </summary>
    public class Projects
    {
       public static void Load( ISessionFactory sessionFactory )

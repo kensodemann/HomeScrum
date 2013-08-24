@@ -62,6 +62,35 @@ namespace HomeScrum.Web.Controllers
       }
 
 
+      //
+      // GET: /Sprints/5/AddBacklogItems
+      public virtual ActionResult AddBacklogItems( Guid sprintId )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var tx = session.BeginTransaction())
+         {
+            var projectId = session.Query<Sprint>().Single( x => x.Id == sprintId ).Project.Id;
+            var items = session.Query<WorkItem>()
+               .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) )
+               .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
+               .ThenBy( x => x.WorkItemType.SortSequence )
+               .Select( x => new AvailableWorkItemsViewModel()
+                             {
+                                Id = x.Id,
+                                Name = x.Name,
+                                Description = x.Description,
+                                TargetSprintRid = sprintId,
+                                WorkItemTypeName = x.WorkItemType.Name,
+                                IsInTargetSprint = x.Sprint != null
+                             } );
+
+            tx.Commit();
+
+            return View( items );
+         }
+      }
+
+
       protected override void PopulateSelectLists( ISession session, SprintEditorViewModel viewModel )
       {
          viewModel.Statuses = CreateSprintStatusSelectList( session, viewModel.StatusId );

@@ -34,11 +34,11 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
-    <!--<many-to-one name="Sprint"
-               class="Sprint"
-               column="SprintRid"
-               lazy="false"
-               cascade="none"/>-->
+    <many-to-one name="Sprint"
+                 class="Sprint"
+                 column="SprintRid"
+                 lazy="false"
+                 cascade="none"/>
     <property name="LastModifiedUserRid"/>
     <many-to-one name="CreatedByUser"
                  class="User"

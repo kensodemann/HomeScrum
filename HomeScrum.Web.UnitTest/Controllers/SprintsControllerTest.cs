@@ -74,7 +74,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private void BuildDatabase()
       {
          Database.Build( _session );
+
          Sprints.Load( _sessionFactory.Object );
+         WorkItems.Load( _sessionFactory.Object );
       }
 
       private void CreateController()
@@ -927,6 +929,36 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region AddBacklogItems GET
+      [TestMethod]
+      public void AddBacklogItemsGet_ReturnsViewWithOpenUnassignedBacklogItemsForProject_PlusItemsForSprint()
+      {
+         var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
+         var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.BacklogIsClosed ).Id;
+
+         var view = _controller.AddBacklogItems( sprintId ) as ViewResult;
+         var workItems = view.Model as IEnumerable<AvailableWorkItemsViewModel>;
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
+
+         Assert.IsNotNull( workItems );
+         Assert.AreEqual( expectedWorkItems.Count(), workItems.Count() );
+
+         foreach (var workItem in expectedWorkItems)
+         {
+            Assert.IsTrue( workItem.Sprint == null || workItem.Sprint.Id == sprintId );
+            Assert.AreEqual( projectId, workItem.Project.Id );
+
+            var model = workItems.Single( x => x.Id == workItem.Id );
+            Assert.AreEqual( workItem.Sprint != null, model.IsInTargetSprint );
+         }
+      }
+      #endregion
+
+
+      #region AddBacklogItems POST
+      #endregion
+
+
       #region Private Helpers
       private SprintEditorViewModel CreateSprintEditorViewModel()
       {
@@ -960,6 +992,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
             EndDate = model.EndDate,
             CreatedByUserId = model.CreatedByUser.Id
          };
+      }
+
+      private void RemoveAllWorkItemsFromSprints()
+      {
+         using (var tx = _session.BeginTransaction())
+         {
+            var workItems = _session.Query<WorkItem>().Where( x => x.Sprint != null ).ToList();
+            foreach (var workItem in workItems)
+            {
+               workItem.Sprint = null;
+               _session.Update( workItem );
+            }
+
+            tx.Commit();
+         }
       }
       #endregion
    }
