@@ -111,10 +111,8 @@ namespace HomeScrum.Web.Controllers
                var sprint = session.Get<Sprint>( viewModel.Id );
                foreach (var item in viewModel.WorkItems)
                {
-                  var workItem = session.Get<WorkItem>( item.Id );
-                  workItem.Sprint = (item.IsInTargetSprint) ? sprint : null;
-                  session.Update( workItem );
-                  UpdateSprintOnTasks( item.Id, (item.IsInTargetSprint) ? sprint : null );
+                  UpdateSprintOnWorkItem( session, sprint, item );
+                  UpdateSprintOnChildTasks( item.Id, (item.IsInTargetSprint) ? sprint : null );
                }
                tx.Commit();
             }
@@ -130,8 +128,15 @@ namespace HomeScrum.Web.Controllers
          return RedirectToAction( "Edit", new { id = viewModel.Id } );
       }
 
+      private static void UpdateSprintOnWorkItem( ISession session, Sprint sprint, AvailableWorkItemsViewModel item )
+      {
+         var workItem = session.Get<WorkItem>( item.Id );
+         workItem.Sprint = (item.IsInTargetSprint) ? sprint : null;
+         session.Update( workItem );
+      }
 
-      private void UpdateSprintOnTasks( Guid parentId, Sprint sprint )
+
+      private void UpdateSprintOnChildTasks( Guid parentId, Sprint sprint )
       {
          var session = SessionFactory.GetCurrentSession();
          Debug.Assert( session.Transaction.IsActive );
