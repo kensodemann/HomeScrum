@@ -31,5 +31,9 @@ namespace HomeScrum.Web.Models.Sprints
       public Guid CreatedByUserId { get; set; }
       [Display( Name = "CreatedByUser", ResourceType = typeof( DisplayStrings ) )]
       public string CreatedByUserUserName { get; set; }
+
+      public IEnumerable<SprintWorkItemViewModel> BacklogItems { get; set; }
+
+      public IEnumerable<SprintWorkItemViewModel> Tasks { get; set; }
    }
 }

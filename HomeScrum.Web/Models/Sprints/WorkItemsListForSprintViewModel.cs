@@ -7,6 +7,6 @@ namespace HomeScrum.Web.Models.Sprints
 {
    public class WorkItemsListForSprintViewModel : Base.DomainObjectViewModel
    {
-      public IList<AvailableWorkItemsViewModel> WorkItems { get; set; }
+      public IList<SprintWorkItemViewModel> WorkItems { get; set; }
    }
 }

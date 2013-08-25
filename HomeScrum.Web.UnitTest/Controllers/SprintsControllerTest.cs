@@ -1079,7 +1079,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             model.WorkItems = _session.Query<WorkItem>()
                .Where( x => x.Project.Id == sprint.Project.Id && !x.WorkItemType.IsTask && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
-               .Select( x => new AvailableWorkItemsViewModel()
+               .Select( x => new SprintWorkItemViewModel()
                              {
                                 Id = x.Id,
                                 Name = x.Name,

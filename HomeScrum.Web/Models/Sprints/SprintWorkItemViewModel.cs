@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HomeScrum.Web.Models.Sprints
 {
-   public class AvailableWorkItemsViewModel : Base.DomainObjectViewModel
+   public class SprintWorkItemViewModel : Base.DomainObjectViewModel
    {
       [Display( Name = "WorkItemType", ResourceType = typeof( DisplayStrings ) )]
       public string WorkItemTypeName { get; set; }

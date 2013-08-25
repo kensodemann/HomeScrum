@@ -82,7 +82,7 @@ namespace HomeScrum.Web.Controllers
                .ThenBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
                .ThenBy( x => x.Name )
-               .Select( x => new AvailableWorkItemsViewModel()
+               .Select( x => new SprintWorkItemViewModel()
                              {
                                 Id = x.Id,
                                 Name = x.Name,

@@ -238,7 +238,7 @@
     <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
     <Compile Include="Models\Base\ViewModelBase.cs" />
-    <Compile Include="Models\Sprints\AvailableWorkItemsViewModel.cs" />
+    <Compile Include="Models\Sprints\SprintWorkItemViewModel.cs" />
     <Compile Include="Models\Sprints\SprintEditorViewModel.cs" />
     <Compile Include="Models\Sprints\SprintIndexViewModel.cs" />
     <Compile Include="Models\Sprints\SprintViewModel.cs" />
