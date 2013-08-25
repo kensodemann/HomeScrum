@@ -66,11 +66,16 @@ namespace HomeScrum.Web.Controllers
       // GET: /Sprints/5/AddBacklogItems
       public virtual ActionResult AddBacklogItems( Guid id )
       {
+         var model = new WorkItemsListForSprintViewModel()
+         {
+            Id = id
+         };
+
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
          {
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
-            var items = session.Query<WorkItem>()
+            model.WorkItems = session.Query<WorkItem>()
                .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
@@ -81,24 +86,23 @@ namespace HomeScrum.Web.Controllers
                                 Id = x.Id,
                                 Name = x.Name,
                                 Description = x.Description,
-                                TargetSprintRid = id,
                                 WorkItemTypeName = x.WorkItemType.Name,
                                 StatusName = x.Status.Name,
                                 IsInTargetSprint = x.Sprint != null
                              } ).ToList();
 
             tx.Commit();
-
-            return View( items );
          }
+
+         return View( model );
       }
 
       //
       // POST: /Sprints/5/AddBacklogItems
       [HttpPost]
-      public virtual ActionResult AddBacklogItems( IList<AvailableWorkItemsViewModel> backlogItems )
+      public virtual ActionResult AddBacklogItems( WorkItemsListForSprintViewModel viewModel )
       {
-         return 
+         return RedirectToAction( () => this.Index() );
       }
 
 

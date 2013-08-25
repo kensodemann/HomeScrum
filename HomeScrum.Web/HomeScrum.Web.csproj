@@ -242,6 +242,7 @@
     <Compile Include="Models\Sprints\SprintEditorViewModel.cs" />
     <Compile Include="Models\Sprints\SprintIndexViewModel.cs" />
     <Compile Include="Models\Sprints\SprintViewModel.cs" />
+    <Compile Include="Models\Sprints\WorkItemsListForSprintViewModel.cs" />
     <Compile Include="Models\WorkItems\AcceptanceCriterionViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemEditorViewModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemIndexViewModel.cs" />

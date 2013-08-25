@@ -16,7 +16,5 @@ namespace HomeScrum.Web.Models.Sprints
 
       [Display(Name="IsInTargetSprint", ResourceType = typeof(DisplayStrings))]
       public bool IsInTargetSprint { get; set; }
-
-      public Guid TargetSprintRid { get; set; }
    }
 }

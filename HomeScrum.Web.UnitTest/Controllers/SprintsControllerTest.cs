@@ -937,19 +937,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.BacklogIsClosed ).Id;
 
          var view = _controller.AddBacklogItems( sprintId ) as ViewResult;
-         var workItems = view.Model as IEnumerable<AvailableWorkItemsViewModel>;
+         var model = view.Model as WorkItemsListForSprintViewModel;
          var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
-         Assert.IsNotNull( workItems );
-         Assert.AreEqual( expectedWorkItems.Count(), workItems.Count() );
+         Assert.IsNotNull( model );
+         Assert.AreEqual( expectedWorkItems.Count(), model.WorkItems.Count() );
 
          foreach (var workItem in expectedWorkItems)
          {
             Assert.IsTrue( workItem.Sprint == null || workItem.Sprint.Id == sprintId );
             Assert.AreEqual( projectId, workItem.Project.Id );
 
-            var model = workItems.Single( x => x.Id == workItem.Id );
-            Assert.AreEqual( workItem.Sprint != null, model.IsInTargetSprint );
+            var workItemViewModel = model.WorkItems.Single( x => x.Id == workItem.Id );
+            Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
          }
       }
       #endregion

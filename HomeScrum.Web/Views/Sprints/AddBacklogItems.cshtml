@@ -1,7 +1,7 @@
-﻿@model IList<HomeScrum.Web.Models.Sprints.AvailableWorkItemsViewModel>
+﻿@model HomeScrum.Web.Models.Sprints.WorkItemsListForSprintViewModel
 
 @{
-    ViewBag.Title = "Available Product Backlog";
+   ViewBag.Title = "Available Product Backlog";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,45 +9,46 @@
 
 @using (Html.BeginForm())
 {
-    <table>
-        <tr>
-            <th>
-                @Html.DisplayNameFor( model => model[0].WorkItemTypeName )
-            </th>
-            <th>
-                @Html.DisplayNameFor( model => model[0].Name )
-            </th>
-            <th>
-                @Html.DisplayNameFor( model => model[0].StatusName )
-            </th>
-            <th>
-                @Html.DisplayNameFor( model => model[0].IsInTargetSprint )
-            </th>
+   @Html.HiddenFor( m => m.Id )
 
-        </tr>
+   <table>
+      <tr>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].WorkItemTypeName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].Name )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].StatusName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].IsInTargetSprint )
+         </th>
 
-        @for (int i = 0; i < Model.Count(); i++)
-        {
-            @Html.HiddenFor(m=>m[i].TargetSprintRid)
-            @Html.HiddenFor(m=>m[i].Id)
-            <tr>
-                <td>
-                    @Html.DisplayFor( m => m[i].WorkItemTypeName )
-                </td>
-                <td>
-                    @Html.DisplayFor( m => m[i].Name )
-                </td>
-                <td>
-                    @Html.DisplayFor( m => m[i].StatusName )
-                </td>
-                <td>
-                    @Html.EditorFor( m => m[i].IsInTargetSprint )
-                </td>
-            </tr>
-        }
-    </table>
+      </tr>
+
+      @for (int i = 0; i < Model.WorkItems.Count(); i++)
+      {
+         @Html.HiddenFor( m => m.WorkItems[i].Id )
+         <tr>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].WorkItemTypeName )
+            </td>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].Name )
+            </td>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].StatusName )
+            </td>
+            <td>
+               @Html.EditorFor( m => m.WorkItems[i].IsInTargetSprint )
+            </td>
+         </tr>
+      }
+   </table>
     
-    <p>
+   <p>
       <input type="submit" value="Save" />
    </p>
 }
