@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using HomeScrum.Web.Extensions;
+using System.Diagnostics;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -102,7 +103,45 @@ namespace HomeScrum.Web.Controllers
       [HttpPost]
       public virtual ActionResult AddBacklogItems( WorkItemsListForSprintViewModel viewModel )
       {
+         var session = SessionFactory.GetCurrentSession();
+         using (var tx = session.BeginTransaction())
+         {
+            try
+            {
+               var sprint = session.Get<Sprint>( viewModel.Id );
+               foreach (var item in viewModel.WorkItems)
+               {
+                  var workItem = session.Get<WorkItem>( item.Id );
+                  workItem.Sprint = (item.IsInTargetSprint) ? sprint : null;
+                  UpdateSprintOnTasks( item.Id, (item.IsInTargetSprint) ? sprint : null );
+                  session.Update( workItem );
+               }
+               tx.Commit();
+            }
+            catch
+            {
+               tx.Rollback();
+               // TODO: This should probably re-direct to some sort of error page...
+               //       Also, log the exception.
+            }
+         }
+         
+         // TODO: this should redirect to the edit action.
          return RedirectToAction( () => this.Index() );
+      }
+
+
+      private void UpdateSprintOnTasks( Guid parentId, Sprint sprint )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         Debug.Assert( session.Transaction.IsActive );
+
+         var tasks = session.Query<WorkItem>().Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId ).ToList();
+         foreach(var task in tasks)
+         {
+            task.Sprint = sprint;
+            session.Update( task );
+         }
       }
 
 

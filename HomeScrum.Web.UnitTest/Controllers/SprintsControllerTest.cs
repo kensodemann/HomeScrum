@@ -956,6 +956,60 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       #region AddBacklogItems POST
+      [TestMethod]
+      public void AddBacklogItem_AddsBacklogItemsToSprint()
+      {
+         RemoveAllWorkItemsFromSprints();
+
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.BacklogIsClosed );
+
+         var viewModel = CreateBacklogItemsForSprintViewModel( sprint );
+         viewModel.WorkItems[1].IsInTargetSprint = true;
+         viewModel.WorkItems[3].IsInTargetSprint = true;
+         viewModel.WorkItems[4].IsInTargetSprint = true;
+
+         _controller.AddBacklogItems( viewModel );
+
+         foreach (var item in viewModel.WorkItems)
+         {
+            var workItem = _session.Get<WorkItem>( item.Id );
+            if (item.IsInTargetSprint)
+            {
+               Assert.AreEqual( sprint.Id, workItem.Sprint.Id );
+            }
+            else
+            {
+               Assert.IsNull( workItem.Sprint );
+            }
+         }
+      }
+
+      [TestMethod]
+      public void AddBacklogItem_AddsTasksForBacklogItemToSprint()
+      {
+         RemoveAllWorkItemsFromSprints();
+
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.BacklogIsClosed );
+
+         var viewModel = CreateBacklogItemsForSprintViewModel( sprint );
+         viewModel.WorkItems[0].IsInTargetSprint = true;
+
+         _controller.AddBacklogItems( viewModel );
+
+         foreach (var item in WorkItems.ModelData)
+         {
+            var workItem = _session.Get<WorkItem>( item.Id );
+            if (item.Id == viewModel.WorkItems[0].Id ||
+                (item.ParentWorkItem != null && item.ParentWorkItem.Id == viewModel.WorkItems[0].Id))
+            {
+               Assert.AreEqual( sprint.Id, workItem.Sprint.Id );
+            }
+            else
+            {
+               Assert.IsNull( workItem.Sprint );
+            }
+         }
+      }
       #endregion
 
 
@@ -992,6 +1046,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
             EndDate = model.EndDate,
             CreatedByUserId = model.CreatedByUser.Id
          };
+      }
+
+      private WorkItemsListForSprintViewModel CreateBacklogItemsForSprintViewModel( Sprint sprint )
+      {
+         var model = new WorkItemsListForSprintViewModel()
+         {
+            Id = sprint.Id,
+            Name = sprint.Name
+         };
+
+         using (var tx = _session.BeginTransaction())
+         {
+            model.WorkItems = _session.Query<WorkItem>()
+               .Where( x => x.Project.Id == sprint.Project.Id && !x.WorkItemType.IsTask && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
+               .Select( x => new AvailableWorkItemsViewModel()
+                             {
+                                Id = x.Id,
+                                Name = x.Name,
+                                Description = x.Description,
+                                StatusName = x.Status.Name,
+                                WorkItemTypeName = x.WorkItemType.Name,
+                                IsInTargetSprint = (x.Sprint != null)
+                             } )
+               .ToList();
+
+            tx.Commit();
+         }
+
+         return model;
       }
 
       private void RemoveAllWorkItemsFromSprints()
