@@ -1,0 +1,31 @@
+﻿@model IEnumerable<HomeScrum.Web.Models.Sprints.SprintWorkItemViewModel>
+
+<table>
+   <tr>
+      <th>
+         @Html.DisplayNameFor( model => model.WorkItemTypeName )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.StatusName )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.Name )
+      </th>
+   </tr>
+
+   @foreach (var item in Model)
+   {
+      <tr>
+         <td>
+            @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+         </td>
+         <td>
+            @Html.DisplayFor( modelItem => item.StatusName )
+         </td>
+         <td>
+            @Html.DisplayFor( modelItem => item.Name )
+         </td>
+      </tr>
+   }
+
+</table>

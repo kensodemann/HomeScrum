@@ -460,6 +460,7 @@
     <Content Include="Views\Sprints\Edit.cshtml" />
     <Content Include="Views\Sprints\Create.cshtml" />
     <Content Include="Views\Sprints\AddBacklogItems.cshtml" />
+    <Content Include="Views\Sprints\_WorkItemList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
