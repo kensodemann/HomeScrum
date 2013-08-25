@@ -1010,6 +1010,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
          }
       }
+
+      [TestMethod]
+      public void AddBacklogItem_RedirectsToEditor()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.BacklogIsClosed );
+         var viewModel = CreateBacklogItemsForSprintViewModel( sprint );
+
+         var result = _controller.AddBacklogItems( viewModel ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( value, sprint.Id );
+      }
       #endregion
 
 
