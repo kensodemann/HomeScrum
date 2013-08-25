@@ -2,72 +2,74 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary( true )
+   <fieldset>
+      <legend>Basic Information</legend>
 
-@*@Html.Partial( "_DomainObjectBaseEditor", Model )*@
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.Name )
+         @Html.EditorFor( model => model.Name )
+         @Html.ValidationMessageFor( model => model.Name )
+      </div>
 
-    <fieldset>
-        <legend>Basic Information</legend>
+      <div class="formSingleLineEdit">
+         @Html.LabelFor( model => model.Goal )
+         @Html.EditorFor( model => model.Goal )
+         @Html.ValidationMessageFor( model => model.Goal )
+      </div>
 
-        <div class="formSingleLineEdit">
-            @Html.LabelFor( model => model.Name )
-            @Html.EditorFor( model => model.Name )
-            @Html.ValidationMessageFor( model => model.Name )
-        </div>
+      <div class="formLongText">
+         @Html.LabelFor( model => model.Description )
+         @Html.EditorFor( model => model.Description )
+         @Html.ValidationMessageFor( model => model.Description )
+      </div>
 
-        <div class="formSingleLineEdit">
-            @Html.LabelFor( model => model.Goal )
-            @Html.EditorFor( model => model.Goal )
-            @Html.ValidationMessageFor( model => model.Goal )
-        </div>
+      @Html.HiddenFor( m => m.CreatedByUserId )
+      @Html.HiddenFor( m => m.CreatedByUserUserName )
 
-        <div class="formLongText">
-            @Html.LabelFor( model => model.Description )
-            @Html.EditorFor( model => model.Description )
-            @Html.ValidationMessageFor( model => model.Description )
-        </div>
-
-    </fieldset>
+   </fieldset>
    
-    <fieldset>
-        <legend>Properties</legend>
+   <fieldset>
+      <legend>Properties</legend>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.ProjectId )
-            @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.ProjectId )
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+      </div>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.StatusId )
-            @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.StatusId )
+         @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+      </div>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.StartDate )
-            @Html.EditorFor( model => model.StartDate )
-            @Html.ValidationMessageFor( model => model.StartDate )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.StartDate )
+         @Html.EditorFor( model => model.StartDate )
+         @Html.ValidationMessageFor( model => model.StartDate )
+      </div>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.EndDate )
-            @Html.EditorFor( model => model.EndDate )
-            @Html.ValidationMessageFor( model => model.EndDate )
-        </div>
-    </fieldset>
-    <p>
-        <input type="submit" value="@ViewBag.EditorButtonLabel" />
-    </p>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.EndDate )
+         @Html.EditorFor( model => model.EndDate )
+         @Html.ValidationMessageFor( model => model.EndDate )
+      </div>
+   </fieldset>
+   
+   @Html.ValidationSummary( false )
+   
+   <p>
+      <input type="submit" value="@ViewBag.EditorButtonLabel" />
+   </p>
        
-    <script>
-        $(function () {
-            $("#StartDate").datepicker({
-                changeMonth: true,
-                changeYear: true
-            });
-            $("#EndDate").datepicker({
-                changeMonth: true,
-                changeYear: true
-            });
-        });
-    </script>
+   <script>
+      $(function () {
+         $("#StartDate").datepicker({
+            changeMonth: true,
+            changeYear: true
+         });
+         $("#EndDate").datepicker({
+            changeMonth: true,
+            changeYear: true
+         });
+      });
+   </script>
 }

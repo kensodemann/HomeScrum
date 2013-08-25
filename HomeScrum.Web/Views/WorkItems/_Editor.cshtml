@@ -4,183 +4,183 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary( true )
+   @Html.Partial( "_DomainObjectBaseEditor", Model )
 
-    @Html.Partial( "_DomainObjectBaseEditor", Model )
+   <fieldset>
+      <legend>Properties</legend>
 
-    <fieldset>
-        <legend>Properties</legend>
+      <div class="formStaticText">
+         @Html.LabelFor( model => model.CreatedByUserUserName )
+         @Html.DisplayFor( model => model.CreatedByUserUserName )
+         @Html.HiddenFor( model => model.CreatedByUserId )
+         @Html.ValidationMessageFor( model => model.CreatedByUserId )
+      </div>
 
-        <div class="formStaticText">
-            @Html.LabelFor( model => model.CreatedByUserUserName )
-            @Html.DisplayFor( model => model.CreatedByUserUserName )
-            @Html.HiddenFor( model => model.CreatedByUserId )
-            @Html.ValidationMessageFor( model => model.CreatedByUserId )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.WorkItemTypeId )
+         @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
+         @Html.ValidationMessageFor( model => model.WorkItemTypeId )
+      </div>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.WorkItemTypeId )
-            @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
-            @Html.ValidationMessageFor( model => model.WorkItemTypeId )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.StatusId )
+         @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+         @Html.ValidationMessageFor( model => model.StatusId )
+      </div>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.StatusId )
-            @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
-            @Html.ValidationMessageFor( model => model.StatusId )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.ProjectId )
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+         @Html.ValidationMessageFor( model => model.ProjectId )
+      </div>
 
-        <div class="formSelectList">
-            @Html.LabelFor( model => model.ProjectId )
-            @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
-            @Html.ValidationMessageFor( model => model.ProjectId )
-        </div>
+      <div class="formSelectList" id="AssignedToUserDiv">
+         @Html.LabelFor( model => model.AssignedToUserId )
+         @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
+         @Html.ValidationMessageFor( model => model.AssignedToUserId )
+      </div>
 
-        <div class="formSelectList" id="AssignedToUserDiv">
-            @Html.LabelFor( model => model.AssignedToUserId )
-            @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
-            @Html.ValidationMessageFor( model => model.AssignedToUserId )
-        </div>
+      <div class="formSelectList" id="ParentWorkItemDiv">
+         @Html.LabelFor( model => model.ParentWorkItemId )
+         @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems )
+         @Html.ValidationMessageFor( model => model.ParentWorkItemId )
+      </div>
 
-        <div class="formSelectList" id="ParentWorkItemDiv">
-            @Html.LabelFor( model => model.ParentWorkItemId )
-            @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems )
-            @Html.ValidationMessageFor( model => model.ParentWorkItemId )
-        </div>
-
-    </fieldset>
+   </fieldset>
     
-    <div id="TaskListDiv">
-        <h3>Tasks</h3>
-        <table>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor( model => model.WorkItemTypeId )
-                </th>
-                <th>
-                    @Html.DisplayNameFor( model => model.Name )
-                </th>
-                <th>
-                    @Html.DisplayNameFor( model => model.StatusName )
-                </th>
-                <th></th>
-            </tr>
+   <div id="TaskListDiv">
+      <h3>Tasks</h3>
+      <table>
+         <tr>
+            <th>
+               @Html.DisplayNameFor( model => model.WorkItemTypeId )
+            </th>
+            <th>
+               @Html.DisplayNameFor( model => model.Name )
+            </th>
+            <th>
+               @Html.DisplayNameFor( model => model.StatusName )
+            </th>
+            <th></th>
+         </tr>
 
-            @foreach (var item in Model.Tasks)
-            {
-                var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
+         @foreach (var item in Model.Tasks)
+         {
+            var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
         
-                <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
-                    <td>
-                        @Html.DisplayFor( modelItem => item.WorkItemTypeName )
-                    </td>
-                    <td>
-                        @Html.DisplayFor( modelItem => item.Name )
-                    </td>
-                    <td>
-                        @Html.DisplayFor( modelItem => item.StatusName )
-                    </td>
-                    <td>
-                        @Html.ActionLink( "Edit", "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
+            <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+               <td>
+                  @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+               </td>
+               <td>
+                  @Html.DisplayFor( modelItem => item.Name )
+               </td>
+               <td>
+                  @Html.DisplayFor( modelItem => item.StatusName )
+               </td>
+               <td>
+                  @Html.ActionLink( "Edit", "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
                         @Html.ActionLink( "Details", "Details", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
                         @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
                            new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+               </td>
+            </tr>
+         }
+      </table>
+   </div>
+   
+   @Html.ValidationSummary( false )
  
-    <p>
-        <input type="submit" value="@ViewBag.EditorButtonLabel" />
-        @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
-    </p>
+   <p>
+      <input type="submit" value="@ViewBag.EditorButtonLabel" />
+      @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
+   </p>
     
-    <script>
-        function ShowHideAssigned(effect) {
-            var canBeAssigned = $("#WorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
-            if (canBeAssigned == "True") {
-                $("#AssignedToUserDiv").show(effect);
-            }
-            else {
-                $("#AssignedToUserDiv").hide(effect);
-            }
-        }
+   <script>
+      function ShowHideAssigned(effect) {
+         var canBeAssigned = $("#WorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
+         if (canBeAssigned == "True") {
+            $("#AssignedToUserDiv").show(effect);
+         }
+         else {
+            $("#AssignedToUserDiv").hide(effect);
+         }
+      }
 
-        function ShowHideParentWorkItem(effect) {
-            var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveParent");
-            if (canHaveParent == "True") {
-                $("#ParentWorkItemDiv").show(effect);
-            }
-            else {
-                $("#ParentWorkItemDiv").hide(effect);
-            }
-        }
+      function ShowHideParentWorkItem(effect) {
+         var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveParent");
+         if (canHaveParent == "True") {
+            $("#ParentWorkItemDiv").show(effect);
+         }
+         else {
+            $("#ParentWorkItemDiv").hide(effect);
+         }
+      }
 
-        function ShowHideTaskList(effect) {
-            var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
-            if (canHaveChildren == "True") {
-                $("#TaskListDiv").show(effect);
-                $("#CreateNewTask").show(effect);
-            }
-            else {
-                $("#TaskListDiv").hide(effect);
-                $("#CreateNewTask").hide(effect);
-            }
-        }
+      function ShowHideTaskList(effect) {
+         var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
+         if (canHaveChildren == "True") {
+            $("#TaskListDiv").show(effect);
+            $("#CreateNewTask").show(effect);
+         }
+         else {
+            $("#TaskListDiv").hide(effect);
+            $("#CreateNewTask").hide(effect);
+         }
+      }
 
-        function ShowHideDataItems(effect) {
-            ShowHideAssigned(effect);
-            ShowHideParentWorkItem(effect);
-            ShowHideTaskList(effect);
-        }
+      function ShowHideDataItems(effect) {
+         ShowHideAssigned(effect);
+         ShowHideParentWorkItem(effect);
+         ShowHideTaskList(effect);
+      }
 
-        function SetProjectToParentWorkItemProject() {
-            var selectedProject = $("#ProjectId").val();
-            var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
-            if (selectedProject != backlogProject &&
-                backlogProject != "00000000-0000-0000-0000-000000000000") {
-                $("#ProjectId").val(backlogProject);
-            }
-        }
+      function SetProjectToParentWorkItemProject() {
+         var selectedProject = $("#ProjectId").val();
+         var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
+         if (selectedProject != backlogProject &&
+             backlogProject != "00000000-0000-0000-0000-000000000000") {
+            $("#ProjectId").val(backlogProject);
+         }
+      }
 
-        function UnassignParentWorkItem() {
-            var selectedProject = $("#ProjectId").val();
-            var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
-            if (backlogProject != selectedProject) {
-                $("#ParentWorkItemId").val("00000000-0000-0000-0000-000000000000");
-            }
-        }
+      function UnassignParentWorkItem() {
+         var selectedProject = $("#ProjectId").val();
+         var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
+         if (backlogProject != selectedProject) {
+            $("#ParentWorkItemId").val("00000000-0000-0000-0000-000000000000");
+         }
+      }
 
-        function LimitBacklogItems() {
-            var selectedProject = $("#ProjectId").val();
-            if (selectedProject != "00000000-0000-0000-0000-000000000000") {
-                $("#ParentWorkItemId").children("option").attr("disabled", "disabled");
-                $("#ParentWorkItemId").children("option[data-ProjectId=00000000-0000-0000-0000-000000000000]").removeAttr("disabled");
-                $("#ParentWorkItemId").children("option[data-ProjectId=" + selectedProject + "]").removeAttr("disabled");
-            } else {
-                $("#ParentWorkItemId").children("option").removeAttr("disabled");
-            }
-        }
+      function LimitBacklogItems() {
+         var selectedProject = $("#ProjectId").val();
+         if (selectedProject != "00000000-0000-0000-0000-000000000000") {
+            $("#ParentWorkItemId").children("option").attr("disabled", "disabled");
+            $("#ParentWorkItemId").children("option[data-ProjectId=00000000-0000-0000-0000-000000000000]").removeAttr("disabled");
+            $("#ParentWorkItemId").children("option[data-ProjectId=" + selectedProject + "]").removeAttr("disabled");
+         } else {
+            $("#ParentWorkItemId").children("option").removeAttr("disabled");
+         }
+      }
 
-        $(function () {
-            $("#CreateNewTask").button();
+      $(function () {
+         $("#CreateNewTask").button();
 
-            ShowHideDataItems();
+         ShowHideDataItems();
+         LimitBacklogItems();
+
+         $("#WorkItemTypeId").change(function () {
+            ShowHideDataItems("fade");
+         });
+
+         $("#ParentWorkItemId").change(function () {
+            SetProjectToParentWorkItemProject();
+         });
+
+         $("#ProjectId").change(function () {
             LimitBacklogItems();
-
-            $("#WorkItemTypeId").change(function () {
-                ShowHideDataItems("fade");
-            });
-
-            $("#ParentWorkItemId").change(function () {
-                SetProjectToParentWorkItemProject();
-            });
-
-            $("#ProjectId").change(function () {
-                LimitBacklogItems();
-                UnassignParentWorkItem();
-            });
-        });
-    </script>
+            UnassignParentWorkItem();
+         });
+      });
+   </script>
 }

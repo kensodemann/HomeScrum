@@ -125,9 +125,8 @@ namespace HomeScrum.Web.Controllers
                //       Also, log the exception.
             }
          }
-         
-         // TODO: this should redirect to the edit action.
-         return RedirectToAction( () => this.Index() );
+
+         return RedirectToAction( "Edit", new { id = viewModel.Id } );
       }
 
 
@@ -137,7 +136,7 @@ namespace HomeScrum.Web.Controllers
          Debug.Assert( session.Transaction.IsActive );
 
          var tasks = session.Query<WorkItem>().Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId ).ToList();
-         foreach(var task in tasks)
+         foreach (var task in tasks)
          {
             task.Sprint = sprint;
             session.Update( task );
