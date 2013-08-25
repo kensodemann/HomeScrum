@@ -769,6 +769,42 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void EditGet_LoadsBacklogItems()
+      {
+         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.IsNotNull( viewModel.BacklogItems );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && !x.WorkItemType.IsTask ), viewModel.BacklogItems.Count() );
+      }
+
+      [TestMethod]
+      public void EditGet_LoadsTasks()
+      {
+         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.IsNotNull( viewModel.Tasks );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.IsTask ), viewModel.Tasks.Count() );
+      }
+
+      [TestMethod]
+      public void EditGet_CreatesEmptyTaskAndBacklogLists_IfNoWorkItemsForSprint()
+      {
+         RemoveAllWorkItemsFromSprints();
+         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.IsNotNull( viewModel.BacklogItems );
+         Assert.IsNotNull( viewModel.Tasks );
+         Assert.AreEqual( 0, viewModel.BacklogItems.Count() );
+         Assert.AreEqual( 0, viewModel.Tasks.Count() );
+      }
       #endregion
 
 

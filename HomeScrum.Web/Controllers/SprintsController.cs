@@ -116,7 +116,7 @@ namespace HomeScrum.Web.Controllers
                }
                tx.Commit();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                tx.Rollback();
                Log.Error( e, "Error Processing Backlog Items" );
@@ -128,7 +128,7 @@ namespace HomeScrum.Web.Controllers
          return RedirectToAction( "Edit", new { id = viewModel.Id } );
       }
 
-      private void UpdateSprintOnWorkItem(ISession session, Guid id, Sprint sprint )
+      private void UpdateSprintOnWorkItem( ISession session, Guid id, Sprint sprint )
       {
          Log.Debug( "UpdateSprintOnWorkItem( {0}, {1} )", id.ToString(), (sprint == null) ? "Null" : sprint.Name );
          var workItem = session.Get<WorkItem>( id );
@@ -184,6 +184,57 @@ namespace HomeScrum.Web.Controllers
       {
          model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
          base.Update( session, model, user );
+      }
+
+      protected override SprintEditorViewModel GetEditorViewModel( ISession session, Guid id )
+      {
+         var viewModel = base.GetEditorViewModel( session, id );
+
+         if (viewModel != null)
+         {
+            viewModel.BacklogItems = GetBacklogItems( session, id );
+            viewModel.Tasks = GetTasks( session, id );
+         }
+
+         return viewModel;
+      }
+
+      private IEnumerable<SprintWorkItemViewModel> GetBacklogItems( ISession session, Guid id )
+      {
+         return session.Query<WorkItem>()
+            .Where( x => !x.WorkItemType.IsTask && x.Sprint != null && x.Sprint.Id == id )
+            .OrderBy( x => x.WorkItemType.SortSequence )
+            .ThenBy( x => x.Status.SortSequence )
+            .ThenBy( x => x.Name )
+            .Select( x => new SprintWorkItemViewModel()
+                          {
+                             Id = x.Id,
+                             Name = x.Name,
+                             Description = x.Description,
+                             StatusName = x.Status.Name,
+                             WorkItemTypeName = x.WorkItemType.Name,
+                             IsInTargetSprint = true
+                          } )
+            .ToList();
+      }
+
+      private IEnumerable<SprintWorkItemViewModel> GetTasks( ISession session, Guid id )
+      {
+         return session.Query<WorkItem>()
+            .Where( x => x.WorkItemType.IsTask && x.Sprint != null && x.Sprint.Id == id )
+            .OrderBy( x => x.WorkItemType.SortSequence )
+            .ThenBy( x => x.Status.SortSequence )
+            .ThenBy( x => x.Name )
+            .Select( x => new SprintWorkItemViewModel()
+            {
+               Id = x.Id,
+               Name = x.Name,
+               Description = x.Description,
+               StatusName = x.Status.Name,
+               WorkItemTypeName = x.WorkItemType.Name,
+               IsInTargetSprint = true
+            } )
+            .ToList();
       }
 
       // TODO: Make extention to IPrincipal, replace this here and in WorkItem
