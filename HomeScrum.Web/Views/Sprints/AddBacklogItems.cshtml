@@ -31,6 +31,9 @@
       @for (int i = 0; i < Model.WorkItems.Count(); i++)
       {
          @Html.HiddenFor( m => m.WorkItems[i].Id )
+         @Html.HiddenFor( m => m.WorkItems[i].WorkItemTypeName )
+         @Html.HiddenFor( m => m.WorkItems[i].Name )
+         @Html.HiddenFor( m => m.WorkItems[i].StatusName )
          <tr>
             <td>
                @Html.DisplayFor( m => m.WorkItems[i].WorkItemTypeName )
@@ -47,6 +50,8 @@
          </tr>
       }
    </table>
+   
+   @Html.ValidationSummary( false )
     
    <p>
       <input type="submit" value="Save" />

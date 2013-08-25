@@ -113,16 +113,17 @@ namespace HomeScrum.Web.Controllers
                {
                   var workItem = session.Get<WorkItem>( item.Id );
                   workItem.Sprint = (item.IsInTargetSprint) ? sprint : null;
-                  UpdateSprintOnTasks( item.Id, (item.IsInTargetSprint) ? sprint : null );
                   session.Update( workItem );
+                  UpdateSprintOnTasks( item.Id, (item.IsInTargetSprint) ? sprint : null );
                }
                tx.Commit();
             }
-            catch
+            catch(Exception e)
             {
                tx.Rollback();
-               // TODO: This should probably re-direct to some sort of error page...
-               //       Also, log the exception.
+               Log.Error( e, "Error Processing Backlog Items" );
+               ModelState.AddModelError( "Model", "An errror occurred processing this data.  Check the log files" );
+               return View( viewModel );
             }
          }
 
