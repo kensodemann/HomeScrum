@@ -122,7 +122,7 @@ namespace HomeScrum.Web.Controllers
       #region Select Lists
       protected override void PopulateSelectLists( ISession session, WorkItemEditorViewModel viewModel )
       {
-         viewModel.Statuses = CreateSelectList<WorkItemStatus>( session, viewModel.StatusId );
+         viewModel.Statuses = CreateStatusSelectList( session, viewModel.StatusId );
          viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( session, viewModel.WorkItemTypeId );
          viewModel.Projects = CreateProjectsSelectList( session, viewModel.ProjectId );
          viewModel.AssignedToUsers = CreateUserSelectList( session, viewModel.AssignedToUserId );
@@ -131,14 +131,13 @@ namespace HomeScrum.Web.Controllers
          base.PopulateSelectLists( session, viewModel );
       }
 
-      private IEnumerable<SelectListItem> CreateSelectList<ModelT>( ISession session, Guid selectedId )
-         where ModelT : SystemDomainObject
+      private IEnumerable<SelectListItemWithAttributes> CreateStatusSelectList( ISession session, Guid selectedId )
       {
-         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ModelT>() { SelectedId = selectedId };
+         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemStatus>() { SelectedId = selectedId };
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems<ModelT>( selectedId );
+            .SelectSelectListItems( selectedId );
       }
 
       private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( ISession session, Guid selectedId )

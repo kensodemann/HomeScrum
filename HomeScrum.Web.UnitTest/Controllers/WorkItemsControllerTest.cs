@@ -268,15 +268,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesWorkItemStatusList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var expectedStatuses = WorkItemStatuses.ModelData.Where( x => x.StatusCd == 'A' );
 
+         var result = _controller.Create() as ViewResult;
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), model.Statuses.Count() );
-         foreach (var item in model.Statuses)
+         Assert.AreEqual( expectedStatuses.Count(), model.Statuses.Count() );
+         foreach (var status in expectedStatuses)
          {
-            var status = WorkItemStatuses.ModelData.First( x => x.Id == new Guid( item.Value ) );
+            var item = model.Statuses.FirstOrDefault( x => new Guid( x.Value ) == status.Id );
             Assert.AreEqual( status.Name, item.Text );
+            Assert.AreEqual( status.IsOpenStatus ? "True" : "False", item.DataAttributes["IsOpenStatus"] );
             Assert.IsFalse( item.Selected );
          }
       }

@@ -18,7 +18,7 @@ namespace HomeScrum.Web.Models.WorkItems
       [Display( Name = "WorkItemStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }
-      public IEnumerable<SelectListItem> Statuses { get; set; }
+      public IEnumerable<SelectListItemWithAttributes> Statuses { get; set; }
 
       [Display( Name = "WorkItemType", ResourceType = typeof( DisplayStrings ) )]
       public Guid WorkItemTypeId { get; set; }
