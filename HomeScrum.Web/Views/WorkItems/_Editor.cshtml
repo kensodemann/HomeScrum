@@ -162,22 +162,10 @@
          }
       }
 
-      function LimitBacklogItems() {
-         var selectedProject = $("#ProjectId").val();
-         if (selectedProject != "00000000-0000-0000-0000-000000000000") {
-            $("#ParentWorkItemId").children("option").attr("disabled", "disabled");
-            $("#ParentWorkItemId").children("option[data-ProjectId=00000000-0000-0000-0000-000000000000]").removeAttr("disabled");
-            $("#ParentWorkItemId").children("option[data-ProjectId=" + selectedProject + "]").removeAttr("disabled");
-         } else {
-            $("#ParentWorkItemId").children("option").removeAttr("disabled");
-         }
-      }
-
       $(function () {
          $("#CreateNewTask").button();
 
          ShowHideDataItems();
-         LimitBacklogItems();
          SetProjectListAccess();
 
          $("#WorkItemTypeId").change(function () {
@@ -190,7 +178,6 @@
          });
 
          $("#ProjectId").change(function () {
-            LimitBacklogItems();
             UnassignParentWorkItem();
          });
       });
