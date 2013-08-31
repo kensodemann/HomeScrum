@@ -315,6 +315,36 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreateGet_InitializesSprintList_NotAssignedItemSelected()
+      {
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus && (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed) );
+
+         var result = _controller.Create() as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedSprints.Count() + 1, viewModel.Sprints.Count() );
+
+         foreach (var sprint in expectedSprints)
+         {
+            var item = viewModel.Sprints.FirstOrDefault( x => new Guid( x.Value ) == sprint.Id );
+            Assert.IsNotNull( item );
+            Assert.AreEqual( sprint.Name, item.Text );
+            Assert.AreEqual( sprint.Project.Id, new Guid( item.DataAttributes["ProjectId"] ) );
+            Assert.AreEqual( (sprint.Status.BacklogIsClosed ? "True" : "False"), item.DataAttributes["BacklogIsClosed"] );
+            Assert.AreEqual( (sprint.Status.TaskListIsClosed ? "True" : "False"), item.DataAttributes["TaskListIsClosed"] );
+            Assert.IsFalse( item.Selected );
+         }
+
+         var defaultItem = viewModel.Sprints.FirstOrDefault( x => new Guid( x.Value ) == Guid.Empty );
+         Assert.IsNotNull( defaultItem );
+         Assert.AreEqual( "<Not Assigned>", defaultItem.Text );
+         Assert.AreEqual( Guid.Empty, new Guid( defaultItem.DataAttributes["ProjectId"] ) );
+         Assert.AreEqual( "False", defaultItem.DataAttributes["BacklogIsClosed"] );
+         Assert.AreEqual( "False", defaultItem.DataAttributes["TaskListIsClosed"] );
+         Assert.IsTrue( defaultItem.Selected );
+      }
+
+      [TestMethod]
       public void CreateGet_InitializesUserList_UassignedSelected()
       {
          var result = _controller.Create() as ViewResult;

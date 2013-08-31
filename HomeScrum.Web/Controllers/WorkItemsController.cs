@@ -127,6 +127,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.Projects = CreateProjectsSelectList( session, viewModel.ProjectId );
          viewModel.AssignedToUsers = CreateUserSelectList( session, viewModel.AssignedToUserId );
          viewModel.ProductBacklogItems = CreateProductBacklogSelectList( session, viewModel.ParentWorkItemId );
+         viewModel.Sprints = CreateSprintSelectList( session, viewModel.SprintId );
          base.PopulateSelectLists( session, viewModel );
       }
 
@@ -192,12 +193,38 @@ namespace HomeScrum.Web.Controllers
                                Text = DisplayStrings.NotAssigned,
                                Selected = (selectedId == default( Guid )),
                                DataAttributes = new Dictionary<string, string>()
-                                                   {
-                                                      { "ProjectId", default( Guid ).ToString() },
-                                                      { "SprintId", default( Guid ).ToString() }
-                                                   }
+                                                    {
+                                                       { "ProjectId", default( Guid ).ToString() },
+                                                       { "SprintId", default( Guid ).ToString() }
+                                                    }
                             } );
          return backlog;
+      }
+
+      private IEnumerable<SelectListItemWithAttributes> CreateSprintSelectList( ISession session, Guid selectedId )
+      {
+         var sprints = session.Query<Sprint>()
+            .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+                         (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed)) || x.Id == selectedId )
+            .OrderBy( x => x.Status.SortSequence )
+            .ThenBy( x => (x.StartDate ?? DateTime.MaxValue) )
+            .ThenBy( x => x.Name.ToUpper() )
+            .SelectSelectListItems( selectedId );
+
+         sprints.Insert( 0, new SelectListItemWithAttributes()
+                            {
+                               Value = default( Guid ).ToString(),
+                               Text = DisplayStrings.NotAssigned,
+                               Selected = (selectedId == Guid.Empty),
+                               DataAttributes = new Dictionary<string, string>()
+                                                {
+                                                   { "ProjectId", Guid.Empty.ToString() },
+                                                   { "TaskListIsClosed", "False" },
+                                                   { "BacklogIsClosed", "False" }
+                                                }
+                            } );
+
+         return sprints;
       }
       #endregion
 

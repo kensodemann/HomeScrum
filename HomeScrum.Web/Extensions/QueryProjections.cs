@@ -86,5 +86,21 @@ namespace HomeScrum.Web.Extensions
                                          }
                                       } ).ToList();
       }
+
+      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<Sprint> query, Guid selectedId )
+      {
+         return query.Select( item => new SelectListItemWithAttributes()
+         {
+            Value = item.Id.ToString(),
+            Text = item.Name,
+            Selected = item.Id == selectedId,
+            DataAttributes = new Dictionary<string, string>()
+                                         {
+                                            { "ProjectId", item.Project.Id.ToString() },
+                                            { "TaskListIsClosed", item.Status.TaskListIsClosed ? "True" : "False" },
+                                            { "BacklogIsClosed", item.Status.BacklogIsClosed ? "True" : "False" }
+                                         }
+         } ).ToList();
+      }
    }
 }
