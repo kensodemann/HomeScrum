@@ -28,6 +28,12 @@
          @Html.ValidationMessageFor( model => model.StatusId )
       </div>
 
+      <div class="formSelectList" id="ParentWorkItemDiv">
+         @Html.LabelFor( model => model.ParentWorkItemId )
+         @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems )
+         @Html.ValidationMessageFor( model => model.ParentWorkItemId )
+      </div>
+
       <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
          @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
@@ -38,12 +44,6 @@
          @Html.LabelFor( model => model.AssignedToUserId )
          @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
          @Html.ValidationMessageFor( model => model.AssignedToUserId )
-      </div>
-
-      <div class="formSelectList" id="ParentWorkItemDiv">
-         @Html.LabelFor( model => model.ParentWorkItemId )
-         @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems )
-         @Html.ValidationMessageFor( model => model.ParentWorkItemId )
       </div>
 
    </fieldset>
@@ -144,6 +144,16 @@
          }
       }
 
+      function SetProjectListAccess() {
+         var backlogItem = $("#ParentWorkItemId").val();
+         if (backlogItem != "00000000-0000-0000-0000-000000000000") {
+            $("#ProjectId").prop('disabled', true);
+         }
+         else {
+            $("#ProjectId").prop('disabled', false);
+         }
+      }
+
       function UnassignParentWorkItem() {
          var selectedProject = $("#ProjectId").val();
          var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
@@ -168,6 +178,7 @@
 
          ShowHideDataItems();
          LimitBacklogItems();
+         SetProjectListAccess();
 
          $("#WorkItemTypeId").change(function () {
             ShowHideDataItems("fade");
@@ -175,6 +186,7 @@
 
          $("#ParentWorkItemId").change(function () {
             SetProjectToParentWorkItemProject();
+            SetProjectListAccess();
          });
 
          $("#ProjectId").change(function () {
