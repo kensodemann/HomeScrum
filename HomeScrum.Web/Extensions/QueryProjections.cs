@@ -81,7 +81,8 @@ namespace HomeScrum.Web.Extensions
                                          Selected = item.Id == selectedId,
                                          DataAttributes = new Dictionary<string, string>()
                                          {
-                                            { "ProjectId", item.Project.Id.ToString() }
+                                            { "ProjectId", item.Project.Id.ToString() },
+                                            { "SprintId", (item.Sprint == null ? Guid.Empty : item.Sprint.Id).ToString() }
                                          }
                                       } ).ToList();
       }

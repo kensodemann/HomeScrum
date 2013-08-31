@@ -193,7 +193,8 @@ namespace HomeScrum.Web.Controllers
                                Selected = (selectedId == default( Guid )),
                                DataAttributes = new Dictionary<string, string>()
                                                    {
-                                                      { "ProjectId", default( Guid ).ToString() }
+                                                      { "ProjectId", default( Guid ).ToString() },
+                                                      { "SprintId", default( Guid ).ToString() }
                                                    }
                             } );
          return backlog;
