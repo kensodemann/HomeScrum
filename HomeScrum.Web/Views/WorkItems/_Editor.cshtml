@@ -24,7 +24,7 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses )
          @Html.ValidationMessageFor( model => model.StatusId )
       </div>
 
@@ -144,16 +144,6 @@
          }
       }
 
-      function SetProjectListAccess() {
-         var backlogItem = $("#ParentWorkItemId").val();
-         if (backlogItem != "00000000-0000-0000-0000-000000000000") {
-            $("#ProjectId").prop('disabled', true);
-         }
-         else {
-            $("#ProjectId").prop('disabled', false);
-         }
-      }
-
       function UnassignParentWorkItem() {
          var selectedProject = $("#ProjectId").val();
          var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
@@ -162,11 +152,84 @@
          }
       }
 
+      function WorkItemIsClosed() {
+         var statusIsOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
+         return (statusIsOpen == "False");
+      }
+
+      function SetNameAccess() {
+         if (WorkItemIsClosed()) {
+            $("#Name").prop('disabled', true);
+         }
+         else {
+            $("#Name").prop('disabled', false);
+         }
+      }
+
+      function SetDescriptionAccess() {
+         if (WorkItemIsClosed()) {
+            $("#Description").prop('disabled', true);
+         }
+         else {
+            $("#Description").prop('disabled', false);
+         }
+      }
+
+      function SetWorkItemTypeAccess() {
+          if (WorkItemIsClosed()) {
+              $("#WorkItemTypeId").prop('disabled', true);
+          }
+          else {
+             $("#WorkItemTypeId").prop('disabled', false);
+          }
+      }
+
+      function SetAssignedToUserAccess() {
+         if (WorkItemIsClosed()) {
+            $("#AssignedToUserId").prop('disabled', true);
+         }
+         else {
+            $("#AssignedToUserId").prop('disabled', false);
+         }
+      }
+
+      function SetParentWorkItemAccess() {
+         if (WorkItemIsClosed()) {
+            $("#ParentWorkItemId").prop('disabled', true);
+         }
+         else {
+            $("#ParentWorkItemId").prop('disabled', false);
+         }
+      }
+
+      function SetProjectListAccess() {
+          var backlogItem = $("#ParentWorkItemId").val();
+          if (backlogItem != "00000000-0000-0000-0000-000000000000" || WorkItemIsClosed()) {
+              $("#ProjectId").prop('disabled', true);
+          }
+          else {
+              $("#ProjectId").prop('disabled', false);
+          }
+      }
+
+      function SetListItemsAccess() {
+         SetNameAccess();
+         SetDescriptionAccess();
+         SetAssignedToUserAccess();
+         SetProjectListAccess();
+         SetWorkItemTypeAccess();
+         SetParentWorkItemAccess();
+      }
+
       $(function () {
          $("#CreateNewTask").button();
 
          ShowHideDataItems();
-         SetProjectListAccess();
+         SetListItemsAccess();
+
+         $("#StatusId").change(function () {
+            SetListItemsAccess();
+         });
 
          $("#WorkItemTypeId").change(function () {
             ShowHideDataItems("fade");
@@ -174,7 +237,7 @@
 
          $("#ParentWorkItemId").change(function () {
             SetProjectToParentWorkItemProject();
-            SetProjectListAccess();
+            SetListItemsAccess();
          });
 
          $("#ProjectId").change(function () {
