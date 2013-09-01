@@ -35,6 +35,12 @@
       </div>
 
       <div class="formSelectList">
+         @Html.LabelFor( model => model.SprintId )
+         @Html.DropDownListWithDataAttributesFor( model => model.SprintId, Model.Sprints )
+         @Html.ValidationMessageFor( model => model.SprintId )
+      </div>
+
+      <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
          @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
          @Html.ValidationMessageFor( model => model.ProjectId )
@@ -144,11 +150,21 @@
          }
       }
 
-      function UnassignParentWorkItem() {
+      function SetSprintToParentWorkItemSprint() {
+         var selectedSprint = $("#SprintId").val();
+         var backlogSprint = $("#ParentWorkItemId").find(":selected").attr("data-SprintId");
+         if (selectedSprint != backlogSprint &&
+             backlogSprint != "00000000-0000-0000-0000-000000000000") {
+            $("#SprintId").val(backlogSprint);
+         }
+      }
+
+      function SetProjectToSprintProject() {
          var selectedProject = $("#ProjectId").val();
-         var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
-         if (backlogProject != selectedProject) {
-            $("#ParentWorkItemId").val("00000000-0000-0000-0000-000000000000");
+         var sprintProject = $("#SprintId").find(":selected").attr("data-ProjectId");
+         if (selectedProject != sprintProject &&
+             sprintProject != "00000000-0000-0000-0000-000000000000") {
+            $("#ProjectId").val(sprintProject);
          }
       }
 
@@ -176,12 +192,12 @@
       }
 
       function SetWorkItemTypeAccess() {
-          if (WorkItemIsClosed()) {
-              $("#WorkItemTypeId").prop('disabled', true);
-          }
-          else {
-             $("#WorkItemTypeId").prop('disabled', false);
-          }
+         if (WorkItemIsClosed()) {
+            $("#WorkItemTypeId").prop('disabled', true);
+         }
+         else {
+            $("#WorkItemTypeId").prop('disabled', false);
+         }
       }
 
       function SetAssignedToUserAccess() {
@@ -202,14 +218,27 @@
          }
       }
 
+      function SetSprintListAccess() {
+         var backlogItem = $("#ParentWorkItemId").val();
+         if (backlogItem != "00000000-0000-0000-0000-000000000000" || WorkItemIsClosed()) {
+            $("#SprintId").prop('disabled', true);
+         }
+         else {
+            $("#SprintId").prop('disabled', false);
+         }
+      }
+
       function SetProjectListAccess() {
-          var backlogItem = $("#ParentWorkItemId").val();
-          if (backlogItem != "00000000-0000-0000-0000-000000000000" || WorkItemIsClosed()) {
-              $("#ProjectId").prop('disabled', true);
-          }
-          else {
-              $("#ProjectId").prop('disabled', false);
-          }
+         var backlogItem = $("#ParentWorkItemId").val();
+         var sprint = $("#SprintId").val();
+         if (backlogItem != "00000000-0000-0000-0000-000000000000" ||
+             sprint != "00000000-0000-0000-0000-000000000000" ||
+             WorkItemIsClosed()) {
+            $("#ProjectId").prop('disabled', true);
+         }
+         else {
+            $("#ProjectId").prop('disabled', false);
+         }
       }
 
       function SetListItemsAccess() {
@@ -218,6 +247,7 @@
          SetAssignedToUserAccess();
          SetProjectListAccess();
          SetWorkItemTypeAccess();
+         SetSprintListAccess();
          SetParentWorkItemAccess();
       }
 
@@ -236,12 +266,14 @@
          });
 
          $("#ParentWorkItemId").change(function () {
+            SetSprintToParentWorkItemSprint();
             SetProjectToParentWorkItemProject();
             SetListItemsAccess();
          });
 
-         $("#ProjectId").change(function () {
-            UnassignParentWorkItem();
+         $("#SprintId").change(function () {
+            SetProjectToSprintProject();
+            SetListItemsAccess();
          });
       });
    </script>
