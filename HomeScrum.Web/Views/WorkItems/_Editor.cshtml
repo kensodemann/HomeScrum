@@ -17,8 +17,9 @@
       </div>
 
       <div class="formSelectList">
+         @Html.HiddenFor( x => x.WorkItemTypeId )
          @Html.LabelFor( model => model.WorkItemTypeId )
-         @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectWorkItemTypeId, Model.WorkItemTypes )
          @Html.ValidationMessageFor( model => model.WorkItemTypeId )
       </div>
 
@@ -29,26 +30,30 @@
       </div>
 
       <div class="formSelectList" id="ParentWorkItemDiv">
+         @Html.HiddenFor( model => model.ParentWorkItemId )
          @Html.LabelFor( model => model.ParentWorkItemId )
-         @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectParentWorkItemId, Model.ProductBacklogItems )
          @Html.ValidationMessageFor( model => model.ParentWorkItemId )
       </div>
 
       <div class="formSelectList">
+         @Html.HiddenFor( model => model.SprintId )
          @Html.LabelFor( model => model.SprintId )
-         @Html.DropDownListWithDataAttributesFor( model => model.SprintId, Model.Sprints )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectSprintId, Model.Sprints )
          @Html.ValidationMessageFor( model => model.SprintId )
       </div>
 
       <div class="formSelectList">
+         @Html.HiddenFor( model => model.ProjectId )
          @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects )
          @Html.ValidationMessageFor( model => model.ProjectId )
       </div>
 
       <div class="formSelectList" id="AssignedToUserDiv">
+         @Html.HiddenFor( model => model.AssignedToUserId )
          @Html.LabelFor( model => model.AssignedToUserId )
-         @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers )
+         @Html.DropDownListFor( model => model.SelectAssignedToUserId, Model.AssignedToUsers )
          @Html.ValidationMessageFor( model => model.AssignedToUserId )
       </div>
 
@@ -104,7 +109,7 @@
     
    <script>
       function ShowHideAssigned(effect) {
-         var canBeAssigned = $("#WorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
+         var canBeAssigned = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
          if (canBeAssigned == "True") {
             $("#AssignedToUserDiv").show(effect);
          }
@@ -114,7 +119,7 @@
       }
 
       function ShowHideParentWorkItem(effect) {
-         var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveParent");
+         var canHaveParent = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveParent");
          if (canHaveParent == "True") {
             $("#ParentWorkItemDiv").show(effect);
          }
@@ -124,7 +129,7 @@
       }
 
       function ShowHideTaskList(effect) {
-         var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
+         var canHaveChildren = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
          if (canHaveChildren == "True") {
             $("#TaskListDiv").show(effect);
             $("#CreateNewTask").show(effect);
@@ -141,29 +146,37 @@
          ShowHideTaskList(effect);
       }
 
+      function SyncHiddenElement(fromElement) {
+         var hiddenElementId = fromElement.id.substr(6);
+         $("#" + hiddenElementId).val($(fromElement).val());
+      }
+
       function SetProjectToParentWorkItemProject() {
-         var selectedProject = $("#ProjectId").val();
-         var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
+         var selectedProject = $("#SelectProjectId").val();
+         var backlogProject = $("#SelectParentWorkItemId").find(":selected").attr("data-ProjectId");
          if (selectedProject != backlogProject &&
              backlogProject != "00000000-0000-0000-0000-000000000000") {
+            $("#SelectProjectId").val(backlogProject);
             $("#ProjectId").val(backlogProject);
          }
       }
 
       function SetSprintToParentWorkItemSprint() {
-         var selectedSprint = $("#SprintId").val();
-         var backlogSprint = $("#ParentWorkItemId").find(":selected").attr("data-SprintId");
+         var selectedSprint = $("#SelectSprintId").val();
+         var backlogSprint = $("#SelectParentWorkItemId").find(":selected").attr("data-SprintId");
          if (selectedSprint != backlogSprint &&
              backlogSprint != "00000000-0000-0000-0000-000000000000") {
+            $("#SelectSprintId").val(backlogSprint);
             $("#SprintId").val(backlogSprint);
          }
       }
 
       function SetProjectToSprintProject() {
-         var selectedProject = $("#ProjectId").val();
-         var sprintProject = $("#SprintId").find(":selected").attr("data-ProjectId");
+         var selectedProject = $("#SelectProjectId").val();
+         var sprintProject = $("#SelectSprintId").find(":selected").attr("data-ProjectId");
          if (selectedProject != sprintProject &&
              sprintProject != "00000000-0000-0000-0000-000000000000") {
+            $("#SelectProjectId").val(backlogProject);
             $("#ProjectId").val(sprintProject);
          }
       }
@@ -173,9 +186,7 @@
          return (statusIsOpen == "False");
       }
 
-      // TODO: Disabled elements to not get sent with the form submit, so I need to change
-      //       this so each of these elements has a sister hidden element that does get
-      //       sent, I guess.
+
       function SetNameAccess() {
          if (WorkItemIsClosed()) {
             $("#Name").prop('readonly', true);
@@ -196,51 +207,51 @@
 
       function SetWorkItemTypeAccess() {
          if (WorkItemIsClosed()) {
-            $("#WorkItemTypeId").prop('disabled', true);
+            $("#SelectWorkItemTypeId").prop('disabled', true);
          }
          else {
-            $("#WorkItemTypeId").prop('disabled', false);
+            $("#SelectWorkItemTypeId").prop('disabled', false);
          }
       }
 
       function SetAssignedToUserAccess() {
          if (WorkItemIsClosed()) {
-            $("#AssignedToUserId").prop('disabled', true);
+            $("#SelectAssignedToUserId").prop('disabled', true);
          }
          else {
-            $("#AssignedToUserId").prop('disabled', false);
+            $("#SelectAssignedToUserId").prop('disabled', false);
          }
       }
 
       function SetParentWorkItemAccess() {
          if (WorkItemIsClosed()) {
-            $("#ParentWorkItemId").prop('disabled', true);
+            $("#SelectParentWorkItemId").prop('disabled', true);
          }
          else {
-            $("#ParentWorkItemId").prop('disabled', false);
+            $("#SelectParentWorkItemId").prop('disabled', false);
          }
       }
 
       function SetSprintListAccess() {
-         var backlogItem = $("#ParentWorkItemId").val();
+         var backlogItem = $("#SelectParentWorkItemId").val();
          if (backlogItem != "00000000-0000-0000-0000-000000000000" || WorkItemIsClosed()) {
-            $("#SprintId").prop('disabled', true);
+            $("#SelectSprintId").prop('disabled', true);
          }
          else {
-            $("#SprintId").prop('disabled', false);
+            $("#SelectSprintId").prop('disabled', false);
          }
       }
 
       function SetProjectListAccess() {
-         var backlogItem = $("#ParentWorkItemId").val();
-         var sprint = $("#SprintId").val();
+         var backlogItem = $("#SelectParentWorkItemId").val();
+         var sprint = $("#SelectSprintId").val();
          if (backlogItem != "00000000-0000-0000-0000-000000000000" ||
              sprint != "00000000-0000-0000-0000-000000000000" ||
              WorkItemIsClosed()) {
-            $("#ProjectId").prop('disabled', true);
+            $("#SelectProjectId").prop('disabled', true);
          }
          else {
-            $("#ProjectId").prop('disabled', false);
+            $("#SelectProjectId").prop('disabled', false);
          }
       }
 
@@ -264,19 +275,30 @@
             SetListItemsAccess();
          });
 
-         $("#WorkItemTypeId").change(function () {
+         $("#SelectWorkItemTypeId").change(function () {
+            SyncHiddenElement(this);
             ShowHideDataItems("fade");
          });
 
-         $("#ParentWorkItemId").change(function () {
+         $("#SelectParentWorkItemId").change(function () {
+            SyncHiddenElement(this);
             SetSprintToParentWorkItemSprint();
             SetProjectToParentWorkItemProject();
             SetListItemsAccess();
          });
 
-         $("#SprintId").change(function () {
+         $("#SelectSprintId").change(function () {
+            SyncHiddenElement(this);
             SetProjectToSprintProject();
             SetListItemsAccess();
+         });
+
+         $("#SelectAssignedToUserId").change(function () {
+            SyncHiddenElement(this);
+         });
+
+         $("#SelectProjectId").change(function () {
+            SyncHiddenElement(this);
          });
       });
    </script>

@@ -122,10 +122,15 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
+            .ForMember( dest => dest.SelectWorkItemTypeId, opt => opt.Ignore() )
             .ForMember( dest => dest.WorkItemTypes, opt => opt.Ignore() )
+            .ForMember( dest => dest.SelectProjectId, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
+            .ForMember( dest => dest.SelectSprintId, opt => opt.Ignore() )
             .ForMember( dest => dest.Sprints, opt => opt.Ignore() )
+            .ForMember( dest => dest.SelectAssignedToUserId, opt => opt.Ignore() )
             .ForMember( dest => dest.AssignedToUsers, opt => opt.Ignore() )
+            .ForMember( dest => dest.SelectParentWorkItemId, opt => opt.Ignore() )
             .ForMember( dest => dest.ProductBacklogItems, opt => opt.Ignore() )
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() );
 
