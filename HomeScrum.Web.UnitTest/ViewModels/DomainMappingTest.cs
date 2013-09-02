@@ -435,7 +435,9 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             CreatedByUserId = Users.ModelData[1].Id,
             CreatedByUserUserName = Users.ModelData[1].UserName,
             ParentWorkItemId = WorkItems.ModelData[0].Id,
-            ParentWorkItemName = WorkItems.ModelData[0].Name
+            ParentWorkItemName = WorkItems.ModelData[0].Name,
+            SprintId = Sprints.ModelData[1].Id,
+            SprintName = Sprints.ModelData[1].Name
          };
 
          var domainModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( WorkItem ) );
@@ -447,6 +449,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          AssertUsersEqual( Users.ModelData[0], ((WorkItem)domainModel).AssignedToUser );
          AssertUsersEqual( Users.ModelData[1], ((WorkItem)domainModel).CreatedByUser );
          AssertDomainModelsEqual( WorkItems.ModelData[0], ((WorkItem)domainModel).ParentWorkItem );
+         AssertDomainModelsEqual( Sprints.ModelData[1], ((WorkItem)domainModel).Sprint );
       }
       #endregion
 
