@@ -173,21 +173,24 @@
          return (statusIsOpen == "False");
       }
 
+      // TODO: Disabled elements to not get sent with the form submit, so I need to change
+      //       this so each of these elements has a sister hidden element that does get
+      //       sent, I guess.
       function SetNameAccess() {
          if (WorkItemIsClosed()) {
-            $("#Name").prop('disabled', true);
+            $("#Name").prop('readonly', true);
          }
          else {
-            $("#Name").prop('disabled', false);
+            $("#Name").prop('readonly', false);
          }
       }
 
       function SetDescriptionAccess() {
          if (WorkItemIsClosed()) {
-            $("#Description").prop('disabled', true);
+            $("#Description").prop('readonly', true);
          }
          else {
-            $("#Description").prop('disabled', false);
+            $("#Description").prop('readonly', false);
          }
       }
 
