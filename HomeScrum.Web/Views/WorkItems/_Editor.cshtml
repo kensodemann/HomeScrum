@@ -190,18 +190,22 @@
       function SetNameAccess() {
          if (WorkItemIsClosed()) {
             $("#Name").prop('readonly', true);
+            $("#Name").addClass("disabled");
          }
          else {
             $("#Name").prop('readonly', false);
+            $("#Name").removeClass("disabled");
          }
       }
 
       function SetDescriptionAccess() {
          if (WorkItemIsClosed()) {
             $("#Description").prop('readonly', true);
+            $("#Description").addClass("disabled");
          }
          else {
             $("#Description").prop('readonly', false);
+            $("#Description").removeClass("disabled");
          }
       }
 
