@@ -28,6 +28,9 @@ namespace HomeScrum.Web.Models.WorkItems
       [Display( Name = "ParentWorkItem", ResourceType = typeof( DisplayStrings ) )]
       public string ParentWorkItemName { get; set; }
 
+      [Display( Name = "Sprint", ResourceType = typeof( DisplayStrings ) )]
+      public string SprintName { get; set; }
+
       public IEnumerable<AcceptanceCriterionViewModel> AcceptanceCriteria { get; set; }
 
       public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
