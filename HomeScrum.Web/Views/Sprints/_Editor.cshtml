@@ -87,8 +87,8 @@
       }
 
       function SetProjectListAccess() {
-         var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length;
-         if (numberOfWorkItems > 2) {
+         var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
+         if (numberOfWorkItems > 0) {
             $("#SelectProjectId").prop('disabled', true);
          }
          else {
@@ -96,8 +96,9 @@
          }
       }
 
+      $(document).ready(function () {
+         SetProjectListAccess();
 
-      $(function () {
          $("#StartDate").datepicker({
             changeMonth: true,
             changeYear: true
@@ -110,10 +111,6 @@
          $("#SelectProjectId").change(function () {
             SyncHiddenElement(this);
          });
-      });
-
-      $(document).ready(function () {
-         SetProjectListAccess();
       });
    </script>
 }
