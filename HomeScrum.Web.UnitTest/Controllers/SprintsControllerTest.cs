@@ -971,20 +971,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
          var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.BacklogIsClosed ).Id;
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
          var view = _controller.AddBacklogItems( sprintId ) as ViewResult;
          var model = view.Model as WorkItemsListForSprintViewModel;
-         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
          Assert.IsNotNull( model );
          Assert.AreEqual( expectedWorkItems.Count(), model.WorkItems.Count() );
 
          foreach (var workItem in expectedWorkItems)
          {
-            Assert.IsTrue( workItem.Sprint == null || workItem.Sprint.Id == sprintId );
-            Assert.AreEqual( projectId, workItem.Project.Id );
-
-            var workItemViewModel = model.WorkItems.Single( x => x.Id == workItem.Id );
+            var workItemViewModel = model.WorkItems.SingleOrDefault( x => x.Id == workItem.Id );
+            Assert.IsNotNull( workItemViewModel );
+            Assert.AreEqual( workItem.Name, workItemViewModel.Name );
+            Assert.AreEqual( workItem.Status.Name, workItemViewModel.StatusName );
+            Assert.AreEqual( workItem.WorkItemType.Name, workItemViewModel.WorkItemTypeName );
             Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
          }
       }
@@ -1065,6 +1066,37 @@ namespace HomeScrum.Web.UnitTest.Controllers
          result.RouteValues.TryGetValue( "id", out value );
          Assert.AreEqual( value, sprint.Id );
       }
+      #endregion
+
+
+      #region AddTasks GET
+      [TestMethod]
+      public void AddTasksGet_ReturnsViewWithOpenUnassignedTasksWithoutBacklog_PlusTasksForSprint()
+      {
+         var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
+         var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.TaskListIsClosed ).Id;
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && x.WorkItemType.IsTask && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprintId) );
+
+         var view = _controller.AddTasks( sprintId ) as ViewResult;
+         var model = view.Model as WorkItemsListForSprintViewModel;
+
+         Assert.IsNotNull( model );
+         Assert.AreEqual( expectedWorkItems.Count(), model.WorkItems.Count() );
+
+         foreach (var workItem in expectedWorkItems)
+         {
+            var workItemViewModel = model.WorkItems.SingleOrDefault( x => x.Id == workItem.Id );
+            Assert.IsNotNull( workItemViewModel );
+            Assert.AreEqual( workItem.Name, workItemViewModel.Name );
+            Assert.AreEqual( workItem.Status.Name, workItemViewModel.StatusName );
+            Assert.AreEqual( workItem.WorkItemType.Name, workItemViewModel.WorkItemTypeName );
+            Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
+         }
+      }
+      #endregion
+
+
+      #region AddTasks POST
       #endregion
 
 
