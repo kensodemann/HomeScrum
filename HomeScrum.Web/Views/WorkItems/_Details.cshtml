@@ -5,11 +5,32 @@
 <fieldset>
    <legend>WorkItemViewModel</legend>
 
+   <div class="displayLabel" id="CreatedByUserNameLabel">
+      @Html.DisplayNameFor( model => model.CreatedByUserName )
+   </div>
+   <div class="displayField" id="CreatedByUserName">
+      @Html.DisplayFor( model => model.CreatedByUserName )
+   </div>
+
+   <div class="displayLabel" id="WorkItemTypeLabel">
+      @Html.DisplayNameFor( model => model.WorkItemTypeName )
+   </div>
+   <div class="displayField" id="WorkItemType">
+      @Html.DisplayFor( model => model.WorkItemTypeName )
+   </div>
+
    <div class="displayLabel" id="StatusLabel">
       @Html.DisplayNameFor( model => model.StatusName )
    </div>
    <div class="displayField" id="Status">
       @Html.DisplayFor( model => model.StatusName )
+   </div>
+
+   <div class="displayLabel" id="BacklogItemLabel">
+      @Html.DisplayNameFor( model => model.ParentWorkItemName )
+   </div>
+   <div class="displayField" id="BacklogItem">
+      @Html.DisplayFor( model => model.ParentWorkItemName )
    </div>
 
    <div class="displayLabel" id="SprintLabel">
@@ -28,22 +49,12 @@
       @Html.DisplayFor( model => model.ProjectName )
    </div>
 
-   <div class="displayLabel" id="CreatedByUserNameLabel">
-      @Html.DisplayNameFor( model => model.CreatedByUserName )
+   <div class="displayLabel" id="AssinedToUserNameLabel">
+      @Html.DisplayNameFor( model => model.AssignedToUserName )
    </div>
-   <div class="displayField" id="CreatedByUserName">
-      @Html.DisplayFor( model => model.CreatedByUserName )
+   <div class="displayField" id="AssigneToUserName">
+      @Html.DisplayFor( model => model.AssignedToUserName )
    </div>
-
-   @if (Model.AssignedToUserName != null)
-   {
-      <div class="displayLabel" id="AssinedToUserNameLabel">
-         @Html.DisplayNameFor( model => model.AssignedToUserName )
-      </div>
-      <div class="displayField" id="AssigneToUserName">
-         @Html.DisplayFor( model => model.AssignedToUserName )
-      </div>
-   }
 </fieldset>
 
 @if (Model.Tasks.Count() > 0)
