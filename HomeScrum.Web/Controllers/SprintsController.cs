@@ -66,9 +66,9 @@ namespace HomeScrum.Web.Controllers
             var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
             items = queryModel.GetQuery( session )
                .Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
-                            x.StartDate != null && x.StartDate <= DateTime.Now && (x.EndDate == null || x.EndDate >= DateTime.Now) )
+                            x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
                .OrderBy( x => x.Project.Name )
-               .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
+               .ThenBy( x => x.StartDate )
                .ThenBy( x => x.Status.SortSequence )
                .Select( x => new SprintIndexViewModel()
                {

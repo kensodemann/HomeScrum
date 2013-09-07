@@ -474,6 +474,8 @@
     <Content Include="Views\Sprints\_WorkItemList.cshtml" />
     <Content Include="Views\Sprints\_AddWorkItems.cshtml" />
     <Content Include="Views\Sprints\AddTasks.cshtml" />
+    <Content Include="Views\Sprints\_SprintList.cshtml" />
+    <Content Include="Views\Sprints\CurrentSprints.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
