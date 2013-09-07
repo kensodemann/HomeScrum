@@ -54,6 +54,41 @@ namespace HomeScrum.Web.Controllers
 
 
       //
+      // GET: /Sprints/CurrentSprints
+      public System.Web.Mvc.ActionResult CurrentSprints()
+      {
+         IEnumerable<SprintIndexViewModel> items;
+         Log.Debug( "CurrentSprints()" );
+
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
+            items = queryModel.GetQuery( session )
+               .Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+                            x.StartDate != null && x.StartDate <= DateTime.Now && (x.EndDate == null || x.EndDate >= DateTime.Now) )
+               .OrderBy( x => x.Project.Name )
+               .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
+               .ThenBy( x => x.Status.SortSequence )
+               .Select( x => new SprintIndexViewModel()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  Description = x.Description,
+                  ProjectName = x.Project.Name,
+                  StatusName = x.Status.Name,
+                  StartDate = x.StartDate,
+                  EndDate = x.EndDate
+               } );
+
+            transaction.Commit();
+         }
+
+         return View( items );
+      }
+
+
+      //
       // POST: /Sprints/Create
       public override ActionResult Create( SprintEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {
