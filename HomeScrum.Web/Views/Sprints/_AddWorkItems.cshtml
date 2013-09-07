@@ -1,0 +1,54 @@
+﻿@model HomeScrum.Web.Models.Sprints.WorkItemsListForSprintViewModel
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+   @Html.HiddenFor( m => m.Id )
+
+   <table>
+      <tr>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].WorkItemTypeName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].Name )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].StatusName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].IsInTargetSprint )
+         </th>
+
+      </tr>
+
+      @for (int i = 0; i < Model.WorkItems.Count(); i++)
+      {
+         @Html.HiddenFor( m => m.WorkItems[i].Id )
+         @Html.HiddenFor( m => m.WorkItems[i].WorkItemTypeName )
+         @Html.HiddenFor( m => m.WorkItems[i].Name )
+         @Html.HiddenFor( m => m.WorkItems[i].StatusName )
+         <tr>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].WorkItemTypeName )
+            </td>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].Name )
+            </td>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].StatusName )
+            </td>
+            <td>
+               @Html.EditorFor( m => m.WorkItems[i].IsInTargetSprint )
+            </td>
+         </tr>
+      }
+   </table>
+   
+   @Html.ValidationSummary( false )
+    
+   <p>
+      <input type="submit" value="Save" />
+   </p>
+}

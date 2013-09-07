@@ -128,6 +128,71 @@ namespace HomeScrum.Web.Controllers
          return RedirectToAction( "Edit", new { id = viewModel.Id } );
       }
 
+      //
+      // GET: /Sprints/5/AddTasks
+      public virtual ActionResult AddTasks( Guid id )
+      {
+         var model = new WorkItemsListForSprintViewModel()
+         {
+            Id = id
+         };
+
+         var session = SessionFactory.GetCurrentSession();
+         using (var tx = session.BeginTransaction())
+         {
+            var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
+            model.WorkItems = session.Query<WorkItem>()
+               .Where( x => x.Status.IsOpenStatus && x.WorkItemType.IsTask && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
+               .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
+               .ThenBy( x => x.WorkItemType.SortSequence )
+               .ThenBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name )
+               .Select( x => new SprintWorkItemViewModel()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  Description = x.Description,
+                  WorkItemTypeName = x.WorkItemType.Name,
+                  StatusName = x.Status.Name,
+                  IsInTargetSprint = x.Sprint != null
+               } ).ToList();
+
+            tx.Commit();
+         }
+
+         return View( model );
+      }
+
+
+      //
+      // POST: /Sprints/5/AddBacklogItems
+      [HttpPost]
+      public virtual ActionResult AddTasks( WorkItemsListForSprintViewModel viewModel )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var tx = session.BeginTransaction())
+         {
+            try
+            {
+               var sprint = session.Get<Sprint>( viewModel.Id );
+               foreach (var item in viewModel.WorkItems)
+               {
+                  UpdateSprintOnWorkItem( session, item.Id, (item.IsInTargetSprint) ? sprint : null );
+               }
+               tx.Commit();
+            }
+            catch (Exception e)
+            {
+               tx.Rollback();
+               Log.Error( e, "Error Processing Backlog Items" );
+               ModelState.AddModelError( "Model", "An errror occurred processing this data.  Check the log files" );
+               return View( viewModel );
+            }
+         }
+
+         return RedirectToAction( "Edit", new { id = viewModel.Id } );
+      }
+
       private void UpdateSprintOnWorkItem( ISession session, Guid id, Sprint sprint )
       {
          Log.Debug( "UpdateSprintOnWorkItem( {0}, {1} )", id.ToString(), (sprint == null) ? "Null" : sprint.Name );
@@ -202,7 +267,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SprintWorkItemViewModel> GetBacklogItems( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => !x.WorkItemType.IsTask && x.Sprint != null && x.Sprint.Id == id )
+            .Where( x => !x.WorkItemType.IsTask && x.Sprint.Id == id )
             .OrderBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Status.SortSequence )
             .ThenBy( x => x.Name )
@@ -221,7 +286,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SprintWorkItemViewModel> GetTasks( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => x.WorkItemType.IsTask && x.Sprint != null && x.Sprint.Id == id )
+            .Where( x => x.WorkItemType.IsTask && x.Sprint.Id == id )
             .OrderBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Status.SortSequence )
             .ThenBy( x => x.Name )
