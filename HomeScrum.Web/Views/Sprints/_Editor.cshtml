@@ -86,6 +86,16 @@
          $("#" + hiddenElementId).val($(fromElement).val());
       }
 
+      function SetProjectListAccess() {
+         var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length;
+         if (numberOfWorkItems > 2) {
+            $("#SelectProjectId").prop('disabled', true);
+         }
+         else {
+            $("#SelectProjectId").prop('disabled', false);
+         }
+      }
+
 
       $(function () {
          $("#StartDate").datepicker({
@@ -100,6 +110,10 @@
          $("#SelectProjectId").change(function () {
             SyncHiddenElement(this);
          });
+      });
+
+      $(document).ready(function () {
+         SetProjectListAccess();
       });
    </script>
 }
