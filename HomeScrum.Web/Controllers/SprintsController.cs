@@ -163,6 +163,36 @@ namespace HomeScrum.Web.Controllers
          return View( model );
       }
 
+
+      //
+      // POST: /Sprints/5/AddBacklogItems
+      [HttpPost]
+      public virtual ActionResult AddTasks( WorkItemsListForSprintViewModel viewModel )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var tx = session.BeginTransaction())
+         {
+            try
+            {
+               var sprint = session.Get<Sprint>( viewModel.Id );
+               foreach (var item in viewModel.WorkItems)
+               {
+                  UpdateSprintOnWorkItem( session, item.Id, (item.IsInTargetSprint) ? sprint : null );
+               }
+               tx.Commit();
+            }
+            catch (Exception e)
+            {
+               tx.Rollback();
+               Log.Error( e, "Error Processing Backlog Items" );
+               ModelState.AddModelError( "Model", "An errror occurred processing this data.  Check the log files" );
+               return View( viewModel );
+            }
+         }
+
+         return RedirectToAction( "Edit", new { id = viewModel.Id } );
+      }
+
       private void UpdateSprintOnWorkItem( ISession session, Guid id, Sprint sprint )
       {
          Log.Debug( "UpdateSprintOnWorkItem( {0}, {1} )", id.ToString(), (sprint == null) ? "Null" : sprint.Name );

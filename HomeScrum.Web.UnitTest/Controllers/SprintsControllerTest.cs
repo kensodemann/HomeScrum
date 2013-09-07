@@ -1097,6 +1097,52 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       #region AddTasks POST
+      [TestMethod]
+      public void AddTasksPost_AddsTasksToSprint()
+      {
+         RemoveAllWorkItemsFromSprints();
+
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.TaskListIsClosed );
+
+         var viewModel = CreateTasksForSprintViewModel( sprint );
+         viewModel.WorkItems[1].IsInTargetSprint = true;
+         viewModel.WorkItems[2].IsInTargetSprint = true;
+         viewModel.WorkItems[4].IsInTargetSprint = true;
+
+         _controller.AddTasks( viewModel );
+
+         foreach (var item in viewModel.WorkItems)
+         {
+            var workItem = _session.Get<WorkItem>( item.Id );
+            if (item.IsInTargetSprint)
+            {
+               Assert.AreEqual( sprint.Id, workItem.Sprint.Id );
+            }
+            else
+            {
+               Assert.IsNull( workItem.Sprint );
+            }
+         }
+      }
+
+      [TestMethod]
+      public void AddTasksPost_RedirectsToEditor()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.TaskListIsClosed );
+         var viewModel = CreateTasksForSprintViewModel( sprint );
+
+         var result = _controller.AddTasks( viewModel ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( value, sprint.Id );
+      }
       #endregion
 
 
@@ -1156,6 +1202,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
                                 WorkItemTypeName = x.WorkItemType.Name,
                                 IsInTargetSprint = (x.Sprint != null)
                              } )
+               .ToList();
+
+            tx.Commit();
+         }
+
+         return model;
+      }
+
+      private WorkItemsListForSprintViewModel CreateTasksForSprintViewModel( Sprint sprint )
+      {
+         var model = new WorkItemsListForSprintViewModel()
+         {
+            Id = sprint.Id,
+            Name = sprint.Name
+         };
+
+         using (var tx = _session.BeginTransaction())
+         {
+            model.WorkItems = _session.Query<WorkItem>()
+               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.IsTask && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
+               .Select( x => new SprintWorkItemViewModel()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  Description = x.Description,
+                  StatusName = x.Status.Name,
+                  WorkItemTypeName = x.WorkItemType.Name,
+                  IsInTargetSprint = (x.Sprint != null)
+               } )
                .ToList();
 
             tx.Commit();
