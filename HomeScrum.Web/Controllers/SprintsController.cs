@@ -87,6 +87,39 @@ namespace HomeScrum.Web.Controllers
          return View( items );
       }
 
+      //
+      // GET: /Sprints/OpenSprints
+      public System.Web.Mvc.ActionResult OpenSprints()
+      {
+         IEnumerable<SprintIndexViewModel> items;
+         Log.Debug( "CurrentSprints()" );
+
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
+            items = queryModel.GetQuery( session )
+               .Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus )
+               .OrderBy( x => x.Project.Name )
+               .ThenBy( x => x.StartDate )
+               .ThenBy( x => x.Status.SortSequence )
+               .Select( x => new SprintIndexViewModel()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  Description = x.Description,
+                  ProjectName = x.Project.Name,
+                  StatusName = x.Status.Name,
+                  StartDate = x.StartDate,
+                  EndDate = x.EndDate
+               } );
+
+            transaction.Commit();
+         }
+
+         return View( items );
+      }
+
 
       //
       // POST: /Sprints/Create
