@@ -173,6 +173,20 @@
          SetProjectListAccess();
       }
 
+      function SetupStatusSelectList() {
+         $("#StatusId").change(function () {
+            SetScreenElementAccess();
+         });
+      }
+
+      function SetupProjectSelectList() {
+         var selectList = $("#SelectProjectId");
+         SyncHiddenElement(selectList.get(0));
+         selectList.change(function () {
+            SyncHiddenElement(this);
+         });
+      }
+
       $(document).ready(function () {
          SetScreenElementAccess();
 
@@ -185,13 +199,8 @@
             changeYear: true
          });
 
-         $("#SelectProjectId").change(function () {
-            SyncHiddenElement(this);
-         });
-
-         $("#StatusId").change(function () {
-            SetScreenElementAccess();
-         });
+         SetupStatusSelectList();
+         SetupProjectSelectList();
       });
    </script>
 }
