@@ -15,6 +15,7 @@ namespace HomeScrum.Common.TestData
    ///   * Home Scrum Sprint 5 - pre-planninig, no start or end date
    ///   
    ///   * Sandwiches Sprint 1 - pre-planning, no start or end date
+   ///   * Sandwicnes Sprint 2 - in process, start date, no end date, same period as Home Scrum Sprint #3 (Now)
    ///   
    ///   * PRepS Sprint 1 - closed, start and end dates
    ///   * PRepS Sprint 2 - closed, start and end dates
@@ -71,8 +72,8 @@ namespace HomeScrum.Common.TestData
                Description = "The first sprint for the 1st active project",
                Status = closed,
                Project = homeScrum,
-               StartDate = new DateTime(2013, 1, 1),
-               EndDate = new DateTime(2013,1,31),
+               StartDate = DateTime.Now.AddMonths(-3).AddDays(-30),
+               EndDate = DateTime.Now.AddMonths(-3),
                Goal = "Get the initial design finalized",
                LastModifiedUserRid = Users.ModelData[0].Id,
                CreatedByUser = Users.ModelData[1]
@@ -83,8 +84,8 @@ namespace HomeScrum.Common.TestData
                Description = "The third sprint for the 1st active project",
                Status = retrospective,
                Project = homeScrum,
-               StartDate = new DateTime(2013, 3, 1),
-               EndDate = new DateTime(2013,3,31),
+               StartDate = DateTime.Now.AddDays(-15),
+               EndDate = DateTime.Now.AddDays(15),
                Goal = "Develop pattern for the controller classes",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0]
@@ -95,8 +96,8 @@ namespace HomeScrum.Common.TestData
                Description = "The second sprint for the inactive project",
                Status = closed,
                Project = preps,
-               StartDate = new DateTime(2012, 7, 15),
-               EndDate = new DateTime(2012,8,14),
+               StartDate = DateTime.Now.AddYears(-1),
+               EndDate = DateTime.Now.AddYears(-1).AddDays(30),
                Goal = "Accomplish something else",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[2]
@@ -107,8 +108,8 @@ namespace HomeScrum.Common.TestData
                Description = "The second sprint for the 1st active project",
                Status = closed,
                Project = homeScrum,
-               StartDate = new DateTime(2013, 2, 1),
-               EndDate = new DateTime(2013,2,28),
+               StartDate = DateTime.Now.AddMonths(-2).AddDays(-30),
+               EndDate = DateTime.Now.AddMonths(-2),
                Goal = "Create Domains Models and ORM Mappings",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1]
@@ -119,7 +120,7 @@ namespace HomeScrum.Common.TestData
                Description = "The forth sprint for the 1st active project",
                Status = planning,
                Project = homeScrum,
-               StartDate = new DateTime(2013, 4, 1),
+               StartDate = DateTime.Now.AddMonths(1),
                EndDate = null,
                Goal = "Expand controllers",
                LastModifiedUserRid = Users.ModelData[1].Id,
@@ -140,7 +141,7 @@ namespace HomeScrum.Common.TestData
             new Sprint()
             {
                Name = "Sandwiches Sprint 1",
-               Description = "The first sprint for the 2nd active project",
+               Description = "The first sprint for the 2nd active project, oddly planning",
                Status = prePlanning,
                Project = sandwiches,
                StartDate = null,
@@ -151,12 +152,24 @@ namespace HomeScrum.Common.TestData
             },
             new Sprint()
             {
+               Name = "Sandwiches Sprint 2",
+               Description = "The second sprint for the 2nd active project, oddly active",
+               Status = inProcess,
+               Project = sandwiches,
+               StartDate = DateTime.Now.AddDays(-15),
+               EndDate = null,
+               Goal = "Test Null End Date",
+               LastModifiedUserRid = Users.ModelData[1].Id,
+               CreatedByUser = Users.ModelData[1]
+            },
+            new Sprint()
+            {
                Name = "PRepS Sprint 1",
                Description = "The first sprint for the inactive project",
                Status = closed,
                Project = preps,
-               StartDate = new DateTime(2012, 6, 15),
-               EndDate = new DateTime(2012,7,14),
+               StartDate = DateTime.Now.AddMonths(-13),
+               EndDate = DateTime.Now.AddMonths(-12),
                Goal = "Accomplish something",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0]
@@ -167,7 +180,7 @@ namespace HomeScrum.Common.TestData
                Description = "The third sprint for the inactive project",
                Status = inProcess,
                Project = preps,
-               StartDate = new DateTime(2012, 7, 15),
+               StartDate = DateTime.Now.AddMonths(-12),
                EndDate = null,
                Goal = "The project is imploding, attempt to prevent that",
                LastModifiedUserRid = Users.ModelData[1].Id,
@@ -179,7 +192,7 @@ namespace HomeScrum.Common.TestData
                Description = "The project is valid, but the status is not valid for use in the system",
                Status = invalidStatus,
                Project = homeScrum,
-               StartDate = new DateTime(2012, 7, 15),
+               StartDate = DateTime.Now.AddMonths(-12),
                EndDate = null,
                Goal = "I don't know",
                LastModifiedUserRid = Users.ModelData[1].Id,
@@ -191,7 +204,7 @@ namespace HomeScrum.Common.TestData
                Description = "The third sprint for the inactive project",
                Status = inProcess,
                Project = tacoBell,
-               StartDate = new DateTime(2012, 7, 15),
+               StartDate = DateTime.Now.AddMonths(-12),
                EndDate = null,
                Goal = "I still don't know",
                LastModifiedUserRid = Users.ModelData[1].Id,

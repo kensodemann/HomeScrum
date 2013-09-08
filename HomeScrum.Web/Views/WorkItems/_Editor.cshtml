@@ -186,6 +186,11 @@
          return (statusIsOpen == "False");
       }
 
+      function TaskListIsClosed() {
+         var taskListIsClosed = $("#SelectSprintId").find(":selected").attr("data-TaskListIsClosed");
+         return (taskListIsClosed == "True");
+      }
+
 
       function SetNameAccess() {
          if (WorkItemIsClosed()) {
@@ -259,7 +264,17 @@
          }
       }
 
+      function SetCreateNewTaskAccess() {
+         if (WorkItemIsClosed() || TaskListIsClosed()) {
+            $("#CreateNewTask").button("disable");
+         }
+         else {
+            $("#CreateNewTask").button("enable");
+         }
+      }
+
       function SetListItemsAccess() {
+         SetCreateNewTaskAccess();
          SetNameAccess();
          SetDescriptionAccess();
          SetAssignedToUserAccess();
