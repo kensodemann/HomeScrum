@@ -33,7 +33,8 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.ProjectId, Model.Projects )
+         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects )
+         @Html.HiddenFor( model => model.ProjectId )
       </div>
 
       <div class="formSelectList">
@@ -56,21 +57,21 @@
    
    if (Model.Id != Guid.Empty)
    {
-      <fieldset>
-         <legend>WorkItems</legend>
+   <fieldset>
+      <legend>WorkItems</legend>
 
-         <div id="BacklogItems">
-            <h3>Backlog Items</h3>
-            @Html.Partial( "_WorkItemList", Model.BacklogItems )
-            @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id } )
-         </div>
+      <div id="BacklogItems">
+         <h3>Backlog Items</h3>
+         @Html.Partial( "_WorkItemList", Model.BacklogItems )
+         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id } )
+      </div>
 
-         <div id="Tasks">
-            <h3>Tasks</h3>
-            @Html.Partial( "_WorkItemList", Model.Tasks )
-            @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id } )
-         </div>
-      </fieldset>
+      <div id="Tasks">
+         <h3>Tasks</h3>
+         @Html.Partial( "_WorkItemList", Model.Tasks )
+         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id } )
+      </div>
+   </fieldset>
    }
    
    @Html.ValidationSummary( false )
@@ -80,7 +81,24 @@
    </p>
        
    <script>
-      $(function () {
+      function SyncHiddenElement(fromElement) {
+         var hiddenElementId = fromElement.id.substr(6);
+         $("#" + hiddenElementId).val($(fromElement).val());
+      }
+
+      function SetProjectListAccess() {
+         var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
+         if (numberOfWorkItems > 0) {
+            $("#SelectProjectId").prop('disabled', true);
+         }
+         else {
+            $("#SelectProjectId").prop('disabled', false);
+         }
+      }
+
+      $(document).ready(function () {
+         SetProjectListAccess();
+
          $("#StartDate").datepicker({
             changeMonth: true,
             changeYear: true
@@ -88,6 +106,10 @@
          $("#EndDate").datepicker({
             changeMonth: true,
             changeYear: true
+         });
+
+         $("#SelectProjectId").change(function () {
+            SyncHiddenElement(this);
          });
       });
    </script>
