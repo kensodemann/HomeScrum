@@ -289,13 +289,13 @@ namespace HomeScrum.Web.Controllers
          base.PopulateSelectLists( session, viewModel );
       }
 
-      private IEnumerable<SelectListItem> CreateSprintStatusSelectList( ISession session, Guid selectedId )
+      private IEnumerable<SelectListItemWithAttributes> CreateSprintStatusSelectList( ISession session, Guid selectedId )
       {
          var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<SprintStatus>() { SelectedId = selectedId };
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems<SprintStatus>( selectedId );
+            .SelectSelectListItems( selectedId );
       }
 
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )

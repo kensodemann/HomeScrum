@@ -1,4 +1,6 @@
-﻿@model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
+﻿@using HomeScrum.Web.Extensions
+
+@model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
 
 @using (Html.BeginForm())
 {
@@ -39,7 +41,7 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListFor( model => model.StatusId, Model.Statuses )
+         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses )
       </div>
 
       <div class="formSelectList">
@@ -63,13 +65,13 @@
       <div id="BacklogItems">
          <h3>Backlog Items</h3>
          @Html.Partial( "_WorkItemList", Model.BacklogItems )
-         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id } )
+         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id }, new { id = "BacklogLink" } )
       </div>
 
       <div id="Tasks">
          <h3>Tasks</h3>
          @Html.Partial( "_WorkItemList", Model.Tasks )
-         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id } )
+         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id }, new { id = "TaskListLink" } )
       </div>
    </fieldset>
    }
@@ -86,9 +88,75 @@
          $("#" + hiddenElementId).val($(fromElement).val());
       }
 
+      function BacklogIsClosed() {
+         var isClosed = $("#StatusId").find(":selected").attr("data-BacklogIsClosed");
+         return (isClosed == "True");
+      }
+
+      function TaskListIsClosed() {
+         var isClosed = $("#StatusId").find(":selected").attr("data-TaskListIsClosed");
+         return (isClosed == "True");
+      }
+
+      function SprintIsClosed() {
+         var isOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
+         return (isOpen == "False");
+      }
+
+      function SetNameAccess() {
+         if (SprintIsClosed()) {
+            $("#Name").prop('readonly', true);
+            $("#Name").addClass("disabled");
+         }
+         else {
+            $("#Name").prop('readonly', false);
+            $("#Name").removeClass("disabled");
+         }
+      }
+
+      function SetDescriptionAccess() {
+         if (SprintIsClosed()) {
+            $("#Description").prop('readonly', true);
+            $("#Description").addClass("disabled");
+         }
+         else {
+            $("#Description").prop('readonly', false);
+            $("#Description").removeClass("disabled");
+         }
+      }
+
+      function SetGoalAccess() {
+         if (SprintIsClosed()) {
+            $("#Goal").prop('readonly', true);
+            $("#Goal").addClass("disabled");
+         }
+         else {
+            $("#Goal").prop('readonly', false);
+            $("#Goal").removeClass("disabled");
+         }
+      }
+
+      function SetBacklogLinkAccess() {
+         if (BacklogIsClosed() || SprintIsClosed()) {
+            $("#BacklogLink").hide();
+         }
+         else {
+            $("#BacklogLink").show();
+         }
+      }
+
+      function SetTaskListLinkAccess() {
+         if (TaskListIsClosed() || SprintIsClosed()) {
+            $("#TaskListLink").hide();
+         }
+         else {
+            $("#TaskListLink").show();
+         }
+      }
+
       function SetProjectListAccess() {
          var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
-         if (numberOfWorkItems > 0) {
+         if (numberOfWorkItems > 0 || SprintIsClosed()) {
             $("#SelectProjectId").prop('disabled', true);
          }
          else {
@@ -96,8 +164,17 @@
          }
       }
 
-      $(document).ready(function () {
+      function SetScreenElementAccess() {
+         SetNameAccess();
+         SetDescriptionAccess();
+         SetGoalAccess();
+         SetBacklogLinkAccess();
+         SetTaskListLinkAccess();
          SetProjectListAccess();
+      }
+
+      $(document).ready(function () {
+         SetScreenElementAccess();
 
          $("#StartDate").datepicker({
             changeMonth: true,
@@ -110,6 +187,10 @@
 
          $("#SelectProjectId").change(function () {
             SyncHiddenElement(this);
+         });
+
+         $("#StatusId").change(function () {
+            SetScreenElementAccess();
          });
       });
    </script>
