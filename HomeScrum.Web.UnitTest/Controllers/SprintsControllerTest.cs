@@ -180,6 +180,110 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region Current Sprints
+      [TestMethod]
+      public void CurrentSprints_ReturnsViewWithCurrentItems()
+      {
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus && (x.EndDate == null || x.EndDate >= DateTime.Now) && x.StartDate != null && x.StartDate <= DateTime.Now );
+
+         var view = _controller.CurrentSprints() as ViewResult;
+         var model = view.Model as IEnumerable<SprintIndexViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.AreEqual( expectedSprints.Count(), model.Count() );
+
+         foreach (var sprint in expectedSprints)
+         {
+            Assert.IsNotNull( model.FirstOrDefault( x => x.Id == sprint.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void CurrentSprints_SortsByProjectStartDateStatus()
+      {
+         var view = _controller.CurrentSprints() as ViewResult;
+
+         var sprints = view.Model as IEnumerable<SprintIndexViewModel>;
+
+         string previousProject = null;
+         DateTime? previousStartDate = null;
+         int previousStatusSortSeq = 0;
+         foreach (var sprint in sprints)
+         {
+            var model = Sprints.ModelData.First( x => x.Id == sprint.Id );
+            if (previousProject != null)
+            {
+               Assert.IsTrue( String.Compare( previousProject, sprint.ProjectName ) <= 0, "Order by project" );
+               if (previousProject == sprint.ProjectName)
+               {
+                  Assert.IsTrue( previousStartDate <= (sprint.StartDate ?? DateTime.MaxValue), "Order by date within project" );
+                  if (sprint.StartDate == previousStartDate)
+                  {
+                     Assert.IsTrue( previousStatusSortSeq <= model.Status.SortSequence, "Fall back to status sort" );
+                  }
+               }
+            }
+            previousStatusSortSeq = model.Status.SortSequence;
+            previousStartDate = sprint.StartDate ?? DateTime.MaxValue;
+            previousProject = sprint.ProjectName;
+         }
+      }
+      #endregion
+
+
+      #region Open Sprints
+      [TestMethod]
+      public void OpenSprints_ReturnsViewWithOpenItems()
+      {
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus );
+
+         var view = _controller.OpenSprints() as ViewResult;
+         var model = view.Model as IEnumerable<SprintIndexViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.AreEqual( expectedSprints.Count(), model.Count() );
+
+         foreach (var sprint in expectedSprints)
+         {
+            Assert.IsNotNull( model.FirstOrDefault( x => x.Id == sprint.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void OpenSprints_SortsByProjectStartDateStatus()
+      {
+         var view = _controller.OpenSprints() as ViewResult;
+
+         var sprints = view.Model as IEnumerable<SprintIndexViewModel>;
+
+         string previousProject = null;
+         DateTime? previousStartDate = null;
+         int previousStatusSortSeq = 0;
+         foreach (var sprint in sprints)
+         {
+            var model = Sprints.ModelData.First( x => x.Id == sprint.Id );
+            if (previousProject != null)
+            {
+               Assert.IsTrue( String.Compare( previousProject, sprint.ProjectName ) <= 0, "Order by project" );
+               if (previousProject == sprint.ProjectName)
+               {
+                  Assert.IsTrue( previousStartDate <= (sprint.StartDate ?? DateTime.MaxValue), "Order by date within project" );
+                  if (sprint.StartDate == previousStartDate)
+                  {
+                     Assert.IsTrue( previousStatusSortSeq <= model.Status.SortSequence, "Fall back to status sort" );
+                  }
+               }
+            }
+            previousStatusSortSeq = model.Status.SortSequence;
+            previousStartDate = sprint.StartDate ?? DateTime.MaxValue;
+            previousProject = sprint.ProjectName;
+         }
+      }
+      #endregion
+
+
       #region Create GET
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
