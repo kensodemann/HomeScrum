@@ -284,41 +284,70 @@
          SetParentWorkItemAccess();
       }
 
-      $(function () {
-         $("#CreateNewTask").button();
-
-         ShowHideDataItems();
-         SetListItemsAccess();
-
+      function SetupStatusSelectList() {
          $("#StatusId").change(function () {
             SetListItemsAccess();
          });
+      }
 
-         $("#SelectWorkItemTypeId").change(function () {
+      function SetupProjectSelectList() {
+         var selectList = $("#SelectProjectId");
+         SyncHiddenElement(selectList.get(0));
+         selectList.change(function () {
             SyncHiddenElement(this);
-            ShowHideDataItems("fade");
          });
+      }
 
-         $("#SelectParentWorkItemId").change(function () {
+      function SetupParentWorkItemSelectList() {
+         var selectList = $("#SelectParentWorkItemId");
+         SyncHiddenElement(selectList.get(0));
+         selectList.change(function () {
             SyncHiddenElement(this);
             SetSprintToParentWorkItemSprint();
             SetProjectToParentWorkItemProject();
             SetListItemsAccess();
          });
+      }
 
-         $("#SelectSprintId").change(function () {
+      function SetupSprintSelectList() {
+         var selectList = $("#SelectSprintId");
+         SyncHiddenElement(selectList.get(0));
+         selectList.change(function () {
             SyncHiddenElement(this);
             SetProjectToSprintProject();
             SetListItemsAccess();
          });
+      }
 
-         $("#SelectAssignedToUserId").change(function () {
+      function SetupWorkItemTypeSelectList() {
+         var selectList = $("#SelectWorkItemTypeId");
+         SyncHiddenElement(selectList.get(0));
+         selectList.change(function () {
+            SyncHiddenElement(this);
+            ShowHideDataItems("fade");
+         });
+      }
+
+      function SetupAssignedToUserSelectList() {
+         var selectList = $("#SelectAssignedToUserId");
+         SyncHiddenElement(selectList.get(0));
+         selectList.change(function () {
             SyncHiddenElement(this);
          });
+      }
 
-         $("#SelectProjectId").change(function () {
-            SyncHiddenElement(this);
-         });
+      $(document).ready(function () {
+         $("#CreateNewTask").button();
+
+         ShowHideDataItems();
+         SetListItemsAccess();
+
+         SetupStatusSelectList();
+         SetupParentWorkItemSelectList();
+         SetupProjectSelectList();
+         SetupSprintSelectList();
+         SetupWorkItemTypeSelectList();
+         SetupAssignedToUserSelectList();
       });
    </script>
 }
