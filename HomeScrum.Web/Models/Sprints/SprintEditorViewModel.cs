@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using HomeScrum.Web.Extensions;
 
 namespace HomeScrum.Web.Models.Sprints
 {
@@ -12,7 +11,7 @@ namespace HomeScrum.Web.Models.Sprints
       [Display( Name = "SprintStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }
-      public IEnumerable<SelectListItem> Statuses { get; set; }
+      public IEnumerable<SelectListItemWithAttributes> Statuses { get; set; }
 
       // Any select list that can be disabled needs two Id properties.  One to use for the
       // select list, and the actual one which is used in a hidden element.  This is done

@@ -46,6 +46,22 @@ namespace HomeScrum.Web.Extensions
                                    } ).ToList();
       }
 
+      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<SprintStatus> query, Guid selectedId )
+      {
+         return query.Select( item => new SelectListItemWithAttributes()
+         {
+            Value = item.Id.ToString(),
+            Text = item.Name,
+            Selected = item.Id == selectedId,
+            DataAttributes = new Dictionary<string, string>()
+                                                          {
+                                                             { "IsOpenStatus", item.IsOpenStatus ? "True" : "False" },
+                                                             { "TaskListIsClosed", item.TaskListIsClosed ? "True" : "False" },
+                                                             { "BacklogIsClosed", item.BacklogIsClosed? "True" : "False" }
+                                                          }
+         } ).ToList();
+      }
+
       public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItemStatus> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItemWithAttributes()
