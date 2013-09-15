@@ -229,7 +229,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsOpenStatus = true,
+            Category = WorkItemStatusCategory.InProcess,
             IsPredefined = false,
             AllowUse = true
          };
