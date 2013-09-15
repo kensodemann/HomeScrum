@@ -48,6 +48,22 @@ namespace HomeScrum.Web.Extensions
          return MvcHtmlString.Create( selectDoc.ToString() );
       }
 
+      private static String GetDescription( object value )
+      {
+         string description = value.ToString();
+         var fieldInfo = value.GetType().GetField( value.ToString() );
+
+         if (fieldInfo != null)
+         {
+            var attrs = fieldInfo.GetCustomAttributes( typeof( System.ComponentModel.DescriptionAttribute ), true );
+            if (attrs != null && attrs.Length > 0)
+            {
+               description = ((System.ComponentModel.DescriptionAttribute)attrs[0]).Description;
+            }
+         }
+
+         return description;
+      }
 
       // Adapted from code found in a couple of places:
       //     http://stackoverflow.com/questions/388483/how-do-you-create-a-dropdownlist-from-an-enum-in-asp-net-mvc
@@ -57,7 +73,7 @@ namespace HomeScrum.Web.Extensions
          ModelMetadata metadata = ModelMetadata.FromLambdaExpression( expression, htmlHelper.ViewData );
          IEnumerable<TEnum> values = Enum.GetValues( typeof( TEnum ) ).Cast<TEnum>();
 
-         var items = values.Select( x => new { Id = x, Name = x.ToString() } );
+         var items = values.Select( x => new { Id = x, Name = GetDescription( x ) } );
          var selectList = new SelectList( items, "Id", "Name", metadata.Model );
 
          return htmlHelper.DropDownListFor( expression, selectList );

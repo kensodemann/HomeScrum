@@ -9,13 +9,12 @@ namespace HomeScrum.Data.Domain
 {
    public enum WorkItemTypeCategory
    {
-      [Description( "Backlog Item - Product Features and Requirements" )]
+      [Description( "Backlog Item" )]
       BacklogItem,
 
-      [Description( "Task - Work required to accomplish features" )]
       Task,
 
-      [Description( "Issue - A Problem or Bug" )]
+      [Description( "Issue, Problem, or Bug" )]
       Issue
    }
 }
