@@ -180,7 +180,7 @@ namespace HomeScrum.Web.Controllers
       {
          var backlog = session.Query<WorkItem>()
               .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
-                            x.WorkItemType.StatusCd == 'A' && !x.WorkItemType.IsTask) || x.Id == selectedId )
+                            x.WorkItemType.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem) || x.Id == selectedId )
               .OrderBy( x => x.WorkItemType.SortSequence )
               .ThenBy( x => x.Status.SortSequence )
               .ThenBy( x => x.Name.ToUpper() )
@@ -293,7 +293,7 @@ namespace HomeScrum.Web.Controllers
 
       private void ClearNonAllowedItemsInModel( WorkItem model )
       {
-         if (!model.WorkItemType.IsTask)
+         if (model.WorkItemType.Category == WorkItemTypeCategory.BacklogItem)
          {
             model.AssignedToUser = null;
             model.ParentWorkItem = null;

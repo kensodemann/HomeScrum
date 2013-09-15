@@ -882,18 +882,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
          Assert.IsNotNull( viewModel.BacklogItems );
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && !x.WorkItemType.IsTask ), viewModel.BacklogItems.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem ), viewModel.BacklogItems.Count() );
       }
 
       [TestMethod]
-      public void EditGet_LoadsTasks()
+      public void EditGet_LoadsTasksAndIssues()
       {
          var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
 
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
          Assert.IsNotNull( viewModel.Tasks );
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.IsTask ), viewModel.Tasks.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem ), viewModel.Tasks.Count() );
       }
 
       [TestMethod]
@@ -1075,7 +1075,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
          var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.BacklogIsClosed ).Id;
-         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
          var view = _controller.AddBacklogItems( sprintId ) as ViewResult;
          var model = view.Model as WorkItemsListForSprintViewModel;
@@ -1179,7 +1179,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
          var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.TaskListIsClosed ).Id;
-         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && x.WorkItemType.IsTask && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprintId) );
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
          var view = _controller.AddTasks( sprintId ) as ViewResult;
          var model = view.Model as WorkItemsListForSprintViewModel;
@@ -1296,7 +1296,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          using (var tx = _session.BeginTransaction())
          {
             model.WorkItems = _session.Query<WorkItem>()
-               .Where( x => x.Project.Id == sprint.Project.Id && !x.WorkItemType.IsTask && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
+               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
                .Select( x => new SprintWorkItemViewModel()
                              {
                                 Id = x.Id,
@@ -1325,7 +1325,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          using (var tx = _session.BeginTransaction())
          {
             model.WorkItems = _session.Query<WorkItem>()
-               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.IsTask && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
+               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
                .Select( x => new SprintWorkItemViewModel()
                {
                   Id = x.Id,

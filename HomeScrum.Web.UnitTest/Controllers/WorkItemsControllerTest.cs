@@ -380,7 +380,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, model.ProductBacklogItems.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, model.ProductBacklogItems.Count() );
          for (int i = 0; i < model.ProductBacklogItems.Count(); i++)
          {
             var item = model.ProductBacklogItems.ElementAt( i );
@@ -500,7 +500,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreateGet_SelectsProductBacklogItem_IfParentWorkItemIdSpecified()
       {
          var backlogItems = WorkItems.ModelData
-            .Where( x => x.Status.IsOpenStatus && x.Status.StatusCd == 'A' && !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' )
+            .Where( x => x.Status.IsOpenStatus && x.Status.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' )
             .ToList();
          var backlogItemId = backlogItems.ElementAt( 2 ).Id;
          var result = _controller.Create( parentId: backlogItemId.ToString() ) as ViewResult;
@@ -729,7 +729,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_SetsAssignedToUserIdToDefault_IfAssignmentsNotAllowedForType()
       {
          var viewModel = CreateWorkItemEditorViewModel();
-         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem && x.StatusCd == 'A' ).Id;
 
          _controller.Create( viewModel, _principal.Object );
 
@@ -746,7 +746,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreatePost_DoesNotSetAssignedToUserIdToDefault_IfAssignmentsIsAllowedForType()
       {
          var viewModel = CreateWorkItemEditorViewModel();
-         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category != WorkItemTypeCategory.BacklogItem && x.StatusCd == 'A' ).Id;
 
          _controller.Create( viewModel, _principal.Object );
 
@@ -864,7 +864,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItems.ModelData.Count( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
          for (int i = 0; i < viewModel.ProductBacklogItems.Count(); i++)
          {
             var item = viewModel.ProductBacklogItems.ElementAt( i );
@@ -1223,7 +1223,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null );
          var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem && x.StatusCd == 'A' ).Id;
 
          _controller.Edit( viewModel, _principal.Object );
 
@@ -1237,7 +1237,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null );
          var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.IsTask && x.StatusCd == 'A' ).Id;
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category != WorkItemTypeCategory.BacklogItem && x.StatusCd == 'A' ).Id;
 
          _controller.Edit( viewModel, _principal.Object );
 
@@ -1251,7 +1251,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != default( Guid ) );
          var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => !x.IsTask && x.StatusCd == 'A' ).Id;
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem&& x.StatusCd == 'A' ).Id;
 
          _controller.Edit( viewModel, _principal.Object );
 

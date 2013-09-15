@@ -85,9 +85,9 @@ namespace HomeScrum.Web.Extensions
                                          Selected = item.Id == selectedId,
                                          DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "CanBeAssigned", item.IsTask ? "True" : "False" },
-                                                             { "CanHaveParent", item.IsTask ? "True" : "False" },
-                                                             { "CanHaveChildren", item.IsTask? "False" : "True" }
+                                                             { "CanBeAssigned", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
+                                                             { "CanHaveParent", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
+                                                             { "CanHaveChildren", item.Category == WorkItemTypeCategory.BacklogItem ? "False" : "True" }
                                                           }
                                       } ).ToList();
       }

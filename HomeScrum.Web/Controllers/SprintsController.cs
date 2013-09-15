@@ -145,7 +145,7 @@ namespace HomeScrum.Web.Controllers
          {
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
-               .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
+               .Where( x => x.Status.IsOpenStatus && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
@@ -210,7 +210,7 @@ namespace HomeScrum.Web.Controllers
          {
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
-               .Where( x => x.Status.IsOpenStatus && x.WorkItemType.IsTask && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
+               .Where( x => x.Status.IsOpenStatus && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
@@ -335,7 +335,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SprintWorkItemViewModel> GetBacklogItems( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => !x.WorkItemType.IsTask && x.Sprint.Id == id )
+            .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
             .OrderBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Status.SortSequence )
             .ThenBy( x => x.Name )
@@ -354,7 +354,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SprintWorkItemViewModel> GetTasks( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => x.WorkItemType.IsTask && x.Sprint.Id == id )
+            .Where( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
             .OrderBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Status.SortSequence )
             .ThenBy( x => x.Name )

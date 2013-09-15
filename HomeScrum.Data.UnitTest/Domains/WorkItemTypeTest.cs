@@ -45,7 +45,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             Id = Guid.NewGuid(),
             Name = WorkItemTypes.ModelData[0].Name,
             Description = "This is just for testing",
-            IsTask = true,
+            Category = WorkItemTypeCategory.Task,
             SortSequence = 0,
             StatusCd = 'A',
             IsPredefined = false

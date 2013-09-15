@@ -25,7 +25,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tName: " + workItemType.Name );
          Console.WriteLine( "\tDescription: " + workItemType.Description );
          Console.WriteLine( "\tStatusCd: " + workItemType.StatusCd );
-         Console.WriteLine( "\tIsTask: " + workItemType.IsTask );
+         Console.WriteLine( "\tCategory: " + workItemType.Category.ToString() );
          Console.WriteLine( "\tIsPredefined: " + workItemType.IsPredefined );
       }
 
