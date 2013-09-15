@@ -9,9 +9,7 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class WorkItemStatusViewModel : Base.SystemDomainObjectViewModel
    {
-      //[Display( Name = "WorkItemStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
-      //public virtual bool IsOpenStatus { get; set; }
-
+      [Display( Name = "WorkItemStatusCategory", ResourceType = typeof( DisplayStrings ) )]
       public virtual String Category { get; set; }
    }
 }

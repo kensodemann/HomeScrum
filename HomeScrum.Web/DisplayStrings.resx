@@ -210,11 +210,17 @@
   <data name="WorkItemStatus" xml:space="preserve">
     <value>Status:</value>
   </data>
+  <data name="WorkItemStatusCategory" xml:space="preserve">
+    <value>Category:</value>
+  </data>
   <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
     <value>Work items with this status have not been completed</value>
   </data>
   <data name="WorkItemType" xml:space="preserve">
     <value>Work Item Type:</value>
+  </data>
+  <data name="WorkItemTypeCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="WorkItemTypeIsTask" xml:space="preserve">
     <value>Work Items of this type can be assigned to an individual</value>

@@ -87,7 +87,7 @@ namespace HomeScrum.Web.Extensions
                                                           {
                                                              { "CanBeAssigned", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
                                                              { "CanHaveParent", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
-                                                             { "CanHaveChildren", item.Category == WorkItemTypeCategory.BacklogItem ? "False" : "True" }
+                                                             { "CanHaveChildren", item.Category == WorkItemTypeCategory.BacklogItem ? "True" : "False" }
                                                           }
                                       } ).ToList();
       }
