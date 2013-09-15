@@ -6,7 +6,7 @@ namespace HomeScrum.Data.Domain
 {
    public class AcceptanceCriterionStatus : SystemDomainObject
    {
-      public virtual bool IsAccepted { get; set; }
+      public virtual AcceptanceCriterionStatusCategory Category { get; set; }
 
       #region Non-POCO
       public AcceptanceCriterionStatus()

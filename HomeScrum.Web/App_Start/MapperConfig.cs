@@ -155,14 +155,17 @@ namespace HomeScrum.Web
          Mapper.CreateMap<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            //.ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            //.ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
             .ForMember( dest => dest.CanAddBacklogItems, opt => opt.MapFrom( src => !src.BacklogIsClosed ) )
             .ForMember( dest => dest.CanAddTaskListItems, opt => opt.MapFrom( src => !src.TaskListIsClosed ) )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
@@ -187,7 +190,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<AcceptanceCriterion, AcceptanceCriterionViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.IsAccepted ) );
+            .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.Category == AcceptanceCriterionStatusCategory.VerificationPassed ) );
 
          Mapper.CreateMap<Project, ProjectViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )

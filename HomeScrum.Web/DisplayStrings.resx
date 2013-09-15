@@ -120,8 +120,8 @@
   <data name="AcceptanceCriteriaIsAccepted" xml:space="preserve">
     <value>Criteria has been met:</value>
   </data>
-  <data name="AcceptanceCriteriaStatusIsAccepted" xml:space="preserve">
-    <value>This status indicates the criteria has been met</value>
+  <data name="AcceptanceCriterionStatusCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="AllowUse" xml:space="preserve">
     <value>Active for use in system</value>

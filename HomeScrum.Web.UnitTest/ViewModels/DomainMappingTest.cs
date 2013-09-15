@@ -93,7 +93,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsAccepted = true,
+            Category = AcceptanceCriterionStatusCategory.VerificationPassed,
             IsPredefined = false,
             AllowUse = true
          };

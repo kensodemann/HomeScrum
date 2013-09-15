@@ -70,11 +70,11 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This status indicates the criteria has been met.
+        ///   Looks up a localized string similar to Category:.
         /// </summary>
-        public static string AcceptanceCriteriaStatusIsAccepted {
+        public static string AcceptanceCriterionStatusCategory {
             get {
-                return ResourceManager.GetString("AcceptanceCriteriaStatusIsAccepted", resourceCulture);
+                return ResourceManager.GetString("AcceptanceCriterionStatusCategory", resourceCulture);
             }
         }
         
