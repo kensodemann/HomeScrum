@@ -38,7 +38,7 @@ namespace HomeScrum.Web.Controllers
                   Name = x.Name,
                   WorkItemTypeName = x.WorkItemType.Name,
                   StatusName = x.Status.Name,
-                  IsComplete = !x.Status.IsOpenStatus
+                  IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
                } )
                .ToList();
 
@@ -179,7 +179,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( ISession session, Guid selectedId )
       {
          var backlog = session.Query<WorkItem>()
-              .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete &&
                             x.WorkItemType.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem) || x.Id == selectedId )
               .OrderBy( x => x.WorkItemType.SortSequence )
               .ThenBy( x => x.Status.SortSequence )
@@ -266,7 +266,7 @@ namespace HomeScrum.Web.Controllers
                Description = x.Description,
                StatusName = x.Status.Name,
                WorkItemTypeName = x.WorkItemType.Name,
-               IsComplete = !x.Status.IsOpenStatus
+               IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
             } ).ToList();
       }
 

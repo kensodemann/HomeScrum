@@ -392,7 +392,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( domainModel.Status.Name, ((WorkItemViewModel)viewModel).StatusName );
          Assert.AreEqual( domainModel.WorkItemType.Name, ((WorkItemViewModel)viewModel).WorkItemTypeName );
          Assert.AreEqual( domainModel.Project.Name, ((WorkItemViewModel)viewModel).ProjectName );
-         Assert.AreEqual( !domainModel.Status.IsOpenStatus, ((WorkItemViewModel)viewModel).IsComplete );
+         Assert.AreEqual( domainModel.Status.Category == WorkItemStatusCategory.Complete, ((WorkItemViewModel)viewModel).IsComplete );
       }
 
 

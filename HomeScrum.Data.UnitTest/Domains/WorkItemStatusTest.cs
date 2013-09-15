@@ -45,7 +45,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             Id = Guid.NewGuid(),
             Name = WorkItemStatuses.ModelData[0].Name,
             Description = "This is just for testing",
-            IsOpenStatus = true,
+            Category = WorkItemStatusCategory.InProcess,
             SortSequence = 0,
             StatusCd = 'A',
             IsPredefined = false
@@ -65,7 +65,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             Id = WorkItemStatuses.ModelData[0].Id,
             Name = WorkItemStatuses.ModelData[0].Name,
             Description = WorkItemStatuses.ModelData[0].Description,
-            IsOpenStatus = WorkItemStatuses.ModelData[0].IsOpenStatus,
+            Category = WorkItemStatuses.ModelData[0].Category,
             SortSequence = WorkItemStatuses.ModelData[0].SortSequence,
             StatusCd = WorkItemStatuses.ModelData[0].StatusCd,
             IsPredefined = WorkItemStatuses.ModelData[0].IsPredefined

@@ -71,7 +71,7 @@ namespace HomeScrum.Web.Extensions
             Selected = item.Id == selectedId,
             DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "IsOpenStatus", item.IsOpenStatus ? "True" : "False" }
+                                                             { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" }
                                                           }
          } ).ToList();
       }

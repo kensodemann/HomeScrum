@@ -278,7 +278,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var item = model.Statuses.FirstOrDefault( x => new Guid( x.Value ) == status.Id );
             Assert.AreEqual( status.Name, item.Text );
-            Assert.AreEqual( status.IsOpenStatus ? "True" : "False", item.DataAttributes["IsOpenStatus"] );
+            Assert.AreEqual( (status.Category != WorkItemStatusCategory.Complete) ? "True" : "False", item.DataAttributes["IsOpenStatus"] );
             Assert.IsFalse( item.Selected );
          }
       }
@@ -380,7 +380,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, model.ProductBacklogItems.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' ) + 1, model.ProductBacklogItems.Count() );
          for (int i = 0; i < model.ProductBacklogItems.Count(); i++)
          {
             var item = model.ProductBacklogItems.ElementAt( i );
@@ -500,7 +500,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreateGet_SelectsProductBacklogItem_IfParentWorkItemIdSpecified()
       {
          var backlogItems = WorkItems.ModelData
-            .Where( x => x.Status.IsOpenStatus && x.Status.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' )
+            .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' )
             .ToList();
          var backlogItemId = backlogItems.ElementAt( 2 ).Id;
          var result = _controller.Create( parentId: backlogItemId.ToString() ) as ViewResult;
@@ -864,7 +864,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
          for (int i = 0; i < viewModel.ProductBacklogItems.Count(); i++)
          {
             var item = viewModel.ProductBacklogItems.ElementAt( i );

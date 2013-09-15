@@ -195,13 +195,13 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) )
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == WorkItemStatusCategory.Complete ) )
             .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
             .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
          Mapper.CreateMap<WorkItem, WorkItemIndexViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !(src.Status.IsOpenStatus) ) );
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == WorkItemStatusCategory.Complete ) );
 
          Mapper.CreateMap<User, UserViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
