@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeScrum.Data.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,9 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class WorkItemTypeViewModel : Base.SystemDomainObjectViewModel
    {
-      [Display( Name = "WorkItemTypeIsTask", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsTask { get; set; }
+      //[Display( Name = "WorkItemTypeIsTask", ResourceType = typeof( DisplayStrings ) )]
+      //public virtual bool IsTask { get; set; }
+
+      public virtual WorkItemTypeCategory Category { get; set; }
    }
 }

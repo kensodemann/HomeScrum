@@ -270,7 +270,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsTask = true,
+            Category = WorkItemTypeCategory.Task,
             IsPredefined = false,
             AllowUse = true
          };
