@@ -12,6 +12,6 @@ namespace HomeScrum.Web.Models.Admin
       //[Display( Name = "WorkItemStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
       //public virtual bool IsOpenStatus { get; set; }
 
-      public virtual WorkItemStatusCategory Category { get; set; }
+      public virtual String Category { get; set; }
    }
 }

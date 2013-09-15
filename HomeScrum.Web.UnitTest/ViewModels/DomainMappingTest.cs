@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
-using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.Sprints;
 using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

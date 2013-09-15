@@ -12,6 +12,6 @@ namespace HomeScrum.Web.Models.Admin
       //[Display( Name = "WorkItemTypeIsTask", ResourceType = typeof( DisplayStrings ) )]
       //public virtual bool IsTask { get; set; }
 
-      public virtual WorkItemTypeCategory Category { get; set; }
+      public virtual String Category { get; set; }
    }
 }
