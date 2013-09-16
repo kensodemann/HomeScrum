@@ -203,7 +203,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItemWithAttributes> CreateSprintSelectList( ISession session, Guid selectedId )
       {
          var sprints = session.Query<Sprint>()
-            .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+            .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete &&
                          (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed)) || x.Id == selectedId )
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => (x.StartDate ?? DateTime.MaxValue) )

@@ -55,7 +55,7 @@ namespace HomeScrum.Web.Extensions
             Selected = item.Id == selectedId,
             DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "IsOpenStatus", item.IsOpenStatus ? "True" : "False" },
+                                                             { "IsOpenStatus", (item.Category != SprintStatusCategory.Complete) ? "True" : "False" },
                                                              { "TaskListIsClosed", item.TaskListIsClosed ? "True" : "False" },
                                                              { "BacklogIsClosed", item.BacklogIsClosed? "True" : "False" }
                                                           }

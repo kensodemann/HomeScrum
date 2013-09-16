@@ -319,7 +319,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesSprintList_NotAssignedItemSelected()
       {
-         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus && (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed) );
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete && (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed) );
 
          var result = _controller.Create() as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;

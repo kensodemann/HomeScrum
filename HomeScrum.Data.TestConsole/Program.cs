@@ -47,7 +47,7 @@ namespace HomeScrum.Data.TestConsole
          Console.WriteLine( "\tName: " + status.Name );
          Console.WriteLine( "\tDescription: " + status.Description );
          Console.WriteLine( "\tStatusCd: " + status.StatusCd );
-         Console.WriteLine( "\tIsOpenStatus: " + status.IsOpenStatus );
+         Console.WriteLine( "\tCategory: " + status.Category );
          Console.WriteLine( "\tIsPredefined: " + status.IsPredefined );
       }
 

@@ -184,7 +184,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CurrentSprints_ReturnsViewWithCurrentItems()
       {
-         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus && (x.EndDate == null || x.EndDate >= DateTime.Now) && x.StartDate != null && x.StartDate <= DateTime.Now );
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active && (x.EndDate == null || x.EndDate >= DateTime.Now) && x.StartDate != null && x.StartDate <= DateTime.Now );
 
          var view = _controller.CurrentSprints() as ViewResult;
          var model = view.Model as IEnumerable<SprintIndexViewModel>;
@@ -234,9 +234,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       #region Open Sprints
       [TestMethod]
-      public void OpenSprints_ReturnsViewWithOpenItems()
+      public void OpenSprints_ReturnsViewWithNonCompletedSprints()
       {
-         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus );
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete );
 
          var view = _controller.OpenSprints() as ViewResult;
          var model = view.Model as IEnumerable<SprintIndexViewModel>;

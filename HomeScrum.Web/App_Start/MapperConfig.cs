@@ -183,7 +183,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<Sprint, SprintViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => !src.Status.IsOpenStatus ) )
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == SprintStatusCategory.Complete ) )
             .ForMember( dest => dest.CanAddBacklog, opt => opt.MapFrom( src => !src.Status.BacklogIsClosed ) )
             .ForMember( dest => dest.CanAddTasks, opt => opt.MapFrom( src => !src.Status.TaskListIsClosed ) );
 
