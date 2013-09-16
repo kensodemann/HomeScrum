@@ -1,64 +1,64 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Base.SystemDomainObjectViewModel>
 
 <table>
-    <thead class="ListHead">
-        <tr>
-            <th class="SortIcon"></th>
-            <th class="FirstDataColumn">
-                @Html.DisplayNameFor( model => model.Name )
-            </th>
-            <th class="DescriptiveText">
-                @Html.DisplayNameFor( model => model.Description )
-            </th>
-            <th class="FirstDataColumn">Actions</th>
-        </tr>
-    </thead>
+   <thead class="ListHead">
+      <tr>
+         <th class="SortIcon"></th>
+         <th class="FirstDataColumn">
+            @Html.DisplayNameFor( model => model.Name )
+         </th>
+         <th class="DescriptiveText">
+            @Html.DisplayNameFor( model => model.Description )
+         </th>
+         <th class="LastDataColumn">Actions:</th>
+      </tr>
+   </thead>
 
-    <tbody class="ListBody">
-        @foreach (var item in Model)
-        {
-            var rowClass = item.AllowUse ? "ActiveItemRow" : "InactiveItemRow";
+   <tbody class="ListBody">
+      @foreach (var item in Model)
+      {
+         var rowClass = item.AllowUse ? "ActiveItemRow" : "InactiveItemRow";
                  
-            <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
-                <td class="SortIcon"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
-                <td class="FirstDataColumn">
+         <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+            <td class="SortIcon"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
+            <td class="FirstDataColumn">
                     @Html.DisplayFor( modelItem => item.Name )
                 </td>
                 <td class="DescriptiveText">
                     @Html.DisplayFor( modelItem => item.Description )
                 </td>
-                <td class="LastDataColumn">
-                    @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
+            <td class="LastDataColumn">
+               @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
             @Html.ActionLink( "Details", "Details", new { id = item.Id } )
-                </td>
-            </tr>
-        }
-    </tbody>
+            </td>
+         </tr>
+      }
+   </tbody>
 </table>
 
 <div id="ActionButtonArea">
-    @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-    <input type="checkbox" id="SortableToggle" /><label for="SortableToggle">Allow Sorting</label>
-    <input type="checkbox" id="ShowInactiveToggle" /><label for="ShowInactiveToggle">Show Inactive</label>
+   @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
+   <input type="checkbox" id="SortableToggle" /><label for="SortableToggle">Allow Sorting</label>
+   <input type="checkbox" id="ShowInactiveToggle" /><label for="ShowInactiveToggle">Show Inactive</label>
 </div>
 
 <script>
-    function postSortData(controllerName) {
-        $.ajax({
-            url: controllerName + '/UpdateSortOrders/',
-            data: { itemIds: $(".ListBody").sortable('toArray') },
-            type: 'post',
-            traditional: true
-        });
-    }
+   function postSortData(controllerName) {
+      $.ajax({
+         url: controllerName + '/UpdateSortOrders/',
+         data: { itemIds: $(".ListBody").sortable('toArray') },
+         type: 'post',
+         traditional: true
+      });
+   }
 
-    $(function () {
-        // jQuery UI stand alone widget init
-        $("#CreateNewItem").button();
+   $(function () {
+      // jQuery UI stand alone widget init
+      $("#CreateNewItem").button();
 
-        setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowInactiveToggle"), "Inactive");
+      setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowInactiveToggle"), "Inactive");
 
-        // Sortability stuff
+       // Sortability stuff
         $(".ListBody").sortable();
         $(".ListBody").sortable("disable");
         $(".SortIcon").hide();
@@ -68,19 +68,19 @@
 
         sortableToggleButton.click(
             function () {
-                if ($(this).is(":checked")) {
-                    $(this).button("option", "label", "Save Changes");
-                    $(".ListBody").sortable("enable");
-                    $(".ListBody").disableSelection();
-                    $(".SortIcon").show("fade");
-                }
-                else {
-                    $(this).button("option", "label", "Allow Sorting");
-                    $(".ListBody").sortable("disable");
-                    $(".ListBody").enableSelection();
-                    postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
-                        $(".SortIcon").hide("fade");
-                    }
-                });
-        });
+               if ($(this).is(":checked")) {
+                  $(this).button("option", "label", "Save Changes");
+                  $(".ListBody").sortable("enable");
+                  $(".ListBody").disableSelection();
+                  $(".SortIcon").show("fade");
+               }
+               else {
+                  $(this).button("option", "label", "Allow Sorting");
+                  $(".ListBody").sortable("disable");
+                  $(".ListBody").enableSelection();
+                  postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
+                    $(".SortIcon").hide("fade");
+                 }
+            });
+    });
 </script>
