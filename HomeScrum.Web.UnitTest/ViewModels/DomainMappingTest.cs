@@ -182,7 +182,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsOpenStatus = true,
+            Category = SprintStatusCategory.Active,
             IsPredefined = false,
             AllowUse = true,
             CanAddBacklogItems = false,

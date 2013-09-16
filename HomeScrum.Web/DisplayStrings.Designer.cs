@@ -286,11 +286,11 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sprints with this status are actively being worked on.
+        ///   Looks up a localized string similar to Category:.
         /// </summary>
-        public static string SprintStatusIsOpenStatus {
+        public static string SprintStatusCategory {
             get {
-                return ResourceManager.GetString("SprintStatusIsOpenStatus", resourceCulture);
+                return ResourceManager.GetString("SprintStatusCategory", resourceCulture);
             }
         }
         

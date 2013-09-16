@@ -165,7 +165,7 @@ namespace HomeScrum.Web
          Mapper.CreateMap<SprintStatus, SprintStatusViewModel>()
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
-            //.ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
             .ForMember( dest => dest.CanAddBacklogItems, opt => opt.MapFrom( src => !src.BacklogIsClosed ) )
             .ForMember( dest => dest.CanAddTaskListItems, opt => opt.MapFrom( src => !src.TaskListIsClosed ) )
             .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
