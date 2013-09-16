@@ -241,11 +241,11 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projects of this status are active.
+        ///   Looks up a localized string similar to Category:.
         /// </summary>
-        public static string ProjectStatusIsActive {
+        public static string ProjectStatusCategory {
             get {
-                return ResourceManager.GetString("ProjectStatusIsActive", resourceCulture);
+                return ResourceManager.GetString("ProjectStatusCategory", resourceCulture);
             }
         }
         
@@ -349,15 +349,6 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Work items with this status have not been completed.
-        /// </summary>
-        public static string WorkItemStatusIsOpenStatus {
-            get {
-                return ResourceManager.GetString("WorkItemStatusIsOpenStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Work Item Type:.
         /// </summary>
         public static string WorkItemType {
@@ -372,15 +363,6 @@ namespace HomeScrum.Web {
         public static string WorkItemTypeCategory {
             get {
                 return ResourceManager.GetString("WorkItemTypeCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Work Items of this type can be assigned to an individual.
-        /// </summary>
-        public static string WorkItemTypeIsTask {
-            get {
-                return ResourceManager.GetString("WorkItemTypeIsTask", resourceCulture);
             }
         }
     }

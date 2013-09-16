@@ -137,7 +137,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsActive = true,
+            Category = ProjectStatusCategory.Active,
             IsPredefined = false,
             AllowUse = true
          };

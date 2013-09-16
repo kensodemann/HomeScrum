@@ -177,8 +177,8 @@
   <data name="ProjectStatus" xml:space="preserve">
     <value>Project Status:</value>
   </data>
-  <data name="ProjectStatusIsActive" xml:space="preserve">
-    <value>Projects of this status are active</value>
+  <data name="ProjectStatusCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="Sprint" xml:space="preserve">
     <value>Sprint:</value>
@@ -213,16 +213,10 @@
   <data name="WorkItemStatusCategory" xml:space="preserve">
     <value>Category:</value>
   </data>
-  <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
-    <value>Work items with this status have not been completed</value>
-  </data>
   <data name="WorkItemType" xml:space="preserve">
     <value>Work Item Type:</value>
   </data>
   <data name="WorkItemTypeCategory" xml:space="preserve">
     <value>Category:</value>
-  </data>
-  <data name="WorkItemTypeIsTask" xml:space="preserve">
-    <value>Work Items of this type can be assigned to an individual</value>
   </data>
 </root>

@@ -3,26 +3,26 @@
 @Html.Partial( "_DomainObjectBaseDetails", Model )
 
 <fieldset>
-    <legend>ProjectStatus</legend>
+   <legend>ProjectStatus</legend>
 
-    <div class="displayCheckBox" id="AllowUse">
-        @Html.DisplayFor( model => model.AllowUse )
-    </div>
-    <div class="displayCheckBoxLabel" id="AllowUseLabel">
-        @Html.DisplayNameFor( model => model.AllowUse )
-    </div>
+   <div class="displayCheckBox" id="AllowUse">
+      @Html.DisplayFor( model => model.AllowUse )
+   </div>
+   <div class="displayCheckBoxLabel" id="AllowUseLabel">
+      @Html.DisplayNameFor( model => model.AllowUse )
+   </div>
 
-    <div class="displayCheckBox" id="IsActive">
-        @Html.DisplayFor( model => model.IsActive )
-    </div>
-    <div class="displayCheckBoxLabel" id="IsActiveLabel">
-        @Html.DisplayNameFor( model => model.IsActive )
-    </div>
+   <div class="displayLabel" id="CategoryLabel">
+      @Html.DisplayNameFor( model => model.Category )
+   </div>
+   <div class="displayField" id="Category">
+      @Html.DisplayFor( model => model.Category )
+   </div>
 
-    <div class="displayCheckBox" id="IsPredefined">
-        @Html.DisplayFor( model => model.IsPredefined )
-    </div>
-    <div class="displayCheckBoxLabel" id="IsPredefinedLabel">
-        @Html.DisplayNameFor( model => model.IsPredefined )
-    </div>
+   <div class="displayCheckBox" id="IsPredefined">
+      @Html.DisplayFor( model => model.IsPredefined )
+   </div>
+   <div class="displayCheckBoxLabel" id="IsPredefinedLabel">
+      @Html.DisplayNameFor( model => model.IsPredefined )
+   </div>
 </fieldset>
