@@ -269,7 +269,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
                Assert.IsTrue( String.Compare( previousProject, sprint.ProjectName ) <= 0, "Order by project" );
                if (previousProject == sprint.ProjectName)
                {
-                  Assert.IsTrue( previousStartDate <= (sprint.StartDate ?? DateTime.MaxValue), "Order by date within project" );
+                  Assert.IsTrue( (previousStartDate ?? DateTime.MinValue) <= (sprint.StartDate ?? DateTime.MaxValue), "Order by date within project" );
                   if (sprint.StartDate == previousStartDate)
                   {
                      Assert.IsTrue( previousStatusSortSeq <= model.Status.SortSequence, "Fall back to status sort" );
@@ -277,7 +277,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
                }
             }
             previousStatusSortSeq = model.Status.SortSequence;
-            previousStartDate = sprint.StartDate ?? DateTime.MaxValue;
+            previousStartDate = sprint.StartDate; // ?? DateTime.MaxValue;
             previousProject = sprint.ProjectName;
          }
       }
