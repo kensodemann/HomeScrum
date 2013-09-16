@@ -306,7 +306,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ), model.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active ), model.Projects.Count() );
 
          foreach (var item in model.Projects)
          {
@@ -646,7 +646,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), returnedModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), returnedModel.Projects.Count() );
          for (int i = 0; i < returnedModel.Projects.Count(); i++)
          {
             var item = returnedModel.Projects.ElementAt( i );
@@ -816,12 +816,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProjects_ProjectSelected()
       {
-         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
 
          for (int i = 0; i < viewModel.Projects.Count(); i++)
          {
@@ -1176,13 +1176,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
       {
-         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
 
          for (int i = 1; i < viewModel.Projects.Count(); i++)
          {
@@ -1251,7 +1251,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != default( Guid ) );
          var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem&& x.StatusCd == 'A' ).Id;
+         viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem && x.StatusCd == 'A' ).Id;
 
          _controller.Edit( viewModel, _principal.Object );
 
@@ -1339,8 +1339,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             AssignedToUserUserName = Users.ModelData.First( x => x.StatusCd == 'A' ).UserName,
             CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id,
             CreatedByUserUserName = Users.ModelData.First( x => x.StatusCd == 'A' ).UserName,
-            ProjectId = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Id,
-            ProjectName = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Name
+            ProjectId = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Id,
+            ProjectName = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Name
          };
       }
 

@@ -301,7 +301,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
       {
          return session.Query<Project>()
-             .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+             .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active) || x.Id == selectedId )
              .OrderBy( x => x.Status.SortSequence )
              .ThenBy( x => x.Name.ToUpper() )
              .SelectSelectListItems<Project>( selectedId );
