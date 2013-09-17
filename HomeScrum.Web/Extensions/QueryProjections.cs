@@ -21,20 +21,6 @@ namespace HomeScrum.Web.Extensions
             .ToList();
       }
 
-      public static IList<SystemDomainObjectViewModel> SelectSystemDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
-         where SourceT : SystemDomainObject
-      {
-         return query.Select( x => new SystemDomainObjectViewModel()
-                                   {
-                                      Id = x.Id,
-                                      Name = x.Name,
-                                      Description = x.Description,
-                                      AllowUse = (x.StatusCd == 'A'),
-                                      IsPredefined = x.IsPredefined
-                                   } )
-            .ToList();
-      }
-
       public static IList<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )
          where SourceT : DomainObjectBase
       {
