@@ -2,13 +2,13 @@
 
 <table>
    <tr>
-      <th>
+      <th class="DataColumn">
          @Html.DisplayNameFor( model => model.WorkItemTypeName )
       </th>
-      <th>
+      <th class="DataColumn">
          @Html.DisplayNameFor( model => model.StatusName )
       </th>
-      <th>
+      <th class="DescriptiveText">
          @Html.DisplayNameFor( model => model.Name )
       </th>
    </tr>
@@ -16,13 +16,13 @@
    @foreach (var item in Model)
    {
       <tr>
-         <td>
+         <td class="DataColumn">
             @Html.DisplayFor( modelItem => item.WorkItemTypeName )
          </td>
-         <td>
+         <td class="DataColumn">
             @Html.DisplayFor( modelItem => item.StatusName )
          </td>
-         <td>
+         <td class="DescriptiveText">
             @Html.DisplayFor( modelItem => item.Name )
          </td>
       </tr>
