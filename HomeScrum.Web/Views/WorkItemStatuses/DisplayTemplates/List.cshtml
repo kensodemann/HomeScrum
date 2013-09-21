@@ -10,6 +10,9 @@
          <th class="DescriptiveText">
             @Html.DisplayNameFor( model => model.Description )
          </th>
+         <th class="DataColumn">
+            @Html.DisplayNameFor( model => model.Category )
+         </th>
          <th class="LastDataColumn">Actions:</th>
       </tr>
    </thead>
@@ -26,6 +29,9 @@
             </td>
             <td class="DescriptiveText">
                @Html.DisplayFor( modelItem => item.Description )
+            </td>
+            <td class="DataColumn">
+               @Html.DisplayFor( modelItem => item.Category )
             </td>
             <td class="LastDataColumn">
                @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
