@@ -44,7 +44,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             Id = Guid.NewGuid(),
             Name = ProjectStatuses.ModelData[0].Name,
             Description = "This is just for testing",
-            IsActive = true,
+            Category = ProjectStatusCategory.Active,
             SortSequence = 0,
             StatusCd = 'A',
             IsPredefined = false

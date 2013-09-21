@@ -7,10 +7,11 @@ using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using Ninject.Extensions.Logging;
+using System.Linq;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
+   public abstract class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : SystemDomainObject
       where ViewModelT : SystemDomainObjectViewModel
       where EditorViewModelT : SystemDomainObjectViewModel, new()
@@ -44,6 +45,8 @@ namespace HomeScrum.Web.Controllers.Base
          return new EmptyResult();
       }
 
+      protected abstract IEnumerable<ViewModelT> SelectViewModels( IQueryable<ModelT> query );
+
       //
       // GET: /ModelT/
       public override ActionResult Index()
@@ -54,8 +57,7 @@ namespace HomeScrum.Web.Controllers.Base
          using (var transaction = session.BeginTransaction())
          {
             var query = new HomeScrum.Data.Queries.AllSystemObjectsOrdered<ModelT>();
-            var items = query.GetQuery( session )
-               .SelectSystemDomainObjectViewModels<ModelT>();
+            var items = SelectViewModels( query.GetQuery( session ) );
 
             transaction.Commit();
             return View( items );

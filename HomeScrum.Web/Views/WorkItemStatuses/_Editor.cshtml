@@ -1,28 +1,30 @@
-﻿@model HomeScrum.Web.Models.Admin.WorkItemStatusEditorViewModel
+﻿@using HomeScrum.Web.Extensions
+
+@model HomeScrum.Web.Models.Admin.WorkItemStatusEditorViewModel
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary( true )
+   @Html.ValidationSummary( true )
 
-    @Html.Partial( "_SystemDomainObjectEditor", Model )
+   @Html.Partial( "_SystemDomainObjectEditor", Model )
 
-    <fieldset>
-        <legend>Properties</legend>
+   <fieldset>
+      <legend>Properties</legend>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.IsOpenStatus )
-            @Html.LabelFor( model => model.IsOpenStatus )
-            @Html.ValidationMessageFor( model => model.IsOpenStatus )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.Category )
+         @Html.EnumDropDownListFor( model => model.Category )
+         @Html.ValidationMessageFor( model => model.Category )
+      </div>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.AllowUse )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
-        </div>
-    </fieldset>
+      <div class="formBooleanOption">
+         @Html.EditorFor( model => model.AllowUse )
+         @Html.LabelFor( model => model.AllowUse )
+         @Html.ValidationMessageFor( model => model.AllowUse )
+      </div>
+   </fieldset>
  
-    <p>
-        <input type="submit" value="@ViewBag.EditorButtonLabel" />
-    </p>
+   <p>
+      <input type="submit" value="@ViewBag.EditorButtonLabel" />
+   </p>
 }

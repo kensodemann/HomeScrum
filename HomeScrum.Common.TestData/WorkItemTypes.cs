@@ -38,7 +38,7 @@ namespace HomeScrum.Common.TestData
                Name="PBI",
                Description="Product Backlog Item",
                StatusCd='A',
-               IsTask=false,
+               Category=WorkItemTypeCategory.BacklogItem,
                IsPredefined=true,
                SortSequence=5
             },
@@ -47,7 +47,7 @@ namespace HomeScrum.Common.TestData
                Name="CR",
                Description="Customer Request",
                StatusCd='A',
-               IsTask=false,
+               Category=WorkItemTypeCategory.BacklogItem,
                IsPredefined=false,
                SortSequence=6
             },
@@ -56,7 +56,7 @@ namespace HomeScrum.Common.TestData
                Name="SBI",
                Description="Sprint Backlog Item",
                StatusCd='A',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Task,
                IsPredefined=true,
                SortSequence=1
             },          
@@ -65,7 +65,7 @@ namespace HomeScrum.Common.TestData
                Name="Bug",
                Description="A problem with the software or design",
                StatusCd='A',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Issue,
                IsPredefined=true,
                SortSequence=2
             },
@@ -74,7 +74,7 @@ namespace HomeScrum.Common.TestData
                Name="Issue",
                Description="A problem in the process that is blocking someone",
                StatusCd='A',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Issue,
                IsPredefined=true,
                SortSequence=3
             },
@@ -83,7 +83,7 @@ namespace HomeScrum.Common.TestData
                Name="Design Goal",
                Description="The output of this task is a design item",
                StatusCd='A',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Task,
                IsPredefined=false,
                SortSequence=4
             },
@@ -92,7 +92,7 @@ namespace HomeScrum.Common.TestData
                Name="CFP",
                Description="Customer Funded PBI",
                StatusCd='I',
-               IsTask=false,
+               Category=WorkItemTypeCategory.BacklogItem,
                IsPredefined=false,
                SortSequence=7
             },
@@ -101,7 +101,7 @@ namespace HomeScrum.Common.TestData
                Name="IFP",
                Description="Internally Funded PBI",
                StatusCd='I',
-               IsTask=false,
+               Category=WorkItemTypeCategory.BacklogItem,
                IsPredefined=false,
                SortSequence=8
             },
@@ -110,7 +110,7 @@ namespace HomeScrum.Common.TestData
                Name="WO",
                Description="Work Order",
                StatusCd='I',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Task,
                IsPredefined=false,
                SortSequence=9
             },
@@ -119,7 +119,7 @@ namespace HomeScrum.Common.TestData
                Name="PL",
                Description="Problem Log",
                StatusCd='I',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Issue,
                IsPredefined=false,
                SortSequence=10
             },
@@ -128,7 +128,7 @@ namespace HomeScrum.Common.TestData
                Name="Step",
                Description="A specific step required to complete and CFP or IFP",
                StatusCd='I',
-               IsTask=true,
+               Category=WorkItemTypeCategory.Task,
                IsPredefined=false,
                SortSequence=11
             }

@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
-using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.Sprints;
 using HomeScrum.Web.Models.WorkItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -95,7 +93,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsAccepted = true,
+            Category = AcceptanceCriterionStatusCategory.VerificationPassed,
             IsPredefined = false,
             AllowUse = true
          };
@@ -139,7 +137,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsActive = true,
+            Category = ProjectStatusCategory.Active,
             IsPredefined = false,
             AllowUse = true
          };
@@ -184,7 +182,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsOpenStatus = true,
+            Category = SprintStatusCategory.Active,
             IsPredefined = false,
             AllowUse = true,
             CanAddBacklogItems = false,
@@ -229,7 +227,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsOpenStatus = true,
+            Category = WorkItemStatusCategory.InProcess,
             IsPredefined = false,
             AllowUse = true
          };
@@ -270,7 +268,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             Id = Guid.NewGuid(),
             Name = "Test Me",
             Description = "This is a test",
-            IsTask = true,
+            Category = WorkItemTypeCategory.Task,
             IsPredefined = false,
             AllowUse = true
          };
@@ -392,7 +390,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( domainModel.Status.Name, ((WorkItemViewModel)viewModel).StatusName );
          Assert.AreEqual( domainModel.WorkItemType.Name, ((WorkItemViewModel)viewModel).WorkItemTypeName );
          Assert.AreEqual( domainModel.Project.Name, ((WorkItemViewModel)viewModel).ProjectName );
-         Assert.AreEqual( !domainModel.Status.IsOpenStatus, ((WorkItemViewModel)viewModel).IsComplete );
+         Assert.AreEqual( domainModel.Status.Category == WorkItemStatusCategory.Complete, ((WorkItemViewModel)viewModel).IsComplete );
       }
 
 

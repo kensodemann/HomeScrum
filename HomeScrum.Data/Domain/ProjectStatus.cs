@@ -6,7 +6,7 @@ namespace HomeScrum.Data.Domain
 {
    public class ProjectStatus : SystemDomainObject
    {
-      public virtual bool IsActive { get; set; }
+      public virtual ProjectStatusCategory Category { get; set; }
 
 
       #region Non-POCO

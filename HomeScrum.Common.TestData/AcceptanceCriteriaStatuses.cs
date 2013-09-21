@@ -33,7 +33,7 @@ namespace HomeScrum.Common.TestData
                Name="Unverified",
                Description="Not yet verified",
                StatusCd='A',
-               IsAccepted=false,
+               Category=AcceptanceCriterionStatusCategory.NeedsVerification,
                IsPredefined=true,
                SortSequence=1
             }, 
@@ -42,7 +42,7 @@ namespace HomeScrum.Common.TestData
                Name="Accepted",
                Description="This criteria has been met.",
                StatusCd='A',
-               IsAccepted=true,
+               Category=AcceptanceCriterionStatusCategory.VerificationPassed,
                IsPredefined=true,
                SortSequence=2
             },
@@ -51,7 +51,7 @@ namespace HomeScrum.Common.TestData
                Name="Rejected",
                Description="This criteria has not been met.",
                StatusCd='A',
-               IsAccepted=false,
+               Category=AcceptanceCriterionStatusCategory.VerificationFailed,
                IsPredefined=true,
                SortSequence=3
             },
@@ -60,7 +60,7 @@ namespace HomeScrum.Common.TestData
                Name="In Test",
                Description="This criteria is currently being tested.",
                StatusCd='A',
-               IsAccepted=false,
+               Category=AcceptanceCriterionStatusCategory.NeedsVerification,
                IsPredefined=false,
                SortSequence=4
             },
@@ -69,7 +69,7 @@ namespace HomeScrum.Common.TestData
                Name="Inconclusive",
                Description="It is not possible to test this criteria",
                StatusCd='I',
-               IsAccepted=false,
+               Category=AcceptanceCriterionStatusCategory.NeedsVerification,
                IsPredefined=false,
                SortSequence=5
             },
@@ -78,7 +78,7 @@ namespace HomeScrum.Common.TestData
                Name="Open",
                Description="Criteria is open",
                StatusCd='I',
-               IsAccepted=false,
+               Category=AcceptanceCriterionStatusCategory.NeedsVerification,
                IsPredefined=false,
                SortSequence=6
             },
@@ -87,7 +87,7 @@ namespace HomeScrum.Common.TestData
                Name="Closed",
                Description="Criteria is closed",
                StatusCd='I',
-               IsAccepted=true,
+               Category=AcceptanceCriterionStatusCategory.Cancelled,
                IsPredefined=false,
                SortSequence=7
             },
@@ -96,7 +96,7 @@ namespace HomeScrum.Common.TestData
                Name="Inactive",
                Description="Criteria is inactive",
                StatusCd='I',
-               IsAccepted=false,
+               Category=AcceptanceCriterionStatusCategory.Cancelled,
                IsPredefined=false,
                SortSequence=8
             }

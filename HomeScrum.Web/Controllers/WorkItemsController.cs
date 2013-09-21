@@ -38,7 +38,7 @@ namespace HomeScrum.Web.Controllers
                   Name = x.Name,
                   WorkItemTypeName = x.WorkItemType.Name,
                   StatusName = x.Status.Name,
-                  IsComplete = !x.Status.IsOpenStatus
+                  IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
                } )
                .ToList();
 
@@ -152,7 +152,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
       {
          return session.Query<Project>()
-             .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+             .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active) || x.Id == selectedId )
              .OrderBy( x => x.Status.SortSequence )
              .ThenBy( x => x.Name.ToUpper() )
              .SelectSelectListItems<Project>( selectedId );
@@ -179,8 +179,8 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( ISession session, Guid selectedId )
       {
          var backlog = session.Query<WorkItem>()
-              .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
-                            x.WorkItemType.StatusCd == 'A' && !x.WorkItemType.IsTask) || x.Id == selectedId )
+              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete &&
+                            x.WorkItemType.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem) || x.Id == selectedId )
               .OrderBy( x => x.WorkItemType.SortSequence )
               .ThenBy( x => x.Status.SortSequence )
               .ThenBy( x => x.Name.ToUpper() )
@@ -203,7 +203,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItemWithAttributes> CreateSprintSelectList( ISession session, Guid selectedId )
       {
          var sprints = session.Query<Sprint>()
-            .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+            .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete &&
                          (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed)) || x.Id == selectedId )
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => (x.StartDate ?? DateTime.MaxValue) )
@@ -266,7 +266,7 @@ namespace HomeScrum.Web.Controllers
                Description = x.Description,
                StatusName = x.Status.Name,
                WorkItemTypeName = x.WorkItemType.Name,
-               IsComplete = !x.Status.IsOpenStatus
+               IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
             } ).ToList();
       }
 
@@ -293,7 +293,7 @@ namespace HomeScrum.Web.Controllers
 
       private void ClearNonAllowedItemsInModel( WorkItem model )
       {
-         if (!model.WorkItemType.IsTask)
+         if (model.WorkItemType.Category == WorkItemTypeCategory.BacklogItem)
          {
             model.AssignedToUser = null;
             model.ParentWorkItem = null;

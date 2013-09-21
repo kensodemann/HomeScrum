@@ -120,8 +120,8 @@
   <data name="AcceptanceCriteriaIsAccepted" xml:space="preserve">
     <value>Criteria has been met:</value>
   </data>
-  <data name="AcceptanceCriteriaStatusIsAccepted" xml:space="preserve">
-    <value>This status indicates the criteria has been met</value>
+  <data name="AcceptanceCriterionStatusCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="AllowUse" xml:space="preserve">
     <value>Active for use in system</value>
@@ -177,8 +177,8 @@
   <data name="ProjectStatus" xml:space="preserve">
     <value>Project Status:</value>
   </data>
-  <data name="ProjectStatusIsActive" xml:space="preserve">
-    <value>Projects of this status are active</value>
+  <data name="ProjectStatusCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="Sprint" xml:space="preserve">
     <value>Sprint:</value>
@@ -192,8 +192,8 @@
   <data name="SprintStatusAllowNewTaskListItems" xml:space="preserve">
     <value>Tasks can be added to sprints of this status</value>
   </data>
-  <data name="SprintStatusIsOpenStatus" xml:space="preserve">
-    <value>Sprints with this status are actively being worked on</value>
+  <data name="SprintStatusCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Start Date:</value>
@@ -210,13 +210,13 @@
   <data name="WorkItemStatus" xml:space="preserve">
     <value>Status:</value>
   </data>
-  <data name="WorkItemStatusIsOpenStatus" xml:space="preserve">
-    <value>Work items with this status have not been completed</value>
+  <data name="WorkItemStatusCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
   <data name="WorkItemType" xml:space="preserve">
     <value>Work Item Type:</value>
   </data>
-  <data name="WorkItemTypeIsTask" xml:space="preserve">
-    <value>Work Items of this type can be assigned to an individual</value>
+  <data name="WorkItemTypeCategory" xml:space="preserve">
+    <value>Category:</value>
   </data>
 </root>

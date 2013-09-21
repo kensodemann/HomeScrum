@@ -50,7 +50,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             Id = Guid.NewGuid(),
             Name = SprintStatuses.ModelData[0].Name,
             Description = "This is just for testing",
-            IsOpenStatus = true,
+            Category = SprintStatusCategory.Active,
             SortSequence = 0,
             StatusCd = 'A',
             IsPredefined = false

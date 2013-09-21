@@ -1,28 +1,30 @@
-﻿@model HomeScrum.Web.Models.Admin.ProjectStatusEditorViewModel
+﻿@using HomeScrum.Web.Extensions
+
+@model HomeScrum.Web.Models.Admin.ProjectStatusEditorViewModel
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary( true )
+   @Html.ValidationSummary( true )
 
-    @Html.Partial( "_SystemDomainObjectEditor", Model )
+   @Html.Partial( "_SystemDomainObjectEditor", Model )
 
-    <fieldset>
-        <legend>Properties</legend>
+   <fieldset>
+      <legend>Properties</legend>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.IsActive )
-            @Html.LabelFor( model => model.IsActive )
-            @Html.ValidationMessageFor( model => model.IsActive )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.Category )
+         @Html.EnumDropDownListFor( model => model.Category )
+         @Html.ValidationMessageFor( model => model.Category )
+      </div>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.AllowUse )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
-        </div>
-
-        <p>
-            <input type="submit" value="@ViewBag.EditorButtonLabel" />
-        </p>
-    </fieldset>
+      <div class="formBooleanOption">
+         @Html.EditorFor( model => model.AllowUse )
+         @Html.LabelFor( model => model.AllowUse )
+         @Html.ValidationMessageFor( model => model.AllowUse )
+      </div>
+   </fieldset>
+   
+   <p>
+      <input type="submit" value="@ViewBag.EditorButtonLabel" />
+   </p>
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeScrum.Data.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class AcceptanceCriterionStatusEditorViewModel : Base.SystemDomainObjectViewModel
    {
-      [Display( Name = "AcceptanceCriteriaStatusIsAccepted", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsAccepted { get; set; }
+      [Display( Name = "AcceptanceCriterionStatusCategory", ResourceType = typeof( DisplayStrings ) )]
+      public virtual AcceptanceCriterionStatusCategory Category { get; set; }
    }
 }

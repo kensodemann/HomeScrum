@@ -33,7 +33,7 @@ namespace HomeScrum.Common.TestData
                Name="Open",
                Description="Active Project",
                StatusCd='A',
-               IsActive=true,
+               Category=ProjectStatusCategory.Active,
                IsPredefined=true,
                SortSequence=1
             },
@@ -42,7 +42,7 @@ namespace HomeScrum.Common.TestData
                Name="Inactive",
                Description="No longer active",
                StatusCd='A',
-               IsActive=false,
+               Category=ProjectStatusCategory.Inactive,
                IsPredefined=false,
                SortSequence=2
             },
@@ -51,7 +51,7 @@ namespace HomeScrum.Common.TestData
                Name="Closed",
                Description="The project is closed",
                StatusCd='A',
-               IsActive=false,
+               Category=ProjectStatusCategory.Complete,
                IsPredefined=true,
                SortSequence=3
             },
@@ -60,7 +60,7 @@ namespace HomeScrum.Common.TestData
                Name="Waiting",
                Description="Awaiting Customer Approval",
                StatusCd='I',
-               IsActive=false,
+               Category=ProjectStatusCategory.Inactive,
                IsPredefined=false,
                SortSequence=4
             },
@@ -69,7 +69,7 @@ namespace HomeScrum.Common.TestData
                Name="Deleted",
                Description="The project no longer exists",
                StatusCd='I',
-               IsActive=true,
+               Category=ProjectStatusCategory.Inactive,
                IsPredefined=false,
                SortSequence=5
             },
@@ -78,7 +78,7 @@ namespace HomeScrum.Common.TestData
                Name="Active",
                Description="The project is active",
                StatusCd='I',
-               IsActive=true,
+               Category=ProjectStatusCategory.Active,
                IsPredefined=false,
                SortSequence=6
             },
@@ -87,7 +87,7 @@ namespace HomeScrum.Common.TestData
                Name="On Hold",
                Description="The project is waiting for something",
                StatusCd='I',
-               IsActive=true,
+               Category=ProjectStatusCategory.Active,
                IsPredefined=false,
                SortSequence=7
             }

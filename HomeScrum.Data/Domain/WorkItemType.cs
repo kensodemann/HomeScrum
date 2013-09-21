@@ -6,7 +6,7 @@ namespace HomeScrum.Data.Domain
 {
    public class WorkItemType : SystemDomainObject
    {
-      public virtual bool IsTask { get; set; }
+      public virtual WorkItemTypeCategory Category { get; set; }
 
       #region Non-POCO
       public WorkItemType() : this( null ) { }

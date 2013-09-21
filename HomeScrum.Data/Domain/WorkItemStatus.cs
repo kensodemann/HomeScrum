@@ -8,7 +8,7 @@ namespace HomeScrum.Data.Domain
 {
    public class WorkItemStatus : SystemDomainObject
    {
-      public virtual bool IsOpenStatus { get; set; }
+      public virtual WorkItemStatusCategory Category { get; set; }
 
       #region Non-POCO
       public WorkItemStatus()

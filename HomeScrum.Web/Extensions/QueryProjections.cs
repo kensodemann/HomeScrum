@@ -21,20 +21,6 @@ namespace HomeScrum.Web.Extensions
             .ToList();
       }
 
-      public static IList<SystemDomainObjectViewModel> SelectSystemDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
-         where SourceT : SystemDomainObject
-      {
-         return query.Select( x => new SystemDomainObjectViewModel()
-                                   {
-                                      Id = x.Id,
-                                      Name = x.Name,
-                                      Description = x.Description,
-                                      AllowUse = (x.StatusCd == 'A'),
-                                      IsPredefined = x.IsPredefined
-                                   } )
-            .ToList();
-      }
-
       public static IList<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )
          where SourceT : DomainObjectBase
       {
@@ -55,7 +41,7 @@ namespace HomeScrum.Web.Extensions
             Selected = item.Id == selectedId,
             DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "IsOpenStatus", item.IsOpenStatus ? "True" : "False" },
+                                                             { "IsOpenStatus", (item.Category != SprintStatusCategory.Complete) ? "True" : "False" },
                                                              { "TaskListIsClosed", item.TaskListIsClosed ? "True" : "False" },
                                                              { "BacklogIsClosed", item.BacklogIsClosed? "True" : "False" }
                                                           }
@@ -71,7 +57,7 @@ namespace HomeScrum.Web.Extensions
             Selected = item.Id == selectedId,
             DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "IsOpenStatus", item.IsOpenStatus ? "True" : "False" }
+                                                             { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" }
                                                           }
          } ).ToList();
       }
@@ -85,9 +71,9 @@ namespace HomeScrum.Web.Extensions
                                          Selected = item.Id == selectedId,
                                          DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "CanBeAssigned", item.IsTask ? "True" : "False" },
-                                                             { "CanHaveParent", item.IsTask ? "True" : "False" },
-                                                             { "CanHaveChildren", item.IsTask? "False" : "True" }
+                                                             { "CanBeAssigned", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
+                                                             { "CanHaveParent", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
+                                                             { "CanHaveChildren", item.Category == WorkItemTypeCategory.BacklogItem ? "True" : "False" }
                                                           }
                                       } ).ToList();
       }

@@ -8,7 +8,7 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class ProjectStatusViewModel : Base.SystemDomainObjectViewModel
    {
-      [Display( Name = "ProjectStatusIsActive", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsActive { get; set; }
+      [Display( Name = "ProjectStatusCategory", ResourceType = typeof( DisplayStrings ) )]
+      public virtual string Category { get; set; }
    }
 }
