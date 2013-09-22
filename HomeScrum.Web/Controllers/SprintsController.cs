@@ -133,12 +133,14 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddBacklogItems
-      public virtual ActionResult AddBacklogItems( Guid id )
+      public virtual ActionResult AddBacklogItems( Guid id, string callingAction = null, string callingId = null )
       {
          var model = new WorkItemsListForSprintViewModel()
          {
             Id = id
          };
+
+         UpdateNavigationStack( model, callingAction, callingId );
 
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
@@ -198,12 +200,14 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddTasks
-      public virtual ActionResult AddTasks( Guid id )
+      public virtual ActionResult AddTasks( Guid id, string callingAction = null, string callingId = null )
       {
          var model = new WorkItemsListForSprintViewModel()
          {
             Id = id
          };
+
+         UpdateNavigationStack( model, callingAction, callingId );
 
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())

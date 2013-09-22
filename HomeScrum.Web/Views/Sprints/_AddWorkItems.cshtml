@@ -2,8 +2,10 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm())
+@if (Model.WorkItems != null && Model.WorkItems.Count > 0)
 {
+   using (Html.BeginForm())
+   {
    @Html.HiddenFor( m => m.Id )
 
    <table>
@@ -51,4 +53,11 @@
    <p>
       <input type="submit" value="Save" />
    </p>
+   }
+}
+else
+{
+   <p>No work items are available to be assigned to this sprint.</p>
+   @Html.ActionLink( "Done", Model.CallingAction ?? "Index",
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
 }

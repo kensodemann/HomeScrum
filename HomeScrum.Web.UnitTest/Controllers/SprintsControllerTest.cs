@@ -1093,6 +1093,27 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
          }
       }
+      [TestMethod]
+      public void AddBacklogItemsGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var viewModel = ((ViewResult)_controller.AddBacklogItems( sprintId )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void AddBacklogItemsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var callingId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.AddBacklogItems( sprintId, "Edit", callingId.ToString() )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( callingId, viewModel.CallingId );
+      }
       #endregion
 
 
@@ -1196,6 +1217,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( workItem.WorkItemType.Name, workItemViewModel.WorkItemTypeName );
             Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
          }
+      }
+
+      [TestMethod]
+      public void AddTasksGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var viewModel = ((ViewResult)_controller.AddTasks( sprintId )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void AddTasksGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var callingId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.AddTasks( sprintId, "Edit", callingId.ToString() )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( callingId, viewModel.CallingId );
       }
       #endregion
 
