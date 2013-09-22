@@ -21,8 +21,11 @@
    <h5>Bug Fixes</h5>
    <ul>
       <li>Fixed problems with certain values remaining null even though they appeared to default properly.</li>
-      <li>Editors no longer through exceptions if HTML tags are used in names or descriptions.  Instead, the
+      <li>Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
          HTML tags are displayed as text.
+      </li>
+      <li>If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
+         displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
       </li>
    </ul>
    <h4>Version 1.0 - Released 2013/09/07</h4>
