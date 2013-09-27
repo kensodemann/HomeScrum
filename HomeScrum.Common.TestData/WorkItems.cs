@@ -70,8 +70,8 @@ namespace HomeScrum.Common.TestData
          if (initializeIds)
          {
             InitializeIds();
-            var childWorkItem = ModelData.First( x => x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' );
-            var parentWorkItem = ModelData.First( x => !x.WorkItemType.IsTask && x.WorkItemType.StatusCd == 'A' && x.Status.IsOpenStatus && x.Status.StatusCd == 'A' );
+            var childWorkItem = ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' );
+            var parentWorkItem = ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' );
             childWorkItem.ParentWorkItem = parentWorkItem;
          }
       }
@@ -341,8 +341,8 @@ namespace HomeScrum.Common.TestData
             {
                Name = "Work Item #7",
                Description = "PBI that is not open",
-               WorkItemType = WorkItemTypes.ModelData.First( x => !x.IsTask ),
-               Status = WorkItemStatuses.ModelData.First( x => !x.IsOpenStatus ),
+               WorkItemType = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem ),
+               Status = WorkItemStatuses.ModelData.First( x => x.Category == WorkItemStatusCategory.Complete ),
                CreatedByUser = Users.ModelData[2],
                LastModifiedUserRid = Users.ModelData[1].Id,
                AssignedToUser = Users.ModelData[2],

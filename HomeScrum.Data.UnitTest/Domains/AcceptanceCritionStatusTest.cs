@@ -45,7 +45,7 @@ namespace HomeScrum.Data.UnitTest.Domains
             Id = Guid.NewGuid(),
             Name = AcceptanceCriteriaStatuses.ModelData[0].Name,
             Description = "This is just for testing",
-            IsAccepted = true,
+            Category = AcceptanceCriterionStatusCategory.VerificationPassed,
             IsPredefined = false,
             SortSequence = 0,
             StatusCd = 'A'

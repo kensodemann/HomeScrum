@@ -8,8 +8,8 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class SprintStatusViewModel : Base.SystemDomainObjectViewModel
    {
-      [Display( Name = "SprintStatusIsOpenStatus", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsOpenStatus { get; set; }
+      [Display( Name = "SprintStatusCategory", ResourceType = typeof( DisplayStrings ) )]
+      public virtual string Category { get; set; }
 
       [Display( Name = "SprintStatusAllowNewBacklogItems", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool CanAddBacklogItems { get; set; }

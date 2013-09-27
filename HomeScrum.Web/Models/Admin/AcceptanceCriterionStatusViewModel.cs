@@ -8,7 +8,7 @@ namespace HomeScrum.Web.Models.Admin
 {
    public class AcceptanceCriterionStatusViewModel : Base.SystemDomainObjectViewModel
    {
-      [Display( Name = "AcceptanceCriteriaStatusIsAccepted", ResourceType = typeof( DisplayStrings ) )]
-      public virtual bool IsAccepted { get; set; }
+      [Display( Name = "AcceptanceCriterionStatusCategory", ResourceType = typeof( DisplayStrings ) )]
+      public virtual string Category { get; set; }
    }
 }

@@ -65,14 +65,19 @@
   <ItemGroup>
     <Compile Include="Domain\AcceptanceCriterion.cs" />
     <Compile Include="Domain\AcceptanceCriterionStatus.cs" />
+    <Compile Include="Domain\AcceptanceCriterionStatusCategory.cs" />
     <Compile Include="Domain\DomainObjectBase.cs" />
     <Compile Include="Domain\Project.cs" />
     <Compile Include="Domain\ProjectHistory.cs" />
     <Compile Include="Domain\ProjectStatus.cs" />
+    <Compile Include="Domain\ProjectStatusCategory.cs" />
     <Compile Include="Domain\Sprint.cs" />
     <Compile Include="Domain\SprintStatus.cs" />
+    <Compile Include="Domain\SprintStatusCategory.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\WorkItemStatusCategory.cs" />
+    <Compile Include="Domain\WorkItemTypeCategory.cs" />
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Validation\ValidatableObject.cs" />
     <Compile Include="Domain\WorkItem.cs" />

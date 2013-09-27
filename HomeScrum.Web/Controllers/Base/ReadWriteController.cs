@@ -43,6 +43,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
+      [ValidateInput(false)]
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -93,6 +94,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
+      [ValidateInput(false)]
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="CaseInsensitiveComparer.cs" />
     <Compile Include="ClassHelper.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="Ninject\NinjectByteCodeProvider.cs" />
     <Compile Include="Ninject\ObjectsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

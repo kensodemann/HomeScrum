@@ -1,40 +1,42 @@
-﻿@model HomeScrum.Web.Models.Admin.SprintStatusEditorViewModel
+﻿@using HomeScrum.Web.Extensions
+
+@model HomeScrum.Web.Models.Admin.SprintStatusEditorViewModel
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary( true )
+   @Html.ValidationSummary( true )
 
-    @Html.Partial( "_SystemDomainObjectEditor", Model )
+   @Html.Partial( "_SystemDomainObjectEditor", Model )
 
-    <fieldset>
-        <legend>Properties</legend>
+   <fieldset>
+      <legend>Properties</legend>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.IsOpenStatus )
-            @Html.LabelFor( model => model.IsOpenStatus )
-            @Html.ValidationMessageFor( model => model.IsOpenStatus )
-        </div>
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.Category )
+         @Html.EnumDropDownListFor( model => model.Category )
+         @Html.ValidationMessageFor( model => model.Category )
+      </div>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.CanAddBacklogItems )
-            @Html.LabelFor( model => model.CanAddBacklogItems )
-            @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
-        </div>
+      <div class="formBooleanOption">
+         @Html.EditorFor( model => model.CanAddBacklogItems )
+         @Html.LabelFor( model => model.CanAddBacklogItems )
+         @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
+      </div>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.CanAddTaskListItems )
-            @Html.LabelFor( model => model.CanAddTaskListItems )
-            @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
-        </div>
+      <div class="formBooleanOption">
+         @Html.EditorFor( model => model.CanAddTaskListItems )
+         @Html.LabelFor( model => model.CanAddTaskListItems )
+         @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
+      </div>
 
-        <div class="formBooleanOption">
-            @Html.EditorFor( model => model.AllowUse )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
-        </div>
-    </fieldset>
+      <div class="formBooleanOption">
+         @Html.EditorFor( model => model.AllowUse )
+         @Html.LabelFor( model => model.AllowUse )
+         @Html.ValidationMessageFor( model => model.AllowUse )
+      </div>
+   </fieldset>
     
-    <p>
-        <input type="submit" value="@ViewBag.EditorButtonLabel" />
-    </p>
+   <p>
+      <input type="submit" value="@ViewBag.EditorButtonLabel" />
+   </p>
 }

@@ -34,7 +34,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Name = "New Work Item Type",
             Description = "New Work Item Type",
             IsPredefined = false,
-            IsTask = false,
+            Category = WorkItemTypeCategory.BacklogItem,
             StatusCd = 'A'
          };
       }

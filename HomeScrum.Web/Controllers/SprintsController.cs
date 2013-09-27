@@ -65,7 +65,7 @@ namespace HomeScrum.Web.Controllers
          {
             var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
             items = queryModel.GetQuery( session )
-               .Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus &&
+               .Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active &&
                             x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
                .OrderBy( x => x.Project.Name )
                .ThenBy( x => x.StartDate )
@@ -99,7 +99,7 @@ namespace HomeScrum.Web.Controllers
          {
             var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
             items = queryModel.GetQuery( session )
-               .Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus )
+               .Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete )
                .OrderBy( x => x.Project.Name )
                .ThenBy( x => x.StartDate )
                .ThenBy( x => x.Status.SortSequence )
@@ -133,19 +133,21 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddBacklogItems
-      public virtual ActionResult AddBacklogItems( Guid id )
+      public virtual ActionResult AddBacklogItems( Guid id, string callingAction = null, string callingId = null )
       {
          var model = new WorkItemsListForSprintViewModel()
          {
             Id = id
          };
 
+         UpdateNavigationStack( model, callingAction, callingId );
+
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
          {
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
-               .Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
+               .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
@@ -198,19 +200,21 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddTasks
-      public virtual ActionResult AddTasks( Guid id )
+      public virtual ActionResult AddTasks( Guid id, string callingAction = null, string callingId = null )
       {
          var model = new WorkItemsListForSprintViewModel()
          {
             Id = id
          };
 
+         UpdateNavigationStack( model, callingAction, callingId );
+
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
          {
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
-               .Where( x => x.Status.IsOpenStatus && x.WorkItemType.IsTask && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
+               .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
                .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
                .ThenBy( x => x.WorkItemType.SortSequence )
                .ThenBy( x => x.Status.SortSequence )
@@ -301,7 +305,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
       {
          return session.Query<Project>()
-             .Where( x => (x.Status.StatusCd == 'A' && x.Status.IsActive) || x.Id == selectedId )
+             .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active) || x.Id == selectedId )
              .OrderBy( x => x.Status.SortSequence )
              .ThenBy( x => x.Name.ToUpper() )
              .SelectSelectListItems<Project>( selectedId );
@@ -335,7 +339,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SprintWorkItemViewModel> GetBacklogItems( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => !x.WorkItemType.IsTask && x.Sprint.Id == id )
+            .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
             .OrderBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Status.SortSequence )
             .ThenBy( x => x.Name )
@@ -354,7 +358,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<SprintWorkItemViewModel> GetTasks( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => x.WorkItemType.IsTask && x.Sprint.Id == id )
+            .Where( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
             .OrderBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Status.SortSequence )
             .ThenBy( x => x.Name )

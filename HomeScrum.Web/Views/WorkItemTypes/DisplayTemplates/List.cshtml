@@ -1,0 +1,43 @@
+﻿@model IEnumerable<HomeScrum.Web.Models.Admin.WorkItemTypeViewModel>
+
+<table>
+   <thead class="ListHead">
+      <tr>
+         <th class="SortIcon"></th>
+         <th class="FirstDataColumn">
+            @Html.DisplayNameFor( model => model.Name )
+         </th>
+         <th class="DescriptiveText">
+            @Html.DisplayNameFor( model => model.Description )
+         </th>
+         <th class="DataColumn">
+            @Html.DisplayNameFor( model => model.Category )
+         </th>
+         <th class="LastDataColumn">Actions:</th>
+      </tr>
+   </thead>
+
+   <tbody class="ListBody">
+      @foreach (var item in Model)
+      {
+         var rowClass = item.AllowUse ? "ActiveItemRow" : "InactiveItemRow";
+                 
+         <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+            <td class="SortIcon"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
+            <td class="FirstDataColumn">
+               @Html.DisplayFor( modelItem => item.Name )
+            </td>
+            <td class="DescriptiveText">
+               @Html.DisplayFor( modelItem => item.Description )
+            </td>
+            <td class="DataColumn">
+               @Html.DisplayFor( modelItem => item.Category )
+            </td>
+            <td class="LastDataColumn">
+               @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
+            @Html.ActionLink( "Details", "Details", new { id = item.Id } )
+            </td>
+         </tr>
+      }
+   </tbody>
+</table>

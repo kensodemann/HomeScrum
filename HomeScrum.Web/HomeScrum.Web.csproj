@@ -477,6 +477,11 @@
     <Content Include="Views\Sprints\_SprintList.cshtml" />
     <Content Include="Views\Sprints\CurrentSprints.cshtml" />
     <Content Include="Views\Sprints\OpenSprints.cshtml" />
+    <Content Include="Views\WorkItemTypes\DisplayTemplates\List.cshtml" />
+    <Content Include="Views\WorkItemStatuses\DisplayTemplates\List.cshtml" />
+    <Content Include="Views\SprintStatuses\DisplayTemplates\List.cshtml" />
+    <Content Include="Views\ProjectStatuses\DisplayTemplates\List.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\DisplayTemplates\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

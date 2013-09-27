@@ -184,7 +184,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CurrentSprints_ReturnsViewWithCurrentItems()
       {
-         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus && (x.EndDate == null || x.EndDate >= DateTime.Now) && x.StartDate != null && x.StartDate <= DateTime.Now );
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active && (x.EndDate == null || x.EndDate >= DateTime.Now) && x.StartDate != null && x.StartDate <= DateTime.Now );
 
          var view = _controller.CurrentSprints() as ViewResult;
          var model = view.Model as IEnumerable<SprintIndexViewModel>;
@@ -234,9 +234,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       #region Open Sprints
       [TestMethod]
-      public void OpenSprints_ReturnsViewWithOpenItems()
+      public void OpenSprints_ReturnsViewWithNonCompletedSprints()
       {
-         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.IsOpenStatus );
+         var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete );
 
          var view = _controller.OpenSprints() as ViewResult;
          var model = view.Model as IEnumerable<SprintIndexViewModel>;
@@ -269,7 +269,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
                Assert.IsTrue( String.Compare( previousProject, sprint.ProjectName ) <= 0, "Order by project" );
                if (previousProject == sprint.ProjectName)
                {
-                  Assert.IsTrue( previousStartDate <= (sprint.StartDate ?? DateTime.MaxValue), "Order by date within project" );
+                  Assert.IsTrue( (previousStartDate ?? DateTime.MinValue) <= (sprint.StartDate ?? DateTime.MaxValue), "Order by date within project" );
                   if (sprint.StartDate == previousStartDate)
                   {
                      Assert.IsTrue( previousStatusSortSeq <= model.Status.SortSequence, "Fall back to status sort" );
@@ -277,7 +277,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
                }
             }
             previousStatusSortSeq = model.Status.SortSequence;
-            previousStartDate = sprint.StartDate ?? DateTime.MaxValue;
+            previousStartDate = sprint.StartDate; // ?? DateTime.MaxValue;
             previousProject = sprint.ProjectName;
          }
       }
@@ -318,7 +318,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var model = result.Model as SprintEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.IsActive ), model.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active ), model.Projects.Count() );
 
          foreach (var item in model.Projects)
          {
@@ -518,7 +518,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var returnedModel = result.Model as SprintEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), returnedModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), returnedModel.Projects.Count() );
          for (int i = 0; i < returnedModel.Projects.Count(); i++)
          {
             var item = returnedModel.Projects.ElementAt( i );
@@ -746,12 +746,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProjects_ProjectSelected()
       {
-         var model = Sprints.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+         var model = Sprints.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as SprintEditorViewModel;
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
 
          for (int i = 0; i < viewModel.Projects.Count(); i++)
          {
@@ -882,18 +882,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
          Assert.IsNotNull( viewModel.BacklogItems );
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && !x.WorkItemType.IsTask ), viewModel.BacklogItems.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem ), viewModel.BacklogItems.Count() );
       }
 
       [TestMethod]
-      public void EditGet_LoadsTasks()
+      public void EditGet_LoadsTasksAndIssues()
       {
          var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
 
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
          Assert.IsNotNull( viewModel.Tasks );
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.IsTask ), viewModel.Tasks.Count() );
+         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem ), viewModel.Tasks.Count() );
       }
 
       [TestMethod]
@@ -1048,13 +1048,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
       {
-         var model = Sprints.ModelData.First( x => x.Project != null && x.Project.Status.IsActive && x.Project.Status.StatusCd == 'A' );
+         var model = Sprints.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
          var viewModel = CreateSprintEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, _principal.Object );
 
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.IsActive && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
 
          for (int i = 1; i < viewModel.Projects.Count(); i++)
          {
@@ -1075,7 +1075,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
          var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.BacklogIsClosed ).Id;
-         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && !x.WorkItemType.IsTask && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
          var view = _controller.AddBacklogItems( sprintId ) as ViewResult;
          var model = view.Model as WorkItemsListForSprintViewModel;
@@ -1092,6 +1092,27 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( workItem.WorkItemType.Name, workItemViewModel.WorkItemTypeName );
             Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
          }
+      }
+      [TestMethod]
+      public void AddBacklogItemsGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var viewModel = ((ViewResult)_controller.AddBacklogItems( sprintId )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void AddBacklogItemsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var callingId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.AddBacklogItems( sprintId, "Edit", callingId.ToString() )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( callingId, viewModel.CallingId );
       }
       #endregion
 
@@ -1179,7 +1200,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var projectId = Projects.ModelData.First( x => x.Name == "Home Scrum" ).Id;
          var sprintId = Sprints.ModelData.First( x => x.Project.Id == projectId && !x.Status.TaskListIsClosed ).Id;
-         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.IsOpenStatus && x.WorkItemType.IsTask && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprintId) );
+         var expectedWorkItems = WorkItems.ModelData.Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprintId) );
 
          var view = _controller.AddTasks( sprintId ) as ViewResult;
          var model = view.Model as WorkItemsListForSprintViewModel;
@@ -1196,6 +1217,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( workItem.WorkItemType.Name, workItemViewModel.WorkItemTypeName );
             Assert.AreEqual( workItem.Sprint != null, workItemViewModel.IsInTargetSprint );
          }
+      }
+
+      [TestMethod]
+      public void AddTasksGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var viewModel = ((ViewResult)_controller.AddTasks( sprintId )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void AddTasksGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var sprintId = Sprints.ModelData.First().Id;
+         var callingId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.AddTasks( sprintId, "Edit", callingId.ToString() )).Model as WorkItemsListForSprintViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( callingId, viewModel.CallingId );
       }
       #endregion
 
@@ -1260,8 +1303,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Description = "This is a test",
             StatusId = SprintStatuses.ModelData.First( x => x.StatusCd == 'A' ).Id,
             StatusName = SprintStatuses.ModelData.First( x => x.StatusCd == 'A' ).Name,
-            ProjectId = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Id,
-            ProjectName = Projects.ModelData.First( x => x.Status.IsActive && x.Status.StatusCd == 'A' ).Name,
+            ProjectId = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Id,
+            ProjectName = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Name,
             StartDate = new DateTime( 2013, 4, 1 ),
             EndDate = new DateTime( 2013, 4, 30 ),
             CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id
@@ -1296,7 +1339,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          using (var tx = _session.BeginTransaction())
          {
             model.WorkItems = _session.Query<WorkItem>()
-               .Where( x => x.Project.Id == sprint.Project.Id && !x.WorkItemType.IsTask && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
+               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
                .Select( x => new SprintWorkItemViewModel()
                              {
                                 Id = x.Id,
@@ -1325,7 +1368,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          using (var tx = _session.BeginTransaction())
          {
             model.WorkItems = _session.Query<WorkItem>()
-               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.IsTask && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
+               .Where( x => x.Project.Id == sprint.Project.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == sprint.Id) )
                .Select( x => new SprintWorkItemViewModel()
                {
                   Id = x.Id,
