@@ -2,53 +2,8 @@
     ViewBag.Title = "About Home Scrum";
 }
 
-<hgroup class="title">
-    <h2>@ViewBag.Title.</h2>
-</hgroup>
-
 <article>
-   <h3>Version History</h3>
-   <h4>Version 1.1 - Released TBD</h4>
-   <h5>New Features</h5>
-   <p>Added pre-defined categories for the following entities:</p>
-   <ul>
-      <li>Acceptance Criterion Statuses</li>
-      <li>Project Statuses</li>
-      <li>Sprint Statuses</li>
-      <li>Work Item Statuses</li>
-      <li>Work Item Types</li>
-   </ul>
-   <h5>Bug Fixes</h5>
-   <ul>
-      <li>Fixed problems with certain values remaining null even though they appeared to default properly.</li>
-      <li>Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
-         HTML tags are displayed as text.
-      </li>
-      <li>If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
-         displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
-      </li>
-   </ul>
-   <h4>Version 1.0 - Released 2013/09/07</h4>
-   <p>While still spartan, this release has some useful features:</p>
-   <ul>
-      <li>This version list</li>
-      <li>Sprints - Very basic functionallity at this point, but usable</li>
-      <li>Several UI Bugs and Quirks</li>
-   </ul>
-
-   <h4>Verrsion 0.x - Released Periodically</h4>
-   <p>These prior versions were released at periodic times thoughout the development cycle just so I could use the system to track
-      what I was doing.
-   </p>
-   <ul>
-      <li>No sprint support</li>
-      <li>Grouping of tasks initially not supported</li>
-      <li>Grouping of tasks eventually supported via the non-task items</li>
-   </ul>
-</article>
-
-<article>
-   <h2>Back Story</h2>
+   <h2>@ViewBag.Title</h2>
     <p>
         Home Scrum is a very simple project tracking tool that is loosely built around the Scrum methodology of software development.
         I am not sure this tool will ever completely implement all of the functionallity required to truly do scrum, so if you are
@@ -74,6 +29,54 @@
         at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
     </p>
 </article>
+
+<article>
+   <h2>Version History</h2>
+   <h3>Version 1.1 - Released 2013/09/27</h3>
+   <h4>New Features</h4>
+   <p>Added pre-defined categories for the following entities:</p>
+   <ul>
+      <li>Acceptance Criterion Statuses</li>
+      <li>Project Statuses</li>
+      <li>Sprint Statuses</li>
+      <li>Work Item Statuses</li>
+      <li>Work Item Types</li>
+   </ul>
+   <h4>Bug Fixes</h4>
+   <ul>
+      <li>Fixed problems with certain values remaining null even though they appeared to default properly.</li>
+      <li>Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
+         HTML tags are displayed as text.
+      </li>
+      <li>If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
+         displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
+      </li>
+      <li>
+         HTML tags and other special characters no longer cause an application error.  HTML tags may be used, but
+         not as markup.  That is &lt;strong&gt;strong text&lt;/strong&gt; shows up as &lt;strong&gt;strong text&lt;/strong&gt;
+         and not <strong>strong text</strong> .
+      </li>
+   </ul>
+   <h3>Version 1.0 - Released 2013/09/07</h3>
+   <p>While still spartan, this release has some useful features:</p>
+   <ul>
+      <li>This version list</li>
+      <li>Sprints - Very basic functionallity at this point, but usable</li>
+      <li>Several UI Bugs and Quirks</li>
+   </ul>
+
+   <h3>Verrsion 0.x - Released Periodically</h3>
+   <p>These prior versions were released at periodic times thoughout the development cycle just so I could use the system to track
+      what I was doing.
+   </p>
+   <ul>
+      <li>No sprint support</li>
+      <li>Grouping of tasks initially not supported</li>
+      <li>Grouping of tasks eventually supported via the non-task items</li>
+   </ul>
+</article>
+
+
 
 <article>
     <h2>About Scrum</h2>
