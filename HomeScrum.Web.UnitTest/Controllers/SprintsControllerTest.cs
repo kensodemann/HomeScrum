@@ -342,7 +342,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as SprintEditorViewModel;
+         var viewModel = ((ViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as SprintEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -353,8 +353,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         _controller.Create( "Index" );
-         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as ViewModelBase;
+         _controller.Create( callingAction: "Index" );
+         var viewModel = ((ViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -378,11 +378,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         _controller.Create( "Index" );
-         _controller.Create( "Edit", parentId.ToString() );
-         _controller.Create( "Edit", parentId.ToString() );
-         _controller.Create( "Index" );
-         _controller.Create( "Index" );
+         _controller.Create( callingAction: "Index" );
+         _controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Create( callingAction: "Index" );
+         _controller.Create( callingAction: "Index" );
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -407,8 +407,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         _controller.Create( "Index" );
-         _controller.Create( "Edit", parentId.ToString() );
+         _controller.Create( callingAction: "Index" );
+         _controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
          var viewModel = ((ViewResult)_controller.Create()).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
@@ -659,7 +659,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var modelId = Sprints.ModelData[0].Id;
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Edit( modelId, "Edit", parentId.ToString() )).Model as SprintEditorViewModel;
+         var viewModel = ((ViewResult)_controller.Edit( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as SprintEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -671,8 +671,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Sprints.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         _controller.Edit( id, "Index" );
-         var viewModel = ((ViewResult)_controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+         _controller.Edit( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)_controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -697,11 +697,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Sprints.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         _controller.Edit( id, "Index" );
-         _controller.Edit( id, "Edit", parentId.ToString() );
-         _controller.Edit( id, "Edit", parentId.ToString() );
-         _controller.Edit( id, "Index" );
-         _controller.Edit( id, "Index" );
+         _controller.Edit( id, callingAction: "Index" );
+         _controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Edit( id, callingAction: "Index" );
+         _controller.Edit( id, callingAction: "Index" );
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -727,8 +727,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Sprints.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         _controller.Edit( id, "Index" );
-         _controller.Edit( id, "Edit", parentId.ToString() );
+         _controller.Edit( id, callingAction: "Index" );
+         _controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
          var viewModel = ((ViewResult)_controller.Edit( id )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;

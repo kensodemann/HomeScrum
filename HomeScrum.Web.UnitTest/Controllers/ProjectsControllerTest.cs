@@ -8,7 +8,6 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
-using NHibernate.Context;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
@@ -111,8 +110,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         controller.Create( "Index" );
-         var viewModel = ((ViewResult)controller.Create( "Edit", parentId.ToString() )).Model as ViewModelBase;
+         controller.Create( callingAction: "Index" );
+         var viewModel = ((ViewResult)controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -137,11 +136,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         controller.Create( "Index" );
-         controller.Create( "Edit", parentId.ToString() );
-         controller.Create( "Edit", parentId.ToString() );
-         controller.Create( "Index" );
-         controller.Create( "Index" );
+         controller.Create( callingAction: "Index" );
+         controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Create( callingAction: "Index" );
+         controller.Create( callingAction: "Index" );
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -167,8 +166,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         controller.Create( "Index" );
-         controller.Create( "Edit", parentId.ToString() );
+         controller.Create( callingAction: "Index" );
+         controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
          var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
@@ -370,8 +369,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Projects.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Edit( id, "Index" );
-         var viewModel = ((ViewResult)controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+         controller.Edit( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -397,11 +396,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Projects.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Edit( id, "Index" );
-         controller.Edit( id, "Edit", parentId.ToString() );
-         controller.Edit( id, "Edit", parentId.ToString() );
-         controller.Edit( id, "Index" );
-         controller.Edit( id, "Index" );
+         controller.Edit( id, callingAction: "Index" );
+         controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Edit( id, callingAction: "Index" );
+         controller.Edit( id, callingAction: "Index" );
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -428,8 +427,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Projects.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Edit( id, "Index" );
-         controller.Edit( id, "Edit", parentId.ToString() );
+         controller.Edit( id, callingAction: "Index" );
+         controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
          var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
