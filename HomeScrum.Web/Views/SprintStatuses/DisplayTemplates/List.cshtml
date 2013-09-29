@@ -10,10 +10,9 @@
          <th class="DescriptiveText">
             @Html.DisplayNameFor( model => model.Description )
          </th>
-         <th class="DataColumn">
+         <th class="LastDataColumn">
             @Html.DisplayNameFor( model => model.Category )
          </th>
-         <th class="LastDataColumn">Actions:</th>
       </tr>
    </thead>
 
@@ -25,17 +24,16 @@
          <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
             <td class="SortIcon"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
             <td class="FirstDataColumn">
-               @Html.DisplayFor( modelItem => item.Name )
+               @Html.ActionLink( item.Name, "Edit", new { id = item.Id } )
             </td>
             <td class="DescriptiveText">
                @Html.DisplayFor( modelItem => item.Description )
             </td>
-            <td class="DataColumn">
+            <td class="LastDataColumn">
                @Html.DisplayFor( modelItem => item.Category )
             </td>
             <td class="LastDataColumn">
-               @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
-            @Html.ActionLink( "Details", "Details", new { id = item.Id } )
+               @Html.ActionLink( "Details", "Details", new { id = item.Id } )
             </td>
          </tr>
       }
