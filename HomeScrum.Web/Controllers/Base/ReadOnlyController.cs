@@ -14,7 +14,7 @@ namespace HomeScrum.Web.Controllers.Base
 {
    /// <summary>
    /// The ReadOnlyController is the base class for any contoller in the system that only supports
-   /// the GET operations.  The only actions for this type of controller are Index and Details.
+   /// the GET operations.  The only action for this type of controller is Index.
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
    /// <typeparam name="ViewModelT">The View Model Type for display views</typeparam>
@@ -53,13 +53,6 @@ namespace HomeScrum.Web.Controllers.Base
          }
 
          return View( items );
-      }
-
-      
-      protected virtual ViewModelT GetViewModel( ISession session, Guid id )
-      {
-         var model = session.Get<ModelT>( id );
-         return (model != null) ? Mapper.Map<ViewModelT>( model ) : null;
       }
 
 

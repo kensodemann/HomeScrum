@@ -240,18 +240,6 @@ namespace HomeScrum.Web.Controllers
          return viewModel;
       }
 
-      protected override WorkItemViewModel GetViewModel( ISession session, Guid id )
-      {
-         var viewModel = base.GetViewModel( session, id );
-
-         if (viewModel != null)
-         {
-            viewModel.Tasks = GetChildTasks( session, id );
-         }
-
-         return viewModel;
-      }
-
       private IEnumerable<WorkItemIndexViewModel> GetChildTasks( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
