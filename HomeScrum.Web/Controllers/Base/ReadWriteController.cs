@@ -11,7 +11,7 @@ using Ninject.Extensions.Logging;
 namespace HomeScrum.Web.Controllers.Base
 {
    public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
-      : ReadOnlyController<ModelT, ViewModelT>
+      : ReadOnlyController<ModelT>
       where ModelT : DomainObjectBase, HomeScrum.Data.Validation.IValidatable
       where ViewModelT : DomainObjectViewModel
       where EditorViewModelT : DomainObjectViewModel, new()

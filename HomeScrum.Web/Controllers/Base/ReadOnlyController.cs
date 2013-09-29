@@ -17,11 +17,9 @@ namespace HomeScrum.Web.Controllers.Base
    /// the GET operations.  The only action for this type of controller is Index.
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
-   /// <typeparam name="ViewModelT">The View Model Type for display views</typeparam>
    [Authorize]
-   public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
+   public abstract class ReadOnlyController<ModelT> : Controller
       where ModelT : DomainObjectBase
-      where ViewModelT : DomainObjectViewModel
    {
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
