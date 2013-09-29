@@ -55,31 +55,7 @@ namespace HomeScrum.Web.Controllers.Base
          return View( items );
       }
 
-      //
-      // GET: /ModelTs/Details/Guid
-      public virtual ActionResult Details( Guid id, string callingAction = null, string callingId = null )
-      {
-         ViewModelT viewModel;
-         Log.Debug( "Details(%s)", id.ToString() );
-
-         var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            viewModel = GetViewModel( session, id );
-            transaction.Commit();
-         }
-
-         if (viewModel == null)
-         {
-            return HttpNotFound();
-         }
-
-         UpdateNavigationStack( viewModel, callingAction, callingId );
-
-         return View( viewModel );
-      }
-
-
+      
       protected virtual ViewModelT GetViewModel( ISession session, Guid id )
       {
          var model = session.Get<ModelT>( id );
