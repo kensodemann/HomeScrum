@@ -7,13 +7,11 @@
 @Html.Partial( "_SprintList", Model )
 
 <div id="ActionButtonArea">
-    @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-    @*<input type="checkbox" id="ShowCompletedToggle" /><label for="ShowCompletedToggle">Show/Hide</label>*@
+   @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
 </div>
 
 <script>
-    $(function () {
-        $("#CreateNewItem").button();
-        @*setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowCompletedToggle"), "Completed");*@
-    });
+   $(function () {
+      $("#CreateNewItem").button();
+   });
 </script>
