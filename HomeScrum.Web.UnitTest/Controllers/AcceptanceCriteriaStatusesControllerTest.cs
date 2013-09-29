@@ -60,7 +60,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _session.Dispose();
       }
 
-      public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel, AcceptanceCriterionStatusEditorViewModel> CreateController()
+      public override ReadWriteController<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel> CreateController()
       {
          var controller = new AcceptanceCriterionStatusesController( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;

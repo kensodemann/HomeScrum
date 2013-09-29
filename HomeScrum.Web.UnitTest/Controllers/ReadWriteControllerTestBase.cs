@@ -106,7 +106,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _sessionFactory.Setup( x => x.GetCurrentSession() ).Returns( _session );
       }
 
-      public abstract ReadWriteController<ModelT, ViewModelT, EditorViewModelT> CreateController();
+      public abstract ReadWriteController<ModelT, EditorViewModelT> CreateController();
       #endregion
 
 
