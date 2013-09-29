@@ -66,16 +66,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
       #region Acceptance Criteria Status
       [TestMethod]
-      public void CanMapAcceptanceCriteriaStatus_DomainToViewModel()
-      {
-         var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map<AcceptanceCriterionStatusViewModel>( domainModel );
-
-         Assert.IsInstanceOfType( viewModel, typeof( AcceptanceCriterionStatusViewModel ) );
-         Assert.IsTrue( ((AcceptanceCriterionStatusViewModel)viewModel).AllowUse );
-      }
-
-      [TestMethod]
       public void CanMapAcceptanceCriteriaStatus_DomainToEditorViewModel()
       {
          var domainModel = AcceptanceCriteriaStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
@@ -110,16 +100,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
       #region Project Status
       [TestMethod]
-      public void CanMapProjectStatus_DomainToViewModel()
-      {
-         var domainModel = ProjectStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectStatusViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( ProjectStatusViewModel ) );
-         Assert.IsTrue( ((ProjectStatusViewModel)viewModel).AllowUse );
-      }
-
-      [TestMethod]
       public void CanMapProjectStatus_DomainToEditorViewModel()
       {
          var domainModel = ProjectStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
@@ -150,18 +130,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
       
 
       #region Sprint Status
-      [TestMethod]
-      public void CanMapSprintStatus_DomainToViewModel()
-      {
-         var domainModel = SprintStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintStatusViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( SprintStatusViewModel ) );
-         Assert.IsTrue( ((SprintStatusViewModel)viewModel).AllowUse );
-         Assert.AreEqual( ((SprintStatusViewModel)viewModel).CanAddBacklogItems, !domainModel.BacklogIsClosed );
-         Assert.AreEqual( ((SprintStatusViewModel)viewModel).CanAddTaskListItems, !domainModel.TaskListIsClosed );
-      }
-
       [TestMethod]
       public void CanMapSprintStatus_DomainToEditorViewModel()
       {
@@ -200,16 +168,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
       #region Work Item Status
       [TestMethod]
-      public void CanMapWorkItemStatus_DomainToViewModel()
-      {
-         var domainModel = WorkItemStatuses.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemStatusViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( WorkItemStatusViewModel ) );
-         Assert.IsTrue( ((WorkItemStatusViewModel)viewModel).AllowUse );
-      }
-
-      [TestMethod]
       public void CanMapWorkItemStatus_DomainToEditorViewModel()
       {
          var domainModel = WorkItemStatuses.ModelData.ToArray().First( x => x.StatusCd == 'I' );
@@ -240,16 +198,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
 
       #region Work Item Type
-      [TestMethod]
-      public void CanMapWorkItemType_DomainToViewModel()
-      {
-         var domainModel = WorkItemTypes.ModelData.ToArray().First( x => x.StatusCd == 'A' );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemTypeViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( WorkItemTypeViewModel ) );
-         Assert.IsTrue( ((WorkItemTypeViewModel)viewModel).AllowUse );
-      }
-
       [TestMethod]
       public void CanMapWorkItemType_DomainToEditorViewModel()
       {
@@ -282,17 +230,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
       #region Project
       [TestMethod]
-      public void CanMapProject_DomainToViewModel()
-      {
-         var domainModel = Projects.ModelData[0];
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( ProjectViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( ProjectViewModel ) );
-         Assert.AreEqual( domainModel.Status.Name, ((ProjectViewModel)viewModel).StatusName );
-      }
-
-
-      [TestMethod]
       public void CanMapProject_DomainToEditorViewModel()
       {
          var domainModel = Projects.ModelData.ToArray()[0];
@@ -324,19 +261,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
 
       #region Sprint
-      [TestMethod]
-      public void CanMapSprint_DomainToViewModel()
-      {
-         var domainModel = Sprints.ModelData[0];
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( SprintViewModel ) );
-         Assert.AreEqual( domainModel.Project.Name, ((SprintViewModel)viewModel).ProjectName );
-         Assert.AreEqual( domainModel.Status.Name, ((SprintViewModel)viewModel).StatusName );
-         Assert.AreEqual( domainModel.Status.BacklogIsClosed, !((SprintViewModel)viewModel).CanAddBacklog );
-         Assert.AreEqual( domainModel.Status.TaskListIsClosed, !((SprintViewModel)viewModel).CanAddTasks );
-      }
-
       [TestMethod]
       public void CanMapSprint_DomainToEditorViewModel()
       {
@@ -380,20 +304,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
 
 
       #region WorkItem
-      [TestMethod]
-      public void CanMapWorkItem_DomainToViewModel()
-      {
-         var domainModel = WorkItems.ModelData.First( x => x.AcceptanceCriteria != null && x.AcceptanceCriteria.Count() > 0 );
-         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( WorkItemViewModel ) );
-
-         Assert.IsInstanceOfType( viewModel, typeof( WorkItemViewModel ) );
-         Assert.AreEqual( domainModel.Status.Name, ((WorkItemViewModel)viewModel).StatusName );
-         Assert.AreEqual( domainModel.WorkItemType.Name, ((WorkItemViewModel)viewModel).WorkItemTypeName );
-         Assert.AreEqual( domainModel.Project.Name, ((WorkItemViewModel)viewModel).ProjectName );
-         Assert.AreEqual( domainModel.Status.Category == WorkItemStatusCategory.Complete, ((WorkItemViewModel)viewModel).IsComplete );
-      }
-
-
       [TestMethod]
       public void CanMapWorkItem_DomainToEditorViewModel()
       {
