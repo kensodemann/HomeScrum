@@ -60,7 +60,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _session.Dispose();
       }
 
-      public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusViewModel, SprintStatusEditorViewModel> CreateController()
+      public override Web.Controllers.Base.ReadWriteController<SprintStatus, SprintStatusEditorViewModel> CreateController()
       {
          var controller = new SprintStatusesController( new PropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;

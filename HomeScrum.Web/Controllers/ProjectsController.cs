@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class ProjectsController : ReadWriteController<Project, ProjectViewModel, ProjectEditorViewModel>
+   public class ProjectsController : ReadWriteController<Project, ProjectEditorViewModel>
    {
       public ProjectsController( IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }

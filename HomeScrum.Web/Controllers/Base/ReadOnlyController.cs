@@ -14,14 +14,12 @@ namespace HomeScrum.Web.Controllers.Base
 {
    /// <summary>
    /// The ReadOnlyController is the base class for any contoller in the system that only supports
-   /// the GET operations.  The only actions for this type of controller are Index and Details.
+   /// the GET operations.  The only action for this type of controller is Index.
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
-   /// <typeparam name="ViewModelT">The View Model Type for display views</typeparam>
    [Authorize]
-   public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
+   public abstract class ReadOnlyController<ModelT> : Controller
       where ModelT : DomainObjectBase
-      where ViewModelT : DomainObjectViewModel
    {
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
@@ -53,37 +51,6 @@ namespace HomeScrum.Web.Controllers.Base
          }
 
          return View( items );
-      }
-
-      //
-      // GET: /ModelTs/Details/Guid
-      public virtual ActionResult Details( Guid id, string callingAction = null, string callingId = null )
-      {
-         ViewModelT viewModel;
-         Log.Debug( "Details(%s)", id.ToString() );
-
-         var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            viewModel = GetViewModel( session, id );
-            transaction.Commit();
-         }
-
-         if (viewModel == null)
-         {
-            return HttpNotFound();
-         }
-
-         UpdateNavigationStack( viewModel, callingAction, callingId );
-
-         return View( viewModel );
-      }
-
-
-      protected virtual ViewModelT GetViewModel( ISession session, Guid id )
-      {
-         var model = session.Get<ModelT>( id );
-         return (model != null) ? Mapper.Map<ViewModelT>( model ) : null;
       }
 
 

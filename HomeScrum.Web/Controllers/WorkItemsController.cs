@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemViewModel, WorkItemEditorViewModel>
+   public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemEditorViewModel>
    {
       [Inject]
       public WorkItemsController( IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
@@ -231,18 +231,6 @@ namespace HomeScrum.Web.Controllers
       protected override WorkItemEditorViewModel GetEditorViewModel( ISession session, Guid id )
       {
          var viewModel = base.GetEditorViewModel( session, id );
-
-         if (viewModel != null)
-         {
-            viewModel.Tasks = GetChildTasks( session, id );
-         }
-
-         return viewModel;
-      }
-
-      protected override WorkItemViewModel GetViewModel( ISession session, Guid id )
-      {
-         var viewModel = base.GetViewModel( session, id );
 
          if (viewModel != null)
          {

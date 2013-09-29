@@ -50,24 +50,6 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
-      //
-      // GET: /Users/Details/Guid
-      public ActionResult Details( Guid id )
-      {
-         var session = _sessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var model = session.Get<User>( id );
-            transaction.Commit();
-
-            if (model == null)
-            {
-               return HttpNotFound();
-            }
-
-            return View( Mapper.Map<UserViewModel>( model ) );
-         }
-      }
 
       //
       // GET: /Users/Create

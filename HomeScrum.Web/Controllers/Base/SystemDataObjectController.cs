@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using HomeScrum.Data.Domain;
-using HomeScrum.Web.Extensions;
+﻿using HomeScrum.Data.Domain;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public abstract class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
+   public abstract class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, EditorViewModelT>
       where ModelT : SystemDomainObject
       where ViewModelT : SystemDomainObjectViewModel
       where EditorViewModelT : SystemDomainObjectViewModel, new()
