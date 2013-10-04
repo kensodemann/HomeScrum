@@ -10,7 +10,7 @@
 @Html.Partial( "_Editor", Model )
 
 <div>
-    @Html.ActionLink( "Cancel", Model.CallingAction ?? "Index",
+    @Html.ActionLink( "Cancel", Model.CallingAction ?? "Index", null,
        (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
 </div>
 
