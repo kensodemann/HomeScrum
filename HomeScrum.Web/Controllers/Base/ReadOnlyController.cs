@@ -109,11 +109,13 @@ namespace HomeScrum.Web.Controllers.Base
             var data = stack.Peek();
             Guid parsedId;
             Guid.TryParse( data.Id, out parsedId );
+            viewModel.CallingController = data.Controller;
             viewModel.CallingAction = data.Action;
             viewModel.CallingId = parsedId;
          }
          else
          {
+            viewModel.CallingController = null;
             viewModel.CallingAction = null;
             viewModel.CallingId = Guid.Empty;
          }
