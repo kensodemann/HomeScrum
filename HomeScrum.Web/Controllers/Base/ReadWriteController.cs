@@ -32,7 +32,7 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            UpdateNavigationStack( viewModel, callingAction, callingId );
+            UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
             PopulateSelectLists( session, viewModel );
             transaction.Commit();
          }
@@ -42,7 +42,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      [ValidateInput(false)]
+      [ValidateInput( false )]
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -79,7 +79,7 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
-               UpdateNavigationStack( viewModel, callingAction, callingId );
+               UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
                return View( viewModel );
@@ -93,7 +93,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
-      [ValidateInput(false)]
+      [ValidateInput( false )]
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();

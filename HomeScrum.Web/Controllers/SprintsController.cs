@@ -138,7 +138,7 @@ namespace HomeScrum.Web.Controllers
             Id = id
          };
 
-         UpdateNavigationStack( model, callingAction, callingId );
+         UpdateNavigationStack( model, null, callingAction, callingId );
 
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
@@ -205,7 +205,7 @@ namespace HomeScrum.Web.Controllers
             Id = id
          };
 
-         UpdateNavigationStack( model, callingAction, callingId );
+         UpdateNavigationStack( model, null, callingAction, callingId );
 
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())

@@ -54,11 +54,11 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
-      protected void UpdateNavigationStack( ViewModelBase viewModel, string callingAction, string callingId )
+      protected void UpdateNavigationStack( ViewModelBase viewModel, string callingController, string callingAction, string callingId )
       {
-         if (callingAction != null)
+         if (callingController != null || callingAction != null)
          {
-            PushNavigationData( callingAction, callingId );
+            PushNavigationData( callingController, callingAction, callingId );
          }
          else
          {
@@ -68,7 +68,7 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
-      private void PushNavigationData( string callingAction, string callingId )
+      private void PushNavigationData( string callingController, string callingAction, string callingId )
       {
          var stack = Session["NavigationStack"] as Stack<NavigationData>;
          if (stack == null)
@@ -79,13 +79,13 @@ namespace HomeScrum.Web.Controllers.Base
          if (stack.Count != 0)
          {
             var top = stack.Peek();
-            if (top.Action == callingAction && top.Id == callingId)
+            if (top.Controller == callingController && top.Action == callingAction && top.Id == callingId)
             {
                return;
             }
          }
-         
-         stack.Push( new NavigationData() { Action = callingAction, Id = callingId } );
+
+         stack.Push( new NavigationData() { Controller = callingController, Action = callingAction, Id = callingId } );
          Session["NavigationStack"] = stack;
       }
 
