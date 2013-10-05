@@ -171,10 +171,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 2, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -200,14 +202,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 3, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
          navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
       }
@@ -228,6 +233,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, stack.Count );
 
          var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -394,10 +400,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 2, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -424,14 +432,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 3, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
          navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
       }
@@ -453,6 +464,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, stack.Count );
 
          var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
