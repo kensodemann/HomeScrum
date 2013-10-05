@@ -26,13 +26,13 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Create
-      public virtual ActionResult Create( string callingAction = null, string callingId = null, string parentWorkItemId = null )
+      public virtual ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentWorkItemId = null )
       {
          var viewModel = new EditorViewModelT();
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            UpdateNavigationStack( viewModel, callingAction, callingId );
+            UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
             PopulateSelectLists( session, viewModel );
             transaction.Commit();
          }
@@ -42,7 +42,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Create
       [HttpPost]
-      [ValidateInput(false)]
+      [ValidateInput( false )]
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -70,7 +70,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Edit/Guid
-      public virtual ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
+      public virtual ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
       {
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
@@ -79,7 +79,7 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
-               UpdateNavigationStack( viewModel, callingAction, callingId );
+               UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
                return View( viewModel );
@@ -93,7 +93,7 @@ namespace HomeScrum.Web.Controllers.Base
       //
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
-      [ValidateInput(false)]
+      [ValidateInput( false )]
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();

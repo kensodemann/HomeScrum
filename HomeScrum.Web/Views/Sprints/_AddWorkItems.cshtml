@@ -58,6 +58,6 @@
 else
 {
    <p>No work items are available to be assigned to this sprint.</p>
-   @Html.ActionLink( "Done", Model.CallingAction ?? "Index",
-       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
+   @Html.ActionLink( "Done", Model.CallingAction ?? "Index", Model.CallingController,
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, null )
 }

@@ -49,11 +49,11 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItem/Create
-      public override ActionResult Create( string callingAction = null, string callingId = null, string parentId = null )
+      public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentId = null )
       {
          Guid parsedId;
 
-         var view = base.Create( callingAction, callingId, parentId ) as ViewResult;
+         var view = base.Create( callingController, callingAction, callingId, parentId ) as ViewResult;
          var model = (WorkItemEditorViewModel)view.Model;
 
          if (Guid.TryParse( parentId, out parsedId ))

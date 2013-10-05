@@ -2,6 +2,10 @@
 
 @model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
 
+@{
+   ViewBag.SprintId = Model.Id;
+}
+
 @using (Html.BeginForm())
 {
    <fieldset>
