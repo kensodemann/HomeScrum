@@ -1056,7 +1056,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
+      public void EditPost_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1076,7 +1076,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
+      public void EditPost_ReInitializesProjectsIfModelNotValid_ProjectSelected()
       {
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1098,7 +1098,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
+      public void EditPost_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
