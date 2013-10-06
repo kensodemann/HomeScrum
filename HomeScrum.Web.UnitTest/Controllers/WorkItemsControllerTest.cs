@@ -919,6 +919,71 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
+         foreach (var item in viewModel.WorkItemTypes)
+         {
+            var itemId = new Guid( item.Value );
+            var workItemType = WorkItemTypes.ModelData.First( x => x.Id == itemId );
+            Assert.AreEqual( workItemType.Name, item.Text );
+            Assert.IsTrue( (model.WorkItemType.Id != itemId && !item.Selected) ||
+                           (model.WorkItemType.Id == itemId && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
+
+         for (int i = 1; i < viewModel.Projects.Count(); i++)
+         {
+            var item = viewModel.Projects.ElementAt( i );
+            var itemId = new Guid( item.Value );
+            var project = Projects.ModelData.First( x => x.Id == itemId );
+            Assert.AreEqual( project.Name, item.Text );
+            Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
+                           (model.Project.Id == itemId && item.Selected) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
+      {
+         var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.ModelState.AddModelError( "Test", "This is an error" );
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
+         //
+         // Skip the first item (null item) 
+         for (int i = 1; i < viewModel.AssignedToUsers.Count(); i++)
+         {
+            var item = viewModel.AssignedToUsers.ElementAt( i );
+            var itemId = new Guid( item.Value );
+            var user = Users.ModelData.First( x => x.Id == itemId );
+            Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
+            Assert.IsTrue( (model.AssignedToUser.Id != itemId && !item.Selected) ||
+                           (model.AssignedToUser.Id == itemId && item.Selected) );
+         }
+      }
       #endregion
 
 
@@ -1052,71 +1117,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( status.Name, item.Text );
             Assert.IsTrue( (model.Status.Id != itemId && !item.Selected) ||
                            (model.Status.Id == itemId && item.Selected) );
-         }
-      }
-
-      [TestMethod]
-      public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
-      {
-         var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
-         var viewModel = CreateWorkItemEditorViewModel( model );
-
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
-
-         Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
-         foreach (var item in viewModel.WorkItemTypes)
-         {
-            var itemId = new Guid( item.Value );
-            var workItemType = WorkItemTypes.ModelData.First( x => x.Id == itemId );
-            Assert.AreEqual( workItemType.Name, item.Text );
-            Assert.IsTrue( (model.WorkItemType.Id != itemId && !item.Selected) ||
-                           (model.WorkItemType.Id == itemId && item.Selected) );
-         }
-      }
-
-      [TestMethod]
-      public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
-      {
-         var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
-         var viewModel = CreateWorkItemEditorViewModel( model );
-
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
-
-         Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
-
-         for (int i = 1; i < viewModel.Projects.Count(); i++)
-         {
-            var item = viewModel.Projects.ElementAt( i );
-            var itemId = new Guid( item.Value );
-            var project = Projects.ModelData.First( x => x.Id == itemId );
-            Assert.AreEqual( project.Name, item.Text );
-            Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
-                           (model.Project.Id == itemId && item.Selected) );
-         }
-      }
-
-      [TestMethod]
-      public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
-      {
-         var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
-         var viewModel = CreateWorkItemEditorViewModel( model );
-
-         _controller.ModelState.AddModelError( "Test", "This is an error" );
-         var result = _controller.Edit( viewModel, _principal.Object );
-
-         Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
-         //
-         // Skip the first item (null item) 
-         for (int i = 1; i < viewModel.AssignedToUsers.Count(); i++)
-         {
-            var item = viewModel.AssignedToUsers.ElementAt( i );
-            var itemId = new Guid( item.Value );
-            var user = Users.ModelData.First( x => x.Id == itemId );
-            Assert.AreEqual( (String.IsNullOrWhiteSpace( user.LastName ) ? "" : user.LastName + ", ") + user.FirstName, item.Text );
-            Assert.IsTrue( (model.AssignedToUser.Id != itemId && !item.Selected) ||
-                           (model.AssignedToUser.Id == itemId && item.Selected) );
          }
       }
 
