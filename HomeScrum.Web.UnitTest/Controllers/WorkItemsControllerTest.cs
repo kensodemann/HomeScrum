@@ -386,6 +386,42 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
          }
       }
+
+      [TestMethod]
+      public void CreateGet_SelectsSprint_IfParentAssignedToSprint()
+      {
+         var backlogItems = WorkItems.ModelData
+            .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' )
+            .ToList();
+         var backlogItem = backlogItems.First( x => x.Sprint != null && x.Sprint.Id != Guid.Empty );
+         var sprintId = backlogItem.Sprint.Id;
+
+         var result = _controller.Create( parentId: backlogItem.Id.ToString() ) as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         for (int i = 0; i < model.Sprints.Count(); i++)
+         {
+            var item = model.Sprints.ElementAt( i );
+            if (i == 0)
+            {
+               Assert.AreEqual( Guid.Empty.ToString(), item.Value );
+               Assert.IsFalse( item.Selected, "Not Assigned should not be selected" );
+            }
+            else
+            {
+               if (new Guid( item.Value ) == sprintId)
+               {
+                  Assert.IsTrue( item.Selected, "Sprint should be selected" );
+               }
+               else
+               {
+                  Assert.IsFalse( item.Selected, "Sprint should not be selected" );
+               }
+            }
+         }
+
+      }
       #endregion
 
 

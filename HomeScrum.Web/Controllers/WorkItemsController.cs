@@ -58,17 +58,21 @@ namespace HomeScrum.Web.Controllers
 
          if (Guid.TryParse( parentId, out parsedId ))
          {
-            var backlogItem = model.ProductBacklogItems.FirstOrDefault( x => x.Selected );
-            if (backlogItem != null)
-            {
-               backlogItem.Selected = false;
-            }
+            model.ClearSelectedBacklog();
+            model.ClearSelectedSprint();
 
-            backlogItem = model.ProductBacklogItems.FirstOrDefault( x => new Guid( x.Value ) == parsedId );
+            var backlogItem = model.ProductBacklogItems.FirstOrDefault( x => new Guid( x.Value ) == parsedId );
             if (backlogItem != null)
             {
                backlogItem.Selected = true;
                model.ParentWorkItemId = parsedId;
+
+               var sprint = model.Sprints.SingleOrDefault( x => x.Value == backlogItem.DataAttributes["SprintId"] );
+               if (sprint != null)
+               {
+                  sprint.Selected = true;
+                  model.SprintId = new Guid( sprint.Value );
+               }
             }
          }
 
