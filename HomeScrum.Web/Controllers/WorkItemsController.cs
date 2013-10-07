@@ -275,6 +275,32 @@ namespace HomeScrum.Web.Controllers
          ClearNonAllowedItemsInModel( model );
          model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
          base.Update( session, model, user );
+
+         UpdateChildTasks( session, model );
+      }
+
+      private void UpdateChildTasks( ISession session, WorkItem model )
+      {
+         var children = session.Query<WorkItem>()
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id )
+            .Cacheable()
+            .ToList();
+
+         foreach (var child in children)
+         {
+            PropagateChangesToChild( session, model, child );
+         }
+      }
+
+      private static void PropagateChangesToChild( ISession session, WorkItem model, WorkItem child )
+      {
+         if (child.Project != model.Project || child.Sprint != model.Sprint)
+         {
+            child.LastModifiedUserRid = model.LastModifiedUserRid;
+            child.Project = model.Project;
+            child.Sprint = model.Sprint;
+            session.Update( child );
+         }
       }
 
       private Guid GetUserId( ISession session, string userName )

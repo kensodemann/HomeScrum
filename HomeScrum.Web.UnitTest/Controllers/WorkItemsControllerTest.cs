@@ -1056,7 +1056,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
+      public void EditPost_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1076,7 +1076,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
+      public void EditPost_ReInitializesProjectsIfModelNotValid_ProjectSelected()
       {
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1098,7 +1098,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
+      public void EditPost_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1160,6 +1160,44 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _session.Clear();
          var item = _session.Get<WorkItem>( viewModel.Id );
          Assert.IsNull( item.ParentWorkItem );
+      }
+
+      [TestMethod]
+      public void EditPost_SetsProjectInChildTasks()
+      {
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != Guid.Empty ).ParentWorkItem.Id;
+         var model = WorkItems.ModelData.Single( x => x.Id == parentId );
+
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         var newProjectId = Projects.ModelData.First( x => x.Id != viewModel.ProjectId ).Id;
+         viewModel.ProjectId = newProjectId;
+         _controller.Edit( viewModel, _principal.Object );
+
+         var children = _session.Query<WorkItem>()
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+         foreach (var child in children)
+         {
+            Assert.AreEqual( newProjectId, child.Project.Id );
+         }
+      }
+
+      [TestMethod]
+      public void EditPost_SetsSprintInChildTasks()
+      {
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != Guid.Empty ).ParentWorkItem.Id;
+         var model = WorkItems.ModelData.Single( x => x.Id == parentId );
+
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         var newSprintId = Sprints.ModelData.First( x => x.Id != viewModel.SprintId ).Id;
+         viewModel.SprintId = newSprintId;
+         _controller.Edit( viewModel, _principal.Object );
+
+         var children = _session.Query<WorkItem>()
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+         foreach (var child in children)
+         {
+            Assert.AreEqual( newSprintId, child.Sprint.Id );
+         }
       }
       #endregion
 
@@ -1264,7 +1302,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectId = (workItem.Project == null) ? default( Guid ) : workItem.Project.Id,
             ProjectName = (workItem.Project == null) ? null : workItem.Project.Name,
             ParentWorkItemId = (workItem.ParentWorkItem == null) ? default( Guid ) : workItem.ParentWorkItem.Id,
-            ParentWorkItemName = (workItem.ParentWorkItem == null) ? null : workItem.ParentWorkItem.Name
+            ParentWorkItemName = (workItem.ParentWorkItem == null) ? null : workItem.ParentWorkItem.Name,
+            SprintId = (workItem.Sprint == null) ? Guid.Empty : workItem.Sprint.Id,
+            SprintName = (workItem.Sprint == null) ? null : workItem.Sprint.Name
          };
       }
 
