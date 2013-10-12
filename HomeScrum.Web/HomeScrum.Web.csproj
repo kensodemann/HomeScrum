@@ -466,6 +466,7 @@
     <Content Include="Views\SprintStatuses\DisplayTemplates\List.cshtml" />
     <Content Include="Views\ProjectStatuses\DisplayTemplates\List.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\DisplayTemplates\List.cshtml" />
+    <Content Include="Views\WorkItems\MyAssignments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
