@@ -48,6 +48,34 @@ namespace HomeScrum.Web.Controllers
       }
 
       //
+      // GET: /WorkItems/MyAssignments
+      public ActionResult MyAssignments( System.Security.Principal.IPrincipal user )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         var assignedToUserId = GetUserId( session, user.Identity.Name );
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = session.Query<WorkItem>()
+               .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
+               .OrderBy( x => x.WorkItemType.SortSequence )
+               .ThenBy( x => x.Status.SortSequence )
+               .ThenBy( x => x.Name.ToUpper() )
+               .Select( x => new WorkItemIndexViewModel()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  WorkItemTypeName = x.WorkItemType.Name,
+                  StatusName = x.Status.Name,
+                  IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
+               } )
+               .ToList();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
       // GET: /WorkItem/Create
       public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentId = null )
       {

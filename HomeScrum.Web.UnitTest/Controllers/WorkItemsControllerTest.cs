@@ -29,6 +29,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
+      private User _user;
 
       private Mock<ControllerContext> _controllerConext;
       private Stack<NavigationData> _navigationStack;
@@ -91,7 +92,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
          Assert.AreEqual( WorkItems.ModelData.Count(), model.Count() );
+      }
+      #endregion
+
+
+      #region MyAssignent Tests
+      [TestMethod]
+      public void MyAssignment_ReturnsViewWithNoncompletedItemsAssignedToCurrentUser()
+      {
+         var view = _controller.MyAssignments( _principal.Object ) as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == _user.Id && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
       }
       #endregion
 
@@ -1315,11 +1334,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
 
          // In other places where we use a random user, we use the first active one.
-         // Use the first inactive user here just to ensure it is a different user.
-         var currentUser = Users.ModelData.First( x => x.StatusCd == 'I' );
+         // Use the next active user.
+         var firstActiveUser = Users.ModelData.First( x => x.StatusCd == 'A' );
+         _user = Users.ModelData.First( x => x.StatusCd == 'A' && x.Id != firstActiveUser.Id );
          _userIdentity
             .SetupGet( x => x.Name )
-            .Returns( currentUser.UserName );
+            .Returns( _user.UserName );
       }
 
       private WorkItemsController CreateController()
