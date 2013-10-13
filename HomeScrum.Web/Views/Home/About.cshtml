@@ -30,11 +30,23 @@
    </p>
 </article>
 
+<article id="AboutScrum">
+   <h2>About Scrum</h2>
+   <p>
+      If you would like to learn more about scrum, these resources may be helpful:
+   </p>
+   <ul>
+      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
+      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
+   </ul>
+</article>
+
 <article id="VersionHistory">
    <h2>Version History</h2>
    <div id="VersionHistoryDetails">
-      <h3>Version 1.1 - Released 2013/09/27</h3>
+      <h3>Version 1.1</h3>
       <div>
+         <h4>Release Date: 2013/09/27</h4>
          <h4>New Features</h4>
          <p>Added pre-defined categories for the following entities:</p>
          <ul>
@@ -60,8 +72,9 @@
          </ul>
       </div>
 
-      <h3>Version 1.0 - Released 2013/09/07</h3>
+      <h3>Version 1.0</h3>
       <div>
+         <h4>Release Date: 2013/09/07</h4>
          <p>While still spartan, this release has some useful features:</p>
          <ul>
             <li>This version list</li>
@@ -70,8 +83,9 @@
          </ul>
       </div>
 
-      <h3>Verrsion 0.x - Released Periodically</h3>
+      <h3>Verrsion 0.x</h3>
       <div>
+         <h4>Release Date: Periodically Over Time (No Official Release)</h4>
          <p>
             These prior versions were released at periodic times thoughout the development cycle just so I could use the system to track
       what I was doing.
@@ -86,22 +100,11 @@
 </article>
 
 
-
-<article id="AboutScrum">
-   <h2>About Scrum</h2>
-   <p>
-      If you would like to learn more about scrum, these resources may be helpful:
-   </p>
-   <ul>
-      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
-      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
-   </ul>
-</article>
-
 <script>
    $(function () {
       $("#VersionHistoryDetails").accordion({
-         heightStyle: "content"
+         heightStyle: "content",
+         collapsible: true
       });
 
    });
