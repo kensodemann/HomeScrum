@@ -37,8 +37,10 @@
 
             <ul>
                <li><a href="#">Add New Task</a></li>
-               <li><a href="#">My Task List</a></li>
-               <li><a href="#">Unassigned Tasks</a></li>
+               <li>@Html.ActionLink( "My Assignments", "MyAssignments", "WorkItems" )</li>
+               <li>@Html.ActionLink( "Unassigned Problems", "UnassignedProblems", "WorkItems" )</li>
+               <li>@Html.ActionLink( "Unassigned Tasks", "UnassignedTasks", "WorkItems" )</li>
+               <li>@Html.ActionLink( "Unassigned Backlog Items", "UnassignedBacklog", "WorkItems" )</li>
                <li>@Html.ActionLink( "All Work Items", "Index", "WorkItems" )</li>
             </ul>
 

@@ -28,23 +28,91 @@ namespace HomeScrum.Web.Controllers
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            var workItems = session.Query<WorkItem>()
-               .OrderBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name.ToUpper() )
-               .Select( x => new WorkItemIndexViewModel()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  WorkItemTypeName = x.WorkItemType.Name,
-                  StatusName = x.Status.Name,
-                  IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-               } )
-               .ToList();
+            var workItems = BaseWorkItemQuery( session )
+               .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
             return View( workItems );
          }
+      }
+
+      //
+      // GET: /WorkItems/MyAssignments
+      public ActionResult MyAssignments( System.Security.Principal.IPrincipal user )
+      {
+         var session = SessionFactory.GetCurrentSession();
+         var assignedToUserId = GetUserId( session, user.Identity.Name );
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
+      // GET: /WorkItems/UnassignedBacklog
+      public ActionResult UnassignedBacklog()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
+                  x.Status.Category != WorkItemStatusCategory.Complete &&
+                  x.Sprint == null )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
+      // GET: /WorkItems/UnassignedProblems
+      public ActionResult UnassignedProblems()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .Where( x => x.AssignedToUser == null
+                  && x.Status.Category != WorkItemStatusCategory.Complete
+                  && x.WorkItemType.Category == WorkItemTypeCategory.Issue )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
+      // GET: /WorkItems/UnassignedTasks
+      public ActionResult UnassignedTasks()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .Where( x => x.AssignedToUser == null
+                  && x.Status.Category != WorkItemStatusCategory.Complete
+                  && x.WorkItemType.Category == WorkItemTypeCategory.Task )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      private IQueryable<WorkItem> BaseWorkItemQuery( ISession session )
+      {
+         return session.Query<WorkItem>()
+            .OrderBy( x => x.WorkItemType.SortSequence )
+            .ThenBy( x => x.Status.SortSequence )
+            .ThenBy( x => x.Name.ToUpper() );
       }
 
       //
