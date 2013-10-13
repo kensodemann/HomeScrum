@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Web.Models.Base;
+using HomeScrum.Web.Models.WorkItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,6 +117,18 @@ namespace HomeScrum.Web.Extensions
                                             { "TaskListIsClosed", item.Status.TaskListIsClosed ? "True" : "False" },
                                             { "BacklogIsClosed", item.Status.BacklogIsClosed ? "True" : "False" }
                                          }
+         } ).ToList();
+      }
+
+      public static IList<WorkItemIndexViewModel> SelectWorkItemIndexViewModels( this IQueryable<WorkItem> query )
+      {
+         return query.Select( x => new WorkItemIndexViewModel()
+         {
+            Id = x.Id,
+            Name = x.Name,
+            WorkItemTypeName = x.WorkItemType.Name,
+            StatusName = x.Status.Name,
+            IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
          } ).ToList();
       }
    }

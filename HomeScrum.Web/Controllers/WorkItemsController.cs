@@ -28,19 +28,8 @@ namespace HomeScrum.Web.Controllers
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            var workItems = session.Query<WorkItem>()
-               .OrderBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name.ToUpper() )
-               .Select( x => new WorkItemIndexViewModel()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  WorkItemTypeName = x.WorkItemType.Name,
-                  StatusName = x.Status.Name,
-                  IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-               } )
-               .ToList();
+            var workItems = BaseWorkItemQuery( session )
+               .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
             return View( workItems );
@@ -55,24 +44,21 @@ namespace HomeScrum.Web.Controllers
          var assignedToUserId = GetUserId( session, user.Identity.Name );
          using (var transaction = session.BeginTransaction())
          {
-            var workItems = session.Query<WorkItem>()
+            var workItems = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
-               .OrderBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name.ToUpper() )
-               .Select( x => new WorkItemIndexViewModel()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  WorkItemTypeName = x.WorkItemType.Name,
-                  StatusName = x.Status.Name,
-                  IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-               } )
-               .ToList();
+               .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
             return View( workItems );
          }
+      }
+
+      private IQueryable<WorkItem> BaseWorkItemQuery( ISession session )
+      {
+         return session.Query<WorkItem>()
+            .OrderBy( x => x.WorkItemType.SortSequence )
+            .ThenBy( x => x.Status.SortSequence )
+            .ThenBy( x => x.Name.ToUpper() );
       }
 
       //
