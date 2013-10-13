@@ -149,6 +149,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region UnassignedProblems Tests
+      [TestMethod]
+      public void UnassignedProblems_ReturnsViewWithOpenUnassignedProblems()
+      {
+         var view = _controller.UnassignedProblems() as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.AssignedToUser == null && x.WorkItemType.Category == WorkItemTypeCategory.Issue && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
+      }
+      #endregion
+
+
       #region Create GET Tests
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()

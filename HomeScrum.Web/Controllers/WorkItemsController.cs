@@ -79,6 +79,9 @@ namespace HomeScrum.Web.Controllers
          using (var transaction = session.BeginTransaction())
          {
             var workItems = BaseWorkItemQuery( session )
+               .Where( x => x.AssignedToUser == null
+                  && x.Status.Category != WorkItemStatusCategory.Complete
+                  && x.WorkItemType.Category == WorkItemTypeCategory.Issue )
                .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
