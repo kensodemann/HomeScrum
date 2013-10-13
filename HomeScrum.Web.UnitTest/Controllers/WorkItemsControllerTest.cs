@@ -132,6 +132,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region UnassignedTasks Tests
+      [TestMethod]
+      public void UnassignedTasks_ReturnsViewWithOpenUnassignedTasks()
+      {
+         var view = _controller.UnassignedTasks() as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.AssignedToUser == null && x.WorkItemType.Category == WorkItemTypeCategory.Task && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
+      }
+      #endregion
+
+
       #region Create GET Tests
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
