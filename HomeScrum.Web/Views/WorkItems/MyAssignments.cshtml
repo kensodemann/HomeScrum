@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.WorkItems.WorkItemIndexViewModel>
 
 @{
-   ViewBag.Title = "My Work Items";
+   ViewBag.Title = "My Assignments";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,7 +9,7 @@
 @Html.Partial( "_WorkItemList", Model )
 
 <div id="ActionButtonArea">
-   @Html.ActionLink( "Create New Work Item", "Create", null, new { id = "CreateNewItem" } )
+   @Html.ActionLink( "Create New Work Item", "Create", new { callingAction = "MyAssignments" }, new { id = "CreateNewItem" } )
 </div>
 
 <script>

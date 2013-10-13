@@ -9,7 +9,7 @@
 @Html.Partial( "_WorkItemList", Model )
 
 <div id="ActionButtonArea">
-   @Html.ActionLink( "Create New Work Item", "Create", null, new { id = "CreateNewItem" } )
+   @Html.ActionLink( "Create New Work Item", "Create", new { callingAction = "UnassignedBacklog" }, new { id = "CreateNewItem" } )
 </div>
 
 <script>
