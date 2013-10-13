@@ -53,6 +53,54 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
+      //
+      // GET: /WorkItems/UnassignedBacklog
+      public ActionResult UnassignedBacklog()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
+                  x.Status.Category != WorkItemStatusCategory.Complete &&
+                  x.Sprint == null )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
+      // GET: /WorkItems/UnassignedProblems
+      public ActionResult UnassignedProblems()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
+      //
+      // GET: /WorkItems/UnassignedTasks
+      public ActionResult UnassignedTasks()
+      {
+         var session = SessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var workItems = BaseWorkItemQuery( session )
+               .SelectWorkItemIndexViewModels();
+
+            transaction.Commit();
+            return View( workItems );
+         }
+      }
+
       private IQueryable<WorkItem> BaseWorkItemQuery( ISession session )
       {
          return session.Query<WorkItem>()

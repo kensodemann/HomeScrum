@@ -467,6 +467,7 @@
     <Content Include="Views\ProjectStatuses\DisplayTemplates\List.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\DisplayTemplates\List.cshtml" />
     <Content Include="Views\WorkItems\MyAssignments.cshtml" />
+    <Content Include="Views\WorkItems\UnassignedBacklog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

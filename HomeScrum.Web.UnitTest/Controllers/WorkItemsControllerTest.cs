@@ -115,6 +115,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region UnassignedBacklog Tests
+      [TestMethod]
+      public void UnassignedBacklog_ReturnsViewWithOpenBacklogItemsNotAssignedToASprint()
+      {
+         var view = _controller.UnassignedBacklog(  ) as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
+
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.Sprint == null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
+      }
+      #endregion
+
+
       #region Create GET Tests
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
