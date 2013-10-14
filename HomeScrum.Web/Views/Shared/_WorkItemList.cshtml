@@ -22,7 +22,7 @@
             @Html.DisplayFor( modelItem => item.WorkItemTypeName )
          </td>
          <td class="DescriptiveText">
-            @Html.ActionLink( item.Name, "Edit", new { id = item.Id } )
+            @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = ViewBag.ActionName } )
          </td>
          <td class="DataColumn">
             @Html.DisplayFor( modelItem => item.StatusName )
