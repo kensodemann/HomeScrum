@@ -514,7 +514,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_RedirectsToIndexIfModelIsValid_AndNoCallingActionOrControllerSpecified()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
@@ -526,6 +526,66 @@ namespace HomeScrum.Web.UnitTest.Controllers
          object value;
          result.RouteValues.TryGetValue( "action", out value );
          Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToActionIfSpecified()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.CallingAction = "Edit";
+         var Id = Guid.NewGuid();
+         viewModel.CallingId = Id;
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( Id, new Guid( value.ToString() ) );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToControllerAndActionIfSpecified()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.CallingAction = "Foo";
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Foo", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToControllerIndexIfOnlyControllerSpecified()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
       }
 
       [TestMethod]
