@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
@@ -17,6 +12,11 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -119,7 +119,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void UnassignedBacklog_ReturnsViewWithOpenBacklogItemsNotAssignedToASprint()
       {
-         var view = _controller.UnassignedBacklog(  ) as ViewResult;
+         var view = _controller.UnassignedBacklog() as ViewResult;
          var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
 
          Assert.IsNotNull( view );
@@ -1025,7 +1025,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_RedirectsToIndexIfModelIsValid_AnNowCallingActionOrCallingControllerSet()
       {
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1038,6 +1038,69 @@ namespace HomeScrum.Web.UnitTest.Controllers
          object value;
          result.RouteValues.TryGetValue( "action", out value );
          Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToActionIfSpecified()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.CallingAction = "Edit";
+         var Id = Guid.NewGuid();
+         viewModel.CallingId = Id;
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( Id, new Guid( value.ToString() ) );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToControllerAndActionIfSpecified()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.CallingAction = "Foo";
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Foo", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToControllerIndexIfOnlyControllerSpecified()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
       }
 
       [TestMethod]
