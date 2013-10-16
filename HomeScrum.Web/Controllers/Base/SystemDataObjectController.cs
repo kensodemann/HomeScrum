@@ -59,6 +59,7 @@ namespace HomeScrum.Web.Controllers.Base
             var items = SelectViewModels( query.GetQuery( session ) );
 
             transaction.Commit();
+            ClearNavigationStack();
             return View( items );
          }
 

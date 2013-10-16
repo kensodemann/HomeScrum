@@ -50,6 +50,8 @@ namespace HomeScrum.Web.Controllers.Base
             transaction.Commit();
          }
 
+         ClearNavigationStack();
+
          return View( items );
       }
 
@@ -65,6 +67,17 @@ namespace HomeScrum.Web.Controllers.Base
             PopNavigationData();
          }
          PeekNavigationData( viewModel );
+      }
+
+
+      protected void ClearNavigationStack()
+      {
+         var stack = Session["NavigationStack"] as Stack<NavigationData>;
+         if (stack != null && stack.Count != 0)
+         {
+            stack.Clear();
+            Session["NavigationStack"] = stack;
+         }
       }
 
 

@@ -55,8 +55,10 @@ namespace HomeScrum.Web.Controllers.Base
                {
                   Save( session, model, user );
                   transaction.Commit();
-                  return viewModel.CallingAction != null
-                     ? RedirectToAction( viewModel.CallingAction, new { id = viewModel.CallingId.ToString() } )
+                  return viewModel.CallingAction != null || viewModel.CallingController != null
+                     ? RedirectToAction( viewModel.CallingAction ?? "Index",
+                                         viewModel.CallingController,
+                                         viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null )
                      : RedirectToAction( () => this.Index() );
                }
                TransferErrorMessages( model );
@@ -106,8 +108,10 @@ namespace HomeScrum.Web.Controllers.Base
                {
                   Update( session, model, user );
                   transaction.Commit();
-                  return viewModel.CallingAction != null
-                     ? RedirectToAction( viewModel.CallingAction, new { id = viewModel.CallingId.ToString() } )
+                  return viewModel.CallingAction != null || viewModel.CallingController != null
+                     ? RedirectToAction( viewModel.CallingAction ?? "Index",
+                                         viewModel.CallingController,
+                                         viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null )
                      : RedirectToAction( () => this.Index() );
                }
                TransferErrorMessages( model );

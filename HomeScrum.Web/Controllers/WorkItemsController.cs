@@ -32,6 +32,7 @@ namespace HomeScrum.Web.Controllers
                .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
+            ClearNavigationStack();
             return View( workItems );
          }
       }
@@ -49,6 +50,7 @@ namespace HomeScrum.Web.Controllers
                .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
+            ClearNavigationStack();
             return View( workItems );
          }
       }
@@ -67,6 +69,7 @@ namespace HomeScrum.Web.Controllers
                .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
+            ClearNavigationStack();
             return View( workItems );
          }
       }
@@ -85,6 +88,7 @@ namespace HomeScrum.Web.Controllers
                .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
+            ClearNavigationStack();
             return View( workItems );
          }
       }
@@ -103,6 +107,7 @@ namespace HomeScrum.Web.Controllers
                .SelectWorkItemIndexViewModels();
 
             transaction.Commit();
+            ClearNavigationStack();
             return View( workItems );
          }
       }

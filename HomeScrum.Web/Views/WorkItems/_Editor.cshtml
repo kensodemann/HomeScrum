@@ -174,7 +174,7 @@
          var sprintProject = $("#SelectSprintId").find(":selected").attr("data-ProjectId");
          if (selectedProject != sprintProject &&
              sprintProject != "00000000-0000-0000-0000-000000000000") {
-            $("#SelectProjectId").val(backlogProject);
+            $("#SelectProjectId").val(sprintProject);
             $("#ProjectId").val(sprintProject);
          }
       }
