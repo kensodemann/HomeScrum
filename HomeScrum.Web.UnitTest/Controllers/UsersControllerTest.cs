@@ -93,30 +93,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( Users.ModelData.Count(), ((IEnumerable<UserViewModel>)view.Model).Count() );
       }
 
-
-      [TestMethod]
-      public void Details_ReturnsViewWithViewModel()
-      {
-         var model = Users.ModelData.ToArray()[2];
-
-         var view = _controller.Details( model.Id ) as ViewResult;
-
-         Assert.IsNotNull( view );
-         Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( UserViewModel ) );
-         Assert.AreEqual( model.Id, ((UserViewModel)view.Model).Id );
-      }
-
-      [TestMethod]
-      public void Details_ReturnsHttpNotFoundIfNoModel()
-      {
-         var id = Guid.NewGuid();
-
-         var result = _controller.Details( id ) as HttpNotFoundResult;
-
-         Assert.IsNotNull( result );
-      }
-
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewModel()
       {

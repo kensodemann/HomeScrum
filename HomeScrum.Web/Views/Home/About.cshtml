@@ -1,90 +1,137 @@
 ﻿@{
-    ViewBag.Title = "About Home Scrum";
+   ViewBag.Title = "About Home Scrum";
 }
 
-<article>
+<article id="About">
    <h2>@ViewBag.Title</h2>
-    <p>
-        Home Scrum is a very simple project tracking tool that is loosely built around the Scrum methodology of software development.
+   <p>
+      Home Scrum is a very simple project tracking tool that is loosely built around the Scrum methodology of software development.
         I am not sure this tool will ever completely implement all of the functionallity required to truly do scrum, so if you are
         looking for a full fledged scrum management tool, you probably need to keep looking.  This is meant to be a scrum-like tool
         for personal use (or very small groups).
-    </p>
-    <p>
-        Home Scrum was started because I wanted a simple project I could work on in order to practice using some technologies
+   </p>
+   <p>
+      Home Scrum was started because I wanted a simple project I could work on in order to practice using some technologies
         that I do not get to use often at my day job.  These technologies include:
-    </p>
-    <ul>
-        <li>MVC</li>
-        <li>Object-Relational Mapping (I am using NHibernate in this project, though I have also used Microsoft's Entity Framework)</li>
-        <li>Dependency Injection (I am using Ninject for this project, though I have also used Unity and MEF)</li>
-    </ul>
-    <p>
-        I decided to go with this tool because I needed a way to keep track of tasks that I needed to do on these side projects I work on.
-        I only get to work on them sporadically, so I am constantly forgetting where I am on the project and what needs to be done.  So I 
-        figured I may as well make one of the projects be the building of a tool to help me out.
-    </p>
-    <p>
-        I named it "Home Scrum" because I suck at naming things, I am primarily going to use it for tracking projects that I work on
-        at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
-    </p>
-</article>
-
-<article>
-   <h2>Version History</h2>
-   <h3>Version 1.1 - Released 2013/09/27</h3>
-   <h4>New Features</h4>
-   <p>Added pre-defined categories for the following entities:</p>
-   <ul>
-      <li>Acceptance Criterion Statuses</li>
-      <li>Project Statuses</li>
-      <li>Sprint Statuses</li>
-      <li>Work Item Statuses</li>
-      <li>Work Item Types</li>
-   </ul>
-   <h4>Bug Fixes</h4>
-   <ul>
-      <li>Fixed problems with certain values remaining null even though they appeared to default properly.</li>
-      <li>Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
-         HTML tags are displayed as text.
-      </li>
-      <li>If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
-         displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
-      </li>
-      <li>
-         HTML tags and other special characters no longer cause an application error.  HTML tags may be used, but
-         not as markup.  That is &lt;strong&gt;strong text&lt;/strong&gt; shows up as &lt;strong&gt;strong text&lt;/strong&gt;
-         and not <strong>strong text</strong> .
-      </li>
-   </ul>
-   <h3>Version 1.0 - Released 2013/09/07</h3>
-   <p>While still spartan, this release has some useful features:</p>
-   <ul>
-      <li>This version list</li>
-      <li>Sprints - Very basic functionallity at this point, but usable</li>
-      <li>Several UI Bugs and Quirks</li>
-   </ul>
-
-   <h3>Verrsion 0.x - Released Periodically</h3>
-   <p>These prior versions were released at periodic times thoughout the development cycle just so I could use the system to track
-      what I was doing.
    </p>
    <ul>
-      <li>No sprint support</li>
-      <li>Grouping of tasks initially not supported</li>
-      <li>Grouping of tasks eventually supported via the non-task items</li>
+      <li>MVC</li>
+      <li>Object-Relational Mapping (I am using NHibernate in this project, though I have also used Microsoft's Entity Framework)</li>
+      <li>Dependency Injection (I am using Ninject for this project, though I have also used Unity and MEF)</li>
+   </ul>
+   <p>
+      I decided to go with this tool because I needed a way to keep track of tasks that I needed to do on these side projects I work on.
+        I only get to work on them sporadically, so I am constantly forgetting where I am on the project and what needs to be done.  So I 
+        figured I may as well make one of the projects be the building of a tool to help me out.
+   </p>
+   <p>
+      I named it "Home Scrum" because I suck at naming things, I am primarily going to use it for tracking projects that I work on
+        at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
+   </p>
+</article>
+
+<article id="AboutScrum">
+   <h2>About Scrum</h2>
+   <p>
+      If you would like to learn more about scrum, these resources may be helpful:
+   </p>
+   <ul>
+      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
+      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
    </ul>
 </article>
 
+<article id="VersionHistory">
+   <h2>Version History</h2>
+   <div id="VersionHistoryDetails">
+      <h3>Version 1.2</h3>
+      <div>
+         <h4>Release Date: 2013/10/15</h4>
+         <h4>New Features</h4>
+         <p>This release focused on improving the workflow for sprints.</p>
+         <ul>
+            <li>Work items can now be edited via a link from the sprint's edit page.</li>
+            <li>When editing a work item in this way, control returns to the sprint edit page after editing of the work item is complete.</li>
+            <li>A handful of work item lists were added that will aid the user when either working on a sprint or planning a future sprint.  This are:
+            <ul>
+               <li>My Assignments - items assigned to the currently logged in user</li>
+               <li>Unassigned Backlog - backlog items currently not assigned to a sprint</li>
+               <li>Unassigned Tasks - any task currently not assigned to a sprint</li>
+               <li>Unassigned Problems - any problem type task currently not assigned to a sprint</li>
+            </ul>
+            </li>
+         </ul>
 
+         <h4>Bug Fixes</h4>
+         <ul>
+            <li>When a task is created from the backlog item screen, the task is now added to the backlog item's sprint if it is in one.</li>
+            <li>When a change in sprint or project is applied to a backlog item, the same change is now properly propagated to that backlog item's tasks.</li>
+         </ul>
 
-<article>
-    <h2>About Scrum</h2>
-    <p>
-        If you would like to learn more about scrum, these resources may be helpful:
-    </p>
-    <ul>
-        <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
-        <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
-    </ul>
+      </div>
+
+      <h3>Version 1.1</h3>
+      <div>
+         <h4>Release Date: 2013/09/27</h4>
+         <h4>New Features</h4>
+         <p>Added pre-defined categories for the following entities:</p>
+         <ul>
+            <li>Acceptance Criterion Statuses</li>
+            <li>Project Statuses</li>
+            <li>Sprint Statuses</li>
+            <li>Work Item Statuses</li>
+            <li>Work Item Types</li>
+         </ul>
+         <h4>Bug Fixes</h4>
+         <ul>
+            <li>Fixed problems with certain values remaining null even though they appeared to default properly.</li>
+            <li>Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
+         HTML tags are displayed as text.
+            </li>
+            <li>If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
+         displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
+            </li>
+            <li>HTML tags and other special characters no longer cause an application error.  HTML tags may be used, but
+         not as markup.  That is &lt;strong&gt;strong text&lt;/strong&gt; shows up as &lt;strong&gt;strong text&lt;/strong&gt;
+         and not <strong>strong text</strong> .
+            </li>
+         </ul>
+      </div>
+
+      <h3>Version 1.0</h3>
+      <div>
+         <h4>Release Date: 2013/09/07</h4>
+         <p>While still spartan, this release has some useful features:</p>
+         <ul>
+            <li>This version list</li>
+            <li>Sprints - Very basic functionallity at this point, but usable</li>
+            <li>Several UI Bugs and Quirks</li>
+         </ul>
+      </div>
+
+      <h3>Verrsion 0.x</h3>
+      <div>
+         <h4>Release Date: Periodically Over Time (No Official Release)</h4>
+         <p>
+            These prior versions were released at periodic times thoughout the development cycle just so I could use the system to track
+      what I was doing.
+         </p>
+         <ul>
+            <li>No sprint support</li>
+            <li>Grouping of tasks initially not supported</li>
+            <li>Grouping of tasks eventually supported via the non-task items</li>
+         </ul>
+      </div>
+   </div>
 </article>
+
+
+<script>
+   $(function () {
+      $("#VersionHistoryDetails").accordion({
+         heightStyle: "content",
+         collapsible: true
+      });
+
+   });
+</script>

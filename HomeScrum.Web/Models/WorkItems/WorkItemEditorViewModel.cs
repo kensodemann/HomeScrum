@@ -79,5 +79,26 @@ namespace HomeScrum.Web.Models.WorkItems
       public IEnumerable<SelectListItemWithAttributes> ProductBacklogItems { get; set; }
 
       public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
+
+
+      public void ClearSelectedBacklog()
+      {
+         var backlogItem = ProductBacklogItems.SingleOrDefault( x => x.Selected );
+         if (backlogItem != null)
+         {
+            backlogItem.Selected = false;
+            ParentWorkItemId = Guid.Empty;
+         }
+      }
+
+      public void ClearSelectedSprint()
+      {
+         var sprint = Sprints.SingleOrDefault( x => x.Selected );
+         if (sprint != null)
+         {
+            sprint.Selected = false;
+            SprintId = Guid.Empty;
+         }
+      }
    }
 }

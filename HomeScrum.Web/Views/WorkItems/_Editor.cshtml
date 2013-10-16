@@ -37,17 +37,17 @@
       </div>
 
       <div class="formSelectList">
-         @Html.HiddenFor( model => model.SprintId )
-         @Html.LabelFor( model => model.SprintId )
-         @Html.DropDownListWithDataAttributesFor( model => model.SelectSprintId, Model.Sprints )
-         @Html.ValidationMessageFor( model => model.SprintId )
-      </div>
-
-      <div class="formSelectList">
          @Html.HiddenFor( model => model.ProjectId )
          @Html.LabelFor( model => model.ProjectId )
          @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects )
          @Html.ValidationMessageFor( model => model.ProjectId )
+      </div>
+
+      <div class="formSelectList">
+         @Html.HiddenFor( model => model.SprintId )
+         @Html.LabelFor( model => model.SprintId )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectSprintId, Model.Sprints )
+         @Html.ValidationMessageFor( model => model.SprintId )
       </div>
 
       <div class="formSelectList" id="AssignedToUserDiv">
@@ -84,15 +84,13 @@
                   @Html.DisplayFor( modelItem => item.WorkItemTypeName )
                </td>
                <td>
-                  @Html.DisplayFor( modelItem => item.Name )
+                  @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
                </td>
                <td>
                   @Html.DisplayFor( modelItem => item.StatusName )
                </td>
                <td>
-                  @Html.ActionLink( "Edit", "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
-                        @Html.ActionLink( "Details", "Details", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } ) |
-                        @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
+                  @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
                            new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
                </td>
             </tr>
@@ -176,7 +174,7 @@
          var sprintProject = $("#SelectSprintId").find(":selected").attr("data-ProjectId");
          if (selectedProject != sprintProject &&
              sprintProject != "00000000-0000-0000-0000-000000000000") {
-            $("#SelectProjectId").val(backlogProject);
+            $("#SelectProjectId").val(sprintProject);
             $("#ProjectId").val(sprintProject);
          }
       }

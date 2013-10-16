@@ -1,0 +1,20 @@
+﻿@model IEnumerable<HomeScrum.Web.Models.WorkItems.WorkItemIndexViewModel>
+
+@{
+   ViewBag.Title = "Unassigned Backlog Items";
+   ViewBag.ActionName = "UnassignedBacklog";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial( "_WorkItemList", Model )
+
+<div id="ActionButtonArea">
+   @Html.ActionLink( "Create New Work Item", "Create", new { callingAction = "UnassignedBacklog" }, new { id = "CreateNewItem" } )
+</div>
+
+<script>
+   $(function () {
+      $("#CreateNewItem").button();
+   });
+</script>

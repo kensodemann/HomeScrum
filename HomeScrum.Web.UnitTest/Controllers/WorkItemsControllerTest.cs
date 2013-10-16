@@ -8,7 +8,6 @@ using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
-using NHibernate.Context;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
@@ -30,6 +29,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
+      private User _user;
 
       private Mock<ControllerContext> _controllerConext;
       private Stack<NavigationData> _navigationStack;
@@ -92,164 +92,76 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.IsNotNull( view );
          Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
          Assert.AreEqual( WorkItems.ModelData.Count(), model.Count() );
       }
       #endregion
 
 
-      #region Details Tests
+      #region MyAssignent Tests
       [TestMethod]
-      public void Details_ReturnsViewWithModel()
+      public void MyAssignment_ReturnsViewWithNoncompletedItemsAssignedToCurrentUser()
       {
-         var model = WorkItems.ModelData[2];
-
-         var view = _controller.Details( model.Id ) as ViewResult;
+         var view = _controller.MyAssignments( _principal.Object ) as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
 
          Assert.IsNotNull( view );
-         Assert.IsNotNull( view.Model );
-         Assert.IsInstanceOfType( view.Model, typeof( WorkItemViewModel ) );
-         Assert.AreEqual( model.Id, ((WorkItemViewModel)view.Model).Id );
-         Assert.AreEqual( model.Name, ((WorkItemViewModel)view.Model).Name );
-         Assert.AreEqual( model.Description, ((WorkItemViewModel)view.Model).Description );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == _user.Id && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
       }
+      #endregion
 
+
+      #region UnassignedBacklog Tests
       [TestMethod]
-      public void Details_ReturnsHttpNotFoundIfNoModel()
+      public void UnassignedBacklog_ReturnsViewWithOpenBacklogItemsNotAssignedToASprint()
       {
-         var id = Guid.NewGuid();
+         var view = _controller.UnassignedBacklog() as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
 
-         var result = _controller.Details( id ) as HttpNotFoundResult;
-
-         Assert.IsNotNull( result );
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.Sprint == null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
       }
+      #endregion
 
+
+      #region UnassignedTasks Tests
       [TestMethod]
-      public void DetailsGet_AddsCallingActionAndId_IfSpecified()
+      public void UnassignedTasks_ReturnsViewWithOpenUnassignedTasks()
       {
-         var controller = CreateController();
-         var id = WorkItems.ModelData[2].Id;
-         var parentId = Guid.NewGuid();
+         var view = _controller.UnassignedTasks() as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
 
-         var viewModel = ((ViewResult)controller.Details( id, "Edit", parentId.ToString() )).Model as WorkItemViewModel;
-
-         Assert.AreEqual( "Edit", viewModel.CallingAction );
-         Assert.AreEqual( parentId, viewModel.CallingId );
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.AssignedToUser == null && x.WorkItemType.Category == WorkItemTypeCategory.Task && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
       }
+      #endregion
 
+
+      #region UnassignedProblems Tests
       [TestMethod]
-      public void DetailsGet_LeavesCallingActionAndIdAsDefault_IfNotSpecified()
+      public void UnassignedProblems_ReturnsViewWithOpenUnassignedProblems()
       {
-         var controller = CreateController();
-         var id = WorkItems.ModelData[2].Id;
+         var view = _controller.UnassignedProblems() as ViewResult;
+         var model = view.Model as IEnumerable<WorkItemIndexViewModel>;
 
-         var viewModel = ((ViewResult)controller.Details( id )).Model as WorkItemViewModel;
-
-         Assert.IsNull( viewModel.CallingAction );
-         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
-      }
-
-      [TestMethod]
-      public void DetailsGet_PushesToNavigationStack_IfCallingDataGiven()
-      {
-         var controller = CreateController();
-         var id = WorkItems.ModelData[3].Id;
-         var parentId = Guid.NewGuid();
-
-         controller.Details( id, "Index" );
-         var viewModel = ((ViewResult)controller.Details( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
-
-         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
-
-         Assert.IsNotNull( stack );
-         Assert.AreEqual( 2, stack.Count );
-
-         var navData = stack.Pop();
-         Assert.AreEqual( "Edit", navData.Action );
-         Assert.AreEqual( parentId, new Guid( navData.Id ) );
-
-         navData = stack.Peek();
-         Assert.AreEqual( "Index", navData.Action );
-         Assert.IsNull( navData.Id );
-
-         Assert.AreEqual( "Edit", viewModel.CallingAction );
-         Assert.AreEqual( parentId, viewModel.CallingId );
-      }
-
-      [TestMethod]
-      public void DetailsGet_DoesNotPush_IfCallingDataAlreadyOnTop()
-      {
-         var controller = CreateController();
-         var id = WorkItems.ModelData[3].Id;
-         var parentId = Guid.NewGuid();
-
-         controller.Details( id, "Index" );
-         controller.Details( id, "Edit", parentId.ToString() );
-         controller.Details( id, "Edit", parentId.ToString() );
-         controller.Details( id, "Index" );
-         controller.Details( id, "Index" );
-
-         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
-
-         Assert.IsNotNull( stack );
-         Assert.AreEqual( 3, stack.Count );
-
-         var navData = stack.Pop();
-         Assert.AreEqual( "Index", navData.Action );
-         Assert.IsNull( navData.Id );
-
-         navData = stack.Pop();
-         Assert.AreEqual( "Edit", navData.Action );
-         Assert.AreEqual( parentId, new Guid( navData.Id ) );
-
-         navData = stack.Peek();
-         Assert.AreEqual( "Index", navData.Action );
-         Assert.IsNull( navData.Id );
-      }
-
-      [TestMethod]
-      public void DetailsGet_PopsFromNavigationStack_IfCallingDataNotGiven()
-      {
-         var controller = CreateController();
-         var id = WorkItems.ModelData[3].Id;
-         var parentId = Guid.NewGuid();
-
-         controller.Details( id, "Index" );
-         controller.Details( id, "Edit", parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Details( id )).Model as ViewModelBase;
-
-         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
-
-         Assert.IsNotNull( stack );
-         Assert.AreEqual( 1, stack.Count );
-
-         var navData = stack.Peek();
-         Assert.AreEqual( "Index", navData.Action );
-         Assert.IsNull( navData.Id );
-
-         Assert.AreEqual( "Index", viewModel.CallingAction );
-         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
-      }
-
-      [TestMethod]
-      public void DetailsGet_PopulatesTaskList_IfChildTasksExist()
-      {
-         var parentId = WorkItems.ModelData
-            .Where( x => x.ParentWorkItem != null )
-            .GroupBy( x => x.ParentWorkItem.Id )
-            .Select( g => new { Id = g.Key, Count = g.Count() } )
-            .OrderBy( x => x.Count )
-            .Last().Id;
-         var expectedChildWorkItems = WorkItems.ModelData
-            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
-
-         var result = _controller.Details( parentId ) as ViewResult;
-         var viewModel = result.Model as WorkItemViewModel;
-
-         Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
-         foreach (var child in expectedChildWorkItems)
-         {
-            Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
-         }
+         Assert.IsNotNull( view );
+         Assert.IsNotNull( model );
+         Assert.IsTrue( model.Count() > 0 );
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.AssignedToUser == null && x.WorkItemType.Category == WorkItemTypeCategory.Issue && x.Status.Category != WorkItemStatusCategory.Complete )
+                             .Count(), model.Count() );
       }
       #endregion
 
@@ -411,7 +323,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as WorkItemEditorViewModel;
+         var viewModel = ((ViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -423,8 +335,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         controller.Create( "Index" );
-         var viewModel = ((ViewResult)controller.Create( "Edit", parentId.ToString() )).Model as ViewModelBase;
+         controller.Create( callingAction: "Index" );
+         var viewModel = ((ViewResult)controller.Create( callingController: "Bogus", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -432,10 +344,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 2, stack.Count );
 
          var navData = stack.Pop();
+         Assert.AreEqual( "Bogus", navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -449,26 +363,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         controller.Create( "Index" );
-         controller.Create( "Edit", parentId.ToString() );
-         controller.Create( "Edit", parentId.ToString() );
-         controller.Create( "Index" );
-         controller.Create( "Index" );
+         controller.Create( callingAction: "Index" );
+         controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Create( callingController: "Something", callingAction: "Index" );
+         controller.Create( callingController: "Something", callingAction: "Index" );
+         controller.Create( callingAction: "Index" );
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
          Assert.IsNotNull( stack );
-         Assert.AreEqual( 3, stack.Count );
+         Assert.AreEqual( 4, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
          navData = stack.Pop();
+         Assert.AreEqual( "Something", navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
       }
@@ -479,8 +402,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         controller.Create( "Index" );
-         controller.Create( "Edit", parentId.ToString() );
+         controller.Create( callingAction: "Index" );
+         controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
          var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
@@ -489,6 +412,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, stack.Count );
 
          var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -532,6 +456,42 @@ namespace HomeScrum.Web.UnitTest.Controllers
             }
          }
       }
+
+      [TestMethod]
+      public void CreateGet_SelectsSprint_IfParentAssignedToSprint()
+      {
+         var backlogItems = WorkItems.ModelData
+            .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' )
+            .ToList();
+         var backlogItem = backlogItems.First( x => x.Sprint != null && x.Sprint.Id != Guid.Empty );
+         var sprintId = backlogItem.Sprint.Id;
+
+         var result = _controller.Create( parentId: backlogItem.Id.ToString() ) as ViewResult;
+
+         var model = result.Model as WorkItemEditorViewModel;
+
+         for (int i = 0; i < model.Sprints.Count(); i++)
+         {
+            var item = model.Sprints.ElementAt( i );
+            if (i == 0)
+            {
+               Assert.AreEqual( Guid.Empty.ToString(), item.Value );
+               Assert.IsFalse( item.Selected, "Not Assigned should not be selected" );
+            }
+            else
+            {
+               if (new Guid( item.Value ) == sprintId)
+               {
+                  Assert.IsTrue( item.Selected, "Sprint should be selected" );
+               }
+               else
+               {
+                  Assert.IsFalse( item.Selected, "Sprint should not be selected" );
+               }
+            }
+         }
+
+      }
       #endregion
 
 
@@ -554,7 +514,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_RedirectsToIndexIfModelIsValid_AndNoCallingActionOrControllerSpecified()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
@@ -566,6 +526,66 @@ namespace HomeScrum.Web.UnitTest.Controllers
          object value;
          result.RouteValues.TryGetValue( "action", out value );
          Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToActionIfSpecified()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.CallingAction = "Edit";
+         var Id = Guid.NewGuid();
+         viewModel.CallingId = Id;
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( Id, new Guid( value.ToString() ) );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToControllerAndActionIfSpecified()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.CallingAction = "Foo";
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Foo", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToControllerIndexIfOnlyControllerSpecified()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
       }
 
       [TestMethod]
@@ -930,7 +950,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var modelId = WorkItems.ModelData[0].Id;
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Edit( modelId, "Edit", parentId.ToString() )).Model as WorkItemEditorViewModel;
+         var viewModel = ((ViewResult)_controller.Edit( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -943,8 +963,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = WorkItems.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Edit( id, "Index" );
-         var viewModel = ((ViewResult)controller.Edit( id, "Edit", parentId.ToString() )).Model as ViewModelBase;
+         controller.Edit( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -952,10 +972,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 2, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -970,26 +992,35 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = WorkItems.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Edit( id, "Index" );
-         controller.Edit( id, "Edit", parentId.ToString() );
-         controller.Edit( id, "Edit", parentId.ToString() );
-         controller.Edit( id, "Index" );
-         controller.Edit( id, "Index" );
+         controller.Edit( id, callingAction: "Index" );
+         controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Edit( id, callingController: "Sprints", callingAction: "Index" );
+         controller.Edit( id, callingController: "Sprints", callingAction: "Index" );
+         controller.Edit( id, callingAction: "Index" );
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
          Assert.IsNotNull( stack );
-         Assert.AreEqual( 3, stack.Count );
+         Assert.AreEqual( 4, stack.Count );
 
          var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
          navData = stack.Pop();
+         Assert.AreEqual( "Sprints", navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Edit", navData.Action );
          Assert.AreEqual( parentId, new Guid( navData.Id ) );
 
          navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
       }
@@ -1001,8 +1032,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = WorkItems.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Edit( id, "Index" );
-         controller.Edit( id, "Edit", parentId.ToString() );
+         controller.Edit( id, callingAction: "Index" );
+         controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
          var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
@@ -1011,6 +1042,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, stack.Count );
 
          var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
          Assert.AreEqual( "Index", navData.Action );
          Assert.IsNull( navData.Id );
 
@@ -1053,7 +1085,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_RedirectsToIndexIfModelIsValid_AnNowCallingActionOrCallingControllerSet()
       {
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1066,6 +1098,69 @@ namespace HomeScrum.Web.UnitTest.Controllers
          object value;
          result.RouteValues.TryGetValue( "action", out value );
          Assert.AreEqual( "Index", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToActionIfSpecified()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.CallingAction = "Edit";
+         var Id = Guid.NewGuid();
+         viewModel.CallingId = Id;
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( Id, new Guid( value.ToString() ) );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToControllerAndActionIfSpecified()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.CallingAction = "Foo";
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Foo", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToControllerIndexIfOnlyControllerSpecified()
+      {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         viewModel.CallingController = "Bar";
+
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Index", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Bar", value.ToString() );
       }
 
       [TestMethod]
@@ -1154,7 +1249,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
+      public void EditPost_ReInitializesWorkItemTypesIfModelNotValid_WorkItemTypeSelected()
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1174,7 +1269,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesProjectsIfModelNotValid_ProjectSelected()
+      public void EditPost_ReInitializesProjectsIfModelNotValid_ProjectSelected()
       {
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1196,7 +1291,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
+      public void EditPost_ReInitializesAssignedToUsersIfModelNotValid_UserSelected()
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1258,6 +1353,44 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _session.Clear();
          var item = _session.Get<WorkItem>( viewModel.Id );
          Assert.IsNull( item.ParentWorkItem );
+      }
+
+      [TestMethod]
+      public void EditPost_SetsProjectInChildTasks()
+      {
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != Guid.Empty ).ParentWorkItem.Id;
+         var model = WorkItems.ModelData.Single( x => x.Id == parentId );
+
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         var newProjectId = Projects.ModelData.First( x => x.Id != viewModel.ProjectId ).Id;
+         viewModel.ProjectId = newProjectId;
+         _controller.Edit( viewModel, _principal.Object );
+
+         var children = _session.Query<WorkItem>()
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+         foreach (var child in children)
+         {
+            Assert.AreEqual( newProjectId, child.Project.Id );
+         }
+      }
+
+      [TestMethod]
+      public void EditPost_SetsSprintInChildTasks()
+      {
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != Guid.Empty ).ParentWorkItem.Id;
+         var model = WorkItems.ModelData.Single( x => x.Id == parentId );
+
+         var viewModel = CreateWorkItemEditorViewModel( model );
+         var newSprintId = Sprints.ModelData.First( x => x.Id != viewModel.SprintId ).Id;
+         viewModel.SprintId = newSprintId;
+         _controller.Edit( viewModel, _principal.Object );
+
+         var children = _session.Query<WorkItem>()
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+         foreach (var child in children)
+         {
+            Assert.AreEqual( newSprintId, child.Sprint.Id );
+         }
       }
       #endregion
 
@@ -1362,7 +1495,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectId = (workItem.Project == null) ? default( Guid ) : workItem.Project.Id,
             ProjectName = (workItem.Project == null) ? null : workItem.Project.Name,
             ParentWorkItemId = (workItem.ParentWorkItem == null) ? default( Guid ) : workItem.ParentWorkItem.Id,
-            ParentWorkItemName = (workItem.ParentWorkItem == null) ? null : workItem.ParentWorkItem.Name
+            ParentWorkItemName = (workItem.ParentWorkItem == null) ? null : workItem.ParentWorkItem.Name,
+            SprintId = (workItem.Sprint == null) ? Guid.Empty : workItem.Sprint.Id,
+            SprintName = (workItem.Sprint == null) ? null : workItem.Sprint.Name
          };
       }
 
@@ -1373,11 +1508,12 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _principal.SetupGet( x => x.Identity ).Returns( _userIdentity.Object );
 
          // In other places where we use a random user, we use the first active one.
-         // Use the first inactive user here just to ensure it is a different user.
-         var currentUser = Users.ModelData.First( x => x.StatusCd == 'I' );
+         // Use the next active user.
+         var firstActiveUser = Users.ModelData.First( x => x.StatusCd == 'A' );
+         _user = Users.ModelData.First( x => x.StatusCd == 'A' && x.Id != firstActiveUser.Id );
          _userIdentity
             .SetupGet( x => x.Name )
-            .Returns( currentUser.UserName );
+            .Returns( _user.UserName );
       }
 
       private WorkItemsController CreateController()

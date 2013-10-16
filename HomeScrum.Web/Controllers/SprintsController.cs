@@ -1,5 +1,6 @@
 ﻿using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Sprints;
 using HomeScrum.Web.Translators;
 using NHibernate;
@@ -8,14 +9,11 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using HomeScrum.Web.Extensions;
-using System.Diagnostics;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class SprintsController : ReadWriteController<Sprint, SprintViewModel, SprintEditorViewModel>
+   public class SprintsController : ReadWriteController<Sprint, SprintEditorViewModel>
    {
       public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
@@ -47,6 +45,7 @@ namespace HomeScrum.Web.Controllers
                              } );
 
             transaction.Commit();
+            ClearNavigationStack();
          }
 
          return View( items );
@@ -140,7 +139,7 @@ namespace HomeScrum.Web.Controllers
             Id = id
          };
 
-         UpdateNavigationStack( model, callingAction, callingId );
+         UpdateNavigationStack( model, null, callingAction, callingId );
 
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())
@@ -207,7 +206,7 @@ namespace HomeScrum.Web.Controllers
             Id = id
          };
 
-         UpdateNavigationStack( model, callingAction, callingId );
+         UpdateNavigationStack( model, null, callingAction, callingId );
 
          var session = SessionFactory.GetCurrentSession();
          using (var tx = session.BeginTransaction())

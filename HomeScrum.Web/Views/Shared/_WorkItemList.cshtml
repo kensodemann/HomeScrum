@@ -1,37 +1,32 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.WorkItems.WorkItemIndexViewModel>
 
 <table>
-    <tr>
-        <th class="DataColumn">
-            @Html.DisplayNameFor( model => model.WorkItemTypeName )
-        </th>
-        <th class="DescriptiveText">
-            @Html.DisplayNameFor( model => model.Name )
-        </th>
-        <th class="DataColumn">
-            @Html.DisplayNameFor( model => model.StatusName )
-        </th>
-        <th class="LastDataColumn"></th>
-    </tr>
+   <tr>
+      <th class="DataColumn">
+         @Html.DisplayNameFor( model => model.WorkItemTypeName )
+      </th>
+      <th class="DescriptiveText">
+         @Html.DisplayNameFor( model => model.Name )
+      </th>
+      <th class="DataColumn">
+         @Html.DisplayNameFor( model => model.StatusName )
+      </th>
+   </tr>
 
-    @foreach (var item in Model)
-    {
-        var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
+   @foreach (var item in Model)
+   {
+      var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
         
-        <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
-            <td class="DataColumn">
-                @Html.DisplayFor( modelItem => item.WorkItemTypeName )
-            </td>
-            <td class="DescriptiveText">
-                @Html.DisplayFor( modelItem => item.Name )
-            </td>
-            <td class="DataColumn">
-                @Html.DisplayFor( modelItem => item.StatusName )
-            </td>
-            <td class="LastDataColumn">
-                @Html.ActionLink( "Edit", "Edit", new { id = item.Id } ) |
-            @Html.ActionLink( "Details", "Details", new { id = item.Id } )
-            </td>
-        </tr>
-    }
+      <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+         <td class="DataColumn">
+            @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+         </td>
+         <td class="DescriptiveText">
+            @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = ViewBag.ActionName } )
+         </td>
+         <td class="DataColumn">
+            @Html.DisplayFor( modelItem => item.StatusName )
+         </td>
+      </tr>
+   }
 </table>

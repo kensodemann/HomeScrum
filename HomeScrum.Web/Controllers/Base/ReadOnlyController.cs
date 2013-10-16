@@ -14,14 +14,12 @@ namespace HomeScrum.Web.Controllers.Base
 {
    /// <summary>
    /// The ReadOnlyController is the base class for any contoller in the system that only supports
-   /// the GET operations.  The only actions for this type of controller are Index and Details.
+   /// the GET operations.  The only action for this type of controller is Index.
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
-   /// <typeparam name="ViewModelT">The View Model Type for display views</typeparam>
    [Authorize]
-   public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
+   public abstract class ReadOnlyController<ModelT> : Controller
       where ModelT : DomainObjectBase
-      where ViewModelT : DomainObjectViewModel
    {
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
@@ -52,46 +50,17 @@ namespace HomeScrum.Web.Controllers.Base
             transaction.Commit();
          }
 
+         ClearNavigationStack();
+
          return View( items );
       }
 
-      //
-      // GET: /ModelTs/Details/Guid
-      public virtual ActionResult Details( Guid id, string callingAction = null, string callingId = null )
+
+      protected void UpdateNavigationStack( ViewModelBase viewModel, string callingController, string callingAction, string callingId )
       {
-         ViewModelT viewModel;
-         Log.Debug( "Details(%s)", id.ToString() );
-
-         var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
+         if (callingController != null || callingAction != null)
          {
-            viewModel = GetViewModel( session, id );
-            transaction.Commit();
-         }
-
-         if (viewModel == null)
-         {
-            return HttpNotFound();
-         }
-
-         UpdateNavigationStack( viewModel, callingAction, callingId );
-
-         return View( viewModel );
-      }
-
-
-      protected virtual ViewModelT GetViewModel( ISession session, Guid id )
-      {
-         var model = session.Get<ModelT>( id );
-         return (model != null) ? Mapper.Map<ViewModelT>( model ) : null;
-      }
-
-
-      protected void UpdateNavigationStack( ViewModelBase viewModel, string callingAction, string callingId )
-      {
-         if (callingAction != null)
-         {
-            PushNavigationData( callingAction, callingId );
+            PushNavigationData( callingController, callingAction, callingId );
          }
          else
          {
@@ -101,7 +70,18 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
-      private void PushNavigationData( string callingAction, string callingId )
+      protected void ClearNavigationStack()
+      {
+         var stack = Session["NavigationStack"] as Stack<NavigationData>;
+         if (stack != null && stack.Count != 0)
+         {
+            stack.Clear();
+            Session["NavigationStack"] = stack;
+         }
+      }
+
+
+      private void PushNavigationData( string callingController, string callingAction, string callingId )
       {
          var stack = Session["NavigationStack"] as Stack<NavigationData>;
          if (stack == null)
@@ -112,13 +92,13 @@ namespace HomeScrum.Web.Controllers.Base
          if (stack.Count != 0)
          {
             var top = stack.Peek();
-            if (top.Action == callingAction && top.Id == callingId)
+            if (top.Controller == callingController && top.Action == callingAction && top.Id == callingId)
             {
                return;
             }
          }
-         
-         stack.Push( new NavigationData() { Action = callingAction, Id = callingId } );
+
+         stack.Push( new NavigationData() { Controller = callingController, Action = callingAction, Id = callingId } );
          Session["NavigationStack"] = stack;
       }
 
@@ -142,11 +122,13 @@ namespace HomeScrum.Web.Controllers.Base
             var data = stack.Peek();
             Guid parsedId;
             Guid.TryParse( data.Id, out parsedId );
+            viewModel.CallingController = data.Controller;
             viewModel.CallingAction = data.Action;
             viewModel.CallingId = parsedId;
          }
          else
          {
+            viewModel.CallingController = null;
             viewModel.CallingAction = null;
             viewModel.CallingId = Guid.Empty;
          }
