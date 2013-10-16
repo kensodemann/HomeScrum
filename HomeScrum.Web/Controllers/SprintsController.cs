@@ -45,6 +45,7 @@ namespace HomeScrum.Web.Controllers
                              } );
 
             transaction.Commit();
+            ClearNavigationStack();
          }
 
          return View( items );
