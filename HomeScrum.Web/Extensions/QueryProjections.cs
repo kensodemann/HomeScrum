@@ -10,7 +10,7 @@ namespace HomeScrum.Web.Extensions
 {
    public static class QueryProjections
    {
-      public static IList<DomainObjectViewModel> SelectDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
+      public static IQueryable<DomainObjectViewModel> SelectDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
          where SourceT : DomainObjectBase
       {
          return query.Select( x => new DomainObjectViewModel()
@@ -18,8 +18,7 @@ namespace HomeScrum.Web.Extensions
                                       Id = x.Id,
                                       Name = x.Name,
                                       Description = x.Description
-                                   } )
-            .ToList();
+                                   } );
       }
 
       public static IList<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )

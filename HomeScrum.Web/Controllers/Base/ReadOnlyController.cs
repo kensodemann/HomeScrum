@@ -7,6 +7,7 @@ using NHibernate;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 
@@ -37,22 +38,25 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/
       public virtual ActionResult Index()
       {
-         IEnumerable<DomainObjectViewModel> items;
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
+         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<ModelT>();
+         var query = queryModel.GetQuery( session ).SelectDomainObjectViewModels<ModelT>();
+
+         return IndexView( query );
+      }
+
+      protected ActionResult IndexView<T>( IQueryable<T> query )
+      {
+         var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<ModelT>();
-            items = queryModel.GetQuery( session )
-               .SelectDomainObjectViewModels<ModelT>();
-
+            var items = query.ToList();
             transaction.Commit();
+            ClearNavigationStack();
+            return View( items );
          }
-
-         ClearNavigationStack();
-
-         return View( items );
       }
 
 
