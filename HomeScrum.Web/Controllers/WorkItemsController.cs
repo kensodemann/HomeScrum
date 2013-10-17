@@ -299,15 +299,8 @@ namespace HomeScrum.Web.Controllers
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Name.ToUpper() )
-            .Select( x => new WorkItemIndexViewModel()
-            {
-               Id = x.Id,
-               Name = x.Name,
-               Description = x.Description,
-               StatusName = x.Status.Name,
-               WorkItemTypeName = x.WorkItemType.Name,
-               IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-            } ).ToList();
+            .SelectWorkItemIndexViewModels()
+            .ToList();
       }
 
 
