@@ -22,17 +22,12 @@ namespace HomeScrum.Web.Controllers
       // GET: /Sprints/
       public override System.Web.Mvc.ActionResult Index()
       {
-         IEnumerable<SprintIndexViewModel> items;
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
-            items = queryModel.GetQuery( session )
-               .OrderBy( x => x.Project.Name )
-               .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
-               .ThenBy( x => x.Status.SortSequence )
+         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
+         var query = queryModel.GetQuery( session )
+               .ApplyStandardSorting()
                .Select( x => new SprintIndexViewModel()
                              {
                                 Id = x.Id,
@@ -44,11 +39,7 @@ namespace HomeScrum.Web.Controllers
                                 EndDate = x.EndDate
                              } );
 
-            transaction.Commit();
-            ClearNavigationStack();
-         }
-
-         return View( items );
+         return IndexView( query );
       }
 
 
@@ -56,14 +47,11 @@ namespace HomeScrum.Web.Controllers
       // GET: /Sprints/CurrentSprints
       public System.Web.Mvc.ActionResult CurrentSprints()
       {
-         IEnumerable<SprintIndexViewModel> items;
          Log.Debug( "CurrentSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
-            items = queryModel.GetQuery( session )
+         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
+         var query = queryModel.GetQuery( session )
                .Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active &&
                             x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
                .OrderBy( x => x.Project.Name )
@@ -80,24 +68,18 @@ namespace HomeScrum.Web.Controllers
                   EndDate = x.EndDate
                } );
 
-            transaction.Commit();
-         }
-
-         return View( items );
+         return IndexView( query );
       }
 
       //
       // GET: /Sprints/OpenSprints
       public System.Web.Mvc.ActionResult OpenSprints()
       {
-         IEnumerable<SprintIndexViewModel> items;
          Log.Debug( "CurrentSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
-            items = queryModel.GetQuery( session )
+         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
+         var query = queryModel.GetQuery( session )
                .Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete )
                .OrderBy( x => x.Project.Name )
                .ThenBy( x => x.StartDate )
@@ -113,10 +95,7 @@ namespace HomeScrum.Web.Controllers
                   EndDate = x.EndDate
                } );
 
-            transaction.Commit();
-         }
-
-         return View( items );
+         return IndexView( query );
       }
 
 
@@ -378,6 +357,16 @@ namespace HomeScrum.Web.Controllers
       {
          return session.Query<User>()
             .Single( x => x.UserName == userName ).Id;
+      }
+   }
+
+   internal static class SprintQueryExtentions
+   {
+      public static IQueryable<Sprint> ApplyStandardSorting( this IQueryable<Sprint> query )
+      {
+         return query.OrderBy( x => x.Project.Name )
+            .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
+            .ThenBy( x => x.Status.SortSequence );
       }
    }
 }
