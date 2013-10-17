@@ -119,7 +119,7 @@ namespace HomeScrum.Web.Extensions
          } ).ToList();
       }
 
-      public static IList<WorkItemIndexViewModel> SelectWorkItemIndexViewModels( this IQueryable<WorkItem> query )
+      public static IQueryable<WorkItemIndexViewModel> SelectWorkItemIndexViewModels( this IQueryable<WorkItem> query )
       {
          return query.Select( x => new WorkItemIndexViewModel()
          {
@@ -128,7 +128,7 @@ namespace HomeScrum.Web.Extensions
             WorkItemTypeName = x.WorkItemType.Name,
             StatusName = x.Status.Name,
             IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-         } ).ToList();
+         } );
       }
    }
 }

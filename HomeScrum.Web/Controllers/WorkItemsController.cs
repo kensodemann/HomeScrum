@@ -26,15 +26,10 @@ namespace HomeScrum.Web.Controllers
       public override ActionResult Index()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -43,16 +38,11 @@ namespace HomeScrum.Web.Controllers
       {
          var session = SessionFactory.GetCurrentSession();
          var assignedToUserId = GetUserId( session, user.Identity.Name );
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -60,18 +50,13 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedBacklog()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
-               .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
-                  x.Status.Category != WorkItemStatusCategory.Complete &&
-                  x.Sprint == null )
-               .SelectWorkItemIndexViewModels();
+         var query = BaseWorkItemQuery( session )
+              .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
+                 x.Status.Category != WorkItemStatusCategory.Complete &&
+                 x.Sprint == null )
+              .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -79,18 +64,13 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedProblems()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser == null
                   && x.Status.Category != WorkItemStatusCategory.Complete
                   && x.WorkItemType.Category == WorkItemTypeCategory.Issue )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -98,18 +78,13 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedTasks()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser == null
                   && x.Status.Category != WorkItemStatusCategory.Complete
                   && x.WorkItemType.Category == WorkItemTypeCategory.Task )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       private IQueryable<WorkItem> BaseWorkItemQuery( ISession session )
