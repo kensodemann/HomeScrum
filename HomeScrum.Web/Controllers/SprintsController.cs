@@ -28,16 +28,7 @@ namespace HomeScrum.Web.Controllers
          var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
          var query = queryModel.GetQuery( session )
                .ApplyStandardSorting()
-               .Select( x => new SprintIndexViewModel()
-                             {
-                                Id = x.Id,
-                                Name = x.Name,
-                                Description = x.Description,
-                                ProjectName = x.Project.Name,
-                                StatusName = x.Status.Name,
-                                StartDate = x.StartDate,
-                                EndDate = x.EndDate
-                             } );
+               .SelectSprintIndexViewModels();
 
          return IndexView( query );
       }
@@ -54,19 +45,8 @@ namespace HomeScrum.Web.Controllers
          var query = queryModel.GetQuery( session )
                .Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active &&
                             x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
-               .OrderBy( x => x.Project.Name )
-               .ThenBy( x => x.StartDate )
-               .ThenBy( x => x.Status.SortSequence )
-               .Select( x => new SprintIndexViewModel()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  Description = x.Description,
-                  ProjectName = x.Project.Name,
-                  StatusName = x.Status.Name,
-                  StartDate = x.StartDate,
-                  EndDate = x.EndDate
-               } );
+               .ApplyStandardSorting()
+               .SelectSprintIndexViewModels();
 
          return IndexView( query );
       }
@@ -81,19 +61,8 @@ namespace HomeScrum.Web.Controllers
          var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
          var query = queryModel.GetQuery( session )
                .Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete )
-               .OrderBy( x => x.Project.Name )
-               .ThenBy( x => x.StartDate )
-               .ThenBy( x => x.Status.SortSequence )
-               .Select( x => new SprintIndexViewModel()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  Description = x.Description,
-                  ProjectName = x.Project.Name,
-                  StatusName = x.Status.Name,
-                  StartDate = x.StartDate,
-                  EndDate = x.EndDate
-               } );
+               .ApplyStandardSorting()
+               .SelectSprintIndexViewModels();
 
          return IndexView( query );
       }
@@ -367,6 +336,20 @@ namespace HomeScrum.Web.Controllers
          return query.OrderBy( x => x.Project.Name )
             .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
             .ThenBy( x => x.Status.SortSequence );
+      }
+
+      public static IQueryable<SprintIndexViewModel> SelectSprintIndexViewModels( this IQueryable<Sprint> query )
+      {
+         return query.Select( x => new SprintIndexViewModel()
+            {
+               Id = x.Id,
+               Name = x.Name,
+               Description = x.Description,
+               ProjectName = x.Project.Name,
+               StatusName = x.Status.Name,
+               StartDate = x.StartDate,
+               EndDate = x.EndDate
+            } );
       }
    }
 }
