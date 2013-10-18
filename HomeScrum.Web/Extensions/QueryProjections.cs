@@ -1,4 +1,5 @@
 ﻿using HomeScrum.Data.Domain;
+using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.WorkItems;
 using System;
@@ -10,17 +11,7 @@ namespace HomeScrum.Web.Extensions
 {
    public static class QueryProjections
    {
-      public static IQueryable<DomainObjectViewModel> SelectDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
-         where SourceT : DomainObjectBase
-      {
-         return query.Select( x => new DomainObjectViewModel()
-                                   {
-                                      Id = x.Id,
-                                      Name = x.Name,
-                                      Description = x.Description
-                                   } );
-      }
-
+      #region Select Lists
       public static IQueryable<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )
          where SourceT : DomainObjectBase
       {
@@ -118,6 +109,20 @@ namespace HomeScrum.Web.Extensions
                                          }
          } );
       }
+      #endregion
+
+
+      #region Domain Model to View Model
+      public static IQueryable<DomainObjectViewModel> SelectDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
+         where SourceT : DomainObjectBase
+      {
+         return query.Select( x => new DomainObjectViewModel()
+         {
+            Id = x.Id,
+            Name = x.Name,
+            Description = x.Description
+         } );
+      }
 
       public static IQueryable<WorkItemIndexViewModel> SelectWorkItemIndexViewModels( this IQueryable<WorkItem> query )
       {
@@ -130,5 +135,6 @@ namespace HomeScrum.Web.Extensions
             IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
          } );
       }
+      #endregion
    }
 }

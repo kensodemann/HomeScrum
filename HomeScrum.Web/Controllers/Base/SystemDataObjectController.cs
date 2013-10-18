@@ -2,6 +2,7 @@
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
+using NHibernate.Linq;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace HomeScrum.Web.Controllers.Base
          return new EmptyResult();
       }
 
-      protected abstract IEnumerable<ViewModelT> SelectViewModels( IQueryable<ModelT> query );
+      protected abstract IQueryable<ViewModelT> SelectViewModels( IQueryable<ModelT> query );
 
       //
       // GET: /ModelT/
@@ -53,16 +54,9 @@ namespace HomeScrum.Web.Controllers.Base
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var query = new HomeScrum.Data.Queries.AllSystemObjectsOrdered<ModelT>();
-            var items = SelectViewModels( query.GetQuery( session ) );
+         var query = SelectViewModels( session.Query<ModelT>().OrderBy( x => x.SortSequence ) );
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( items );
-         }
-
+         return IndexView( query );
       }
    }
 }

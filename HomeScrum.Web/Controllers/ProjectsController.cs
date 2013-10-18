@@ -27,12 +27,9 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItem> ActiveProjectStatuses( ISession session, Guid selectedId )
       {
-         var queryModel = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<ProjectStatus>()
-         {
-            SelectedId = selectedId
-         };
-
-         return queryModel.GetQuery( session )
+         return session.Query<ProjectStatus>()
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+            .OrderBy( x => x.SortSequence )
             .SelectSelectListItems( selectedId )
             .ToList();
       }

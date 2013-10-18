@@ -25,8 +25,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
-         var query = queryModel.GetQuery( session )
+         var query = session.Query<Sprint>()
                .ApplyStandardSorting()
                .SelectSprintIndexViewModels();
 
@@ -41,8 +40,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "CurrentSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
-         var query = queryModel.GetQuery( session )
+         var query = session.Query<Sprint>()
                .Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active &&
                             x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
                .ApplyStandardSorting()
@@ -58,8 +56,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "CurrentSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<Sprint>();
-         var query = queryModel.GetQuery( session )
+         var query = session.Query<Sprint>()
                .Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete )
                .ApplyStandardSorting()
                .SelectSprintIndexViewModels();
@@ -222,10 +219,9 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItemWithAttributes> CreateSprintStatusSelectList( ISession session, Guid selectedId )
       {
-         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<SprintStatus>() { SelectedId = selectedId };
-
-         return query
-            .GetQuery( session )
+         return session.Query<SprintStatus>()
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+            .OrderBy( x => x.SortSequence )
             .SelectSelectListItems( selectedId )
             .ToList();
       }

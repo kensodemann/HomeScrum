@@ -4,6 +4,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Base;
 using NHibernate;
+using NHibernate.Linq;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -41,8 +42,7 @@ namespace HomeScrum.Web.Controllers.Base
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var queryModel = new HomeScrum.Data.Queries.AllDomainObjects<ModelT>();
-         var query = queryModel.GetQuery( session ).SelectDomainObjectViewModels<ModelT>();
+         var query = session.Query<ModelT>().SelectDomainObjectViewModels<ModelT>();
 
          return IndexView( query );
       }

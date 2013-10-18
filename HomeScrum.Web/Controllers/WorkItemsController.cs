@@ -185,20 +185,18 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItemWithAttributes> CreateStatusSelectList( ISession session, Guid selectedId )
       {
-         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemStatus>() { SelectedId = selectedId };
-
-         return query
-            .GetQuery( session )
+         return session.Query<WorkItemStatus>()
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+            .OrderBy( x => x.SortSequence )
             .SelectSelectListItems( selectedId )
             .ToList();
       }
 
       private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( ISession session, Guid selectedId )
       {
-         var query = new HomeScrum.Data.Queries.ActiveSystemObjectsOrdered<WorkItemType>() { SelectedId = selectedId };
-
-         return query
-            .GetQuery( session )
+         return session.Query<WorkItemType>()
+            .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
+            .OrderBy( x => x.SortSequence )
             .SelectSelectListItems( selectedId )
             .ToList();
       }
