@@ -73,7 +73,7 @@ namespace HomeScrum.Web.Controllers
       public override ActionResult Create( SprintEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
-         viewModel.CreatedByUserId = GetUserId( session, user.Identity.Name );
+         viewModel.CreatedByUserId = user.Identity.GetUserId( session );
          return base.Create( viewModel, user );
       }
 
@@ -242,13 +242,13 @@ namespace HomeScrum.Web.Controllers
 
       protected override void Save( ISession session, Sprint model, System.Security.Principal.IPrincipal user )
       {
-         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Save( session, model, user );
       }
 
       protected override void Update( ISession session, Sprint model, System.Security.Principal.IPrincipal user )
       {
-         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Update( session, model, user );
       }
 
@@ -281,13 +281,6 @@ namespace HomeScrum.Web.Controllers
             .ApplyStandardSorting()
             .SelectSprintWorkItemViewModel()
             .ToList();
-      }
-
-      // TODO: Make extention to IPrincipal, replace this here and in WorkItem
-      private Guid GetUserId( ISession session, string userName )
-      {
-         return session.Query<User>()
-            .Single( x => x.UserName == userName ).Id;
       }
    }
 

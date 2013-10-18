@@ -37,7 +37,7 @@ namespace HomeScrum.Web.Controllers
       public ActionResult MyAssignments( System.Security.Principal.IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
-         var assignedToUserId = GetUserId( session, user.Identity.Name );
+         var assignedToUserId = user.Identity.GetUserId( session );
          var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
                .SelectWorkItemIndexViewModels();
@@ -135,7 +135,7 @@ namespace HomeScrum.Web.Controllers
          // The base Create() does a validation before calling AddItem().
          // This data must be set before the validation.
          var session = SessionFactory.GetCurrentSession();
-         viewModel.CreatedByUserId = GetUserId( session, user.Identity.Name );
+         viewModel.CreatedByUserId = user.Identity.GetUserId( session );
          return base.Create( viewModel, user );
       }
 
@@ -313,14 +313,14 @@ namespace HomeScrum.Web.Controllers
       protected override void Save( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Save( session, model, user );
       }
 
       protected override void Update( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Update( session, model, user );
 
          UpdateChildTasks( session, model );
@@ -348,12 +348,6 @@ namespace HomeScrum.Web.Controllers
             child.Sprint = model.Sprint;
             session.Update( child );
          }
-      }
-
-      private Guid GetUserId( ISession session, string userName )
-      {
-         return session.Query<User>()
-            .Single( x => x.UserName == userName ).Id;
       }
 
       private void ClearNonAllowedItemsInModel( WorkItem model )

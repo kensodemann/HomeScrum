@@ -220,6 +220,7 @@
       <DependentUpon>DisplayStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Extensions\IIdentityExtensions.cs" />
     <Compile Include="Extensions\QueryProjections.cs" />
     <Compile Include="Extensions\SelectListItemWithAttributes.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
