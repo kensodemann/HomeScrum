@@ -246,7 +246,8 @@ namespace HomeScrum.Web.Controllers
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
       }
 
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
@@ -255,7 +256,8 @@ namespace HomeScrum.Web.Controllers
              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active) || x.Id == selectedId )
              .OrderBy( x => x.Status.SortSequence )
              .ThenBy( x => x.Name.ToUpper() )
-             .SelectSelectListItems<Project>( selectedId );
+             .SelectSelectListItems<Project>( selectedId )
+             .ToList();
       }
 
       protected override void Save( ISession session, Sprint model, System.Security.Principal.IPrincipal user )

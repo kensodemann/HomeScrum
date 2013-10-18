@@ -33,7 +33,8 @@ namespace HomeScrum.Web.Controllers
          };
 
          return queryModel.GetQuery( session )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
       }
 
 

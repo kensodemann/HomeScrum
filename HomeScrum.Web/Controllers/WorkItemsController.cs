@@ -189,7 +189,8 @@ namespace HomeScrum.Web.Controllers
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
       }
 
       private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( ISession session, Guid selectedId )
@@ -198,7 +199,8 @@ namespace HomeScrum.Web.Controllers
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
       }
 
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
@@ -207,7 +209,8 @@ namespace HomeScrum.Web.Controllers
              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active) || x.Id == selectedId )
              .OrderBy( x => x.Status.SortSequence )
              .ThenBy( x => x.Name.ToUpper() )
-             .SelectSelectListItems<Project>( selectedId );
+             .SelectSelectListItems<Project>( selectedId )
+             .ToList();
       }
 
       private IEnumerable<SelectListItem> CreateUserSelectList( ISession session, Guid selectedId )
@@ -216,7 +219,8 @@ namespace HomeScrum.Web.Controllers
             .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
             .OrderBy( x => x.LastName.ToUpper() )
             .ThenBy( x => x.FirstName.ToUpper() )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
 
          users.Insert( 0, new SelectListItem()
                           {
@@ -236,7 +240,8 @@ namespace HomeScrum.Web.Controllers
               .OrderBy( x => x.WorkItemType.SortSequence )
               .ThenBy( x => x.Status.SortSequence )
               .ThenBy( x => x.Name.ToUpper() )
-              .SelectSelectListItems( selectedId );
+              .SelectSelectListItems( selectedId )
+              .ToList();
 
          backlog.Insert( 0, new SelectListItemWithAttributes()
                             {
@@ -260,7 +265,8 @@ namespace HomeScrum.Web.Controllers
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => (x.StartDate ?? DateTime.MaxValue) )
             .ThenBy( x => x.Name.ToUpper() )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
 
          sprints.Insert( 0, new SelectListItemWithAttributes()
                             {
