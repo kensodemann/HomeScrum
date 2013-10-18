@@ -95,19 +95,9 @@ namespace HomeScrum.Web.Controllers
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
                .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && (x.Sprint == null || x.Sprint.Id == id) )
-               .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
-               .ThenBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name )
-               .Select( x => new SprintWorkItemViewModel()
-                             {
-                                Id = x.Id,
-                                Name = x.Name,
-                                Description = x.Description,
-                                WorkItemTypeName = x.WorkItemType.Name,
-                                StatusName = x.Status.Name,
-                                IsInTargetSprint = x.Sprint != null
-                             } ).ToList();
+               .ApplyStandardSorting()
+               .SelectSprintWorkItemViewModel()
+               .ToList();
 
             tx.Commit();
          }
@@ -162,19 +152,9 @@ namespace HomeScrum.Web.Controllers
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
                .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
-               .OrderBy( x => (x.Sprint == null) ? 1 : 2 )
-               .ThenBy( x => x.WorkItemType.SortSequence )
-               .ThenBy( x => x.Status.SortSequence )
-               .ThenBy( x => x.Name )
-               .Select( x => new SprintWorkItemViewModel()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  Description = x.Description,
-                  WorkItemTypeName = x.WorkItemType.Name,
-                  StatusName = x.Status.Name,
-                  IsInTargetSprint = x.Sprint != null
-               } ).ToList();
+               .ApplyStandardSorting()
+               .SelectSprintWorkItemViewModel()
+               .ToList();
 
             tx.Commit();
          }
@@ -289,18 +269,8 @@ namespace HomeScrum.Web.Controllers
       {
          return session.Query<WorkItem>()
             .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
-            .OrderBy( x => x.WorkItemType.SortSequence )
-            .ThenBy( x => x.Status.SortSequence )
-            .ThenBy( x => x.Name )
-            .Select( x => new SprintWorkItemViewModel()
-                          {
-                             Id = x.Id,
-                             Name = x.Name,
-                             Description = x.Description,
-                             StatusName = x.Status.Name,
-                             WorkItemTypeName = x.WorkItemType.Name,
-                             IsInTargetSprint = true
-                          } )
+            .ApplyStandardSorting()
+            .SelectSprintWorkItemViewModel()
             .ToList();
       }
 
@@ -308,18 +278,8 @@ namespace HomeScrum.Web.Controllers
       {
          return session.Query<WorkItem>()
             .Where( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
-            .OrderBy( x => x.WorkItemType.SortSequence )
-            .ThenBy( x => x.Status.SortSequence )
-            .ThenBy( x => x.Name )
-            .Select( x => new SprintWorkItemViewModel()
-            {
-               Id = x.Id,
-               Name = x.Name,
-               Description = x.Description,
-               StatusName = x.Status.Name,
-               WorkItemTypeName = x.WorkItemType.Name,
-               IsInTargetSprint = true
-            } )
+            .ApplyStandardSorting()
+            .SelectSprintWorkItemViewModel()
             .ToList();
       }
 
@@ -340,6 +300,14 @@ namespace HomeScrum.Web.Controllers
             .ThenBy( x => x.Status.SortSequence );
       }
 
+      public static IQueryable<WorkItem> ApplyStandardSorting( this IQueryable<WorkItem> query )
+      {
+         return query.OrderBy( x => (x.Sprint == null) ? 1 : 2 )
+            .ThenBy( x => x.WorkItemType.SortSequence )
+            .ThenBy( x => x.Status.SortSequence )
+            .ThenBy( x => x.Name );
+      }
+
       public static IQueryable<SprintIndexViewModel> SelectSprintIndexViewModels( this IQueryable<Sprint> query )
       {
          return query.Select( x => new SprintIndexViewModel()
@@ -351,6 +319,19 @@ namespace HomeScrum.Web.Controllers
                StatusName = x.Status.Name,
                StartDate = x.StartDate,
                EndDate = x.EndDate
+            } );
+      }
+
+      public static IQueryable<SprintWorkItemViewModel> SelectSprintWorkItemViewModel( this IQueryable<WorkItem> query )
+      {
+         return query.Select( x => new SprintWorkItemViewModel()
+            {
+               Id = x.Id,
+               Name = x.Name,
+               Description = x.Description,
+               WorkItemTypeName = x.WorkItemType.Name,
+               StatusName = x.Status.Name,
+               IsInTargetSprint = x.Sprint != null
             } );
       }
    }
