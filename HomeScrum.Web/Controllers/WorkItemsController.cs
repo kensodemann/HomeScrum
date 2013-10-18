@@ -26,15 +26,10 @@ namespace HomeScrum.Web.Controllers
       public override ActionResult Index()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -42,17 +37,12 @@ namespace HomeScrum.Web.Controllers
       public ActionResult MyAssignments( System.Security.Principal.IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
-         var assignedToUserId = GetUserId( session, user.Identity.Name );
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var assignedToUserId = user.Identity.GetUserId( session );
+         var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -60,18 +50,13 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedBacklog()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
-               .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
-                  x.Status.Category != WorkItemStatusCategory.Complete &&
-                  x.Sprint == null )
-               .SelectWorkItemIndexViewModels();
+         var query = BaseWorkItemQuery( session )
+              .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
+                 x.Status.Category != WorkItemStatusCategory.Complete &&
+                 x.Sprint == null )
+              .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -79,18 +64,13 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedProblems()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser == null
                   && x.Status.Category != WorkItemStatusCategory.Complete
                   && x.WorkItemType.Category == WorkItemTypeCategory.Issue )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       //
@@ -98,18 +78,13 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedTasks()
       {
          var session = SessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var workItems = BaseWorkItemQuery( session )
+         var query = BaseWorkItemQuery( session )
                .Where( x => x.AssignedToUser == null
                   && x.Status.Category != WorkItemStatusCategory.Complete
                   && x.WorkItemType.Category == WorkItemTypeCategory.Task )
                .SelectWorkItemIndexViewModels();
 
-            transaction.Commit();
-            ClearNavigationStack();
-            return View( workItems );
-         }
+         return IndexView( query );
       }
 
       private IQueryable<WorkItem> BaseWorkItemQuery( ISession session )
@@ -160,7 +135,7 @@ namespace HomeScrum.Web.Controllers
          // The base Create() does a validation before calling AddItem().
          // This data must be set before the validation.
          var session = SessionFactory.GetCurrentSession();
-         viewModel.CreatedByUserId = GetUserId( session, user.Identity.Name );
+         viewModel.CreatedByUserId = user.Identity.GetUserId( session );
          return base.Create( viewModel, user );
       }
 
@@ -214,7 +189,8 @@ namespace HomeScrum.Web.Controllers
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
       }
 
       private IEnumerable<SelectListItemWithAttributes> CreateWorkItemTypeSelectList( ISession session, Guid selectedId )
@@ -223,7 +199,8 @@ namespace HomeScrum.Web.Controllers
 
          return query
             .GetQuery( session )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
       }
 
       private IEnumerable<SelectListItem> CreateProjectsSelectList( ISession session, Guid selectedId )
@@ -232,7 +209,8 @@ namespace HomeScrum.Web.Controllers
              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category == ProjectStatusCategory.Active) || x.Id == selectedId )
              .OrderBy( x => x.Status.SortSequence )
              .ThenBy( x => x.Name.ToUpper() )
-             .SelectSelectListItems<Project>( selectedId );
+             .SelectSelectListItems<Project>( selectedId )
+             .ToList();
       }
 
       private IEnumerable<SelectListItem> CreateUserSelectList( ISession session, Guid selectedId )
@@ -241,7 +219,8 @@ namespace HomeScrum.Web.Controllers
             .Where( x => x.StatusCd == 'A' || x.Id == selectedId )
             .OrderBy( x => x.LastName.ToUpper() )
             .ThenBy( x => x.FirstName.ToUpper() )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
 
          users.Insert( 0, new SelectListItem()
                           {
@@ -261,7 +240,8 @@ namespace HomeScrum.Web.Controllers
               .OrderBy( x => x.WorkItemType.SortSequence )
               .ThenBy( x => x.Status.SortSequence )
               .ThenBy( x => x.Name.ToUpper() )
-              .SelectSelectListItems( selectedId );
+              .SelectSelectListItems( selectedId )
+              .ToList();
 
          backlog.Insert( 0, new SelectListItemWithAttributes()
                             {
@@ -285,7 +265,8 @@ namespace HomeScrum.Web.Controllers
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => (x.StartDate ?? DateTime.MaxValue) )
             .ThenBy( x => x.Name.ToUpper() )
-            .SelectSelectListItems( selectedId );
+            .SelectSelectListItems( selectedId )
+            .ToList();
 
          sprints.Insert( 0, new SelectListItemWithAttributes()
                             {
@@ -324,29 +305,22 @@ namespace HomeScrum.Web.Controllers
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Name.ToUpper() )
-            .Select( x => new WorkItemIndexViewModel()
-            {
-               Id = x.Id,
-               Name = x.Name,
-               Description = x.Description,
-               StatusName = x.Status.Name,
-               WorkItemTypeName = x.WorkItemType.Name,
-               IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-            } ).ToList();
+            .SelectWorkItemIndexViewModels()
+            .ToList();
       }
 
 
       protected override void Save( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Save( session, model, user );
       }
 
       protected override void Update( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
       {
          ClearNonAllowedItemsInModel( model );
-         model.LastModifiedUserRid = GetUserId( session, user.Identity.Name );
+         model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Update( session, model, user );
 
          UpdateChildTasks( session, model );
@@ -374,12 +348,6 @@ namespace HomeScrum.Web.Controllers
             child.Sprint = model.Sprint;
             session.Update( child );
          }
-      }
-
-      private Guid GetUserId( ISession session, string userName )
-      {
-         return session.Query<User>()
-            .Single( x => x.UserName == userName ).Id;
       }
 
       private void ClearNonAllowedItemsInModel( WorkItem model )

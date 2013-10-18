@@ -10,7 +10,7 @@ namespace HomeScrum.Web.Extensions
 {
    public static class QueryProjections
    {
-      public static IList<DomainObjectViewModel> SelectDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
+      public static IQueryable<DomainObjectViewModel> SelectDomainObjectViewModels<SourceT>( this IQueryable<SourceT> query )
          where SourceT : DomainObjectBase
       {
          return query.Select( x => new DomainObjectViewModel()
@@ -18,11 +18,10 @@ namespace HomeScrum.Web.Extensions
                                       Id = x.Id,
                                       Name = x.Name,
                                       Description = x.Description
-                                   } )
-            .ToList();
+                                   } );
       }
 
-      public static IList<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )
+      public static IQueryable<SelectListItem> SelectSelectListItems<SourceT>( this IQueryable<SourceT> query, Guid selectedId )
          where SourceT : DomainObjectBase
       {
          return query.Select( x => new SelectListItem()
@@ -30,10 +29,10 @@ namespace HomeScrum.Web.Extensions
                                       Value = x.Id.ToString(),
                                       Text = x.Name,
                                       Selected = (x.Id == selectedId)
-                                   } ).ToList();
+                                   } );
       }
 
-      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<SprintStatus> query, Guid selectedId )
+      public static IQueryable<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<SprintStatus> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItemWithAttributes()
          {
@@ -46,10 +45,10 @@ namespace HomeScrum.Web.Extensions
                                                              { "TaskListIsClosed", item.TaskListIsClosed ? "True" : "False" },
                                                              { "BacklogIsClosed", item.BacklogIsClosed? "True" : "False" }
                                                           }
-         } ).ToList();
+         } );
       }
 
-      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItemStatus> query, Guid selectedId )
+      public static IQueryable<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItemStatus> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItemWithAttributes()
          {
@@ -60,10 +59,10 @@ namespace HomeScrum.Web.Extensions
                                                           {
                                                              { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" }
                                                           }
-         } ).ToList();
+         } );
       }
 
-      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItemType> query, Guid selectedId )
+      public static IQueryable<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItemType> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItemWithAttributes()
                                       {
@@ -76,20 +75,20 @@ namespace HomeScrum.Web.Extensions
                                                              { "CanHaveParent", item.Category != WorkItemTypeCategory.BacklogItem ? "True" : "False" },
                                                              { "CanHaveChildren", item.Category == WorkItemTypeCategory.BacklogItem ? "True" : "False" }
                                                           }
-                                      } ).ToList();
+                                      } );
       }
 
-      public static IList<SelectListItem> SelectSelectListItems( this IQueryable<User> query, Guid selectedId )
+      public static IQueryable<SelectListItem> SelectSelectListItems( this IQueryable<User> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItem()
                                       {
                                          Value = item.Id.ToString(),
                                          Text = (String.IsNullOrWhiteSpace( item.LastName ) ? "" : item.LastName + ", ") + item.FirstName,
                                          Selected = item.Id == selectedId
-                                      } ).ToList();
+                                      } );
       }
 
-      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItem> query, Guid selectedId )
+      public static IQueryable<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<WorkItem> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItemWithAttributes()
                                       {
@@ -101,10 +100,10 @@ namespace HomeScrum.Web.Extensions
                                             { "ProjectId", item.Project.Id.ToString() },
                                             { "SprintId", (item.Sprint == null ? Guid.Empty : item.Sprint.Id).ToString() }
                                          }
-                                      } ).ToList();
+                                      } );
       }
 
-      public static IList<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<Sprint> query, Guid selectedId )
+      public static IQueryable<SelectListItemWithAttributes> SelectSelectListItems( this IQueryable<Sprint> query, Guid selectedId )
       {
          return query.Select( item => new SelectListItemWithAttributes()
          {
@@ -117,10 +116,10 @@ namespace HomeScrum.Web.Extensions
                                             { "TaskListIsClosed", item.Status.TaskListIsClosed ? "True" : "False" },
                                             { "BacklogIsClosed", item.Status.BacklogIsClosed ? "True" : "False" }
                                          }
-         } ).ToList();
+         } );
       }
 
-      public static IList<WorkItemIndexViewModel> SelectWorkItemIndexViewModels( this IQueryable<WorkItem> query )
+      public static IQueryable<WorkItemIndexViewModel> SelectWorkItemIndexViewModels( this IQueryable<WorkItem> query )
       {
          return query.Select( x => new WorkItemIndexViewModel()
          {
@@ -129,7 +128,7 @@ namespace HomeScrum.Web.Extensions
             WorkItemTypeName = x.WorkItemType.Name,
             StatusName = x.Status.Name,
             IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
-         } ).ToList();
+         } );
       }
    }
 }
