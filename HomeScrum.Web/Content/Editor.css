@@ -22,19 +22,27 @@ fieldset
       margin-bottom: inherit;
       clear: left;
       float: left;
+      width: 100%;
    }
 
       fieldset .formSingleLineEdit label
       {
-         width: 6em;
+         width: 84px;
          clear: left;
          float: left;
       }
 
-      fieldset .formSingleLineEdit input
+      fieldset .formSingleLineEdit span
       {
-         width: 26em;
+         display: block;
+         overflow: hidden;
+         padding-right: 5px;
       }
+
+         fieldset .formSingleLineEdit span input
+         {
+            width: 100%;
+         }
 
       fieldset .formSelectList label,
       fieldset .formStaticText label
@@ -53,10 +61,17 @@ fieldset
          display: table-row;
       }
 
-      fieldset .formLongText textarea
+      fieldset .formLongText span
       {
-         height: 8em;
-         width: 32em;
+         display: block;
+         overflow: hidden;
+         padding-right: 6px;
+      }
+
+      fieldset .formLongText span textarea
+      {
+         height: 20em;
+         width: 100%;
       }
 
 #UserEditor fieldset .formSingleLineEdit label
@@ -67,7 +82,7 @@ fieldset
 .disabled
 {
    color: slategray;
-   background-color:lightyellow;
+   background-color: lightyellow;
 }
 
 

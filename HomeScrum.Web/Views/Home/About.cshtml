@@ -2,6 +2,17 @@
    ViewBag.Title = "About Home Scrum";
 }
 
+<article id="AboutScrum">
+   <h2>About Scrum</h2>
+   <p>
+      If you would like to learn more about scrum, these resources may be helpful:
+   </p>
+   <ul>
+      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
+      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
+   </ul>
+</article>
+
 <article id="About">
    <h2>@ViewBag.Title</h2>
    <p>
@@ -28,21 +39,7 @@
       I named it "Home Scrum" because I suck at naming things, I am primarily going to use it for tracking projects that I work on
         at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
    </p>
-</article>
 
-<article id="AboutScrum">
-   <h2>About Scrum</h2>
-   <p>
-      If you would like to learn more about scrum, these resources may be helpful:
-   </p>
-   <ul>
-      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
-      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
-   </ul>
-</article>
-
-<article id="VersionHistory">
-   <h2>Version History</h2>
    <div id="VersionHistoryDetails">
       <h3>Version 1.2</h3>
       <div>
@@ -130,7 +127,8 @@
    $(function () {
       $("#VersionHistoryDetails").accordion({
          heightStyle: "content",
-         collapsible: true
+         collapsible: true,
+         active: false
       });
 
    });
