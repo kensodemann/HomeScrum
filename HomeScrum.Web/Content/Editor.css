@@ -79,6 +79,11 @@ fieldset
    width: 12em;
 }
 
+#ChangePasswordEditor fieldset .formSingleLineEdit label
+{
+   width: 14em;
+}
+
 .disabled
 {
    color: slategray;

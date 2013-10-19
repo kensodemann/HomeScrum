@@ -10,7 +10,7 @@
 
             <div class="formSingleLineEdit">
                 @Html.LabelFor( model => model.UserName )
-                @Html.EditorFor( model => model.UserName )
+                <span>@Html.EditorFor( model => model.UserName )</span>
                 @Html.ValidationMessageFor( model => model.UserName )
             </div>
 
@@ -19,32 +19,32 @@
             {
                 <div class="formSingleLineEdit">
                     @Html.LabelFor( model => model.NewPassword )
-                    @Html.EditorFor( model => model.NewPassword )
+                    <span>@Html.EditorFor( model => model.NewPassword )</span>
                     @Html.ValidationMessageFor( model => model.NewPassword )
                 </div>
             
                 <div class="formSingleLineEdit">
                     @Html.LabelFor( model => model.ConfirmPassword )
-                    @Html.EditorFor( model => model.ConfirmPassword )
+                    <span>@Html.EditorFor( model => model.ConfirmPassword )</span>
                     @Html.ValidationMessageFor( model => model.ConfirmPassword )
                 </div>
             }
 
             <div class="formSingleLineEdit">
                 @Html.LabelFor( model => model.FirstName )
-                @Html.EditorFor( model => model.FirstName )
+                <span>@Html.EditorFor( model => model.FirstName )</span>
                 @Html.ValidationMessageFor( model => model.FirstName )
             </div>
 
             <div class="formSingleLineEdit">
                 @Html.LabelFor( model => model.MiddleName )
-                @Html.EditorFor( model => model.MiddleName )
+                <span>@Html.EditorFor( model => model.MiddleName )</span>
                 @Html.ValidationMessageFor( model => model.MiddleName )
             </div>
 
             <div class="formSingleLineEdit">
                 @Html.LabelFor( model => model.LastName )
-                @Html.EditorFor( model => model.LastName )
+                <span>@Html.EditorFor( model => model.LastName )</span>
                 @Html.ValidationMessageFor( model => model.LastName )
             </div>
 
