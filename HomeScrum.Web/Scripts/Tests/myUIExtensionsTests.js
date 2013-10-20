@@ -5,6 +5,8 @@
     }
 });
 
-test('my first test', function () {
-    ok(true);
+test('Button Initially Says Show', function () {
+    var button = $("#ShowHideToggle");
+    setupShowHideButton("Me", $("#ShowHideToggle"), "Foo");
+    strictEqual($("#ShowHideToggleLabel").text(), "Show Foo");
 });
