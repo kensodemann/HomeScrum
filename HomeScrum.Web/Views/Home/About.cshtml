@@ -2,6 +2,17 @@
    ViewBag.Title = "About Home Scrum";
 }
 
+<article id="AboutScrum">
+   <h2>About Scrum</h2>
+   <p>
+      If you would like to learn more about scrum, these resources may be helpful:
+   </p>
+   <ul>
+      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
+      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
+   </ul>
+</article>
+
 <article id="About">
    <h2>@ViewBag.Title</h2>
    <p>
@@ -28,22 +39,31 @@
       I named it "Home Scrum" because I suck at naming things, I am primarily going to use it for tracking projects that I work on
         at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
    </p>
-</article>
 
-<article id="AboutScrum">
-   <h2>About Scrum</h2>
-   <p>
-      If you would like to learn more about scrum, these resources may be helpful:
-   </p>
-   <ul>
-      <li><a href="http://en.wikipedia.org/wiki/Scrum_(development)">Scrum - Wikipedia</a></li>
-      <li><a href="http://www.scrumalliance.org/learn_about_scrum">What is Scrum?</a></li>
-   </ul>
-</article>
-
-<article id="VersionHistory">
-   <h2>Version History</h2>
    <div id="VersionHistoryDetails">
+      <h3>Version 1.2.1</h3>
+      <div>
+         <h4>Release Date: 2013/10/19</h4>
+         <h4>New Features</h4>
+         <p>This incremental release focused on cleaning up some of the code in the previous release as well as improving the rendering of the editors.</p>
+         <ul>
+            <li>The code was refactored to increase performance and reduce opportunities for bugs.</li>
+            <li>Modified single and multi-line text inputs such that:
+               <ul>
+                  <li>They fill up the remaining space</li>
+                  <li>Their size adjusts when the browser is made more narrow than the maximum width of the application</li>
+               </ul>
+            </li>
+            <li>Removed links that are no longer used.</li>
+         </ul>
+
+         <h4>Bug Fixes</h4>
+         <ul>
+            <li>None</li>
+         </ul>
+
+      </div>
+
       <h3>Version 1.2</h3>
       <div>
          <h4>Release Date: 2013/10/15</h4>
@@ -130,7 +150,8 @@
    $(function () {
       $("#VersionHistoryDetails").accordion({
          heightStyle: "content",
-         collapsible: true
+         collapsible: true,
+         active: false
       });
 
    });

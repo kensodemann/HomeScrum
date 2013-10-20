@@ -17,7 +17,7 @@ namespace HomeScrum.Web.Controllers.Admin
       public SprintStatusesController( IPropertyNameTranslator<SprintStatus, SprintStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
-      protected override IEnumerable<SprintStatusViewModel> SelectViewModels( IQueryable<SprintStatus> query )
+      protected override IQueryable<SprintStatusViewModel> SelectViewModels( IQueryable<SprintStatus> query )
       {
          return query.Select( x => new SprintStatusViewModel()
          {
@@ -27,7 +27,7 @@ namespace HomeScrum.Web.Controllers.Admin
             AllowUse = (x.StatusCd == 'A'),
             IsPredefined = x.IsPredefined,
             Category = EnumHelper.GetDescription( x.Category )
-         } ).ToList();
+         } );
       }
    }
 }

@@ -17,7 +17,7 @@ namespace HomeScrum.Web.Controllers.Admin
       public WorkItemTypesController( IPropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
-      protected override IEnumerable<WorkItemTypeViewModel> SelectViewModels( IQueryable<WorkItemType> query )
+      protected override IQueryable<WorkItemTypeViewModel> SelectViewModels( IQueryable<WorkItemType> query )
       {
          return query.Select( x => new WorkItemTypeViewModel()
          {
@@ -27,7 +27,7 @@ namespace HomeScrum.Web.Controllers.Admin
             AllowUse = (x.StatusCd == 'A'),
             IsPredefined = x.IsPredefined,
             Category = EnumHelper.GetDescription( x.Category )
-         } ).ToList();
+         } );
       }
    }
 }

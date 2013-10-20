@@ -17,7 +17,7 @@ namespace HomeScrum.Web.Controllers.Admin
       public ProjectStatusesController( IPropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger , sessionFactory) { }
 
-      protected override IEnumerable<ProjectStatusViewModel> SelectViewModels( IQueryable<ProjectStatus> query )
+      protected override IQueryable<ProjectStatusViewModel> SelectViewModels( IQueryable<ProjectStatus> query )
       {
          return query.Select( x => new ProjectStatusViewModel()
          {
@@ -27,7 +27,7 @@ namespace HomeScrum.Web.Controllers.Admin
             AllowUse = (x.StatusCd == 'A'),
             IsPredefined = x.IsPredefined,
             Category = EnumHelper.GetDescription( x.Category )
-         } ).ToList();
+         } );
       }
    }
 }

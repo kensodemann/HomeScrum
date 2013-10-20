@@ -18,7 +18,7 @@ namespace HomeScrum.Web.Controllers.Admin
       public WorkItemStatusesController( IPropertyNameTranslator<WorkItemStatus, WorkItemStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
-      protected override IEnumerable<WorkItemStatusViewModel> SelectViewModels( IQueryable<WorkItemStatus> query )
+      protected override IQueryable<WorkItemStatusViewModel> SelectViewModels( IQueryable<WorkItemStatus> query )
       {
          return query.Select( x => new WorkItemStatusViewModel()
          {
@@ -28,7 +28,7 @@ namespace HomeScrum.Web.Controllers.Admin
             AllowUse = (x.StatusCd == 'A'),
             IsPredefined = x.IsPredefined,
             Category = EnumHelper.GetDescription( x.Category )
-         } ).ToList();
+         } );
       }
    }
 }

@@ -55,11 +55,7 @@ namespace HomeScrum.Web.Controllers.Base
                {
                   Save( session, model, user );
                   transaction.Commit();
-                  return viewModel.CallingAction != null || viewModel.CallingController != null
-                     ? RedirectToAction( viewModel.CallingAction ?? "Index",
-                                         viewModel.CallingController,
-                                         viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null )
-                     : RedirectToAction( () => this.Index() );
+                  return RedirectCreateAction( viewModel );
                }
                TransferErrorMessages( model );
             }
@@ -69,6 +65,12 @@ namespace HomeScrum.Web.Controllers.Base
             return View( viewModel );
          }
       }
+
+      protected virtual RedirectToRouteResult RedirectCreateAction( EditorViewModelT viewModel )
+      {
+         return StandardEditorRedirect( viewModel );
+      }
+
 
       //
       // GET: /ModelTs/Edit/Guid
@@ -108,11 +110,7 @@ namespace HomeScrum.Web.Controllers.Base
                {
                   Update( session, model, user );
                   transaction.Commit();
-                  return viewModel.CallingAction != null || viewModel.CallingController != null
-                     ? RedirectToAction( viewModel.CallingAction ?? "Index",
-                                         viewModel.CallingController,
-                                         viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null )
-                     : RedirectToAction( () => this.Index() );
+                  return RedirectEditAction( viewModel );
                }
                TransferErrorMessages( model );
             }
@@ -121,6 +119,21 @@ namespace HomeScrum.Web.Controllers.Base
             transaction.Commit();
             return View( viewModel );
          }
+      }
+
+
+      protected virtual RedirectToRouteResult RedirectEditAction( EditorViewModelT viewModel )
+      {
+         return StandardEditorRedirect( viewModel );
+      }
+
+      private RedirectToRouteResult StandardEditorRedirect( EditorViewModelT viewModel )
+      {
+         return viewModel.CallingAction != null || viewModel.CallingController != null
+            ? RedirectToAction( viewModel.CallingAction ?? "Index",
+                                viewModel.CallingController,
+                                viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null )
+            : RedirectToAction( () => this.Index() );
       }
 
       private void TransferErrorMessages( ModelT model )

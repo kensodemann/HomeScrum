@@ -17,7 +17,7 @@ namespace HomeScrum.Web.Controllers.Admin
       public AcceptanceCriterionStatusesController( IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
-      protected override IEnumerable<AcceptanceCriterionStatusViewModel> SelectViewModels( IQueryable<AcceptanceCriterionStatus> query )
+      protected override IQueryable<AcceptanceCriterionStatusViewModel> SelectViewModels( IQueryable<AcceptanceCriterionStatus> query )
       {
          return query.Select( x => new AcceptanceCriterionStatusViewModel()
          {
@@ -27,7 +27,7 @@ namespace HomeScrum.Web.Controllers.Admin
             AllowUse = (x.StatusCd == 'A'),
             IsPredefined = x.IsPredefined,
             Category = EnumHelper.GetDescription( x.Category )
-         } ).ToList();
+         } );
       }
    }
 }
