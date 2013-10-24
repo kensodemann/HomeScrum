@@ -1,22 +1,23 @@
-﻿function setupShowHideButton(controller, toggleButton, hideThese) {
-   var classToShowHide = "." + hideThese + "ItemRow";
+﻿var Utilities = (function () {
+   var _hideThese = "";
+   var _controller = "";
 
    function showItems(toggleButton, effect) {
-      $(classToShowHide).show(effect);
-      toggleButton.button("option", "label", "Hide " + hideThese);
+      $("." + _hideThese + "ItemRow").show(effect);
+      toggleButton.button("option", "label", "Hide " + _hideThese);
    }
 
    function hideItems(toggleButton, effect) {
-      $("." + hideThese + "ItemRow").hide(effect);
-      toggleButton.button("option", "label", "Show " + hideThese);
+      $("." + _hideThese + "ItemRow").hide(effect);
+      toggleButton.button("option", "label", "Show " + _hideThese);
    }
 
    function shouldShow() {
-      return $.localStorage(controller + "Show" + hideThese);
+      return $.localStorage(_controller + "Show" + _hideThese);
    }
 
    function saveShowState(value) {
-      $.localStorage(controller + "Show" + hideThese, value);
+      $.localStorage(_controller + "Show" + _hideThese, value);
    }
 
    function initializeShowHide(toggleButton) {
@@ -31,17 +32,26 @@
       toggleButton.button("refresh");
    }
 
-   toggleButton.button();
-   initializeShowHide(toggleButton);
+   function setupShowHideButton(controller, toggleButton, hideThese) {
+      _controller = controller;
+      _hideThese = hideThese;
+      toggleButton.button();
+      initializeShowHide(toggleButton);
 
-   toggleButton.click(
-       function () {
-          if ($(this).is(":checked")) {
-             showItems($(this), "fade");
-          }
-          else {
-             hideItems($(this), "fade");
-          }
-          saveShowState($(this).is(":checked"));
-       });
-}
+      toggleButton.click(
+          function () {
+             if ($(this).is(":checked")) {
+                showItems($(this), "fade");
+             }
+             else {
+                hideItems($(this), "fade");
+             }
+             saveShowState($(this).is(":checked"));
+          });
+   }
+
+   return {
+      setupShowHideButton: setupShowHideButton
+   };
+})();
+
