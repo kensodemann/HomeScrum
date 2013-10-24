@@ -1,9 +1,33 @@
-﻿test('Test', function () {
-   strictEqual(Editor.test(), 'test');
+﻿test('Parent Work Item Hidden if cannot have parent on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveParent", "False");
+   Editor.init();
+   ok($("#ParentWorkItemDiv").is(":hidden"));
 });
 
-test('Echo Test', function () {
-   strictEqual(Editor.echo('this is a test'), 'this is a test');
+test('Parent Work Item Hidden if cannot have parent on change', function () {
+   $("#selWorkItemType").attr("data-CanHaveParent", "True");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanHaveParent", "False");
+   $("#SelectWorkItemTypeId").change();
+   stop();
+   setTimeout(function () {
+      ok($("#ParentWorkItemDiv").is(":hidden"));
+      start();
+   }, 1000);
+});
+
+test('Parent Work Item Visible if can have parent on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveParent", "True");
+   Editor.init();
+   ok($("#ParentWorkItemDiv").is(":visible"));
+});
+
+test('Parent Work Item Visible if can have parent on change', function () {
+   $("#selWorkItemType").attr("data-CanHaveParent", "False");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanHaveParent", "True");
+   $("#SelectWorkItemTypeId").change();
+   ok($("#ParentWorkItemDiv").is(":visible"));
 });
 
 // Here are the behaviors that need to be tested:
