@@ -87,11 +87,6 @@
    </p>
        
    <script>
-      function SyncHiddenElement(fromElement) {
-         var hiddenElementId = fromElement.id.substr(6);
-         $("#" + hiddenElementId).val($(fromElement).val());
-      }
-
       function BacklogIsClosed() {
          var isClosed = $("#StatusId").find(":selected").attr("data-BacklogIsClosed");
          return (isClosed == "True");
@@ -185,9 +180,9 @@
 
       function SetupProjectSelectList() {
          var selectList = $("#SelectProjectId");
-         SyncHiddenElement(selectList.get(0));
+         Utilities.syncHiddenElement(selectList.get(0));
          selectList.change(function () {
-            SyncHiddenElement(this);
+            Utilities.syncHiddenElement(this);
          });
       }
 

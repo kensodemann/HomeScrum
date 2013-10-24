@@ -144,11 +144,6 @@
          ShowHideTaskList(effect);
       }
 
-      function SyncHiddenElement(fromElement) {
-         var hiddenElementId = fromElement.id.substr(6);
-         $("#" + hiddenElementId).val($(fromElement).val());
-      }
-
       function SetProjectToParentWorkItemProject() {
          var selectedProject = $("#SelectProjectId").val();
          var backlogProject = $("#SelectParentWorkItemId").find(":selected").attr("data-ProjectId");
@@ -290,17 +285,17 @@
 
       function SetupProjectSelectList() {
          var selectList = $("#SelectProjectId");
-         SyncHiddenElement(selectList.get(0));
+         Utilities.syncHiddenElement(selectList.get(0));
          selectList.change(function () {
-            SyncHiddenElement(this);
+            Utilities.syncHiddenElement(this);
          });
       }
 
       function SetupParentWorkItemSelectList() {
          var selectList = $("#SelectParentWorkItemId");
-         SyncHiddenElement(selectList.get(0));
+         Utilities.syncHiddenElement(selectList.get(0));
          selectList.change(function () {
-            SyncHiddenElement(this);
+            Utilities.syncHiddenElement(this);
             SetSprintToParentWorkItemSprint();
             SetProjectToParentWorkItemProject();
             SetListItemsAccess();
@@ -309,9 +304,9 @@
 
       function SetupSprintSelectList() {
          var selectList = $("#SelectSprintId");
-         SyncHiddenElement(selectList.get(0));
+         Utilities.syncHiddenElement(selectList.get(0));
          selectList.change(function () {
-            SyncHiddenElement(this);
+            Utilities.syncHiddenElement(this);
             SetProjectToSprintProject();
             SetListItemsAccess();
          });
@@ -319,18 +314,18 @@
 
       function SetupWorkItemTypeSelectList() {
          var selectList = $("#SelectWorkItemTypeId");
-         SyncHiddenElement(selectList.get(0));
+         Utilities.syncHiddenElement(selectList.get(0));
          selectList.change(function () {
-            SyncHiddenElement(this);
+            Utilities.syncHiddenElement(this);
             ShowHideDataItems("fade");
          });
       }
 
       function SetupAssignedToUserSelectList() {
          var selectList = $("#SelectAssignedToUserId");
-         SyncHiddenElement(selectList.get(0));
+         Utilities.syncHiddenElement(selectList.get(0));
          selectList.change(function () {
-            SyncHiddenElement(this);
+            Utilities.syncHiddenElement(this);
          });
       }
 
