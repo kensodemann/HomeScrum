@@ -9,8 +9,19 @@
       }
    }
 
+   function ShowHideAssignedUser(effect) {
+      var canHaveParent = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
+      if (canHaveParent == "True") {
+         $("#AssignedToUserDiv").show(effect);
+      }
+      else {
+         $("#AssignedToUserDiv").hide(effect);
+      }
+   }
+
    function ShowHideDataItems(effect) {
       ShowHideParentWorkItem(effect);
+      ShowHideAssignedUser(effect);
    }
 
    function SetupWorkItemTypeSelectList() {

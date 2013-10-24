@@ -1,4 +1,5 @@
-﻿test('Parent Work Item Hidden if cannot have parent on init', function () {
+﻿// Show / Hide Parent Work Item
+test('Parent Work Item Hidden if cannot have parent on init', function () {
    $("#selWorkItemType").attr("data-CanHaveParent", "False");
    Editor.init();
    ok($("#ParentWorkItemDiv").is(":hidden"));
@@ -30,9 +31,42 @@ test('Parent Work Item Visible if can have parent on change', function () {
    ok($("#ParentWorkItemDiv").is(":visible"));
 });
 
+
+// Show / Hide Assigned To User
+test('Assign To User Hidden if cannot be assigned on init', function () {
+   $("#selWorkItemType").attr("data-CanBeAssigned", "False");
+   Editor.init();
+   ok($("#AssignedToUserDiv").is(":hidden"));
+});
+
+test('Assign To User Hidden if cannot be assigned on change', function () {
+   $("#selWorkItemType").attr("data-CanBeAssigned", "True");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanBeAssigned", "False");
+   $("#SelectWorkItemTypeId").change();
+   stop();
+   setTimeout(function () {
+      ok($("#AssignedToUserDiv").is(":hidden"));
+      start();
+   }, 1000);
+});
+
+test('Assign To User Visible if can be assigned on init', function () {
+   $("#selWorkItemType").attr("data-CanBeAssigned", "True");
+   Editor.init();
+   ok($("#AssignedToUserDiv").is(":visible"));
+});
+
+test('Assign To User Visible if can be assigned on change', function () {
+   $("#selWorkItemType").attr("data-CanBeAssigned", "False");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanBeAssigned", "True");
+   $("#SelectWorkItemTypeId").change();
+   ok($("#AssignedToUserDiv").is(":visible"));
+});
+
 // Here are the behaviors that need to be tested:
 //   * When backlog item, following items are hidden/shown:
-//     ** Backlog Item (hide)
 //     ** Assigned To (hide)
 //     ** Task List (show)
 //     ** Add New Task Button (show)
