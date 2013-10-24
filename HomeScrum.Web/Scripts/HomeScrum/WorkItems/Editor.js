@@ -1,4 +1,4 @@
-﻿function Editor() {
+﻿var Editor = (function() {
 
    var init = function () {
    };
@@ -18,4 +18,4 @@
    };
 
    return vm;
-}
+})();
