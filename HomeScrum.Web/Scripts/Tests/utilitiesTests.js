@@ -45,10 +45,14 @@ test('Elements Hidden After Another Click', function () {
    Utilities.setupShowHideButton("Test", $("#ShowHideToggle"), "Foo");
    $("#ShowHideToggle").click();
    $("#ShowHideToggle").click();
-   $(".FooItemRow").each(function () {
-      strictEqual($(this).css('opacity'), '0', "Foo Items are going opaque");
-   });
-   strictEqual($(".BarItemRow:hidden").length, 0, "Bar Items are not hidden");
+   // The Hide() has an effect that takes time.  Wait a bit for it.
+   stop();
+   setTimeout(function () {
+      strictEqual($(".FooItemRow:hidden").length, 2, "Foo Items are Hidden");
+      strictEqual($(".BarItemRow:hidden").length, 0, "Bar Items are not hidden");
+      start();
+   },
+   1000);
 });
 
 // Local Storage Write
