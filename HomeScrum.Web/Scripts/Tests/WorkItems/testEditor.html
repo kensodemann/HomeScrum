@@ -17,12 +17,41 @@
       <div id="ParentWorkItemDiv"></div>
       <div id="TaskListDiv"></div>
       <div id="CreateNewTask"></div>
-      
-      <input id="SelectSprintId" value="Test" />
-      <input id="SprintId" value="Test" />
 
-      <input id="SelectProjectId" value="Test" />
-      <input id="ProjectId" value="Test" />
+      <select id="SelectWorkItemTypeId">
+         <option id="selWorkItemType" selected="selected" value="1" data-CanBeAssigned="True" data-CanHaveParent="True" data-CanHaveChildren="False">Selected Item</option>
+         <option id="NotSelWorkItemType" value="2" data-CanBeAssigned="True" data-CanHaveParent="True" data-CanHaveChildren="False">Not Selected Item</option>
+      </select>
+      <input id="WorkItemTypeId" />
+
+      <select id="StatusId">
+         <option id="selStatus" selected="selected" value="1" data-IsOpenStatus="True">Selected Item</option>
+         <option id="notSelStatus" value="2" data-IsOpenStatus="True">Not Selected Item</option>
+      </select>
+
+      <select id="SelectParentWorkItemId">
+         <option id="selParentWorkItem" selected="selected" value="1" data-ProjectId="3" data-SprintId="5">Selected Item</option>
+         <option id="notSelParentWorkItem" value="2" data-ProjectId="4" data-SprintId="6">Not Selected Item</option>
+      </select>
+      <input id="ParentWorkItemId" />
+
+      <select id="SelectProjectId">
+         <option id="selProject" selected="selected" value="1">Selected Item</option>
+         <option id="notSelProject" value="2">Not Selected Item</option>
+      </select>
+      <input id="ProjectId" />
+
+      <select id="SelectSprintId">
+         <option id="selSprint" selected="selected" value="1" data-ProjectId="3" data-SprintId="5">Selected Item</option>
+         <option id="notSelSprint" value="2" data-ProjectId="4" data-SprintId="6">Not Selected Item</option>
+      </select>
+      <input id="SprintId" />
+
+      <select id="SelectAssignedToUserId">
+          <option id="selAssignedToUser" selected="selected" value="1">Selected Item</option>
+         <option id="notSelAssignedToUser" value="2">Not Selected Item</option>
+      </select>
+      <input id="AssignedToUserId" />
    </div>
 </body>
 </html>

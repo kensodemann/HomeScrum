@@ -13,6 +13,9 @@ test('Echo Test', function () {
 //     ** Task List (show)
 //     ** Add New Task Button (show)
 //   * When task item, opposite of above
+//   * Set project ID to parent when parent selected
+//   * Set sprint ID to parent when parent selected
+//   * Set project ID to sprint's project when sprint selected
 //   * Status not completed, all items active
 //   * Status completed, all items inactive except status, items are:
 //     ** Name
