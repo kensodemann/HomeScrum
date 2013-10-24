@@ -65,10 +65,76 @@ test('Assign To User Visible if can be assigned on change', function () {
    ok($("#AssignedToUserDiv").is(":visible"));
 });
 
+
+// Show / Hide Task List
+test('Task List Hidden if cannot have children on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   Editor.init();
+   ok($("#TaskListDiv").is(":hidden"));
+});
+
+test('Task List User Hidden if cannot have children on change', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   $("#SelectWorkItemTypeId").change();
+   stop();
+   setTimeout(function () {
+      ok($("#TaskListDiv").is(":hidden"));
+      start();
+   }, 1000);
+});
+
+test('Task List User Visible if can have children on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   Editor.init();
+   ok($("#TaskListDiv").is(":visible"));
+});
+
+test('Task List User Visible if can have children on change', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#SelectWorkItemTypeId").change();
+   ok($("#TaskListDiv").is(":visible"));
+});
+
+
+// Show / Hide Task Button
+test('Task Button Hidden if cannot have children on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   Editor.init();
+   ok($("#CreateNewTask").is(":hidden"));
+});
+
+test('Task Button User Hidden if cannot have children on change', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   $("#SelectWorkItemTypeId").change();
+   stop();
+   setTimeout(function () {
+      ok($("#CreateNewTask").is(":hidden"));
+      start();
+   }, 1000);
+});
+
+test('Task Button User Visible if can have children on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   Editor.init();
+   ok($("#CreateNewTask").is(":visible"));
+});
+
+test('Task Button User Visible if can have children on change', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   Editor.init();
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#SelectWorkItemTypeId").change();
+   ok($("#CreateNewTask").is(":visible"));
+});
+
 // Here are the behaviors that need to be tested:
 //   * When backlog item, following items are hidden/shown:
-//     ** Assigned To (hide)
-//     ** Task List (show)
 //     ** Add New Task Button (show)
 //   * When task item, opposite of above
 //   * Set project ID to parent when parent selected

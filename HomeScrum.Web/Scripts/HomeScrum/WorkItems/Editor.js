@@ -19,9 +19,22 @@
       }
    }
 
+   function ShowHideTaskList(effect) {
+      var canHaveChildren = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
+      if (canHaveChildren == "True") {
+         $("#TaskListDiv").show(effect);
+         $("#CreateNewTask").show(effect);
+      }
+      else {
+         $("#TaskListDiv").hide(effect);
+         $("#CreateNewTask").hide(effect);
+      }
+   }
+
    function ShowHideDataItems(effect) {
       ShowHideParentWorkItem(effect);
       ShowHideAssignedUser(effect);
+      ShowHideTaskList(effect);
    }
 
    function SetupWorkItemTypeSelectList() {
