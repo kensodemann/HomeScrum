@@ -271,7 +271,7 @@
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
     <Content Include="Scripts\HomeScrum\WorkItems\Editor.js" />
-    <Content Include="Scripts\Tests\myUIExtensionsTests.js" />
+    <Content Include="Scripts\Tests\utilitiesTests.js" />
     <Content Include="Scripts\Tests\qunit\qunit-1.12.0.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -376,12 +376,12 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\HomeScrum\myUIExtensions.js" />
+    <Content Include="Scripts\HomeScrum\utilities.js" />
     <Content Include="Scripts\jquery.storage.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\Tests\qunit\qunit-1.12.0.js" />
-    <Content Include="Scripts\Tests\testMyUIExtensions.html" />
+    <Content Include="Scripts\Tests\runUtilitiesTests.html" />
     <Content Include="Scripts\Tests\WorkItems\EditorTests.js" />
     <Content Include="Scripts\Tests\WorkItems\testEditor.html" />
     <Content Include="Web.config">
