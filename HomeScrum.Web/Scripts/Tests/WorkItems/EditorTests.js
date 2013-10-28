@@ -159,49 +159,63 @@ test("Project ID is set to sprint's when sprint selected", function () {
 });
 
 // Active & Inactive based on status
-test('Name Active on init if status not complete', function () {
+test('Items Active on init if status not complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    Editor.init();
-   strictEqual($("#Name").prop("readonly"), false);
-   ok(!($("#Name").hasClass("disabled")));
+   assertItemsAreActive();
 });
 
-test('Name Inactive on init if status complete', function () {
+test('Items Inactive on init if status complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "False");
    Editor.init();
-   strictEqual($("#Name").prop("readonly"), true);
-   ok($("#Name").hasClass("disabled"));
+   assertItemsAreInactive();
 });
 
-test('Name Active on status change if status not complete', function () {
+test('Items Active on status change if status not complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "False");
    Editor.init();
    $("#selStatus").attr("data-IsOpenStatus", "True");
    $("#StatusId").change();
-   strictEqual($("#Name").prop("readonly"), false);
-   ok(!($("#Name").hasClass("disabled")));
+   assertItemsAreActive();
 });
 
-test('Name Inactive on status change if status complete', function () {
+test('Items Inactive on status change if status complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    Editor.init();
    $("#selStatus").attr("data-IsOpenStatus", "False");
    $("#StatusId").change();
-   strictEqual($("#Name").prop("readonly"), true);
-   ok($("#Name").hasClass("disabled"));
+   assertItemsAreInactive()
 });
+
+function assertItemsAreActive() {
+   strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
+   ok(!($("#Name").hasClass("disabled")), "Name Disabled not Class");
+   strictEqual($("#Description").prop("readonly"), false, "Description not Readonly");
+   ok(!($("#Description").hasClass("disabled")), "Description not Disabled Class");
+   strictEqual($("#SelectWorkItemTypeId").prop("disabled"), false, "Work Item Type not Disabled");
+   strictEqual($("#SelectParentWorkItemId").prop("disabled"), false, "Parent Work Item not Disabled");
+   strictEqual($("#SelectProjectId").prop("disabled"), false, "Project not Disabled");
+   strictEqual($("#SelectSprintId").prop("disabled"), false, "Sprint not Disabled");
+   strictEqual($("#SelectAssignedToUserId").prop("disabled"), false, "Assigned To User not Disabled");
+   strictEqual($("#CreateNewTask").prop("disabled"), false, "Create New Task not Disabled");
+}
+
+function assertItemsAreInactive() {
+   strictEqual($("#Name").prop("readonly"), true, "Name Readonly");
+   ok($("#Name").hasClass("disabled"), "Name Disabled Class");
+   strictEqual($("#Description").prop("readonly"), true, "Description Readonly");
+   ok($("#Description").hasClass("disabled"), "Description Disabled Class");
+   strictEqual($("#SelectWorkItemTypeId").prop("disabled"), true, "Work Item Type Disabled");
+   strictEqual($("#SelectParentWorkItemId").prop("disabled"), true, "Parent Work Item Disabled");
+   strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
+   strictEqual($("#SelectSprintId").prop("disabled"), true, "Sprint Disabled");
+   strictEqual($("#SelectAssignedToUserId").prop("disabled"), true, "Assigned To User Disabled");
+   strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
+}
+
 
 // Here are the behaviors that need to be tested:
-//   * Status not completed, all items active
-//   * Status completed, all items inactive except status, items are:
-//     ** Name
-//     ** Description
-//     ** Work Item Type
-//     ** Backlog Item
-//     ** Project
-//     ** Sprint
-//     ** Assigned To
-//     ** Add New Task
+//   * Add New Task disabled if task list is closed.
 //   * Sync Hidden on following:
 //     ** Work Item Type
 //     ** Backlog Item

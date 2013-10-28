@@ -69,6 +69,13 @@
 
    function SetAccess() {
       SetNameAccess();
+      SetDescriptionAccess();
+      SetAssignedToUserAccess();
+      SetCreateNewTaskAccess();
+      SetParentWorkItemAccess();
+      SetProjectAccess();
+      SetSprintAccess();
+      SetWorkItemTypeAccess();
    }
 
    function SetNameAccess() {
@@ -79,6 +86,71 @@
       else {
          $("#Name").prop('readonly', false);
          $("#Name").removeClass("disabled");
+      }
+   }
+
+   function SetDescriptionAccess() {
+      if (WorkItemIsClosed()) {
+         $("#Description").prop('readonly', true);
+         $("#Description").addClass("disabled");
+      }
+      else {
+         $("#Description").prop('readonly', false);
+         $("#Description").removeClass("disabled");
+      }
+   }
+
+   function SetWorkItemTypeAccess() {
+      if (WorkItemIsClosed()) {
+         $("#SelectWorkItemTypeId").prop('disabled', true);
+      }
+      else {
+         $("#SelectWorkItemTypeId").prop('disabled', false);
+      }
+   }
+
+   function SetParentWorkItemAccess() {
+      if (WorkItemIsClosed()) {
+         $("#SelectParentWorkItemId").prop('disabled', true);
+      }
+      else {
+         $("#SelectParentWorkItemId").prop('disabled', false);
+      }
+   }
+
+   function SetProjectAccess() {
+      if (WorkItemIsClosed()) {
+         $("#SelectProjectId").prop('disabled', true);
+      }
+      else {
+         $("#SelectProjectId").prop('disabled', false);
+      }
+   }
+
+   function SetSprintAccess() {
+      if (WorkItemIsClosed()) {
+         $("#SelectSprintId").prop('disabled', true);
+      }
+      else {
+         $("#SelectSprintId").prop('disabled', false);
+      }
+   }
+
+   function SetAssignedToUserAccess() {
+      if (WorkItemIsClosed()) {
+         $("#SelectAssignedToUserId").prop('disabled', true);
+      }
+      else {
+         $("#SelectAssignedToUserId").prop('disabled', false);
+      }
+   }
+
+   function SetCreateNewTaskAccess() {
+      if (WorkItemIsClosed()) {
+         $("#CreateNewTask").prop('disabled', true);
+      }
+      else {
+         $("#CreateNewTask").prop('disabled', false);
       }
    }
 
