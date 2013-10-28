@@ -39,13 +39,19 @@
       <select id="SelectProjectId">
          <option id="selProject" selected="selected" value="1">Selected Item</option>
          <option id="notSelProject" value="2">Not Selected Item</option>
-         <option id="willBeSelProject" value="3">Not Selected Item</option>
+         <option id="willBeSelProjectWithParent" value="3">Eventually Selected Item</option>
+         <option id="willNotBeSelProject" value="4">Never Selected Item</option>
+         <option id="willBeSelProjectWithSprint" value="7">Eventually Selected Item</option>
       </select>
       <input id="ProjectId" />
 
       <select id="SelectSprintId">
-         <option id="selSprint" selected="selected" value="1" data-ProjectId="3">Selected Item</option>
+         <option id="selSprint" selected="selected" value="1" data-ProjectId="7">Selected Item</option>
          <option id="notSelSprint" value="2" data-ProjectId="4">Not Selected Item</option>
+         <option id="sprint3" value="3" data-ProjectId="4">Not Selected Item</option>
+         <option id="sprint4" value="4" data-ProjectId="4">Not Selected Item</option>
+         <option id="willBeSelSprint" value="5" data-ProjectId="4">Eventually Selected Item</option>
+         <option id="willNotBeSelSprint" value="6" data-ProjectId="4">Never Selected Item</option>
       </select>
       <input id="SprintId" />
 

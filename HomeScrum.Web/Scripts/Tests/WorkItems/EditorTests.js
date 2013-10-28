@@ -136,14 +136,28 @@ test('Task Button User Visible if can have children on change', function () {
 test("Project ID is set to parent's when parent selected", function () {
    Editor.init();
    $("#SelectParentWorkItemId").change();
-   var expectedProjectId = $("#SelectParentWorkItemId").find(":selected").attr("data-ProjectId");
-   strictEqual($("#SelectProjectId").val(), expectedProjectId);
-   strictEqual($("#ProjectId").val(), expectedProjectId);
+   var expected = $("#SelectParentWorkItemId").find(":selected").attr("data-ProjectId");
+   strictEqual($("#SelectProjectId").val(), expected);
+   strictEqual($("#ProjectId").val(), expected);
+});
+
+test("Sprint ID is set to parent's when parent selected", function () {
+   Editor.init();
+   $("#SelectParentWorkItemId").change();
+   var expected = $("#SelectParentWorkItemId").find(":selected").attr("data-SprintId");
+   strictEqual($("#SelectSprintId").val(), expected);
+   strictEqual($("#SprintId").val(), expected);
+});
+
+test("Project ID is set to sprint's when sprint selected", function () {
+   Editor.init();
+   $("#SelectSprintId").change();
+   var expected = $("#SelectSprintId").find(":selected").attr("data-ProjectId");
+   strictEqual($("#SelectProjectId").val(), expected);
+   strictEqual($("#ProjectId").val(), expected);
 });
 
 // Here are the behaviors that need to be tested:
-//   * 
-//   * Set sprint ID to parent when parent selected
 //   * Set project ID to sprint's project when sprint selected
 //   * Status not completed, all items active
 //   * Status completed, all items inactive except status, items are:

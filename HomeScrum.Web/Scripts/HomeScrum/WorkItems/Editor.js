@@ -82,6 +82,16 @@
       selectList.change(function () {
          Utilities.syncHiddenElement(this);
          SetProjectToParentWorkItemProject();
+         SetSprintToParentWorkItemSprint();
+      });
+   }
+
+   function SetupSprintSelectList() {
+      var selectList = $("#SelectSprintId");
+      Utilities.syncHiddenElement(selectList.get(0));
+      selectList.change(function () {
+         Utilities.syncHiddenElement(this);
+         SetProjectToSprintProject();
       });
    }
 
@@ -90,6 +100,7 @@
 
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
+      SetupSprintSelectList();
    };
 
    return {
