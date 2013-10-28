@@ -133,11 +133,16 @@ test('Task Button User Visible if can have children on change', function () {
    ok($("#CreateNewTask").is(":visible"));
 });
 
+test("Project ID is set to parent's when parent selected", function () {
+   Editor.init();
+   $("#SelectParentWorkItemId").change();
+   var expectedProjectId = $("#SelectParentWorkItemId").find(":selected").attr("data-ProjectId");
+   strictEqual($("#SelectProjectId").val(), expectedProjectId);
+   strictEqual($("#ProjectId").val(), expectedProjectId);
+});
+
 // Here are the behaviors that need to be tested:
-//   * When backlog item, following items are hidden/shown:
-//     ** Add New Task Button (show)
-//   * When task item, opposite of above
-//   * Set project ID to parent when parent selected
+//   * 
 //   * Set sprint ID to parent when parent selected
 //   * Set project ID to sprint's project when sprint selected
 //   * Status not completed, all items active
