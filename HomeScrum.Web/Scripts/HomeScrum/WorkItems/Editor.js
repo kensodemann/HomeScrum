@@ -146,12 +146,17 @@
    }
 
    function SetCreateNewTaskAccess() {
-      if (WorkItemIsClosed()) {
+      if (WorkItemIsClosed() || TaskListIsClosed()) {
          $("#CreateNewTask").prop('disabled', true);
       }
       else {
          $("#CreateNewTask").prop('disabled', false);
       }
+   }
+
+   function TaskListIsClosed() {
+      var taskListIsClosed = $("#SelectSprintId").find(":selected").attr("data-TaskListIsClosed");
+      return (taskListIsClosed == "True");
    }
 
    function WorkItemIsClosed() {
@@ -193,6 +198,7 @@
       selectList.change(function () {
          Utilities.syncHiddenElement(this);
          SetProjectToSprintProject();
+         SetCreateNewTaskAccess();
       });
    }
 

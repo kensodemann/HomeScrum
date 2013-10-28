@@ -184,8 +184,47 @@ test('Items Inactive on status change if status complete', function () {
    Editor.init();
    $("#selStatus").attr("data-IsOpenStatus", "False");
    $("#StatusId").change();
-   assertItemsAreInactive()
+   assertItemsAreInactive();
 });
+
+test('Add New Task not disabled on init if task list is not closed', function () {
+   $("#selSprint").attr("data-TaskListIsClosed", "False");
+   Editor.init();
+   strictEqual($("#CreateNewTask").prop("disabled"), false, "Create New Task not Disabled");
+});
+
+test('Add New Task disabled on init if task list is closed', function () {
+   $("#selSprint").attr("data-TaskListIsClosed", "True");
+   Editor.init();
+   strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
+});
+
+test('Add New Task not disabled on status change if task list is not closed', function () {
+   $("#selSprint").attr("data-TaskListIsClosed", "True");
+   Editor.init();
+   $("#selSprint").attr("data-TaskListIsClosed", "False");
+   $("#SelectSprintId").change();
+   strictEqual($("#CreateNewTask").prop("disabled"), false, "Create New Task not Disabled");
+});
+
+test('Add New Task disabled on status change if task list is closed', function () {
+   $("#selSprint").attr("data-TaskListIsClosed", "False");
+   Editor.init();
+   $("#selSprint").attr("data-TaskListIsClosed", "True");
+   $("#SelectSprintId").change();
+   strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
+});
+
+// Here are the behaviors that need to be tested:
+//   * 
+//   * Sync Hidden on following:
+//     ** Work Item Type
+//     ** Backlog Item
+//     ** Project
+//     ** Sprint
+//     ** Assigned To
+//   * Disable project if parent work item assigned and has project
+//   * Disable sprint if parent work item assigned and has sprint
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
@@ -212,13 +251,3 @@ function assertItemsAreInactive() {
    strictEqual($("#SelectAssignedToUserId").prop("disabled"), true, "Assigned To User Disabled");
    strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
 }
-
-
-// Here are the behaviors that need to be tested:
-//   * Add New Task disabled if task list is closed.
-//   * Sync Hidden on following:
-//     ** Work Item Type
-//     ** Backlog Item
-//     ** Project
-//     ** Sprint
-//     ** Assigned To
