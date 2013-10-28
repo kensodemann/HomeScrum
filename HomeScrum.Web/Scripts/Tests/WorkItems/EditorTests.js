@@ -133,6 +133,7 @@ test('Task Button User Visible if can have children on change', function () {
    ok($("#CreateNewTask").is(":visible"));
 });
 
+// Project & Sprint Setting
 test("Project ID is set to parent's when parent selected", function () {
    Editor.init();
    $("#SelectParentWorkItemId").change();
@@ -157,8 +158,40 @@ test("Project ID is set to sprint's when sprint selected", function () {
    strictEqual($("#ProjectId").val(), expected);
 });
 
+// Active & Inactive based on status
+test('Name Active on init if status not complete', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   Editor.init();
+   strictEqual($("#Name").prop("readonly"), false);
+   ok(!($("#Name").hasClass("disabled")));
+});
+
+test('Name Inactive on init if status complete', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "False");
+   Editor.init();
+   strictEqual($("#Name").prop("readonly"), true);
+   ok($("#Name").hasClass("disabled"));
+});
+
+test('Name Active on status change if status not complete', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "False");
+   Editor.init();
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#StatusId").change();
+   strictEqual($("#Name").prop("readonly"), false);
+   ok(!($("#Name").hasClass("disabled")));
+});
+
+test('Name Inactive on status change if status complete', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   Editor.init();
+   $("#selStatus").attr("data-IsOpenStatus", "False");
+   $("#StatusId").change();
+   strictEqual($("#Name").prop("readonly"), true);
+   ok($("#Name").hasClass("disabled"));
+});
+
 // Here are the behaviors that need to be tested:
-//   * Set project ID to sprint's project when sprint selected
 //   * Status not completed, all items active
 //   * Status completed, all items inactive except status, items are:
 //     ** Name

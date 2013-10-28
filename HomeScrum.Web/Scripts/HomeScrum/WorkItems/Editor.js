@@ -67,12 +67,41 @@
       }
    }
 
+   function SetAccess() {
+      SetNameAccess();
+   }
+
+   function SetNameAccess() {
+      if (WorkItemIsClosed()) {
+         $("#Name").prop('readonly', true);
+         $("#Name").addClass("disabled");
+      }
+      else {
+         $("#Name").prop('readonly', false);
+         $("#Name").removeClass("disabled");
+      }
+   }
+
+   function WorkItemIsClosed() {
+      var statusIsOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
+      return (statusIsOpen == "False");
+   }
+
    function SetupWorkItemTypeSelectList() {
       var selectList = $("#SelectWorkItemTypeId");
       Utilities.syncHiddenElement(selectList.get(0));
       selectList.change(function () {
          Utilities.syncHiddenElement(this);
          ShowHideDataItems("fade");
+      });
+   }
+
+   function SetupStatusSelectList() {
+      var selectList = $("#StatusId");
+      Utilities.syncHiddenElement(selectList.get(0));
+      selectList.change(function () {
+         Utilities.syncHiddenElement(this);
+         SetAccess();
       });
    }
 
@@ -97,7 +126,9 @@
 
    var init = function () {
       ShowHideDataItems();
+      SetAccess();
 
+      SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
