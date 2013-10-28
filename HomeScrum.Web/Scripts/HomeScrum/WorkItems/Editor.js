@@ -210,6 +210,22 @@
       });
    }
 
+   function SetupProjectList() {
+      var selectList = $("#SelectProjectId");
+      Utilities.syncHiddenElement(selectList.get(0));
+      selectList.change(function () {
+         Utilities.syncHiddenElement(this);
+      });
+   }
+
+   function SetupAssignedToUserList() {
+      var selectList = $("#SelectAssignedToUserId");
+      Utilities.syncHiddenElement(selectList.get(0));
+      selectList.change(function () {
+         Utilities.syncHiddenElement(this);
+      });
+   }
+
    var init = function () {
       ShowHideDataItems();
       SetAccess();
@@ -218,6 +234,8 @@
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
+      SetupAssignedToUserList();
+      SetupProjectList();
    };
 
    return {

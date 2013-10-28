@@ -310,14 +310,52 @@ test('Sprint disabled on parent change if parent', function () {
    strictEqual($("#SelectSprintId").prop("disabled"), true, "Sprint Disabled");
 });
 
-// Here are the behaviors that need to be tested:
-//   * Sync Hidden on following:
-//     ** Work Item Type
-//     ** Backlog Item
-//     ** Project
-//     ** Sprint
-//     ** Assigned To
-//   * Disable sprint if parent work item assigned and has sprint
+test('Items in Sync on init', function () {
+   Editor.init();
+   strictEqual($("#SelectWorkItemTypeId").val(), $("#WorkItemTypeId").val(), "Work Item Type in sync");
+   strictEqual($("#SelectProjectId").val(), $("#ProjectId").val(), "Project in sync");
+   strictEqual($("#SelectSprintId").val(), $("#SprintId").val(), "Sprint in sync");
+   strictEqual($("#SelectParentWorkItemId").val(), $("#ParentWorkItemId").val(), "Parent in sync");
+   strictEqual($("#SelectAssignedToUserId").val(), $("#AssignedToUserId").val(), "Assigned to user in sync");
+});
+
+test('Work Item Type in sync after change', function () {
+   $("#SelectWorkItemTypeId").val("1");
+   Editor.init();
+   $("#SelectWorkItemTypeId").val("2");
+   $("#SelectWorkItemTypeId").change();
+   strictEqual($("#SelectWorkItemTypeId").val(), $("#WorkItemTypeId").val(), "Work Item Type in sync");
+});
+
+test('Parent Work Item in sync after change', function () {
+   $("#SelectParentWorkItemId").val("1");
+   Editor.init();
+   $("#SelectParentWorkItemId").val("2");
+   $("#SelectParentWorkItemId").change();
+   strictEqual($("#SelectParentWorkItemId").val(), $("#ParentWorkItemId").val(), "Parent in sync");
+});
+
+test('Project in sync after change', function () {
+   $("#SelectProjectId").val("1");
+   Editor.init();
+   $("#SelectProjectId").val("2");
+   $("#SelectProjectId").change();
+   strictEqual($("#SelectProjectId").val(), $("#ProjectId").val(), "Project in sync");
+});
+test('Sprint in sync after change', function () {
+   $("#SelectSprintId").val("1");
+   Editor.init();
+   $("#SelectSprintId").val("2");
+   $("#SelectSprintId").change();
+   strictEqual($("#SelectSprintId").val(), $("#SprintId").val(), "Sprint in sync");
+});
+test('Assigned To User in sync after change', function () {
+   $("#SelectAssignedToUserId").val("1");
+   Editor.init();
+   $("#SelectAssignedToUserId").val("2");
+   $("#SelectAssignedToUserId").change();
+   strictEqual($("#SelectAssignedToUserId").val(), $("#AssignedToUserId").val(), "Assigned To User in sync");
+});
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
