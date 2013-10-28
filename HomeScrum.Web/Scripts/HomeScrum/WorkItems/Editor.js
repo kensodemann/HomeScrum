@@ -119,7 +119,11 @@
    }
 
    function SetProjectAccess() {
-      if (WorkItemIsClosed()) {
+      var backlogItem = $("#SelectParentWorkItemId").val();
+      var sprint = $("#SelectSprintId").val();
+      if (backlogItem != "00000000-0000-0000-0000-000000000000" ||
+          sprint != "00000000-0000-0000-0000-000000000000" ||
+          WorkItemIsClosed()) {
          $("#SelectProjectId").prop('disabled', true);
       }
       else {
@@ -128,7 +132,8 @@
    }
 
    function SetSprintAccess() {
-      if (WorkItemIsClosed()) {
+      var backlogItem = $("#SelectParentWorkItemId").val();
+      if (backlogItem != "00000000-0000-0000-0000-000000000000" || WorkItemIsClosed()) {
          $("#SelectSprintId").prop('disabled', true);
       }
       else {
@@ -189,6 +194,8 @@
          Utilities.syncHiddenElement(this);
          SetProjectToParentWorkItemProject();
          SetSprintToParentWorkItemSprint();
+         SetProjectAccess();
+         SetSprintAccess();
       });
    }
 
@@ -199,6 +206,7 @@
          Utilities.syncHiddenElement(this);
          SetProjectToSprintProject();
          SetCreateNewTaskAccess();
+         SetProjectAccess();
       });
    }
 
