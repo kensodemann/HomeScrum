@@ -180,9 +180,7 @@
 
    function SetupStatusSelectList() {
       var selectList = $("#StatusId");
-      Utilities.syncHiddenElement(selectList.get(0));
       selectList.change(function () {
-         Utilities.syncHiddenElement(this);
          SetAccess();
       });
    }
