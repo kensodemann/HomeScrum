@@ -25,6 +25,15 @@
       }
    }
 
+   function SetProjectIdAccess() {
+      if (SprintIsClosed()) {
+         $("#SelectProjectId").prop("disabled", true);
+      }
+      else {
+         $("#SelectProjectxId").prop("disabled", false);
+      }
+   }
+
    function ShowHideDataItems() {
    }
 
@@ -32,6 +41,7 @@
       SetTextInputAccess($("#Name"));
       SetTextInputAccess($("#Description"));
       SetTextInputAccess($("#Goal"));
+      SetProjectIdAccess();
    }
 
    var init = function () {

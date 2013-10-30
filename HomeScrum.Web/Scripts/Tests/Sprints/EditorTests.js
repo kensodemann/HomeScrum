@@ -17,6 +17,7 @@ function assertItemsAreActive() {
    ok(!($("#Description").hasClass("disabled")), "Description Disabled does not have Class");
    strictEqual($("#Goal").prop("readonly"), false, "Goal not Readonly");
    ok(!($("#Goal").hasClass("disabled")), "Goal Disabled does not have Class");
+   strictEqual($("#SelectProjectId").prop('disabled'), false, "Project is not disabled");
 }
 
 function assertItemsAreNotActive() {
@@ -26,11 +27,10 @@ function assertItemsAreNotActive() {
    ok($("#Description").hasClass("disabled"), "Description Disabled has Class");
    strictEqual($("#Goal").prop("readonly"), true, "Goal Readonly");
    ok($("#Goal").hasClass("disabled"), "Goal Disabled has Class");
+   strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
 }
 
 // The following items are enable/disabled based on sprint status
-//   * Goal
-//   * Name
 //   * Project Id
 //
 // The following are shown/hid based on sprint status
