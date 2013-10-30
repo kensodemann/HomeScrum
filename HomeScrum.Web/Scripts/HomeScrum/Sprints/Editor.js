@@ -31,6 +31,7 @@
    function SetAccess() {
       SetTextInputAccess($("#Name"));
       SetTextInputAccess($("#Description"));
+      SetTextInputAccess($("#Goal"));
    }
 
    var init = function () {
