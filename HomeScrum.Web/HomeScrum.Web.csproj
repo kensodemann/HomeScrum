@@ -270,6 +270,7 @@
   <ItemGroup>
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
+    <Content Include="Scripts\HomeScrum\Sprints\Editor.js" />
     <Content Include="Scripts\HomeScrum\WorkItems\Editor.js" />
     <Content Include="Scripts\Tests\Sprints\EditorTests.js" />
     <Content Include="Scripts\Tests\Sprints\testEditor.html" />
@@ -484,7 +485,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\HomeScrum\Sprints\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

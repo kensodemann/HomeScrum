@@ -1,4 +1,26 @@
-﻿// The following items are enable/disabled based on sprint status
+﻿test('Items Enabled on init if sprint open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   Editor.init();
+   assertItemsAreActive();
+});
+
+test('Items Disabled on init if sprint not open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "False");
+   Editor.init();
+   assertItemsAreNotActive();
+});
+
+function assertItemsAreActive() {
+   strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
+   ok(!($("#Name").hasClass("disabled")), "Name Disabled does not have Class");
+}
+
+function assertItemsAreNotActive() {
+   strictEqual($("#Name").prop("readonly"), true, "Name Readonly");
+   ok($("#Name").hasClass("disabled"), "Name Disabled has Class");
+}
+
+// The following items are enable/disabled based on sprint status
 //   * Name
 //   * Description
 //   * Goal
