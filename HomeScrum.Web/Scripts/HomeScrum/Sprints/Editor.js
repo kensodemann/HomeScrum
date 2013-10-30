@@ -14,14 +14,14 @@
       return (isOpen == "False");
    }
 
-   function SetNameAccess() {
+   function SetTextInputAccess(input) {
       if (SprintIsClosed()) {
-         $("#Name").prop('readonly', true);
-         $("#Name").addClass("disabled");
+         input.prop('readonly', true);
+         input.addClass("disabled");
       }
       else {
-         $("#Name").prop('readonly', false);
-         $("#Name").removeClass("disabled");
+         input.prop('readonly', false);
+         input.removeClass("disabled");
       }
    }
 
@@ -29,7 +29,8 @@
    }
 
    function SetAccess() {
-      SetNameAccess();
+      SetTextInputAccess($("#Name"));
+      SetTextInputAccess($("#Description"));
    }
 
    var init = function () {

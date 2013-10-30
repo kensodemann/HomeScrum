@@ -13,11 +13,15 @@ test('Items Disabled on init if sprint not open', function () {
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
    ok(!($("#Name").hasClass("disabled")), "Name Disabled does not have Class");
+   strictEqual($("#Description").prop("readonly"), false, "Description not Readonly");
+   ok(!($("#Description").hasClass("disabled")), "Description Disabled does not have Class");
 }
 
 function assertItemsAreNotActive() {
    strictEqual($("#Name").prop("readonly"), true, "Name Readonly");
    ok($("#Name").hasClass("disabled"), "Name Disabled has Class");
+   strictEqual($("#Description").prop("readonly"), true, "Description Readonly");
+   ok($("#Description").hasClass("disabled"), "Description Disabled has Class");
 }
 
 // The following items are enable/disabled based on sprint status
