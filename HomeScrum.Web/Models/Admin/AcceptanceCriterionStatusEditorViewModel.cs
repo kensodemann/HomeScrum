@@ -1,15 +1,14 @@
 ﻿using HomeScrum.Data.Domain;
-using System;
-using System.Collections.Generic;
+using HomeScrum.Web.Models.Base;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public class AcceptanceCriterionStatusEditorViewModel : Base.SystemDomainObjectViewModel
+   public class AcceptanceCriterionStatusEditorViewModel : SystemDomainObjectViewModel, IEditorViewModel
    {
       [Display( Name = "AcceptanceCriterionStatusCategory", ResourceType = typeof( DisplayStrings ) )]
       public virtual AcceptanceCriterionStatusCategory Category { get; set; }
+
+      public EditMode Mode { get; set; }
    }
 }
