@@ -26,7 +26,8 @@
    }
 
    function SetProjectIdAccess() {
-      if (SprintIsClosed()) {
+      var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
+      if (numberOfWorkItems > 0 || SprintIsClosed()) {
          $("#SelectProjectId").prop("disabled", true);
       }
       else {
@@ -71,10 +72,19 @@
       });
    }
 
+   function SetupProjectSelectList() {
+      var selectList = $("#SelectProjectId");
+      Utilities.syncHiddenElement(selectList.get(0));
+      selectList.change(function () {
+         Utilities.syncHiddenElement(this);
+      });
+   }
+
    var init = function () {
       ShowHideDataItems();
       SetAccess();
 
+      SetupProjectSelectList();
       SetupStatusSelectList();
    };
 

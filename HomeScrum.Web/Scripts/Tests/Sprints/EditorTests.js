@@ -113,8 +113,31 @@ test('Task List Link hidden on status change if status open and task list closed
    $("#StatusId").change();
    ok($("#TaskListLink").is(":hidden"), "Task List link is hidden");
    ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
+}); 
+
+test('Project ID hidden on init if backlog items exist', function () {
+   $("#BacklogItemsTable tr:last").after("<tr>This is a backlog item</tr>");
+   Editor.init();
+   strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
 });
 
+test('Project ID hidden on init if task list items exist', function () {
+   $("#TasksTable tr:last").after("<tr>This is a task item</tr>");
+   Editor.init();
+   strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
+});
+
+test('Project ID syncs on init', function () {
+   Editor.init();
+   strictEqual($("#ProjectId").val(), $("#SelectProjectId").val());
+});
+
+test('Project ID syncs on project change', function () {
+   Editor.init();
+   $("#SelectProjectId").val("2");
+   $("#SelectProjectId").change();
+   strictEqual($("#ProjectId").val(), $("#SelectProjectId").val());
+});
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
@@ -145,20 +168,3 @@ function assertItemsAreHidden() {
    ok($("#TaskListLink").is(":hidden"), "Task List link is hidden");
    ok($("#BacklogLink").is(":hidden"), "Backlog link is hidden");
 }
-// The following are shown/hid based on sprint status
-//   * backlog link
-//   * task link
-//
-// Hide the backlog link if backlog is closed
-// Hide the task link if task list is closed
-//
-// Repeat these tests on sprint change.
-//
-// The Project Id is disabled if a backlog item is associated with the sprint
-//   * Test on init
-//   * Test on backlog item change
-// The Project Id is disabled if a task is associated with the sprint
-//   * Test on init
-//   * Test on sprint change` 
-//
-// Sync Project Id
