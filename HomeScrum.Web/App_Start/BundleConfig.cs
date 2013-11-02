@@ -14,6 +14,9 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/workItemScripts" )
             .Include( "~/Scripts/HomeScrum/WorkItems/Editor.js" ) );
 
+         bundles.Add( new ScriptBundle( "~/bundles/sprintScripts" )
+            .Include( "~/Scripts/HomeScrum/Sprints/Editor.js" ) );
+
          bundles.Add( new ScriptBundle( "~/bundles/jquery" )
             .Include( "~/Scripts/jquery-{version}.js" )
             .Include( "~/Scripts/jquery.storage.js" )
