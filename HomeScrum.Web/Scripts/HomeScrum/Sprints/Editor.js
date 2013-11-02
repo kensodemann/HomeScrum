@@ -30,7 +30,7 @@
          $("#SelectProjectId").prop("disabled", true);
       }
       else {
-         $("#SelectProjectxId").prop("disabled", false);
+         $("#SelectProjectId").prop("disabled", false);
       }
    }
 
@@ -64,9 +64,18 @@
       SetProjectIdAccess();
    }
 
+   function SetupStatusSelectList() {
+      $("#StatusId").change(function () {
+         ShowHideDataItems();
+         SetAccess();
+      });
+   }
+
    var init = function () {
       ShowHideDataItems();
       SetAccess();
+
+      SetupStatusSelectList();
    };
 
    return {
