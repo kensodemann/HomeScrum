@@ -9,7 +9,13 @@ namespace HomeScrum.Web
       public static void RegisterBundles( BundleCollection bundles )
       {
          bundles.Add( new ScriptBundle( "~/bundles/myScripts" )
-            .Include( "~/Scripts/myUIExtensions.js" ) );
+            .Include( "~/Scripts/HomeScrum/utilities.js" ) );
+
+         bundles.Add( new ScriptBundle( "~/bundles/workItemScripts" )
+            .Include( "~/Scripts/HomeScrum/WorkItems/Editor.js" ) );
+
+         bundles.Add( new ScriptBundle( "~/bundles/sprintScripts" )
+            .Include( "~/Scripts/HomeScrum/Sprints/Editor.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/jquery" )
             .Include( "~/Scripts/jquery-{version}.js" )

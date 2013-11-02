@@ -33,7 +33,7 @@
       @Html.HiddenFor( m => m.CreatedByUserUserName )
 
    </fieldset>
-   
+
    <fieldset>
       <legend>Properties</legend>
 
@@ -60,139 +60,37 @@
          @Html.ValidationMessageFor( model => model.EndDate )
       </div>
    </fieldset>
-   
+
    if (Model.Id != Guid.Empty)
    {
-   <fieldset>
-      <legend>WorkItems</legend>
+      <fieldset>
+         <legend>WorkItems</legend>
 
-      <div id="BacklogItems">
-         <h3>Backlog Items</h3>
-         @Html.Partial( "_WorkItemList", Model.BacklogItems )
-         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
-      </div>
+         <div id="BacklogItems">
+            <h3>Backlog Items</h3>
+            @Html.Partial( "_WorkItemList", Model.BacklogItems )
+            @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
+         </div>
 
-      <div id="Tasks">
-         <h3>Tasks</h3>
-         @Html.Partial( "_WorkItemList", Model.Tasks )
-         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
-      </div>
-   </fieldset>
+         <div id="Tasks">
+            <h3>Tasks</h3>
+            @Html.Partial( "_WorkItemList", Model.Tasks )
+            @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
+         </div>
+      </fieldset>
    }
-   
+
    @Html.ValidationSummary( false )
-   
+
    <p>
       <input type="submit" value="@ViewBag.EditorButtonLabel" />
    </p>
-       
+
+   @Scripts.Render( "~/bundles/sprintScripts" )
+   
    <script>
-      function SyncHiddenElement(fromElement) {
-         var hiddenElementId = fromElement.id.substr(6);
-         $("#" + hiddenElementId).val($(fromElement).val());
-      }
-
-      function BacklogIsClosed() {
-         var isClosed = $("#StatusId").find(":selected").attr("data-BacklogIsClosed");
-         return (isClosed == "True");
-      }
-
-      function TaskListIsClosed() {
-         var isClosed = $("#StatusId").find(":selected").attr("data-TaskListIsClosed");
-         return (isClosed == "True");
-      }
-
-      function SprintIsClosed() {
-         var isOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
-         return (isOpen == "False");
-      }
-
-      function SetNameAccess() {
-         if (SprintIsClosed()) {
-            $("#Name").prop('readonly', true);
-            $("#Name").addClass("disabled");
-         }
-         else {
-            $("#Name").prop('readonly', false);
-            $("#Name").removeClass("disabled");
-         }
-      }
-
-      function SetDescriptionAccess() {
-         if (SprintIsClosed()) {
-            $("#Description").prop('readonly', true);
-            $("#Description").addClass("disabled");
-         }
-         else {
-            $("#Description").prop('readonly', false);
-            $("#Description").removeClass("disabled");
-         }
-      }
-
-      function SetGoalAccess() {
-         if (SprintIsClosed()) {
-            $("#Goal").prop('readonly', true);
-            $("#Goal").addClass("disabled");
-         }
-         else {
-            $("#Goal").prop('readonly', false);
-            $("#Goal").removeClass("disabled");
-         }
-      }
-
-      function SetBacklogLinkAccess() {
-         if (BacklogIsClosed() || SprintIsClosed()) {
-            $("#BacklogLink").hide();
-         }
-         else {
-            $("#BacklogLink").show();
-         }
-      }
-
-      function SetTaskListLinkAccess() {
-         if (TaskListIsClosed() || SprintIsClosed()) {
-            $("#TaskListLink").hide();
-         }
-         else {
-            $("#TaskListLink").show();
-         }
-      }
-
-      function SetProjectListAccess() {
-         var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
-         if (numberOfWorkItems > 0 || SprintIsClosed()) {
-            $("#SelectProjectId").prop('disabled', true);
-         }
-         else {
-            $("#SelectProjectId").prop('disabled', false);
-         }
-      }
-
-      function SetScreenElementAccess() {
-         SetNameAccess();
-         SetDescriptionAccess();
-         SetGoalAccess();
-         SetBacklogLinkAccess();
-         SetTaskListLinkAccess();
-         SetProjectListAccess();
-      }
-
-      function SetupStatusSelectList() {
-         $("#StatusId").change(function () {
-            SetScreenElementAccess();
-         });
-      }
-
-      function SetupProjectSelectList() {
-         var selectList = $("#SelectProjectId");
-         SyncHiddenElement(selectList.get(0));
-         selectList.change(function () {
-            SyncHiddenElement(this);
-         });
-      }
-
       $(document).ready(function () {
-         SetScreenElementAccess();
+         Editor.init();
 
          $("#StartDate").datepicker({
             changeMonth: true,
@@ -202,9 +100,6 @@
             changeMonth: true,
             changeYear: true
          });
-
-         SetupStatusSelectList();
-         SetupProjectSelectList();
       });
    </script>
 }

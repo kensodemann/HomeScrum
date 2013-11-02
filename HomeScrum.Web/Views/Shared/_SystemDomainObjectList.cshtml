@@ -22,7 +22,7 @@
       // jQuery UI stand alone widget init
       $("#CreateNewItem").button();
 
-      setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowInactiveToggle"), "Inactive");
+      Utilities.setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowInactiveToggle"), "Inactive");
 
       // Sortability stuff
       $(".ListBody").sortable();
