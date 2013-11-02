@@ -22,6 +22,33 @@ test('Items Hid on init if sprint not open', function () {
    assertItemsAreHidden();
 });
 
+test('Backlog and Task List links shown on init if status open, task list open, and backlog open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-BacklogIsClosed", "False");
+   $("#selStatus").attr("data-TaskListIsClosed", "False");
+   Editor.init();
+   ok($("#TaskListLink").is(":visible"), "Task List link is visible");
+   ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
+});
+
+test('Backlog link hidden on init if status open and backlog closed', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-BacklogIsClosed", "True");
+   $("#selStatus").attr("data-TaskListIsClosed", "False");
+   Editor.init();
+   ok($("#TaskListLink").is(":visible"), "Task List link is visible");
+   ok($("#BacklogLink").is(":hidden"), "Backlog link is hidden");
+});
+
+test('Task List Link hidden on init if status open and task list closed', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-BacklogIsClosed", "False");
+   $("#selStatus").attr("data-TaskListIsClosed", "True");
+   Editor.init();
+   ok($("#TaskListLink").is(":hidden"), "Task List link is hidden");
+   ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
+});
+
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
    ok(!($("#Name").hasClass("disabled")), "Name Disabled does not have Class");

@@ -40,7 +40,7 @@
    }
 
    function ShowHideBacklogLink() {
-      if (SprintIsClosed()) {
+      if (BacklogIsClosed() || SprintIsClosed()) {
          $("#BacklogLink").hide();
       }
       else {
@@ -49,7 +49,7 @@
    }
 
    function ShowHideTaskListLink() {
-      if (SprintIsClosed()) {
+      if (TaskListIsClosed() || SprintIsClosed()) {
          $("#TaskListLink").hide();
       }
       else {
