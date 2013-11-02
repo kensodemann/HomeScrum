@@ -35,6 +35,26 @@
    }
 
    function ShowHideDataItems() {
+      ShowHideBacklogLink();
+      ShowHideTaskListLink();
+   }
+
+   function ShowHideBacklogLink() {
+      if (SprintIsClosed()) {
+         $("#BacklogLink").hide();
+      }
+      else {
+         $("#BacklogLink").show();
+      }
+   }
+
+   function ShowHideTaskListLink() {
+      if (SprintIsClosed()) {
+         $("#TaskListLink").hide();
+      }
+      else {
+         $("#TaskListLink").show();
+      }
    }
 
    function SetAccess() {

@@ -10,6 +10,18 @@ test('Items Disabled on init if sprint not open', function () {
    assertItemsAreNotActive();
 });
 
+test('Items Shown on init if sprint open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   Editor.init();
+   assertItemsAreShown();
+});
+
+test('Items Hid on init if sprint not open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "False");
+   Editor.init();
+   assertItemsAreHidden();
+});
+
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
    ok(!($("#Name").hasClass("disabled")), "Name Disabled does not have Class");
@@ -30,9 +42,15 @@ function assertItemsAreNotActive() {
    strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
 }
 
-// The following items are enable/disabled based on sprint status
-//   * Project Id
-//
+function assertItemsAreShown() {
+   ok($("#TaskListLink").is(":visible"), "Task List link is visible");
+   ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
+}
+
+function assertItemsAreHidden() {
+   ok($("#TaskListLink").is(":hidden"), "Task List link is hidden");
+   ok($("#BacklogLink").is(":hidden"), "Backlog link is hidden");
+}
 // The following are shown/hid based on sprint status
 //   * backlog link
 //   * task link
