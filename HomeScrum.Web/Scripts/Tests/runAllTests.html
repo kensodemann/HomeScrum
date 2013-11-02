@@ -10,11 +10,15 @@
    <script src="qunit/qunit-composite.js"></script>
 
    <script>
-      QUnit.testSuites([
-         "Sprints/testEditor.html",
-         "WorkItems/testEditor.html",
-         "Utilities/testUtilities.html"
-      ]);
+      QUnit.testSuites("Editors",
+         [
+            "Sprints/testEditor.html",
+            "WorkItems/testEditor.html"
+         ]);
+      QUnit.testSuites("Utilities",
+         [
+            "Utilities/testUtilities.html"
+         ]);
    </script>
 </head>
 <body>
