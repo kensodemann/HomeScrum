@@ -77,25 +77,36 @@ namespace HomeScrum.Web.Controllers
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            if (ModelState.IsValid)
+            try
             {
-               var model = Mapper.Map<User>( viewModel );
-               model.SetPassword( viewModel.NewPassword );
-
-               if (model.IsValidFor( Data.TransactionType.Insert ))
+               viewModel.Mode = EditMode.Create;
+               if (ModelState.IsValid)
                {
-                  session.Save( model );
-                  transaction.Commit();
-                  return RedirectToAction( () => this.Index() );
-               }
+                  var model = Mapper.Map<User>( viewModel );
+                  model.SetPassword( viewModel.NewPassword );
 
-               foreach (var message in model.GetErrorMessages())
-               {
-                  ModelState.AddModelError( message.Key, message.Value );
+                  if (model.IsValidFor( Data.TransactionType.Insert ))
+                  {
+                     session.Save( model );
+                     viewModel.Mode = EditMode.ReadOnly;
+                     viewModel.Id = model.Id;
+                  }
+                  else
+                  {
+                     foreach (var message in model.GetErrorMessages())
+                     {
+                        ModelState.AddModelError( message.Key, message.Value );
+                     }
+                  }
                }
+               transaction.Commit();
+            }
+            catch (Exception)
+            {
+               transaction.Rollback();
             }
 
-            return View();
+            return View( viewModel );
          }
       }
 
@@ -152,11 +163,11 @@ namespace HomeScrum.Web.Controllers
                }
                transaction.Commit();
             }
-            catch(Exception)
+            catch (Exception)
             {
                transaction.Rollback();
             }
-             
+
 
             return View( viewModel );
          }

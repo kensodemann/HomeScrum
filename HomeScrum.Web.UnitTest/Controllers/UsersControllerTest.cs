@@ -150,18 +150,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
-         var result = _controller.Create( viewModel ) as RedirectToRouteResult;
+         var result = _controller.Create( viewModel ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.IsNotNull( vm );
+         Assert.AreNotEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
@@ -181,14 +179,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      public void CreatePost_ReturnsToEditorModeCreate_IfModelIsNotValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
+         Assert.AreEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.Create, vm.Mode );
       }
 
       [TestMethod]
@@ -209,8 +209,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( model );
 
          Assert.AreEqual( 1, _controller.ModelState.Count );
-         Assert.IsTrue( _controller.ModelState.ContainsKey( "FirstName" ) );
-         Assert.IsTrue( result is ViewResult );
       }
 
       [TestMethod]
@@ -230,8 +228,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( model );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
