@@ -1,13 +1,10 @@
 ﻿using HomeScrum.Data.Domain;
-using System;
-using System.Collections.Generic;
+using HomeScrum.Web.Models.Base;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public class SprintStatusEditorViewModel : Base.SystemDomainObjectViewModel
+   public class SprintStatusEditorViewModel : SystemDomainObjectViewModel, IEditorViewModel
    {
       [Display( Name = "SprintStatusCategory", ResourceType = typeof( DisplayStrings ) )]
       public virtual SprintStatusCategory Category { get; set; }
@@ -17,5 +14,7 @@ namespace HomeScrum.Web.Models.Admin
 
       [Display( Name = "SprintStatusAllowNewTaskListItems", ResourceType = typeof( DisplayStrings ) )]
       public virtual bool CanAddTaskListItems { get; set; }
+
+      public EditMode Mode { get; set; }
    }
 }

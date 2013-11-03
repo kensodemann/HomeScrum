@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using HomeScrum.Web.Extensions;
+using HomeScrum.Web.Models.Base;
 
 namespace HomeScrum.Web.Models.Sprints
 {
-   public class SprintEditorViewModel : Base.DomainObjectViewModel
+   public class SprintEditorViewModel : DomainObjectViewModel, IEditorViewModel
    {
       [Display( Name = "SprintStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
@@ -43,5 +44,7 @@ namespace HomeScrum.Web.Models.Sprints
       public IEnumerable<SprintWorkItemViewModel> BacklogItems { get; set; }
 
       public IEnumerable<SprintWorkItemViewModel> Tasks { get; set; }
+
+      public EditMode Mode { get; set; }
    }
 }

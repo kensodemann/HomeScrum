@@ -13,7 +13,7 @@ namespace HomeScrum.Web.Controllers.Base
    public abstract class ReadWriteController<ModelT, EditorViewModelT>
       : ReadOnlyController<ModelT>
       where ModelT : DomainObjectBase, HomeScrum.Data.Validation.IValidatable
-      where EditorViewModelT : DomainObjectViewModel, new()
+      where EditorViewModelT : DomainObjectViewModel, IEditorViewModel, new()
    {
       public ReadWriteController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( logger, sessionFactory )
@@ -28,7 +28,10 @@ namespace HomeScrum.Web.Controllers.Base
       // GET: /ModelTs/Create
       public virtual ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentWorkItemId = null )
       {
-         var viewModel = new EditorViewModelT();
+         var viewModel = new EditorViewModelT()
+         {
+            Mode = EditMode.Create
+         };
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
@@ -83,6 +86,7 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
+               viewModel.Mode = EditMode.ReadOnly;
                UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();

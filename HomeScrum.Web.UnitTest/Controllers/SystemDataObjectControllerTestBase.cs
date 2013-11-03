@@ -15,7 +15,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public abstract class SystemDataObjectControllerTestBase<ModelT, ViewModelT, EditorViewModelT> : ReadWriteControllerTestBase<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : SystemDomainObject, new()
       where ViewModelT : SystemDomainObjectViewModel, new()
-      where EditorViewModelT : SystemDomainObjectViewModel, new()
+      where EditorViewModelT : SystemDomainObjectViewModel, IEditorViewModel, new()
    {
       [TestMethod]
       public void Index_ReturnsItemsInSortSeqOrder()

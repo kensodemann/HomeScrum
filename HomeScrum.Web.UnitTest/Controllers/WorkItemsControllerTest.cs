@@ -492,6 +492,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
 
       }
+
+      [TestMethod]
+      public void CreateGet_SetsEditModeToCreate()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( EditMode.Create, model.Mode );
+      }
       #endregion
 
 
@@ -1048,6 +1057,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsEditModeToReadOnly()
+      {
+         var model = WorkItems.ModelData[3];
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
       }
       #endregion
 

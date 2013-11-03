@@ -231,6 +231,8 @@
     <Compile Include="Models\Admin\AcceptanceCriterionStatusViewModel.cs" />
     <Compile Include="Models\Admin\AccountModels.cs" />
     <Compile Include="Models\Base\DomainObjectViewModel.cs" />
+    <Compile Include="Models\Base\EditMode.cs" />
+    <Compile Include="Models\Base\IEditorViewModel.cs" />
     <Compile Include="Models\Base\NavigationData.cs" />
     <Compile Include="Models\Base\SystemDomainObjectViewModel.cs" />
     <Compile Include="Models\Admin\CreateUserViewModel.cs" />

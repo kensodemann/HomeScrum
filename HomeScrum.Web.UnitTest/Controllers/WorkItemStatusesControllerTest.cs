@@ -5,11 +5,9 @@ using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NHibernate.Context;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 
 namespace HomeScrum.Web.UnitTest.Controllers

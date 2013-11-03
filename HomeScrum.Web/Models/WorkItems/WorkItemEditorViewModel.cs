@@ -1,14 +1,14 @@
 ﻿using HomeScrum.Web.Extensions;
+using HomeScrum.Web.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace HomeScrum.Web.Models.WorkItems
 {
-   public class WorkItemEditorViewModel : Base.DomainObjectViewModel
+   public class WorkItemEditorViewModel : DomainObjectViewModel, IEditorViewModel
    {
       public WorkItemEditorViewModel()
       {
@@ -100,5 +100,7 @@ namespace HomeScrum.Web.Models.WorkItems
             SprintId = Guid.Empty;
          }
       }
+
+      public EditMode Mode { get; set; }
    }
 }
