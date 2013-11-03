@@ -338,7 +338,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -351,18 +351,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = (user.StatusCd == 'A')
          };
 
-         var result = _controller.Edit( model ) as RedirectToRouteResult;
+         var result = _controller.Edit( model ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.IsNotNull( vm );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
+      public void EditPost_ReturnsToEditorModeEdit_IfModelIsNotValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -377,8 +375,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( model ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.Edit, vm.Mode );
       }
 
       [TestMethod]
@@ -420,8 +420,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]

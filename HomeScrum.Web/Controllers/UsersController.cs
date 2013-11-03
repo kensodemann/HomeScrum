@@ -131,21 +131,32 @@ namespace HomeScrum.Web.Controllers
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            if (ModelState.IsValid)
+            try
             {
-               var model = Mapper.Map<User>( viewModel );
-               if (model.IsValidFor( Data.TransactionType.Update ))
+               viewModel.Mode = EditMode.Edit;
+               if (ModelState.IsValid)
                {
-                  session.Update( model );
-                  transaction.Commit();
-                  return RedirectToAction( () => this.Index() );
+                  var model = Mapper.Map<User>( viewModel );
+                  if (model.IsValidFor( Data.TransactionType.Update ))
+                  {
+                     session.Update( model );
+                     viewModel.Mode = EditMode.ReadOnly;
+                  }
+                  else
+                  {
+                     foreach (var message in model.GetErrorMessages())
+                     {
+                        ModelState.AddModelError( message.Key, message.Value );
+                     }
+                  }
                }
-
-               foreach (var message in model.GetErrorMessages())
-               {
-                  ModelState.AddModelError( message.Key, message.Value );
-               }
+               transaction.Commit();
             }
+            catch(Exception)
+            {
+               transaction.Rollback();
+            }
+             
 
             return View( viewModel );
          }
