@@ -21,7 +21,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
    public abstract class ReadWriteControllerTestBase<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : DomainObjectBase, new()
       where ViewModelT : DomainObjectViewModel, new()
-      where EditorViewModelT : DomainObjectViewModel, new()
+      where EditorViewModelT : DomainObjectViewModel, IEditorViewModel, new()
    {
       #region Test Setup
       private static MoqMockingKernel _iocKernel;
@@ -246,6 +246,19 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+
+      [TestMethod]
+      public void CreateGet_SetsModeToCreate()
+      {
+         var controller = CreateController();
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as IEditorViewModel;
+
+         Assert.AreEqual( EditMode.Create, viewModel.Mode );
+      }
+
 
       [TestMethod]
       public void CreatePost_SavesModelIfNewViewModelIsValid()
@@ -482,6 +495,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsModeToReadOnly()
+      {
+         var controller = CreateController();
+         var id = GetAllModels().ToArray()[3].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as IEditorViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, viewModel.Mode );
       }
 
       [TestMethod]

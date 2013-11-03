@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
@@ -17,6 +12,11 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -435,6 +435,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void CreateGet_SetsModeToCreate()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( EditMode.Create, model.Mode );
+      }
       #endregion
 
 
@@ -802,6 +811,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( viewModel.Tasks );
          Assert.AreEqual( 0, viewModel.BacklogItems.Count() );
          Assert.AreEqual( 0, viewModel.Tasks.Count() );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsModeToReadOnly()
+      {
+         var model = Sprints.ModelData[3];
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var returnedModel = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
       }
       #endregion
 

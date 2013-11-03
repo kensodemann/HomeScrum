@@ -11,6 +11,7 @@ using NHibernate.Linq;
 using Ninject;
 using NHibernate;
 using System.Collections.Generic;
+using HomeScrum.Web.Models.Base;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -55,7 +56,10 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Create
       public ActionResult Create( string callingAction = null, string callingId = null )
       {
-         var viewModel = new CreateUserViewModel();
+         var viewModel = new CreateUserViewModel()
+         {
+            Mode = EditMode.Create
+         };
 
          Guid parsedId;
          Guid.TryParse( callingId, out parsedId );
@@ -106,6 +110,7 @@ namespace HomeScrum.Web.Controllers
             if (model != null)
             {
                var viewModel = Mapper.Map<EditUserViewModel>( model );
+               viewModel.Mode = EditMode.ReadOnly;
                Guid parsedCallingId;
                Guid.TryParse( callingId, out parsedCallingId );
                viewModel.CallingId = parsedCallingId;

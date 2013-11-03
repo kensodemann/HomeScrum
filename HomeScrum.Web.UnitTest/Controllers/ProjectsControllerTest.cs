@@ -196,6 +196,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreateGet_SetsEditModeToCreate()
+      {
+         var controller = CreateController();
+         var result = controller.Create() as ViewResult;
+         var model = result.Model as ProjectEditorViewModel;
+
+         Assert.AreEqual( EditMode.Create, model.Mode );
+      }
+
+      [TestMethod]
       public void CreatePost_SavesModelIfNewViewModelIsValid()
       {
          var controller = CreateController();
@@ -466,6 +476,18 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsEditModeToReadOnly()
+      {
+         var controller = CreateController();
+         var model = Projects.ModelData[3];
+
+         var result = controller.Edit( model.Id ) as ViewResult;
+         var returnedModel = result.Model as ProjectEditorViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
       }
 
       [TestMethod]

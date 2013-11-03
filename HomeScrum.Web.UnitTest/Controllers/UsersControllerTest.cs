@@ -3,6 +3,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
@@ -120,6 +121,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void CreateGet_SetsEditModeToCreate()
+      {
+         var parentId = Guid.NewGuid();
+         var result = _controller.Create() as ViewResult;
+         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
+
+         Assert.AreEqual( EditMode.Create, viewModel.Mode );
       }
 
       [TestMethod]
@@ -266,6 +277,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( viewModel.CallingAction, "Details" );
          Assert.AreEqual( callingId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsEditModeToReadOnly()
+      {
+         var user = Users.ModelData.ToArray()[3];
+
+         var result = _controller.Edit( user.Id ) as ViewResult;
+         var viewModel = result.Model as EditUserViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, viewModel.Mode );
       }
 
       [TestMethod]
