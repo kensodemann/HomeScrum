@@ -60,7 +60,7 @@ namespace HomeScrum.Web.Controllers.Base
                   if (model.IsValidFor( Data.TransactionType.Insert ))
                   {
                      Save( session, model, user );
-                     viewModel.Id = model.Id;
+                     viewModel = GetEditorViewModel( session, model.Id );
                      viewModel.Mode = EditMode.ReadOnly;
                   }
                   else
@@ -122,6 +122,7 @@ namespace HomeScrum.Web.Controllers.Base
                   if (model.IsValidFor( Data.TransactionType.Update ))
                   {
                      Update( session, model, user );
+                     viewModel = GetEditorViewModel( session, model.Id );
                      viewModel.Mode = EditMode.ReadOnly;
                   }
                   TransferErrorMessages( model );
