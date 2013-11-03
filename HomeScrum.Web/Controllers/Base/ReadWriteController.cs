@@ -51,27 +51,33 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            if (ModelState.IsValid)
+            try
             {
-               var model = Mapper.Map<ModelT>( viewModel );
-               if (model.IsValidFor( Data.TransactionType.Insert ))
+               viewModel.Mode = EditMode.Create;
+               if (ModelState.IsValid)
                {
-                  Save( session, model, user );
-                  transaction.Commit();
-                  return RedirectCreateAction( viewModel );
+                  var model = Mapper.Map<ModelT>( viewModel );
+                  if (model.IsValidFor( Data.TransactionType.Insert ))
+                  {
+                     Save( session, model, user );
+                     viewModel = GetEditorViewModel( session, model.Id );
+                     viewModel.Mode = EditMode.ReadOnly;
+                  }
+                  else
+                  {
+                     TransferErrorMessages( model );
+                  }
                }
-               TransferErrorMessages( model );
-            }
 
-            PopulateSelectLists( session, viewModel );
-            transaction.Commit();
+               PopulateSelectLists( session, viewModel );
+               transaction.Commit();
+            }
+            catch(Exception e)
+            {
+               Log.Error( e, "Create POST error" );
+            }
             return View( viewModel );
          }
-      }
-
-      protected virtual RedirectToRouteResult RedirectCreateAction( EditorViewModelT viewModel )
-      {
-         return StandardEditorRedirect( viewModel );
       }
 
 
@@ -107,38 +113,33 @@ namespace HomeScrum.Web.Controllers.Base
          var session = SessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            if (ModelState.IsValid)
+            try
             {
-               var model = Mapper.Map<ModelT>( viewModel );
-               if (model.IsValidFor( Data.TransactionType.Update ))
+               viewModel.Mode = EditMode.Edit;
+               if (ModelState.IsValid)
                {
-                  Update( session, model, user );
-                  transaction.Commit();
-                  return RedirectEditAction( viewModel );
+                  var model = Mapper.Map<ModelT>( viewModel );
+                  if (model.IsValidFor( Data.TransactionType.Update ))
+                  {
+                     Update( session, model, user );
+                     viewModel = GetEditorViewModel( session, model.Id );
+                     viewModel.Mode = EditMode.ReadOnly;
+                  }
+                  TransferErrorMessages( model );
                }
-               TransferErrorMessages( model );
-            }
 
-            PopulateSelectLists( session, viewModel );
-            transaction.Commit();
+               PopulateSelectLists( session, viewModel );
+               transaction.Commit();
+            }
+            catch(Exception e)
+            {
+               transaction.Rollback();
+               Log.Error( e, "Edit POST Error" );
+            }
             return View( viewModel );
          }
       }
 
-
-      protected virtual RedirectToRouteResult RedirectEditAction( EditorViewModelT viewModel )
-      {
-         return StandardEditorRedirect( viewModel );
-      }
-
-      private RedirectToRouteResult StandardEditorRedirect( EditorViewModelT viewModel )
-      {
-         return viewModel.CallingAction != null || viewModel.CallingController != null
-            ? RedirectToAction( viewModel.CallingAction ?? "Index",
-                                viewModel.CallingController,
-                                viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null )
-            : RedirectToAction( () => this.Index() );
-      }
 
       private void TransferErrorMessages( ModelT model )
       {

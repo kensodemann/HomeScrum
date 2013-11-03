@@ -224,19 +224,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
-         var result = controller.Create( model, _principal.Object ) as RedirectToRouteResult;
+         var result = controller.Create( model, _principal.Object ) as ViewResult;
+         var vm = result.Model as ProjectEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.AreNotEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
@@ -255,16 +252,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      public void CreatePost_ReturnsToEditorModeCreate_IfModelIsNotValid()
       {
          var controller = CreateController();
          var model = CreateProjectEditorViewModel();
 
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Create( model, _principal.Object ) as ViewResult;
+         var vm = result.Model as ProjectEditorViewModel;
 
-         Assert.IsNotNull( result );
          Assert.AreEqual( model, result.Model );
+         Assert.AreEqual( EditMode.Create, vm.Mode );
       }
 
       [TestMethod]
@@ -524,24 +522,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_ReturnToEditorModeReadOnly_IfModelIsValid()
       {
          var controller = CreateController();
          var model = Projects.ModelData[2];
          var viewModel = CreateProjectEditorViewModel( model );
 
-         var result = controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+         var result = controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as ProjectEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
+      public void EditPost_ReturnsToEditorModeEdit_IfModelIsNotValid()
       {
          var controller = CreateController();
          var model = Projects.ModelData[2];
@@ -549,12 +544,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as ProjectEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.IsInstanceOfType( result.Model, typeof( ProjectEditorViewModel ) );
-         Assert.AreEqual( model.Id, ((ProjectEditorViewModel)result.Model).Id );
-         Assert.AreEqual( model.Name, ((ProjectEditorViewModel)result.Model).Name );
-         Assert.AreEqual( model.Description, ((ProjectEditorViewModel)result.Model).Description );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.Edit, vm.Mode );
       }
 
       [TestMethod]

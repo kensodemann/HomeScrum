@@ -12,6 +12,7 @@ using Ninject;
 using NHibernate;
 using System.Collections.Generic;
 using HomeScrum.Web.Models.Base;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -19,14 +20,18 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( ISecurityService securityService, ISessionFactory sessionFactory )
+      public UsersController( ILogger logger, ISecurityService securityService, ISessionFactory sessionFactory )
       {
+         _logger = logger;
          _securityService = securityService;
          _sessionFactory = sessionFactory;
       }
 
       private readonly ISecurityService _securityService;
       private readonly ISessionFactory _sessionFactory;
+      private readonly ILogger _logger;
+
+      private ILogger Log { get { return _logger; } }
 
       //
       // GET: /Users/
@@ -77,25 +82,37 @@ namespace HomeScrum.Web.Controllers
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            if (ModelState.IsValid)
+            try
             {
-               var model = Mapper.Map<User>( viewModel );
-               model.SetPassword( viewModel.NewPassword );
-
-               if (model.IsValidFor( Data.TransactionType.Insert ))
+               viewModel.Mode = EditMode.Create;
+               if (ModelState.IsValid)
                {
-                  session.Save( model );
-                  transaction.Commit();
-                  return RedirectToAction( () => this.Index() );
-               }
+                  var model = Mapper.Map<User>( viewModel );
+                  model.SetPassword( viewModel.NewPassword );
 
-               foreach (var message in model.GetErrorMessages())
-               {
-                  ModelState.AddModelError( message.Key, message.Value );
+                  if (model.IsValidFor( Data.TransactionType.Insert ))
+                  {
+                     session.Save( model );
+                     viewModel.Mode = EditMode.ReadOnly;
+                     viewModel.Id = model.Id;
+                  }
+                  else
+                  {
+                     foreach (var message in model.GetErrorMessages())
+                     {
+                        ModelState.AddModelError( message.Key, message.Value );
+                     }
+                  }
                }
+               transaction.Commit();
+            }
+            catch (Exception e)
+            {
+               Log.Error( e, "Create POST Error" );
+               transaction.Rollback();
             }
 
-            return View();
+            return View( viewModel );
          }
       }
 
@@ -131,21 +148,33 @@ namespace HomeScrum.Web.Controllers
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
-            if (ModelState.IsValid)
+            try
             {
-               var model = Mapper.Map<User>( viewModel );
-               if (model.IsValidFor( Data.TransactionType.Update ))
+               viewModel.Mode = EditMode.Edit;
+               if (ModelState.IsValid)
                {
-                  session.Update( model );
-                  transaction.Commit();
-                  return RedirectToAction( () => this.Index() );
+                  var model = Mapper.Map<User>( viewModel );
+                  if (model.IsValidFor( Data.TransactionType.Update ))
+                  {
+                     session.Update( model );
+                     viewModel.Mode = EditMode.ReadOnly;
+                  }
+                  else
+                  {
+                     foreach (var message in model.GetErrorMessages())
+                     {
+                        ModelState.AddModelError( message.Key, message.Value );
+                     }
+                  }
                }
-
-               foreach (var message in model.GetErrorMessages())
-               {
-                  ModelState.AddModelError( message.Key, message.Value );
-               }
+               transaction.Commit();
             }
+            catch (Exception e)
+            {
+               Log.Error( e, "Edit POST Error" );
+               transaction.Rollback();
+            }
+
 
             return View( viewModel );
          }
