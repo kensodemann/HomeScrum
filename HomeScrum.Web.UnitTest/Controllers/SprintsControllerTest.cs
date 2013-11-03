@@ -466,18 +466,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var viewModel = CreateSprintEditorViewModel();
 
-         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.AreNotEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
@@ -497,15 +494,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      public void CreatePost_ReturnsToEditorModeCreate_IfModelIsNotValid()
       {
          var viewModel = CreateSprintEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( viewModel, result.Model );
+         Assert.AreEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.Create, vm.Mode );
       }
 
       [TestMethod]
@@ -571,8 +569,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( viewModel, _principal.Object );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -859,35 +855,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var model = Sprints.ModelData[2];
          var viewModel = CreateSprintEditorViewModel( model );
 
-         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+         var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
+      public void EditPost_ReturnsToEditorModeEdit_IfModelIsNotValid()
       {
          var model = Sprints.ModelData[2];
          var viewModel = CreateSprintEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.IsInstanceOfType( result.Model, typeof( SprintEditorViewModel ) );
-         Assert.AreEqual( model.Id, ((SprintEditorViewModel)result.Model).Id );
-         Assert.AreEqual( model.Name, ((SprintEditorViewModel)result.Model).Name );
-         Assert.AreEqual( model.Description, ((SprintEditorViewModel)result.Model).Description );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.Edit, vm.Mode );
       }
 
       [TestMethod]
@@ -913,8 +904,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -1212,7 +1201,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          return new SprintEditorViewModel()
          {
-            Id = Guid.NewGuid(),
             Name = "New Work Item",
             Description = "This is a test",
             StatusId = SprintStatuses.ModelData.First( x => x.StatusCd == 'A' ).Id,
