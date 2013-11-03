@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -24,6 +25,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
+
+      private Mock<ILogger> _logger;
 
       private EditUserViewModel CreateNewEditViewModel( User model )
       {
@@ -72,7 +75,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _securityService = new Mock<ISecurityService>();
 
-         _controller = new UsersController( _securityService.Object, _sessionFactory.Object );
+         _logger = new Mock<ILogger>();
+
+         _controller = new UsersController( _logger.Object, _securityService.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 

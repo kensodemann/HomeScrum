@@ -12,6 +12,7 @@ using Ninject;
 using NHibernate;
 using System.Collections.Generic;
 using HomeScrum.Web.Models.Base;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -19,14 +20,18 @@ namespace HomeScrum.Web.Controllers
    public class UsersController : Controller
    {
       [Inject]
-      public UsersController( ISecurityService securityService, ISessionFactory sessionFactory )
+      public UsersController( ILogger logger, ISecurityService securityService, ISessionFactory sessionFactory )
       {
+         _logger = logger;
          _securityService = securityService;
          _sessionFactory = sessionFactory;
       }
 
       private readonly ISecurityService _securityService;
       private readonly ISessionFactory _sessionFactory;
+      private readonly ILogger _logger;
+
+      private ILogger Log { get { return _logger; } }
 
       //
       // GET: /Users/
@@ -101,8 +106,9 @@ namespace HomeScrum.Web.Controllers
                }
                transaction.Commit();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+               Log.Error( e, "Create POST Error" );
                transaction.Rollback();
             }
 
@@ -163,8 +169,9 @@ namespace HomeScrum.Web.Controllers
                }
                transaction.Commit();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+               Log.Error( e, "Edit POST Error" );
                transaction.Rollback();
             }
 
