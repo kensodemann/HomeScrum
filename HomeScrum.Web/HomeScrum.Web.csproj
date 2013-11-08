@@ -272,9 +272,10 @@
   <ItemGroup>
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
+    <Content Include="Scripts\HomeScrum\Base\EditorBase.js" />
     <Content Include="Scripts\HomeScrum\Sprints\Editor.js" />
     <Content Include="Scripts\HomeScrum\WorkItems\Editor.js" />
-    <Content Include="Scripts\Tests\Base\EditorBaseTest.js" />
+    <Content Include="Scripts\Tests\Base\EditorBaseTests.js" />
     <Content Include="Scripts\Tests\Base\testEditorBase.html" />
     <Content Include="Scripts\Tests\qunit\qunit-composite.css" />
     <Content Include="Scripts\Tests\qunit\qunit-composite.js" />
@@ -492,7 +493,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\HomeScrum\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
