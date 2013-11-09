@@ -59,4 +59,22 @@ test('Main Data non-text inputs enbled on init if EditMode is Create', function 
    strictEqual($("#ParentSelect").prop('disabled'), false, "ParentSelect is enabled");
 });
 
+test('Child Data visible on init if EditMode is ReadOnly', function () {
+   $('#EditMode').val('ReadOnly');
+   EditorBase.init();
+   var childElements = $('.ChildData');
+   for (var i = 0; i < childElements.length; i++) {
+      ok($(childElements[i]).is(':visible'));
+   }
+});
+
+test('Child Data hidden on init if EditMode is Create', function () {
+   $('#EditMode').val('Create');
+   EditorBase.init();
+   var childElements = $('.ChildData');
+   for (var i = 0; i < childElements.length; i++) {
+      ok($(childElements[i]).is(':hidden'));
+   }
+});
+
 // "Button" press 6tests

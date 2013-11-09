@@ -8,6 +8,7 @@
    function init() {
       SetSubmitButtonText();
       SetMainDataAccess();
+      SetChildDataVisibility();
    }
 
    function SetSubmitButtonText() {
@@ -54,4 +55,16 @@
       }
    }
 
+   function SetChildDataVisibility(effect) {
+      var els = $(".ChildData");
+      if ($("#EditMode").val() === 'ReadOnly') {
+         for (var i = 0; i < els.length; i++) {
+            $(els[i]).show(effect);
+         }
+      } else {
+         for (var i = 0; i < els.length; i++) {
+            $(els[i]).hide(effect);
+         }
+      }
+   }
 })();
