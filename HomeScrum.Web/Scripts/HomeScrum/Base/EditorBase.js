@@ -72,9 +72,13 @@
 
    function SetupSubmitButton() {
       $('#SubmitButton').click(function () {
-         $('#EditMode').val('Edit');
-         SetSubmitButtonText();
-         SetChildDataVisibility('fade');
+         if ($('#EditMode').val() === 'ReadOnly') {
+            $('#EditMode').val('Edit');
+            SetSubmitButtonText();
+            SetChildDataVisibility('fade');
+         } else {
+            $("form#Editor").submit();
+         }
       });
    }
 })();
