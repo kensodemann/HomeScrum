@@ -92,3 +92,17 @@ test("Button Text goes to 'Done Editing' on click", function () {
    $("#SubmitButton").click();
    strictEqual($('#SubmitButton').text(), 'Done Editing');
 });
+
+test("Child Data Hidden on click", function () {
+   $('#EditMode').val('ReadOnly');
+   EditorBase.init();
+   $("#SubmitButton").click();
+   var els = $('.ChildData');
+   stop();
+   setTimeout(function () {
+      for (var i = 0; i < els.length; i++) {
+         ok($(els[i]).is(':hidden'));
+      }
+      start();
+   }, 1000);
+});

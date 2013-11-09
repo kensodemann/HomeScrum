@@ -74,6 +74,7 @@
       $('#SubmitButton').click(function () {
          $('#EditMode').val('Edit');
          SetSubmitButtonText();
+         SetChildDataVisibility('fade');
       });
    }
 })();
