@@ -45,4 +45,18 @@ test('Main Data non-text inputs not disabled on init if EditMode is ReadOnly', f
    strictEqual($("#ChildSelect").prop('disabled'), false, "ChildSelect is not disabled");
 });
 
+test('Main Data text inputs enabled on init if EditMode is Create', function () {
+   $('#EditMode').val('Create');
+   EditorBase.init();
+   strictEqual($("#ParentText").prop("readonly"), false, "ParentText is not Readonly");
+   ok(!($("#ParentText").hasClass("disabled")), "ParentText does not have Disabled Class");
+});
+
+test('Main Data non-text inputs enbled on init if EditMode is Create', function () {
+   $('#EditMode').val('Create');
+   EditorBase.init();
+   strictEqual($("#ParentCheckbox").prop('disabled'), false, "ParentCheckbox is enabled");
+   strictEqual($("#ParentSelect").prop('disabled'), false, "ParentSelect is enabled");
+});
+
 // "Button" press 6tests
