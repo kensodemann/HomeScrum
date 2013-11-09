@@ -77,4 +77,18 @@ test('Child Data hidden on init if EditMode is Create', function () {
    }
 });
 
-// "Button" press 6tests
+
+// Button press tests
+test('EditMode goes from ReadOnly to Edit on click', function () {
+   $('#EditMode').val('ReadOnly');
+   EditorBase.init();
+   $("#SubmitButton").click();
+   strictEqual($('#EditMode').val(), 'Edit');
+});
+
+test("Button Text goes to 'Done Editing' on click", function () {
+   $('#EditMode').val('ReadOnly');
+   EditorBase.init();
+   $("#SubmitButton").click();
+   strictEqual($('#SubmitButton').text(), 'Done Editing');
+});

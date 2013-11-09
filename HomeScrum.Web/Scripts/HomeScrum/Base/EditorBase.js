@@ -9,6 +9,8 @@
       SetSubmitButtonText();
       SetMainDataAccess();
       SetChildDataVisibility();
+
+      SetupSubmitButton();
    }
 
    function SetSubmitButtonText() {
@@ -66,5 +68,12 @@
             $(els[i]).hide(effect);
          }
       }
+   }
+
+   function SetupSubmitButton() {
+      $('#SubmitButton').click(function () {
+         $('#EditMode').val('Edit');
+         SetSubmitButtonText();
+      });
    }
 })();
