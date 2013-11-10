@@ -523,15 +523,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
+      public void CreatePost_RedirectsToEditor_IfModelIsValid()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
-         var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
-         var vm = result.Model as WorkItemEditorViewModel;
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
-         Assert.AreNotEqual( Guid.Empty, vm.Id );
-         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
       }
 
       [TestMethod]
@@ -1046,11 +1052,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
-         var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
-         var vm = result.Model as WorkItemEditorViewModel;
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
-         Assert.AreEqual( model.Id, vm.Id );
-         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
       }
 
       [TestMethod]

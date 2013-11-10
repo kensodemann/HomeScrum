@@ -60,20 +60,19 @@ namespace HomeScrum.Web.Controllers.Base
                   if (model.IsValidFor( Data.TransactionType.Insert ))
                   {
                      Save( session, model, user );
-                     viewModel = GetEditorViewModel( session, model.Id );
-                     viewModel.Mode = EditMode.ReadOnly;
+                     transaction.Commit();
+                     return RedirectToAction( "Edit", new { id = model.Id.ToString() } );
                   }
-                  else
-                  {
-                     TransferErrorMessages( model );
-                  }
+
+                  TransferErrorMessages( model );
                }
 
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
+               transaction.Rollback();
                Log.Error( e, "Create POST error" );
             }
             return View( viewModel );
@@ -122,8 +121,8 @@ namespace HomeScrum.Web.Controllers.Base
                   if (model.IsValidFor( Data.TransactionType.Update ))
                   {
                      Update( session, model, user );
-                     viewModel = GetEditorViewModel( session, model.Id );
-                     viewModel.Mode = EditMode.ReadOnly;
+                     transaction.Commit();
+                     return RedirectToAction( "Edit", new { id = viewModel.Id.ToString() } );
                   }
                   TransferErrorMessages( model );
                }
@@ -131,7 +130,7 @@ namespace HomeScrum.Web.Controllers.Base
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                transaction.Rollback();
                Log.Error( e, "Edit POST Error" );
