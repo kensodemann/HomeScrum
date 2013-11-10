@@ -2,7 +2,7 @@
 
 @model HomeScrum.Web.Models.Admin.AcceptanceCriterionStatusEditorViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm( "Edit", "AcceptanceCriterionStatuses", new { id = Model.Id }, FormMethod.Post, new { id = "Editor" } ))
 {
    @Html.ValidationSummary( true )
 
@@ -23,8 +23,21 @@
          @Html.ValidationMessageFor( model => model.AllowUse )
       </div>
    </fieldset>
-    
+
+   @Html.HiddenFor( model => model.Mode );
+
    <p>
       <input type="submit" value="@ViewBag.EditorButtonLabel" />
-   </p>    
+   </p>
 }
+
+<p>
+   <a href="#" id="SubmitButton">TODO: blank me, remove other</a>
+</p>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+<script>
+   $(document).ready(function () {
+      EditorBase.init();
+   });
+</script> 
