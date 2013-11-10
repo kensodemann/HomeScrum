@@ -279,16 +279,22 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
+      public void CreatePost_RedirectsToEditor_IfModelIsValid()
       {
          var controller = CreateController();
          var viewModel = CreateEditorViewModel();
 
-         var result = controller.Create( viewModel, FakeUser ) as ViewResult;
-         var vm = result.Model as EditorViewModelT;
+         var result = controller.Create( viewModel, FakeUser ) as RedirectToRouteResult;
 
-         Assert.AreNotEqual( Guid.Empty, vm.Id );
-         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
       }
 
       [TestMethod]
@@ -538,17 +544,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_ReturnsToEditorModeReadOnly_IfModelIsValid()
+      public void EditPost_RedirectsToEdit_IfModelIsValid()
       {
          var controller = CreateController();
          var model = GetAllModels().ToArray()[2];
          var viewModel = CreateEditorViewModel( model );
 
-         var result = controller.Edit( viewModel, FakeUser ) as ViewResult;
-         var vm = result.Model as EditorViewModelT;
+         var result = controller.Edit( viewModel, FakeUser ) as RedirectToRouteResult;
 
-         Assert.AreEqual( model.Id, vm.Id );
-         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 2, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
       }
 
       [TestMethod]

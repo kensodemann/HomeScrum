@@ -58,7 +58,7 @@
       </div>
 
    </fieldset>
-    
+
    <div id="TaskListDiv">
       <h3>Tasks</h3>
       <table>
@@ -78,7 +78,7 @@
          @foreach (var item in Model.Tasks)
          {
             var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
-        
+
             <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
                <td>
                   @Html.DisplayFor( modelItem => item.WorkItemTypeName )
@@ -97,14 +97,15 @@
          }
       </table>
    </div>
-   
+
    @Html.ValidationSummary( false )
- 
+
    <p>
       <input type="submit" value="@ViewBag.EditorButtonLabel" />
       @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
    </p>
-    
+
+   @Scripts.Render( "~/Bundles/BaseScripts" )
    @Scripts.Render( "~/bundles/workItemScripts" )
 
    <script>

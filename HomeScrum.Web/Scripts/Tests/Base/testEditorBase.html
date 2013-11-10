@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Work Items Editor Test Suite</title>
+   <link rel="stylesheet" href="../qunit/qunit-1.12.0.css">
+   <script src="../../jquery-2.0.3.js"></script>
+   <script src="../../jquery-ui-1.10.3.js"></script>
+   <script src="../qunit/qunit-1.12.0.js"></script>
+   <script src="../../HomeScrum/Base/EditorBase.js"></script>
+   <script src="EditorBaseTests.js"></script>
+</head>
+<body>
+   <div id="qunit"></div>
+
+   <div id="qunit-fixture">
+      <form>
+         <input id="Mode" type="hidden" />
+         <a href="#" id="SubmitButton">save it!</a>
+
+         <div id="ParaentDiv" class="MainData">
+            <input id="ParentText" class="MainData" type="text" value="Fred" />
+            <input id="ParentCheckbox" class="MainData" type="checkbox" checked="checked" />
+            <select id="ParentSelect" class="MainData">
+               <option value="1">one</option>
+               <option value="2">two</option>
+            </select>
+         </div>
+
+         <div id="ChildDiv" class="ChildData">
+            <input id="ChildText" class="ChildData" type="text" value="Fred" />
+            <input id="ChildCheckbox" class="ChildData" type="checkbox" checked="checked" />
+            <select id="ChildSelect" class="ChildData">
+               <option value="1">one</option>
+               <option value="2">two</option>
+            </select>
+            <a id="ChildLink" href="#">child link</a>
+         </div>
+      </form>
+   </div>
+</body>
+</html>

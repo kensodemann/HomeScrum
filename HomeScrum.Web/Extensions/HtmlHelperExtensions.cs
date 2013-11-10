@@ -51,7 +51,7 @@ namespace HomeScrum.Web.Extensions
       // Adapted from code found in a couple of places:
       //     http://stackoverflow.com/questions/388483/how-do-you-create-a-dropdownlist-from-an-enum-in-asp-net-mvc
       //     http://blogs.msdn.com/b/stuartleeks/archive/2010/05/21/asp-net-mvc-creating-a-dropdownlist-helper-for-enums.aspx
-      public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>( this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression )
+      public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>( this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, object htmlAttributes = null )
       {
          ModelMetadata metadata = ModelMetadata.FromLambdaExpression( expression, htmlHelper.ViewData );
          IEnumerable<TEnum> values = Enum.GetValues( typeof( TEnum ) ).Cast<TEnum>();
@@ -59,7 +59,7 @@ namespace HomeScrum.Web.Extensions
          var items = values.Select( x => new { Id = x, Name = EnumHelper.GetDescription( x ) } );
          var selectList = new SelectList( items, "Id", "Name", metadata.Model );
 
-         return htmlHelper.DropDownListFor( expression, selectList );
+         return htmlHelper.DropDownListFor( expression, selectList, htmlAttributes );
       }
    }
 }
