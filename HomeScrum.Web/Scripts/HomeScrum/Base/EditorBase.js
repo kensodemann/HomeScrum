@@ -39,7 +39,7 @@
 
    function Disable(element) {
       var el = $(element);
-      if (el.is(":text")) {
+      if (el.is(":text") || el.is("textarea")) {
          el.prop('readonly', true);
          el.addClass('disabled');
       } else if (el.is(':input')) {
@@ -49,7 +49,7 @@
 
    function Enable(element) {
       var el = $(element);
-      if (el.is(":text")) {
+      if (el.is(":text") || el.is("textarea")) {
          el.prop('readonly', false);
          el.removeClass('disabled');
       } else if (el.is(':input')) {
