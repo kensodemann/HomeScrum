@@ -106,3 +106,19 @@ test("Child Data Hidden on click", function () {
       start();
    }, 1000);
 });
+
+test("Main Data Enabled on click", function () {
+   $('#Mode').val('ReadOnly');
+   EditorBase.init();
+   $("#SubmitButton").click();
+   var els = $('.MainData');
+   for (var i = 0; i < els.length; i++) {
+      var el = $(els[i]);
+      if (el.is(':text') || el.is('textarea')) {
+         ok(!($(els[i]).hasClass("disabled")), "Does not have Disabled Class");
+         strictEqual($(els[i]).prop('readonly'), false, 'Is not readonly');
+      } else if (el.is(':input')) {
+         strictEqual($(els[i]).prop('disabled'), false, 'Is not disabled');
+      }
+   }
+});

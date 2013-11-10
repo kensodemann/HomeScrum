@@ -76,6 +76,7 @@
             $('#Mode').val('Edit');
             SetSubmitButtonText();
             SetChildDataVisibility('fade');
+            SetMainDataAccess();
          } else {
             $("form#Editor").submit();
          }
