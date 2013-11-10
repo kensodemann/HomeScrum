@@ -13,7 +13,7 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.Category )
-         @Html.EnumDropDownListFor( model => model.Category )
+         @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.Category )
       </div>
 
@@ -25,19 +25,15 @@
    </fieldset>
 
    @Html.HiddenFor( model => model.Mode );
-
-   <p>
-      <input type="submit" value="@ViewBag.EditorButtonLabel" />
-   </p>
 }
 
-<p>
-   <a href="#" id="SubmitButton">TODO: blank me, remove other</a>
-</p>
+
+<a href="#" id="SubmitButton"></a>
 
 @Scripts.Render( "~/Bundles/BaseScripts" )
 <script>
    $(document).ready(function () {
       EditorBase.init();
+      $('#SubmitButton').button();
    });
 </script> 
