@@ -14,7 +14,7 @@
    }
 
    function SetSubmitButtonText() {
-      var editMode = $("#EditMode").val();
+      var editMode = $("#Mode").val();
       if (editMode === "ReadOnly") {
          $("#SubmitButton").text("Edit");
       } else if (editMode === "Edit") {
@@ -26,7 +26,7 @@
 
    function SetMainDataAccess() {
       var els = $(".MainData");
-      if ($("#EditMode").val() === 'ReadOnly') {
+      if ($("#Mode").val() === 'ReadOnly') {
          for (var i = 0; i < els.length; i++) {
             Disable(els[i]);
          }
@@ -59,7 +59,7 @@
 
    function SetChildDataVisibility(effect) {
       var els = $(".ChildData");
-      if ($("#EditMode").val() === 'ReadOnly') {
+      if ($("#Mode").val() === 'ReadOnly') {
          for (var i = 0; i < els.length; i++) {
             $(els[i]).show(effect);
          }
@@ -72,8 +72,8 @@
 
    function SetupSubmitButton() {
       $('#SubmitButton').click(function () {
-         if ($('#EditMode').val() === 'ReadOnly') {
-            $('#EditMode').val('Edit');
+         if ($('#Mode').val() === 'ReadOnly') {
+            $('#Mode').val('Edit');
             SetSubmitButtonText();
             SetChildDataVisibility('fade');
          } else {
