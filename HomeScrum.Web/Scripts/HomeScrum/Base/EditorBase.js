@@ -6,14 +6,13 @@
    return editor;
 
    function init() {
-      SetSubmitButtonText();
+      SetupSubmitButton();
       SetMainDataAccess();
       SetChildDataVisibility();
-
-      SetupSubmitButton();
    }
 
    function SetSubmitButtonText() {
+      $('#SubmitButton').button("destroy");
       var editMode = $("#Mode").val();
       if (editMode === "ReadOnly") {
          $("#SubmitButton").text("Edit");
@@ -22,6 +21,7 @@
       } else if (editMode === "Create") {
          $("#SubmitButton").text("Create");
       }
+      $('#SubmitButton').button();
    }
 
    function SetMainDataAccess() {
@@ -71,6 +71,9 @@
    }
 
    function SetupSubmitButton() {
+      $('#SubmitButton').button();
+      SetSubmitButtonText();
+
       $('#SubmitButton').click(function () {
          if ($('#Mode').val() === 'ReadOnly') {
             $('#Mode').val('Edit');
