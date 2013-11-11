@@ -18,8 +18,8 @@
       </div>
 
       <div class="formBooleanOption">
-         @Html.EditorFor( model => model.AllowUse )
-         @Html.LabelFor( model => model.AllowUse, new { @class = "MainData" } )
+         @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
+         @Html.LabelFor( model => model.AllowUse )
          @Html.ValidationMessageFor( model => model.AllowUse )
       </div>
    </fieldset>
