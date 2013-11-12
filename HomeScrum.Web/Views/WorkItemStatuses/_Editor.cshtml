@@ -2,7 +2,7 @@
 
 @model HomeScrum.Web.Models.Admin.WorkItemStatusEditorViewModel
 
-@using (Html.BeginForm( "Edit", "WorkItemStatuses", new { id = Model.Id }, FormMethod.Post, new { id = "Editor" } ))
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    @Html.ValidationSummary( true )
 

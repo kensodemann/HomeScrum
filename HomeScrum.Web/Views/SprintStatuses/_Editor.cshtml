@@ -2,7 +2,7 @@
 
 @model HomeScrum.Web.Models.Admin.SprintStatusEditorViewModel
 
-@using (Html.BeginForm( "Edit", "SprintStatuses", new { id = Model.Id }, FormMethod.Post, new { id = "Editor" } ))
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    @Html.ValidationSummary( true )
 

@@ -225,6 +225,7 @@
    }
 
    var init = function () {
+      EditorBase.init();
       ShowHideDataItems();
       SetAccess();
 
