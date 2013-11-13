@@ -81,12 +81,13 @@
    }
 
    var init = function () {
-      EditorBase.init();
       ShowHideDataItems();
       SetAccess();
 
       SetupProjectSelectList();
       SetupStatusSelectList();
+
+      EditorBase.init();
    };
 
    return {

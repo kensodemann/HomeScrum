@@ -24,11 +24,11 @@ namespace HomeScrum.Web.Extensions
       }
 
       // Adapted from code found here: http://stackoverflow.com/questions/11285303/store-extra-value-per-item-in-drop-down-list
-      public static MvcHtmlString DropDownListWithDataAttributesFor<TModel, TValue>( this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItemWithAttributes> selectList )
+      public static MvcHtmlString DropDownListWithDataAttributesFor<TModel, TValue>( this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItemWithAttributes> selectList, object htmlAttributes = null )
       {
          string name = htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName( ExpressionHelper.GetExpressionText( expression ) );
 
-         var selectDoc = XDocument.Parse( htmlHelper.DropDownList( name, (IEnumerable<SelectListItem>)selectList ).ToString() );
+         var selectDoc = XDocument.Parse( htmlHelper.DropDownList( name, (IEnumerable<SelectListItem>)selectList, htmlAttributes ).ToString() );
 
          var options = from XElement el in selectDoc.Element( "select" ).Descendants()
                        select el;

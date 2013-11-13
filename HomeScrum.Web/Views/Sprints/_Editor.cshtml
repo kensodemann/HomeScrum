@@ -6,31 +6,32 @@
    ViewBag.SprintId = Model.Id;
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    <fieldset>
       <legend>Basic Information</legend>
 
       <div class="formSingleLineEdit">
          @Html.LabelFor( model => model.Name )
-         <span>@Html.EditorFor( model => model.Name )</span>
+         <span>@Html.TextBoxFor( model => model.Name, new { @class = "MainData" } )</span>
          @Html.ValidationMessageFor( model => model.Name )
       </div>
 
       <div class="formSingleLineEdit">
          @Html.LabelFor( model => model.Goal )
-         <span>@Html.EditorFor( model => model.Goal )</span>
+         <span>@Html.TextBoxFor( model => model.Goal, new { @class = "MainData" } )</span>
          @Html.ValidationMessageFor( model => model.Goal )
       </div>
 
       <div class="formLongText">
          @Html.LabelFor( model => model.Description )
-         <span>@Html.EditorFor( model => model.Description )</span>
+         <span>@Html.TextAreaFor( model => model.Description, new { @class = "MainData text-box multi-line" } )</span>
          @Html.ValidationMessageFor( model => model.Description )
       </div>
 
       @Html.HiddenFor( m => m.CreatedByUserId )
       @Html.HiddenFor( m => m.CreatedByUserUserName )
+      @Html.HiddenFor( m => m.Mode )
 
    </fieldset>
 
@@ -39,59 +40,60 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects )
+         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects, new { @class = "MainData" } )
          @Html.HiddenFor( model => model.ProjectId )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses )
+         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData" } )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StartDate )
-         @Html.EditorFor( model => model.StartDate )
+         @Html.TextBoxFor( model => model.StartDate, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.StartDate )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.EndDate )
-         @Html.EditorFor( model => model.EndDate )
+         @Html.TextBoxFor( model => model.EndDate, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.EndDate )
       </div>
    </fieldset>
 
    if (Model.Id != Guid.Empty)
    {
-      <fieldset>
-         <legend>WorkItems</legend>
+      <div class="ChildData">
+         <fieldset>
+            <legend>WorkItems</legend>
 
-         <div id="BacklogItems">
-            <h3>Backlog Items</h3>
-            @Html.Partial( "_WorkItemList", Model.BacklogItems )
-            @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
-         </div>
+            <div id="BacklogItems">
+               <h3>Backlog Items</h3>
+               @Html.Partial( "_WorkItemList", Model.BacklogItems )
+               @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
+            </div>
 
-         <div id="Tasks">
-            <h3>Tasks</h3>
-            @Html.Partial( "_WorkItemList", Model.Tasks )
-            @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
-         </div>
-      </fieldset>
+            <div id="Tasks">
+               <h3>Tasks</h3>
+               @Html.Partial( "_WorkItemList", Model.Tasks )
+               @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
+            </div>
+         </fieldset>
+      </div>
    }
 
    @Html.ValidationSummary( false )
 
-   <p>
-      <input type="submit" value="@ViewBag.EditorButtonLabel" />
-   </p>
+   <a href="#" id="SubmitButton"></a>
 
+   @Scripts.Render( "~/Bundles/BaseScripts" )
    @Scripts.Render( "~/bundles/sprintScripts" )
-   
+
    <script>
       $(document).ready(function () {
          Editor.init();
-
+         
          $("#StartDate").datepicker({
             changeMonth: true,
             changeYear: true
