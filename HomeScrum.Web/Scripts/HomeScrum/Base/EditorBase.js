@@ -1,6 +1,7 @@
 ﻿var EditorBase = (function () {
    var editor = {
-      init: init
+      init: init,
+      submitButtonClicked: HandleSubmitButtonClicked,
    };
 
    return editor;
@@ -70,19 +71,23 @@
       }
    }
 
+   function HandleSubmitButtonClicked() {
+      if ($('#Mode').val() === 'ReadOnly') {
+         $('#Mode').val('Edit');
+         SetSubmitButtonText();
+         SetChildDataVisibility('fade');
+         SetMainDataAccess();
+      } else {
+         $("form#Editor").submit();
+      }
+   }
+
    function SetupSubmitButton() {
       $('#SubmitButton').button();
       SetSubmitButtonText();
 
       $('#SubmitButton').click(function () {
-         if ($('#Mode').val() === 'ReadOnly') {
-            $('#Mode').val('Edit');
-            SetSubmitButtonText();
-            SetChildDataVisibility('fade');
-            SetMainDataAccess();
-         } else {
-            $("form#Editor").submit();
-         }
+          HandleSubmitButtonClicked();
       });
    }
 })();
