@@ -84,24 +84,24 @@
    }
 
    @Html.ValidationSummary( false )
-
-   <a href="#" id="SubmitButton"></a>
-
-   @Scripts.Render( "~/Bundles/BaseScripts" )
-   @Scripts.Render( "~/bundles/sprintScripts" )
-
-   <script>
-      $(document).ready(function () {
-         Editor.init();
-         
-         $("#StartDate").datepicker({
-            changeMonth: true,
-            changeYear: true
-         });
-         $("#EndDate").datepicker({
-            changeMonth: true,
-            changeYear: true
-         });
-      });
-   </script>
 }
+
+<a href="#" id="SubmitButton"></a>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+@Scripts.Render( "~/bundles/sprintScripts" )
+
+<script>
+   $(document).ready(function () {
+      Editor.init();
+
+      $("#StartDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+      $("#EndDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+   });
+</script>
