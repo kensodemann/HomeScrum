@@ -224,17 +224,22 @@
       });
    }
 
-   var init = function () {
-      EditorBase.init();
-      ShowHideDataItems();
+   function handleSubmitClicked() {
+      EditorBase.submitButtonClicked();
       SetAccess();
+   }
 
+   var init = function () {
+      ShowHideDataItems();
+      
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
       SetupAssignedToUserList();
       SetupProjectList();
+
+      EditorBase.init(handleSubmitClicked);
    };
 
    return {

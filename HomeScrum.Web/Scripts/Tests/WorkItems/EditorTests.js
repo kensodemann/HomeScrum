@@ -165,18 +165,6 @@ test("Project ID is set to sprint's when sprint selected", function () {
 });
 
 // Active & Inactive based on status
-test('Items Active on init if status not complete', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "True");
-   Editor.init();
-   assertItemsAreActive();
-});
-
-test('Items Inactive on init if status complete', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "False");
-   Editor.init();
-   assertItemsAreInactive();
-});
-
 test('Items Active on status change if status not complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "False");
    Editor.init();
@@ -193,18 +181,6 @@ test('Items Inactive on status change if status complete', function () {
    assertItemsAreInactive();
 });
 
-test('Add New Task not disabled on init if task list is not closed', function () {
-   $("#selSprint").attr("data-TaskListIsClosed", "False");
-   Editor.init();
-   strictEqual($("#CreateNewTask").prop("disabled"), false, "Create New Task not Disabled");
-});
-
-test('Add New Task disabled on init if task list is closed', function () {
-   $("#selSprint").attr("data-TaskListIsClosed", "True");
-   Editor.init();
-   strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
-});
-
 test('Add New Task not disabled on status change if task list is not closed', function () {
    $("#selSprint").attr("data-TaskListIsClosed", "True");
    Editor.init();
@@ -219,27 +195,6 @@ test('Add New Task disabled on status change if task list is closed', function (
    $("#selSprint").attr("data-TaskListIsClosed", "True");
    $("#SelectSprintId").change();
    strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
-});
-
-test('Project not disabled on init if no parent and no sprint', function () {
-   $("#selParentWorkItem").attr("value", "00000000-0000-0000-0000-000000000000");
-   $("#selSprint").attr("value", "00000000-0000-0000-0000-000000000000");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop("disabled"), false, "Project not Disabled");
-});
-
-test('Project disabled on init if parent', function () {
-   $("#selParentWorkItem").attr("value", "1");
-   $("#selSprint").attr("value", "00000000-0000-0000-0000-000000000000");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
-});
-
-test('Project disabled on init if sprint', function () {
-   $("#selParentWorkItem").attr("value", "00000000-0000-0000-0000-000000000000");
-   $("#selSprint").attr("value", "1");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
 });
 
 test('Project not disabled on parent change if no parent and no sprint', function () {
@@ -280,18 +235,6 @@ test('Project disabled on sprint change if sprint', function () {
    $("#selSprint").attr("value", "1");
    $("#selSprint").change();
    strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
-});
-
-test('Sprint not disabled on init if no parent', function () {
-   $("#selParentWorkItem").attr("value", "00000000-0000-0000-0000-000000000000");
-   Editor.init();
-   strictEqual($("#SelectSprintId").prop("disabled"), false, "Sprint not Disabled");
-});
-
-test('Sprint disabled on init if parent', function () {
-   $("#selParentWorkItem").attr("value", "1");
-   Editor.init();
-   strictEqual($("#SelectSprintId").prop("disabled"), true, "Sprint Disabled");
 });
 
 test('Sprint not disabled on parent change if no parent', function () {
