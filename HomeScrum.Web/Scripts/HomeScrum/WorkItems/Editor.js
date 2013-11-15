@@ -230,6 +230,7 @@
    }
 
    var init = function () {
+      EditorBase.init(handleSubmitClicked);
       ShowHideDataItems();
       
       SetupStatusSelectList();
@@ -238,8 +239,6 @@
       SetupSprintSelectList();
       SetupAssignedToUserList();
       SetupProjectList();
-
-      EditorBase.init(handleSubmitClicked);
    };
 
    return {
