@@ -1,26 +1,26 @@
 ﻿@model HomeScrum.Web.Models.Admin.ProjectEditorViewModel
 
-@using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "Editor" }))
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
-   @Html.ValidationSummary(true)
+   @Html.ValidationSummary( true )
 
-   @Html.Partial("_DomainObjectBaseEditor", Model)
+   @Html.Partial( "_DomainObjectBaseEditor", Model )
 
    <fieldset>
       <legend>Properties</legend>
 
       <div class="formSelectList">
-         @Html.LabelFor(model => model.StatusId)
-         @Html.DropDownListFor(model => model.StatusId, Model.Statuses, new { @class = "MainData" })
+         @Html.LabelFor( model => model.StatusId )
+         @Html.DropDownListFor( model => model.StatusId, Model.Statuses, new { @class = "MainData" } )
       </div>
    </fieldset>
 
-   @Html.HiddenFor(model => model.Mode);
+   @Html.HiddenFor( model => model.Mode );
 }
 
 <a href="#" id="SubmitButton"></a>
 
-@Scripts.Render("~/Bundles/BaseScripts")
+@Scripts.Render( "~/Bundles/BaseScripts" )
 <script>
    $(document).ready(function () {
       EditorBase.init();
