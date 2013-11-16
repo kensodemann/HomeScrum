@@ -34,5 +34,9 @@ namespace HomeScrum.Web.Models.WorkItems
       public IEnumerable<AcceptanceCriterionViewModel> AcceptanceCriteria { get; set; }
 
       public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
+
+      public int Points { get; set; }
+
+      public int PointsRemaining { get; set; }
    }
 }

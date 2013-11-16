@@ -101,6 +101,10 @@ namespace HomeScrum.Web.Models.WorkItems
          }
       }
 
+      public int Points { get; set; }
+
+      public int PointsRemaining { get; set; }
+
       public EditMode Mode { get; set; }
    }
 }

@@ -52,6 +52,8 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
+    <property name="Points"/>
+    <property name="PointsRemaining"/>
 
     <set name="AcceptanceCriteria"
          inverse="true"
