@@ -1,4 +1,4 @@
-﻿var Editor = (function() {
+﻿var Editor = (function () {
    function ShowHideParentWorkItem(effect) {
       var canHaveParent = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveParent");
       if (canHaveParent == "True") {
@@ -226,6 +226,7 @@
    }
 
    function handleSubmitClicked() {
+      $("#Points").spinner("enable");
       EditorBase.submitButtonClicked();
       SetAccess();
    }
@@ -233,13 +234,16 @@
    var init = function () {
       EditorBase.init(handleSubmitClicked);
       ShowHideDataItems();
-      
+
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
       SetupAssignedToUserList();
       SetupProjectList();
+
+      $("#Points").spinner({ min: 1, max: 12 });
+      $("#Points").spinner("disable");
    };
 
    return {

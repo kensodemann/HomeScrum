@@ -9,6 +9,12 @@
    <fieldset>
       <legend>Properties</legend>
 
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.Points )
+         @Html.TextBoxFor( model => model.Points, new { @class = "MainData" } )
+         @Html.ValidationMessageFor( model => model.Points )
+      </div>
+
       <div class="formStaticText">
          @Html.LabelFor( model => model.CreatedByUserUserName )
          @Html.DisplayFor( model => model.CreatedByUserUserName )
@@ -102,15 +108,18 @@
    @Html.ValidationSummary( false )
 }
 
-   <a href="#" id="SubmitButton"></a>
-   @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
+<a href="#" id="SubmitButton"></a>
+@Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
 
-   @Scripts.Render( "~/Bundles/BaseScripts" )
-   @Scripts.Render( "~/bundles/workItemScripts" )
+@Scripts.Render( "~/Bundles/BaseScripts" )
+@Scripts.Render( "~/bundles/workItemScripts" )
 
-   <script>
-      $(document).ready(function () {
-         Editor.init();
-         $("#CreateNewTask").button();
-      });
-   </script>
+<script>
+   $(document).ready(function () {
+      Editor.init();
+
+      $("#CreateNewTask").button();
+      $("#Points").spinner({ min: 1, max: 12 });
+      $("#Points").spinner("disable");
+   });
+</script>

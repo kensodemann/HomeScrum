@@ -35,8 +35,10 @@ namespace HomeScrum.Web.Models.WorkItems
 
       public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }
 
+      [Display( Name = "Points", ResourceType = typeof( DisplayStrings ) )]
       public int Points { get; set; }
 
+      [Display( Name = "PointsRemaining", ResourceType = typeof( DisplayStrings ) )]
       public int PointsRemaining { get; set; }
    }
 }
