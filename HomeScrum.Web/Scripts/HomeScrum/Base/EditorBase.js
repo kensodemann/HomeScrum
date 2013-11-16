@@ -78,6 +78,7 @@
          SetChildDataVisibility('fade');
          SetMainDataAccess();
       } else {
+         $(".MainData:disabled").prop("disabled", false);
          $("form#Editor").submit();
       }
    }

@@ -56,14 +56,9 @@
       };
    })();
 
-   function syncHiddenElement(fromElement) {
-      var hiddenElementId = fromElement.id.substr(6);
-      $("#" + hiddenElementId).val($(fromElement).val());
-   }
 
    return {
       setupShowHideButton: ShowHideButton.init,
-      syncHiddenElement: syncHiddenElement
    };
 })();
 

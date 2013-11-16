@@ -40,8 +40,7 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects, new { @class = "MainData" } )
-         @Html.HiddenFor( model => model.ProjectId )
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData" } )
       </div>
 
       <div class="formSelectList">

@@ -1,6 +1,10 @@
 ﻿var Editor = (function () {
+   function EnableInputs() {
+      $("#Points").spinner("enable");
+   }
+
    function ShowHideParentWorkItem(effect) {
-      var canHaveParent = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveParent");
+      var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveParent");
       if (canHaveParent == "True") {
          $("#ParentWorkItemDiv").show(effect);
       }
@@ -10,7 +14,7 @@
    }
 
    function ShowHideAssignedUser(effect) {
-      var canHaveParent = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
+      var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanBeAssigned");
       if (canHaveParent == "True") {
          $("#AssignedToUserDiv").show(effect);
       }
@@ -20,7 +24,7 @@
    }
 
    function ShowHideTaskList(effect) {
-      var canHaveChildren = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
+      var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
       var mode = $("#Mode").val();
       if (canHaveChildren == "True" && $("#Mode").val() != "Create") {
          $("#TaskListDiv").show(effect);
@@ -39,31 +43,31 @@
    }
 
    function SetProjectToParentWorkItemProject() {
-      var selectedProject = $("#SelectProjectId").val();
-      var backlogProject = $("#SelectParentWorkItemId").find(":selected").attr("data-ProjectId");
+      var selectedProject = $("#ProjectId").val();
+      var backlogProject = $("#ParentWorkItemId").find(":selected").attr("data-ProjectId");
       if (selectedProject != backlogProject &&
           backlogProject != "00000000-0000-0000-0000-000000000000") {
-         $("#SelectProjectId").val(backlogProject);
+         $("#ProjectId").val(backlogProject);
          $("#ProjectId").val(backlogProject);
       }
    }
 
    function SetSprintToParentWorkItemSprint() {
-      var selectedSprint = $("#SelectSprintId").val();
-      var backlogSprint = $("#SelectParentWorkItemId").find(":selected").attr("data-SprintId");
+      var selectedSprint = $("#SprintId").val();
+      var backlogSprint = $("#ParentWorkItemId").find(":selected").attr("data-SprintId");
       if (selectedSprint != backlogSprint &&
           backlogSprint != "00000000-0000-0000-0000-000000000000") {
-         $("#SelectSprintId").val(backlogSprint);
+         $("#SprintId").val(backlogSprint);
          $("#SprintId").val(backlogSprint);
       }
    }
 
    function SetProjectToSprintProject() {
-      var selectedProject = $("#SelectProjectId").val();
-      var sprintProject = $("#SelectSprintId").find(":selected").attr("data-ProjectId");
+      var selectedProject = $("#ProjectId").val();
+      var sprintProject = $("#SprintId").find(":selected").attr("data-ProjectId");
       if (selectedProject != sprintProject &&
           sprintProject != "00000000-0000-0000-0000-000000000000") {
-         $("#SelectProjectId").val(sprintProject);
+         $("#ProjectId").val(sprintProject);
          $("#ProjectId").val(sprintProject);
       }
    }
@@ -103,51 +107,51 @@
 
    function SetWorkItemTypeAccess() {
       if (WorkItemIsClosed()) {
-         $("#SelectWorkItemTypeId").prop('disabled', true);
+         $("#WorkItemTypeId").prop('disabled', true);
       }
       else {
-         $("#SelectWorkItemTypeId").prop('disabled', false);
+         $("#WorkItemTypeId").prop('disabled', false);
       }
    }
 
    function SetParentWorkItemAccess() {
       if (WorkItemIsClosed()) {
-         $("#SelectParentWorkItemId").prop('disabled', true);
+         $("#ParentWorkItemId").prop('disabled', true);
       }
       else {
-         $("#SelectParentWorkItemId").prop('disabled', false);
+         $("#ParentWorkItemId").prop('disabled', false);
       }
    }
 
    function SetProjectAccess() {
-      var backlogItem = $("#SelectParentWorkItemId").val();
-      var sprint = $("#SelectSprintId").val();
+      var backlogItem = $("#ParentWorkItemId").val();
+      var sprint = $("#SprintId").val();
       if (backlogItem != "00000000-0000-0000-0000-000000000000" ||
           sprint != "00000000-0000-0000-0000-000000000000" ||
           WorkItemIsClosed()) {
-         $("#SelectProjectId").prop('disabled', true);
+         $("#ProjectId").prop('disabled', true);
       }
       else {
-         $("#SelectProjectId").prop('disabled', false);
+         $("#ProjectId").prop('disabled', false);
       }
    }
 
    function SetSprintAccess() {
-      var backlogItem = $("#SelectParentWorkItemId").val();
+      var backlogItem = $("#ParentWorkItemId").val();
       if (backlogItem != "00000000-0000-0000-0000-000000000000" || WorkItemIsClosed()) {
-         $("#SelectSprintId").prop('disabled', true);
+         $("#SprintId").prop('disabled', true);
       }
       else {
-         $("#SelectSprintId").prop('disabled', false);
+         $("#SprintId").prop('disabled', false);
       }
    }
 
    function SetAssignedToUserAccess() {
       if (WorkItemIsClosed()) {
-         $("#SelectAssignedToUserId").prop('disabled', true);
+         $("#AssignedToUserId").prop('disabled', true);
       }
       else {
-         $("#SelectAssignedToUserId").prop('disabled', false);
+         $("#AssignedToUserId").prop('disabled', false);
       }
    }
 
@@ -161,7 +165,7 @@
    }
 
    function TaskListIsClosed() {
-      var taskListIsClosed = $("#SelectSprintId").find(":selected").attr("data-TaskListIsClosed");
+      var taskListIsClosed = $("#SprintId").find(":selected").attr("data-TaskListIsClosed");
       return (taskListIsClosed == "True");
    }
 
@@ -171,10 +175,7 @@
    }
 
    function SetupWorkItemTypeSelectList() {
-      var selectList = $("#SelectWorkItemTypeId");
-      Utilities.syncHiddenElement(selectList.get(0));
-      selectList.change(function () {
-         Utilities.syncHiddenElement(this);
+      $("#WorkItemTypeId").change(function () {
          ShowHideDataItems("fade");
       });
    }
@@ -187,10 +188,7 @@
    }
 
    function SetupParentWorkItemSelectList() {
-      var selectList = $("#SelectParentWorkItemId");
-      Utilities.syncHiddenElement(selectList.get(0));
-      selectList.change(function () {
-         Utilities.syncHiddenElement(this);
+      $("#ParentWorkItemId").change(function () {
          SetProjectToParentWorkItemProject();
          SetSprintToParentWorkItemSprint();
          SetProjectAccess();
@@ -199,48 +197,27 @@
    }
 
    function SetupSprintSelectList() {
-      var selectList = $("#SelectSprintId");
-      Utilities.syncHiddenElement(selectList.get(0));
-      selectList.change(function () {
-         Utilities.syncHiddenElement(this);
+      $("#SprintId").change(function () {
          SetProjectToSprintProject();
          SetCreateNewTaskAccess();
          SetProjectAccess();
       });
    }
 
-   function SetupProjectList() {
-      var selectList = $("#SelectProjectId");
-      Utilities.syncHiddenElement(selectList.get(0));
-      selectList.change(function () {
-         Utilities.syncHiddenElement(this);
-      });
-   }
-
-   function SetupAssignedToUserList() {
-      var selectList = $("#SelectAssignedToUserId");
-      Utilities.syncHiddenElement(selectList.get(0));
-      selectList.change(function () {
-         Utilities.syncHiddenElement(this);
-      });
-   }
-
-   function handleSubmitClicked() {
-      $("#Points").spinner("enable");
+   function HandleSubmitClicked() {
+      EnableInputs();
       EditorBase.submitButtonClicked();
       SetAccess();
    }
 
    var init = function () {
-      EditorBase.init(handleSubmitClicked);
+      EditorBase.init(HandleSubmitClicked);
       ShowHideDataItems();
 
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
-      SetupSprintSelectList();
-      SetupAssignedToUserList();
-      SetupProjectList();
+      SetupSprintSelectList();;
 
       $("#Points").spinner({ min: 1, max: 12 });
       $("#Points").spinner("disable");

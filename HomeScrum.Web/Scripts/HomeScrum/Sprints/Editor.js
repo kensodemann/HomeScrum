@@ -28,10 +28,10 @@
    function SetProjectIdAccess() {
       var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
       if (numberOfWorkItems > 0 || SprintIsClosed()) {
-         $("#SelectProjectId").prop("disabled", true);
+         $("#ProjectId").prop("disabled", true);
       }
       else {
-         $("#SelectProjectId").prop("disabled", false);
+         $("#ProjectId").prop("disabled", false);
       }
    }
 
@@ -72,14 +72,6 @@
       });
    }
 
-   function SetupProjectSelectList() {
-      var selectList = $("#SelectProjectId");
-      Utilities.syncHiddenElement(selectList.get(0));
-      selectList.change(function () {
-         Utilities.syncHiddenElement(this);
-      });
-   }
-
    function handleSubmitClicked() {
       EditorBase.submitButtonClicked();
       SetAccess();
@@ -88,7 +80,6 @@
    var init = function () {
       ShowHideDataItems();
       
-      SetupProjectSelectList();
       SetupStatusSelectList();
 
       EditorBase.init(handleSubmitClicked);
