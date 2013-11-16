@@ -21,7 +21,8 @@
 
    function ShowHideTaskList(effect) {
       var canHaveChildren = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
-      if (canHaveChildren == "True") {
+      var mode = $("#Mode").val();
+      if (canHaveChildren == "True" && $("#Mode").val() != "Create") {
          $("#TaskListDiv").show(effect);
          $("#CreateNewTask").show(effect);
       }

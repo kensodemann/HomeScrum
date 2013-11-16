@@ -73,7 +73,7 @@ test('Task List Hidden if cannot have children on init', function () {
    ok($("#TaskListDiv").is(":hidden"));
 });
 
-test('Task List User Hidden if cannot have children on change', function () {
+test('Task List Hidden if cannot have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
@@ -85,18 +85,33 @@ test('Task List User Hidden if cannot have children on change', function () {
    }, 1000);
 });
 
-test('Task List User Visible if can have children on init', function () {
+test('Task List Visible if can have children on init', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    ok($("#TaskListDiv").is(":visible"));
 });
 
-test('Task List User Visible if can have children on change', function () {
+test('Task List Visible if can have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    $("#SelectWorkItemTypeId").change();
    ok($("#TaskListDiv").is(":visible"));
+});
+
+test('Task List Hidden if mode is create on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#Mode").val("Create");
+   Editor.init();
+   ok($("#TaskListDiv").is(":hidden"));
+});
+
+test('Task List remains hidden on change if Mode is Create', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   $("#Mode").val("Create");
+   Editor.init();
+   $("#SelectWorkItemTypeId").change();
+   ok($("#TaskListDiv").is(":hidden"));
 });
 
 
@@ -107,7 +122,7 @@ test('Task Button Hidden if cannot have children on init', function () {
    ok($("#CreateNewTask").is(":hidden"));
 });
 
-test('Task Button User Hidden if cannot have children on change', function () {
+test('Task Button Hidden if cannot have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
@@ -119,19 +134,35 @@ test('Task Button User Hidden if cannot have children on change', function () {
    }, 1000);
 });
 
-test('Task Button User Visible if can have children on init', function () {
+test('Task Button Visible if can have children on init', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    ok($("#CreateNewTask").is(":visible"));
 });
 
-test('Task Button User Visible if can have children on change', function () {
+test('Task Button Visible if can have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    $("#SelectWorkItemTypeId").change();
    ok($("#CreateNewTask").is(":visible"));
 });
+
+test('Task Button Hidden if mode is Create on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#Mode").val("Create");
+   Editor.init();
+   ok($("#CreateNewTask").is(":hidden"));
+});
+
+test('Task Button remains hidden on change if mode is Create', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#Mode").val("Create");
+   Editor.init();
+   $("#SelectWorkItemTypeId").change();
+   ok($("#CreateNewTask").is(":hidden"));
+});
+
 
 // Project & Sprint Setting
 test("Project ID is set to parent's when parent selected", function () {
