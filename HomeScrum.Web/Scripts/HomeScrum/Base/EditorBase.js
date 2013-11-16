@@ -6,8 +6,8 @@
 
    return editor;
 
-   function init() {
-      SetupSubmitButton();
+   function init(submitClickHandler) {
+      SetupSubmitButton(submitClickHandler || HandleSubmitButtonClicked);
       SetMainDataAccess();
       SetChildDataVisibility();
    }
@@ -82,12 +82,12 @@
       }
    }
 
-   function SetupSubmitButton() {
+   function SetupSubmitButton(submitClickHandler) {
       $('#SubmitButton').button();
       SetSubmitButtonText();
 
       $('#SubmitButton').click(function () {
-          HandleSubmitButtonClicked();
+         submitClickHandler();
       });
    }
 })();

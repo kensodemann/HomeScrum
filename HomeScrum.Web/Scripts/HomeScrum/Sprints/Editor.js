@@ -80,13 +80,18 @@
       });
    }
 
-   var init = function () {
-      EditorBase.init();
-      ShowHideDataItems();
+   function handleSubmitClicked() {
+      EditorBase.submitButtonClicked();
       SetAccess();
+   }
 
+   var init = function () {
+      ShowHideDataItems();
+      
       SetupProjectSelectList();
       SetupStatusSelectList();
+
+      EditorBase.init(handleSubmitClicked);
    };
 
    return {

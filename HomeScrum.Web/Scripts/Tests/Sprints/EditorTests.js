@@ -1,16 +1,4 @@
-﻿test('Items Enabled on init if sprint open', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "True");
-   Editor.init();
-   assertItemsAreActive();
-});
-
-test('Items Disabled on init if sprint not open', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "False");
-   Editor.init();
-   assertItemsAreNotActive();
-});
-
-test('Items Shown on init if sprint open', function () {
+﻿test('Items Shown on init if sprint open', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    Editor.init();
    assertItemsAreShown();
@@ -114,18 +102,6 @@ test('Task List Link hidden on status change if status open and task list closed
    ok($("#TaskListLink").is(":hidden"), "Task List link is hidden");
    ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
 }); 
-
-test('Project ID hidden on init if backlog items exist', function () {
-   $("#BacklogItemsTable tr:last").after("<tr>This is a backlog item</tr>");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
-});
-
-test('Project ID hidden on init if task list items exist', function () {
-   $("#TasksTable tr:last").after("<tr>This is a task item</tr>");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
-});
 
 test('Project ID syncs on init', function () {
    Editor.init();

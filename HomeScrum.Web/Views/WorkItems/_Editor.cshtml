@@ -2,7 +2,7 @@
 
 @model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    @Html.Partial( "_DomainObjectBaseEditor", Model )
 
@@ -19,47 +19,48 @@
       <div class="formSelectList">
          @Html.HiddenFor( x => x.WorkItemTypeId )
          @Html.LabelFor( model => model.WorkItemTypeId )
-         @Html.DropDownListWithDataAttributesFor( model => model.SelectWorkItemTypeId, Model.WorkItemTypes )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectWorkItemTypeId, Model.WorkItemTypes, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.WorkItemTypeId )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses )
+         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.StatusId )
       </div>
 
       <div class="formSelectList" id="ParentWorkItemDiv">
          @Html.HiddenFor( model => model.ParentWorkItemId )
          @Html.LabelFor( model => model.ParentWorkItemId )
-         @Html.DropDownListWithDataAttributesFor( model => model.SelectParentWorkItemId, Model.ProductBacklogItems )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectParentWorkItemId, Model.ProductBacklogItems, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.ParentWorkItemId )
       </div>
 
       <div class="formSelectList">
          @Html.HiddenFor( model => model.ProjectId )
          @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects )
+         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.ProjectId )
       </div>
 
       <div class="formSelectList">
          @Html.HiddenFor( model => model.SprintId )
          @Html.LabelFor( model => model.SprintId )
-         @Html.DropDownListWithDataAttributesFor( model => model.SelectSprintId, Model.Sprints )
+         @Html.DropDownListWithDataAttributesFor( model => model.SelectSprintId, Model.Sprints, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.SprintId )
       </div>
 
       <div class="formSelectList" id="AssignedToUserDiv">
          @Html.HiddenFor( model => model.AssignedToUserId )
          @Html.LabelFor( model => model.AssignedToUserId )
-         @Html.DropDownListFor( model => model.SelectAssignedToUserId, Model.AssignedToUsers )
+         @Html.DropDownListFor( model => model.SelectAssignedToUserId, Model.AssignedToUsers, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.AssignedToUserId )
       </div>
 
+      @Html.HiddenFor( m => m.Mode )
    </fieldset>
 
-   <div id="TaskListDiv">
+   <div id="TaskListDiv" class="ChildData">
       <h3>Tasks</h3>
       <table>
          <tr>
@@ -99,11 +100,10 @@
    </div>
 
    @Html.ValidationSummary( false )
+}
 
-   <p>
-      <input type="submit" value="@ViewBag.EditorButtonLabel" />
-      @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
-   </p>
+   <a href="#" id="SubmitButton"></a>
+   @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
 
    @Scripts.Render( "~/Bundles/BaseScripts" )
    @Scripts.Render( "~/bundles/workItemScripts" )
@@ -114,4 +114,3 @@
          $("#CreateNewTask").button();
       });
    </script>
-}

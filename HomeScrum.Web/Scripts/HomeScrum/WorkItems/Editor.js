@@ -21,7 +21,8 @@
 
    function ShowHideTaskList(effect) {
       var canHaveChildren = $("#SelectWorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
-      if (canHaveChildren == "True") {
+      var mode = $("#Mode").val();
+      if (canHaveChildren == "True" && $("#Mode").val() != "Create") {
          $("#TaskListDiv").show(effect);
          $("#CreateNewTask").show(effect);
       }
@@ -224,11 +225,15 @@
       });
    }
 
-   var init = function () {
-      EditorBase.init();
-      ShowHideDataItems();
+   function handleSubmitClicked() {
+      EditorBase.submitButtonClicked();
       SetAccess();
+   }
 
+   var init = function () {
+      EditorBase.init(handleSubmitClicked);
+      ShowHideDataItems();
+      
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();

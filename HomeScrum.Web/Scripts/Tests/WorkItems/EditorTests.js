@@ -73,7 +73,7 @@ test('Task List Hidden if cannot have children on init', function () {
    ok($("#TaskListDiv").is(":hidden"));
 });
 
-test('Task List User Hidden if cannot have children on change', function () {
+test('Task List Hidden if cannot have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
@@ -85,18 +85,33 @@ test('Task List User Hidden if cannot have children on change', function () {
    }, 1000);
 });
 
-test('Task List User Visible if can have children on init', function () {
+test('Task List Visible if can have children on init', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    ok($("#TaskListDiv").is(":visible"));
 });
 
-test('Task List User Visible if can have children on change', function () {
+test('Task List Visible if can have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    $("#SelectWorkItemTypeId").change();
    ok($("#TaskListDiv").is(":visible"));
+});
+
+test('Task List Hidden if mode is create on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#Mode").val("Create");
+   Editor.init();
+   ok($("#TaskListDiv").is(":hidden"));
+});
+
+test('Task List remains hidden on change if Mode is Create', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
+   $("#Mode").val("Create");
+   Editor.init();
+   $("#SelectWorkItemTypeId").change();
+   ok($("#TaskListDiv").is(":hidden"));
 });
 
 
@@ -107,7 +122,7 @@ test('Task Button Hidden if cannot have children on init', function () {
    ok($("#CreateNewTask").is(":hidden"));
 });
 
-test('Task Button User Hidden if cannot have children on change', function () {
+test('Task Button Hidden if cannot have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
@@ -119,19 +134,35 @@ test('Task Button User Hidden if cannot have children on change', function () {
    }, 1000);
 });
 
-test('Task Button User Visible if can have children on init', function () {
+test('Task Button Visible if can have children on init', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    Editor.init();
    ok($("#CreateNewTask").is(":visible"));
 });
 
-test('Task Button User Visible if can have children on change', function () {
+test('Task Button Visible if can have children on change', function () {
    $("#selWorkItemType").attr("data-CanHaveChildren", "False");
    Editor.init();
    $("#selWorkItemType").attr("data-CanHaveChildren", "True");
    $("#SelectWorkItemTypeId").change();
    ok($("#CreateNewTask").is(":visible"));
 });
+
+test('Task Button Hidden if mode is Create on init', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#Mode").val("Create");
+   Editor.init();
+   ok($("#CreateNewTask").is(":hidden"));
+});
+
+test('Task Button remains hidden on change if mode is Create', function () {
+   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
+   $("#Mode").val("Create");
+   Editor.init();
+   $("#SelectWorkItemTypeId").change();
+   ok($("#CreateNewTask").is(":hidden"));
+});
+
 
 // Project & Sprint Setting
 test("Project ID is set to parent's when parent selected", function () {
@@ -165,18 +196,6 @@ test("Project ID is set to sprint's when sprint selected", function () {
 });
 
 // Active & Inactive based on status
-test('Items Active on init if status not complete', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "True");
-   Editor.init();
-   assertItemsAreActive();
-});
-
-test('Items Inactive on init if status complete', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "False");
-   Editor.init();
-   assertItemsAreInactive();
-});
-
 test('Items Active on status change if status not complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "False");
    Editor.init();
@@ -193,18 +212,6 @@ test('Items Inactive on status change if status complete', function () {
    assertItemsAreInactive();
 });
 
-test('Add New Task not disabled on init if task list is not closed', function () {
-   $("#selSprint").attr("data-TaskListIsClosed", "False");
-   Editor.init();
-   strictEqual($("#CreateNewTask").prop("disabled"), false, "Create New Task not Disabled");
-});
-
-test('Add New Task disabled on init if task list is closed', function () {
-   $("#selSprint").attr("data-TaskListIsClosed", "True");
-   Editor.init();
-   strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
-});
-
 test('Add New Task not disabled on status change if task list is not closed', function () {
    $("#selSprint").attr("data-TaskListIsClosed", "True");
    Editor.init();
@@ -219,27 +226,6 @@ test('Add New Task disabled on status change if task list is closed', function (
    $("#selSprint").attr("data-TaskListIsClosed", "True");
    $("#SelectSprintId").change();
    strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
-});
-
-test('Project not disabled on init if no parent and no sprint', function () {
-   $("#selParentWorkItem").attr("value", "00000000-0000-0000-0000-000000000000");
-   $("#selSprint").attr("value", "00000000-0000-0000-0000-000000000000");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop("disabled"), false, "Project not Disabled");
-});
-
-test('Project disabled on init if parent', function () {
-   $("#selParentWorkItem").attr("value", "1");
-   $("#selSprint").attr("value", "00000000-0000-0000-0000-000000000000");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
-});
-
-test('Project disabled on init if sprint', function () {
-   $("#selParentWorkItem").attr("value", "00000000-0000-0000-0000-000000000000");
-   $("#selSprint").attr("value", "1");
-   Editor.init();
-   strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
 });
 
 test('Project not disabled on parent change if no parent and no sprint', function () {
@@ -280,18 +266,6 @@ test('Project disabled on sprint change if sprint', function () {
    $("#selSprint").attr("value", "1");
    $("#selSprint").change();
    strictEqual($("#SelectProjectId").prop("disabled"), true, "Project Disabled");
-});
-
-test('Sprint not disabled on init if no parent', function () {
-   $("#selParentWorkItem").attr("value", "00000000-0000-0000-0000-000000000000");
-   Editor.init();
-   strictEqual($("#SelectSprintId").prop("disabled"), false, "Sprint not Disabled");
-});
-
-test('Sprint disabled on init if parent', function () {
-   $("#selParentWorkItem").attr("value", "1");
-   Editor.init();
-   strictEqual($("#SelectSprintId").prop("disabled"), true, "Sprint Disabled");
 });
 
 test('Sprint not disabled on parent change if no parent', function () {
