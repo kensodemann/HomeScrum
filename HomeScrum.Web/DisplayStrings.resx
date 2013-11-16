@@ -171,6 +171,12 @@
   <data name="ParentWorkItem" xml:space="preserve">
     <value>Backlog Item:</value>
   </data>
+  <data name="Points" xml:space="preserve">
+    <value>Estimated Points:</value>
+  </data>
+  <data name="PointsRemaining" xml:space="preserve">
+    <value>Points Remaining:</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>Project:</value>
   </data>

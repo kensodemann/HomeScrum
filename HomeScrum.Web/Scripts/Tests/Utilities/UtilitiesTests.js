@@ -81,11 +81,3 @@ test('Initial State Shows Elements if TestShowFoo is true', function () {
    strictEqual($(".FooItemRow:hidden").length, 0, "Foo Items are Hidden");
    strictEqual($(".BarItemRow:hidden").length, 0, "Bar Items are not hidden");
 });
-
-// Sync Hidden
-test('SyncHidden finds element and sets value', function () {
-   var element = $("#SelectTestElement");
-   element.val("This is a test");
-   Utilities.syncHiddenElement(element.get(0));
-   strictEqual($("#TestElement").val(), "This is a test");
-});

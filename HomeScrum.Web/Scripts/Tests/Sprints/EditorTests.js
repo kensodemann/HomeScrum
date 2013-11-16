@@ -103,18 +103,6 @@ test('Task List Link hidden on status change if status open and task list closed
    ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
 }); 
 
-test('Project ID syncs on init', function () {
-   Editor.init();
-   strictEqual($("#ProjectId").val(), $("#SelectProjectId").val());
-});
-
-test('Project ID syncs on project change', function () {
-   Editor.init();
-   $("#SelectProjectId").val("2");
-   $("#SelectProjectId").change();
-   strictEqual($("#ProjectId").val(), $("#SelectProjectId").val());
-});
-
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
    ok(!($("#Name").hasClass("disabled")), "Name Disabled does not have Class");
@@ -122,7 +110,7 @@ function assertItemsAreActive() {
    ok(!($("#Description").hasClass("disabled")), "Description Disabled does not have Class");
    strictEqual($("#Goal").prop("readonly"), false, "Goal not Readonly");
    ok(!($("#Goal").hasClass("disabled")), "Goal Disabled does not have Class");
-   strictEqual($("#SelectProjectId").prop('disabled'), false, "Project is not disabled");
+   strictEqual($("#ProjectId").prop('disabled'), false, "Project is not disabled");
 }
 
 function assertItemsAreNotActive() {
@@ -132,7 +120,7 @@ function assertItemsAreNotActive() {
    ok($("#Description").hasClass("disabled"), "Description Disabled has Class");
    strictEqual($("#Goal").prop("readonly"), true, "Goal Readonly");
    ok($("#Goal").hasClass("disabled"), "Goal Disabled has Class");
-   strictEqual($("#SelectProjectId").prop('disabled'), true, "Project is disabled");
+   strictEqual($("#ProjectId").prop('disabled'), true, "Project is disabled");
 }
 
 function assertItemsAreShown() {
