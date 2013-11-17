@@ -1056,6 +1056,34 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
       }
+
+      [TestMethod]
+      public void EditGet_SetsPointsToSumOfChildPoints_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedPoints, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsRemainingToSumOfChildPointsRemaining_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedPointsRemaining, viewModel.PointsRemaining );
+      }
       #endregion
 
 

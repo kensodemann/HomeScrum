@@ -133,7 +133,9 @@ namespace HomeScrum.Web.Extensions
             Name = x.Name,
             WorkItemTypeName = x.WorkItemType.Name,
             StatusName = x.Status.Name,
-            IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
+            IsComplete = x.Status.Category == WorkItemStatusCategory.Complete,
+            Points = x.Points,
+            PointsRemaining = x.PointsRemaining
          } );
       }
       #endregion
