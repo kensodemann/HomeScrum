@@ -1030,6 +1030,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
       }
+
+      [TestMethod]
+      public void EditGet_SetsPointsToModelPoints_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( model.Points, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsRemainingToModelPointsRemaining_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
+      }
       #endregion
 
 
