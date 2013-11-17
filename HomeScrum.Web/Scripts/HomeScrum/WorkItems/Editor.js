@@ -1,6 +1,7 @@
 ﻿var Editor = (function () {
    function EnableInputs() {
       $("#Points").spinner("enable");
+      $("#PointsRemaining").spinner("enable");
    }
 
    function ShowHideParentWorkItem(effect) {
@@ -81,6 +82,8 @@
       SetProjectAccess();
       SetSprintAccess();
       SetWorkItemTypeAccess();
+      SetPointsAccess();
+      SetPointsRemainingAccess();
    }
 
    function SetNameAccess() {
@@ -164,6 +167,22 @@
       }
    }
 
+   function SetPointsAccess() {
+      if (WorkStartedOnWorkItem() || ReadOnlyMode()) {
+         $("#Points").spinner("disable");
+      } else {
+         $("#Points").spinner("enable");
+      }
+   }
+
+   function SetPointsRemainingAccess() {
+      if (WorkItemIsClosed() || ReadOnlyMode()) {
+         $("#PointsRemaining").spinner("disable");
+      } else {
+         $("#PointsRemaining").spinner("enable");
+      }
+   }
+
    function TaskListIsClosed() {
       var taskListIsClosed = $("#SprintId").find(":selected").attr("data-TaskListIsClosed");
       return (taskListIsClosed == "True");
@@ -172,6 +191,15 @@
    function WorkItemIsClosed() {
       var statusIsOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
       return (statusIsOpen == "False");
+   }
+
+   function WorkStartedOnWorkItem() {
+      var workStarted = $("#StatusId").find(":selected").attr("data-WorkStarted");
+      return (workStarted == "True");
+   }
+
+   function ReadOnlyMode() {
+      return ($("#Mode").val() === "ReadOnly");
    }
 
    function SetupWorkItemTypeSelectList() {
@@ -204,6 +232,30 @@
       });
    }
 
+   function SetupPointsSpinners() {
+      var points = $("#Points").val();
+      $("#Points").spinner({
+         min: 1,
+         max: 12,
+         stop: function () {
+            SyncPointsRemaining();
+         },
+      });
+      $("#PointsRemaining").spinner({ min: 0, max: points });
+      SetPointsAccess();
+      SetPointsRemainingAccess();
+
+      $("#Points").change(function () {
+         SyncPointsRemaining();
+      });
+   }
+
+   function SyncPointsRemaining() {
+      var points = $("#Points").val();
+      $("#PointsRemaining").spinner("option", "max", points);
+      $("#PointsRemaining").spinner("value", points);
+   }
+
    function HandleSubmitClicked() {
       EnableInputs();
       EditorBase.submitButtonClicked();
@@ -217,10 +269,9 @@
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
-      SetupSprintSelectList();;
+      SetupSprintSelectList();
 
-      $("#Points").spinner({ min: 1, max: 12 });
-      $("#Points").spinner("disable");
+      SetupPointsSpinners();
    };
 
    return {
