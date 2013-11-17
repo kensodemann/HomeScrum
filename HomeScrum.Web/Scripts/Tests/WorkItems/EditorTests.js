@@ -369,7 +369,7 @@ test('Points Remaining Max And Value are Points Value on Points Value Change', f
    $("#Points").change();
    strictEqual($("#PointsRemaining").spinner("option", "max"), 4);
    strictEqual($("#PointsRemaining").spinner("value"), 4);
-})
+});
 
 
 function assertItemsAreActive() {

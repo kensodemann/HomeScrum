@@ -234,21 +234,26 @@
 
    function SetupPointsSpinners() {
       var points = $("#Points").val();
-      $("#Points").spinner({ min: 1, max: 12 });
+      $("#Points").spinner({
+         min: 1,
+         max: 12,
+         stop: function () {
+            SyncPointsRemaining();
+         },
+      });
       $("#PointsRemaining").spinner({ min: 0, max: points });
       SetPointsAccess();
       SetPointsRemainingAccess();
 
       $("#Points").change(function () {
-         var points = $("#Points").val();
-         $("#PointsRemaining").spinner("option", "max", points);
-         $("#PointsRemaining").spinner("value", points);
+         SyncPointsRemaining();
       });
    }
 
-   function SetMaxPointsRemaining() {
+   function SyncPointsRemaining() {
       var points = $("#Points").val();
       $("#PointsRemaining").spinner("option", "max", points);
+      $("#PointsRemaining").spinner("value", points);
    }
 
    function HandleSubmitClicked() {
