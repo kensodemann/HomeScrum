@@ -236,9 +236,19 @@
       var points = $("#Points").val();
       $("#Points").spinner({ min: 1, max: 12 });
       $("#PointsRemaining").spinner({ min: 0, max: points });
-
       SetPointsAccess();
       SetPointsRemainingAccess();
+
+      $("#Points").change(function () {
+         var points = $("#Points").val();
+         $("#PointsRemaining").spinner("option", "max", points);
+         $("#PointsRemaining").spinner("value", points);
+      });
+   }
+
+   function SetMaxPointsRemaining() {
+      var points = $("#Points").val();
+      $("#PointsRemaining").spinner("option", "max", points);
    }
 
    function HandleSubmitClicked() {

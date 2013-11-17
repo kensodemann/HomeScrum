@@ -361,6 +361,16 @@ test('Points Remaining Min and Max 0 and Points Value', function () {
    strictEqual($("#PointsRemaining").spinner("option", "max"), 8);
 });
 
+test('Points Remaining Max And Value are Points Value on Points Value Change', function () {
+   $("#Points").val(8);
+   $("#PointsRemaining").val(2);
+   Editor.init();
+   $("#Points").val(4);
+   $("#Points").change();
+   strictEqual($("#PointsRemaining").spinner("option", "max"), 4);
+   strictEqual($("#PointsRemaining").spinner("value"), 4);
+})
+
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
