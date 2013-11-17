@@ -1,6 +1,7 @@
 ﻿var Editor = (function () {
    function EnableInputs() {
       $("#Points").spinner("enable");
+      $("#PointsRemaining").spinner("enable");
    }
 
    function ShowHideParentWorkItem(effect) {
@@ -221,6 +222,8 @@
 
       $("#Points").spinner({ min: 1, max: 12 });
       $("#Points").spinner("disable");
+      $("#PointsRemaining").spinner({ min: 0, max: 12 });
+      $("#PointsRemaining").spinner("disable");
    };
 
    return {
