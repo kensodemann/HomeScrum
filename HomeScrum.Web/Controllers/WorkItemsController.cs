@@ -359,6 +359,8 @@ namespace HomeScrum.Web.Controllers
          {
             model.AssignedToUser = null;
             model.ParentWorkItem = null;
+            model.Points = 0;
+            model.PointsRemaining = 0;
          }
       }
    }

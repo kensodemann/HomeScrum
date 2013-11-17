@@ -1362,6 +1362,38 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( newSprintId, child.Sprint.Id );
          }
       }
+
+      [TestMethod]
+      public void EditPost_SavesPointsAsZeroForBacklogItems()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         viewModel.Points = 42;
+         viewModel.PointsRemaining = 15;
+         _controller.Edit( viewModel, _principal.Object );
+
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( 0, item.Points );
+         Assert.AreEqual( 0, item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void EditPost_SavesPointsAsEnteredForNonBacklogItems()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         viewModel.Points = 12;
+         viewModel.PointsRemaining = 5;
+         _controller.Edit( viewModel, _principal.Object );
+
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( 12, item.Points );
+         Assert.AreEqual( 5, item.PointsRemaining );
+      }
       #endregion
 
 
