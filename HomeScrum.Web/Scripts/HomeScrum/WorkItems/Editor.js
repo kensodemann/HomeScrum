@@ -82,6 +82,8 @@
       SetProjectAccess();
       SetSprintAccess();
       SetWorkItemTypeAccess();
+      SetPointsAccess();
+      SetPointsRemainingAccess();
    }
 
    function SetNameAccess() {
@@ -165,6 +167,22 @@
       }
    }
 
+   function SetPointsAccess() {
+      if (WorkStartedOnWorkItem() || ReadOnlyMode()) {
+         $("#Points").spinner("disable");
+      } else {
+         $("#Points").spinner("enable");
+      }
+   }
+
+   function SetPointsRemainingAccess() {
+      if (WorkItemIsClosed() || ReadOnlyMode()) {
+         $("#PointsRemaining").spinner("disable");
+      } else {
+         $("#PointsRemaining").spinner("enable");
+      }
+   }
+
    function TaskListIsClosed() {
       var taskListIsClosed = $("#SprintId").find(":selected").attr("data-TaskListIsClosed");
       return (taskListIsClosed == "True");
@@ -173,6 +191,15 @@
    function WorkItemIsClosed() {
       var statusIsOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
       return (statusIsOpen == "False");
+   }
+
+   function WorkStartedOnWorkItem() {
+      var workStarted = $("#StatusId").find(":selected").attr("data-WorkStarted");
+      return (workStarted == "True");
+   }
+
+   function ReadOnlyMode(){
+      return ($("#Mode").val() === "ReadOnly");
    }
 
    function SetupWorkItemTypeSelectList() {
@@ -209,10 +236,8 @@
       $("#Points").spinner({ min: 1, max: 12 });
       $("#PointsRemaining").spinner({ min: 0, max: 12 });
 
-      if ($("#Mode").val() === "ReadOnly") {
-         $("#Points").spinner("disable");
-         $("#PointsRemaining").spinner("disable");
-      }
+      SetPointsAccess();
+      SetPointsRemainingAccess();
    }
 
    function HandleSubmitClicked() {

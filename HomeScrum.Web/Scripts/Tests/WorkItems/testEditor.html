@@ -23,14 +23,17 @@
       <input id="Name" type="text" />
       <input id="Description" type="text" />
 
+      <input id="Points" />
+      <input id="PointsRemaining" />
+
       <select id="WorkItemTypeId">
          <option id="selWorkItemType" selected="selected" value="1" data-canbeassigned="True" data-canhaveparent="True" data-canhavechildren="True">Selected Item</option>
          <option id="NotSelWorkItemType" value="2" data-canbeassigned="True" data-canhaveparent="True" data-canhavechildren="True">Not Selected Item</option>
       </select>
 
       <select id="StatusId">
-         <option id="selStatus" selected="selected" value="1" data-isopenstatus="True">Selected Item</option>
-         <option id="notSelStatus" value="2" data-isopenstatus="True">Not Selected Item</option>
+         <option id="selStatus" selected="selected" value="1" data-isopenstatus="True" data-workstarted="False">Selected Item</option>
+         <option id="notSelStatus" value="2" data-isopenstatus="True" data-workstarted="False">Not Selected Item</option>
       </select>
 
       <select id="ParentWorkItemId">
@@ -59,7 +62,14 @@
          <option id="selAssignedToUser" selected="selected" value="1">Selected Item</option>
          <option id="notSelAssignedToUser" value="2">Not Selected Item</option>
       </select>
-      <input id="Mode" type="hidden" value="ReadOnly" />
+      <input id="Mode" type="hidden" value="ReadOnly" value="Edit" />
    </div>
+
+   <script>
+      $(document).ready(function () {
+         $("#Points").spinner();
+         $("#PointsRemaining").spinner();
+      });
+   </script>
 </body>
 </html>
