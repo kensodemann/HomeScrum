@@ -205,6 +205,16 @@
       });
    }
 
+   function SetupPointsSpinners() {
+      $("#Points").spinner({ min: 1, max: 12 });
+      $("#PointsRemaining").spinner({ min: 0, max: 12 });
+
+      if ($("#Mode").val() === "ReadOnly") {
+         $("#Points").spinner("disable");
+         $("#PointsRemaining").spinner("disable");
+      }
+   }
+
    function HandleSubmitClicked() {
       EnableInputs();
       EditorBase.submitButtonClicked();
@@ -218,12 +228,9 @@
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
-      SetupSprintSelectList();;
+      SetupSprintSelectList();
 
-      $("#Points").spinner({ min: 1, max: 12 });
-      $("#Points").spinner("disable");
-      $("#PointsRemaining").spinner({ min: 0, max: 12 });
-      $("#PointsRemaining").spinner("disable");
+      SetupPointsSpinners();
    };
 
    return {
