@@ -347,6 +347,26 @@ test('Points Disabled on status change if work started', function () {
    strictEqual($("#Points").prop("disabled"), true);
 });
 
+test('Points disabled on init for items that can have child tasks', function () {
+   $("#selStatus").attr("data-WorkStarted", "False");
+   $("#Mode").val("Edit");
+   $("#selWorkItemType").attr("data-canhavechildren", "True");
+   Editor.init();
+   strictEqual($("#Points").prop("disabled"), true);
+   strictEqual($("#PointsRemaining").prop("disabled"), true);
+});
+
+test('Points Remaining disabled on type change items that can have child tasks', function () {
+   $("#selStatus").attr("data-WorkStarted", "False");
+   $("#Mode").val("Edit");
+   $("#selWorkItemType").attr("data-canhavechildren", "False");
+   Editor.init();
+   $("#selWorkItemType").attr("data-canhavechildren", "True");
+   $("#WorkItemTypeId").change();
+   strictEqual($("#Points").prop("disabled"), true);
+   strictEqual($("#PointsRemaining").prop("disabled"), true);
+});
+
 // Points and Points Remaining Values
 test('Points Min and Max 1 and 12', function () {
    Editor.init();
