@@ -11,8 +11,11 @@ namespace HomeScrum.Web.Models.WorkItems
    public class WorkItemEditorViewModel : DomainObjectViewModel, IEditorViewModel
    {
       public WorkItemEditorViewModel()
+         : base()
       {
          this.Tasks = new List<WorkItemIndexViewModel>();
+         this.Points = 1;
+         this.PointsRemaining = 1;
       }
 
       [Display( Name = "WorkItemStatus", ResourceType = typeof( DisplayStrings ) )]

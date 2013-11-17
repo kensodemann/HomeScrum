@@ -502,6 +502,24 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( EditMode.Create, model.Mode );
       }
+
+      [TestMethod]
+      public void CreateGet_PointsIsOne()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( 1, model.Points );
+      }
+
+      [TestMethod]
+      public void CreateGet_PointsRemainingIsOne()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( 1, model.PointsRemaining );
+      }
       #endregion
 
 
