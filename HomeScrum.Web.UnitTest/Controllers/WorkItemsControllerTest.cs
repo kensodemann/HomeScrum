@@ -502,6 +502,24 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( EditMode.Create, model.Mode );
       }
+
+      [TestMethod]
+      public void CreateGet_PointsIsOne()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( 1, model.Points );
+      }
+
+      [TestMethod]
+      public void CreateGet_PointsRemainingIsOne()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( 1, model.PointsRemaining );
+      }
       #endregion
 
 
@@ -1012,6 +1030,60 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
       }
+
+      [TestMethod]
+      public void EditGet_SetsPointsToModelPoints_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( model.Points, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsRemainingToModelPointsRemaining_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsToSumOfChildPoints_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedPoints, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsRemainingToSumOfChildPointsRemaining_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedPointsRemaining, viewModel.PointsRemaining );
+      }
       #endregion
 
 
@@ -1289,6 +1361,38 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             Assert.AreEqual( newSprintId, child.Sprint.Id );
          }
+      }
+
+      [TestMethod]
+      public void EditPost_SavesPointsAsZeroForBacklogItems()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         viewModel.Points = 42;
+         viewModel.PointsRemaining = 15;
+         _controller.Edit( viewModel, _principal.Object );
+
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( 0, item.Points );
+         Assert.AreEqual( 0, item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void EditPost_SavesPointsAsEnteredForNonBacklogItems()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         viewModel.Points = 12;
+         viewModel.PointsRemaining = 5;
+         _controller.Edit( viewModel, _principal.Object );
+
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( 12, item.Points );
+         Assert.AreEqual( 5, item.PointsRemaining );
       }
       #endregion
 

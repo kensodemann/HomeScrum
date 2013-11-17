@@ -15,5 +15,9 @@ namespace HomeScrum.Web.Models.WorkItems
       public string StatusName { get; set; }
 
       public bool IsComplete { get; set; }
+
+      public int Points { get; set; }
+
+      public int PointsRemaining { get; set; }
    }
 }

@@ -93,12 +93,12 @@ namespace HomeScrum.Common.TestData
          //
          var workItem = CreateWorkItem( "Add Unit Tests", "We have been bad programmers and have not been using TDD.  Get what we have tested.", pbi, planning, homeScrum );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 0 );
-         var childWorkItem = CreateChildTask( workItem, "Examine Content", "Create catelog of our currently untested code.", sbi, newWorkItem );
+         var childWorkItem = CreateChildTask( workItem, "Examine Content", "Create catelog of our currently untested code.", sbi, newWorkItem, 4, 4 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Write Tests", "Write tests to cover the code.", sbi, newWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Write Tests", "Write tests to cover the code.", sbi, newWorkItem, 6, 6 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Coverage", "All testable code is covered", unverified );
@@ -108,7 +108,7 @@ namespace HomeScrum.Common.TestData
          workItem = CreateWorkItem( "Sprint Retrospective", "As a manager, I want to gather information on what went well with a sprint and what did not in order to improve the process",
             pbi, assigned, homeScrum );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 1 );
-         childWorkItem = CreateChildTask( workItem, "No Retrospetive", "We need to design a retrospective", issue, complete );
+         childWorkItem = CreateChildTask( workItem, "No Retrospetive", "We need to design a retrospective", issue, complete, 4, 0 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 1 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Before Close", "Must have before close of sprint", accepted );
@@ -116,7 +116,7 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Wrong", "Design allows for entry of what went wrong", accepted );
          AddAcceptanceCriteria( childWorkItem, "Improve", "Design allows for entry of what we will improve upon the next sprint", accepted );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Add Right", "Add list of things we did right", sbi, assigned );
+         childWorkItem = CreateChildTask( workItem, "Add Right", "Add list of things we did right", sbi, assigned, 6, 3 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 1 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Can Add", "Adding item is allowed", accepted );
@@ -124,7 +124,7 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Can Delete", "Removing item is allowed", unverified );
          AddAcceptanceCriteria( childWorkItem, "Moves to Next Sprint", "Is viewable while setting up next sprint", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Add Wrong", "Add list of things we did wrong", sbi, assigned );
+         childWorkItem = CreateChildTask( workItem, "Add Wrong", "Add list of things we did wrong", sbi, assigned, 7, 2 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 1 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Can Add", "Adding item is allowed", unverified );
@@ -132,7 +132,7 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( childWorkItem, "Can Delete", "Removing item is allowed", unverified );
          AddAcceptanceCriteria( childWorkItem, "Moves to Next Sprint", "Is viewable while setting up next sprint", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Add Improvment List", "Add a list of items we need to improve upon", sbi, assigned );
+         childWorkItem = CreateChildTask( workItem, "Add Improvment List", "Add a list of items we need to improve upon", sbi, assigned, 3, 2 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 1 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Can Add", "Adding item is allowed", unverified );
@@ -142,17 +142,17 @@ namespace HomeScrum.Common.TestData
          CloseCriteriaList( childWorkItem );
 
          workItem = CreateWorkItem( "Problem Report Printing", "As a user, I want to be able to print hard copies of problem reports", pbi, complete, preps );
-         childWorkItem = CreateChildTask( workItem, "No Line Feeds", "The current ASCII printing does not contain line feeds", bug, cancelled );
+         childWorkItem = CreateChildTask( workItem, "No Line Feeds", "The current ASCII printing does not contain line feeds", bug, cancelled, 8, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Line Breaks", "Each line is on its own line", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Create Postscript", "Create a postscript file of the problem report", sbi, complete );
+         childWorkItem = CreateChildTask( workItem, "Create Postscript", "Create a postscript file of the problem report", sbi, complete, 12, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Sections", "Each section contains a bold header explaining what it is", accepted );
          AddAcceptanceCriteria( childWorkItem, "Printer", "The file is sent to the printer", accepted );
          AddAcceptanceCriteria( childWorkItem, "Configuration", "The problem report prints according to the user configuration", accepted );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Configuration Screen", "Create a screen to allow users to configure the report format", sbi, complete );
+         childWorkItem = CreateChildTask( workItem, "Configuration Screen", "Create a screen to allow users to configure the report format", sbi, complete, 5, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Header Font", "The user can set the font to use for the header", accepted );
          AddAcceptanceCriteria( childWorkItem, "Header Font Size", "The user can set the font size to use for the header", accepted );
@@ -166,22 +166,22 @@ namespace HomeScrum.Common.TestData
 
          workItem = CreateWorkItem( "Hummus Sandwich", "As a vegan, I want a tasty, tasty sandwich without any animal product in it", pbi, assigned, sandwiches );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == sandwiches.Id ).ElementAt( 0 );
-         childWorkItem = CreateChildTask( workItem, "All Meat", "All of your sandwiches contain dead animals, nothing for vegans to eat", bug, assigned );
-         childWorkItem = CreateChildTask( workItem, "Make Hummus", "Make Hummus", sbi, assigned );
+         childWorkItem = CreateChildTask( workItem, "All Meat", "All of your sandwiches contain dead animals, nothing for vegans to eat", bug, assigned, 9, 3 );
+         childWorkItem = CreateChildTask( workItem, "Make Hummus", "Make Hummus", sbi, assigned, 4, 2 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "No dead animals", "The hummus does not contain the flesh of a dead animal", unverified );
          AddAcceptanceCriteria( childWorkItem, "No animal products", "The hummus does not contain any animal by-product such as milk, egg, or cheese", unverified );
          AddAcceptanceCriteria( childWorkItem, "Chickpeas", "The primary ingredient is chickpeas", unverified );
          AddAcceptanceCriteria( childWorkItem, "Tasty", "The hummus tastes good", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Bread", "Make Vegan bread", sbi, complete );
+         childWorkItem = CreateChildTask( workItem, "Bread", "Make Vegan bread", sbi, complete, 11, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "No dead animals", "The bread does not contain the flesh of a dead animal", unverified );
          AddAcceptanceCriteria( childWorkItem, "No animal products", "The bread does not contain any animal by-product such as milk, egg, or cheese", unverified );
          AddAcceptanceCriteria( childWorkItem, "Tasty", "The bread tastes good", unverified );
          AddAcceptanceCriteria( childWorkItem, "Fluffy", "The bread is properly leavened and not flat", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Assemble", "Make the sandwich", sbi, complete );
+         childWorkItem = CreateChildTask( workItem, "Assemble", "Make the sandwich", sbi, complete, 2, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "No dead animals", "The sandwich does not contain the flesh of a dead animal", unverified );
          AddAcceptanceCriteria( childWorkItem, "No animal products", "The sandwich does not contain any animal by-product such as milk, egg, or cheese", unverified );
@@ -190,12 +190,12 @@ namespace HomeScrum.Common.TestData
 
          workItem = CreateWorkItem( "Burndown Chart", "As a user, I want a quick and easy indication of the progress of work on a sprint", customerRequest, assigned, homeScrum );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 4 );
-         childWorkItem = CreateChildTask( workItem, "Burndown Store", "Create a table that is used to store the burndown", sbi, newWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Burndown Store", "Create a table that is used to store the burndown", sbi, newWorkItem, 3, 3 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 4 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "Information", "At a minimum, contains sprint, date, and remaining", unverified );
          CloseCriteriaList( childWorkItem );
-         childWorkItem = CreateChildTask( workItem, "Generator", "Create a routine that generates the burndown", sbi, newWorkItem );
+         childWorkItem = CreateChildTask( workItem, "Generator", "Create a routine that generates the burndown", sbi, newWorkItem, 5, 5 );
          childWorkItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 4 );
          OpenCriteriaList();
          AddAcceptanceCriteria( childWorkItem, "All Active Sprints", "Routine includes all active sprints", unverified );
@@ -204,7 +204,7 @@ namespace HomeScrum.Common.TestData
          CloseCriteriaList( childWorkItem );
 
          workItem = CreateWorkItem( "Quadratic Equations", "As a parent, I want to teach my child to sovle quadradic equations", customerRequest, cancelled, mathWar );
-         childWorkItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete );
+         childWorkItem = CreateChildTask( workItem, "Too Complex", "I think this is too complex for a game like this, and we should consider cancelling the request", issue, complete, 12, 0 );
 
          // 2 PBI's and 3 CR's without tasks
          //    ** New (3)
@@ -227,23 +227,23 @@ namespace HomeScrum.Common.TestData
          // * Bugs (6)
          // * SBIs (5)
          // Various statuses, all SBI's either new or planning, two of each with Acceptance Criteria (Untested)
-         workItem = CreateWorkItem( "No LDAP Server", "I cannot actually work on the LDAP server related stuff until I have a test server", issue, assigned, preps );
+         workItem = CreateWorkItem( "No LDAP Server", "I cannot actually work on the LDAP server related stuff until I have a test server", issue, assigned, preps, 5, 4 );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == preps.Id ).ElementAt( 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( workItem, "Exists", "The LDAP Server exists", accepted );
          AddAcceptanceCriteria( workItem, "Accessible", "I can access the LDAP Server without error", rejected );
          AddAcceptanceCriteria( workItem, "Contains Data", "The LDAP server has test data I can use", unverified );
          CloseCriteriaList( workItem );
-         workItem = CreateWorkItem( "Modly Bread", "I cannot make a BLT if all of the bread has mold on it.", issue, assigned, sandwiches );
-         workItem = CreateWorkItem( "Remainders", "No one has defined how remainders should be dealt with.", issue, cancelled, mathWar );
+         workItem = CreateWorkItem( "Modly Bread", "I cannot make a BLT if all of the bread has mold on it.", issue, assigned, sandwiches, 6, 3 );
+         workItem = CreateWorkItem( "Remainders", "No one has defined how remainders should be dealt with.", issue, cancelled, mathWar, 2, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( workItem, "Playable", "The way remainders are to be handled is always playable by the user", unverified );
          AddAcceptanceCriteria( workItem, "Configurable", "The specification allows for user configuration", unverified );
          CloseCriteriaList( workItem );
-         workItem = CreateWorkItem( "Negative Numbers", "No one will define how they want negative numbers handled by the game", issue, newWorkItem, mathWar );
+         workItem = CreateWorkItem( "Negative Numbers", "No one will define how they want negative numbers handled by the game", issue, newWorkItem, mathWar, 7, 7 );
 
-         workItem = CreateWorkItem( "No Admin", "It is possible to set all users to not be admins, which makes it impossible to then administer the system", bug, complete, preps );
-         workItem = CreateWorkItem( "Bug in Soup", "Waiter, there is a bug in my soup.", bug, newWorkItem, sandwiches );
+         workItem = CreateWorkItem( "No Admin", "It is possible to set all users to not be admins, which makes it impossible to then administer the system", bug, complete, preps, 2, 0 );
+         workItem = CreateWorkItem( "Bug in Soup", "Waiter, there is a bug in my soup.", bug, newWorkItem, sandwiches, 1, 1 );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == sandwiches.Id ).ElementAt( 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( workItem, "Removed", "The current bowl of soup is removed", accepted );
@@ -251,26 +251,26 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( workItem, "No Bug", "There is no bug in the new bowl of soup", unverified );
          AddAcceptanceCriteria( workItem, "Hot", "The new bowl of soup is hot", unverified );
          CloseCriteriaList( workItem );
-         workItem = CreateWorkItem( "Addition Error", "The program seems to randomly think that 2 + 2 = 8.", bug, assigned, mathWar );
-         workItem = CreateWorkItem( "Cannot assign sprint", "Attempt to assign an SBI to a sprint, the sprint does not stay selected.  It is not being saved in the database.", bug, assigned, homeScrum );
-         workItem = CreateWorkItem( "Hide not working", "The hiding of completed work items is having no effect.", bug, cancelled, homeScrum );
+         workItem = CreateWorkItem( "Addition Error", "The program seems to randomly think that 2 + 2 = 8.", bug, assigned, mathWar, 2, 1 );
+         workItem = CreateWorkItem( "Cannot assign sprint", "Attempt to assign an SBI to a sprint, the sprint does not stay selected.  It is not being saved in the database.", bug, assigned, homeScrum, 4, 3 );
+         workItem = CreateWorkItem( "Hide not working", "The hiding of completed work items is having no effect.", bug, cancelled, homeScrum, 4, 0 );
          OpenCriteriaList();
          AddAcceptanceCriteria( workItem, "Hide", "Completed work items are hidden when hide is active", accepted );
          AddAcceptanceCriteria( workItem, "Show", "Completed work items are shown when hide is not active", accepted );
          AddAcceptanceCriteria( workItem, "No Server Hit", "The server is not hit at all during a show or a hide", accepted );
          CloseCriteriaList( workItem );
-         workItem = CreateWorkItem( "Bacon is Canadian", "The bacon for the BLT is Canadian.  That isn't really bacon, but more like ham.", bug, planning, sandwiches );
+         workItem = CreateWorkItem( "Bacon is Canadian", "The bacon for the BLT is Canadian.  That isn't really bacon, but more like ham.", bug, planning, sandwiches, 5, 5 );
 
-         workItem = CreateWorkItem( "Add Last Active Admin Edit", "When a user is made not an admin, make sure they are not the last active admin user.", sbi, newWorkItem, preps );
-         workItem = CreateWorkItem( "Sprint Model", "Implement the domain model for sprints", sbi, newWorkItem, homeScrum );
-         workItem = CreateWorkItem( "Add backlog to sprint", "Modify the sprint screen to allow the addition of one or more backlog items", sbi, planning, homeScrum );
+         workItem = CreateWorkItem( "Add Last Active Admin Edit", "When a user is made not an admin, make sure they are not the last active admin user.", sbi, newWorkItem, preps, 6, 6 );
+         workItem = CreateWorkItem( "Sprint Model", "Implement the domain model for sprints", sbi, newWorkItem, homeScrum, 9, 9 );
+         workItem = CreateWorkItem( "Add backlog to sprint", "Modify the sprint screen to allow the addition of one or more backlog items", sbi, planning, homeScrum, 2, 2 );
          workItem.Sprint = Sprints.ModelData.Where( x => x.Project.Id == homeScrum.Id ).ElementAt( 3 );
          OpenCriteriaList();
          AddAcceptanceCriteria( workItem, "All Tasks Added", "All tasks associated with the backlog item are automatically added to the sprint", unverified );
          AddAcceptanceCriteria( workItem, "Estimate Updated", "The estimate for the completion of the sprint is updated based on the estimates on the individual tasks", unverified );
          CloseCriteriaList( workItem );
-         workItem = CreateWorkItem( "Add Mayo", "Spread mayo on the toast", sbi, planning, sandwiches );
-         workItem = CreateWorkItem( "Add Division Configuration", "Update the configuration screen to include a configuration section.  Save the configuration to the INI", sbi, planning, mathWar );
+         workItem = CreateWorkItem( "Add Mayo", "Spread mayo on the toast", sbi, planning, sandwiches, 3, 3 );
+         workItem = CreateWorkItem( "Add Division Configuration", "Update the configuration screen to include a configuration section.  Save the configuration to the INI", sbi, planning, mathWar, 5, 5 );
          OpenCriteriaList();
          AddAcceptanceCriteria( workItem, "Remainder Setting", "Are remainders entered? toggle.", unverified );
          AddAcceptanceCriteria( workItem, "Difficulty Setting", "Difficulting setting (easy, medium, difficult)", unverified );
@@ -383,7 +383,7 @@ namespace HomeScrum.Common.TestData
          mathWar = Projects.ModelData.First( x => x.Name == "MathWar" );
       }
 
-      private static WorkItem CreateWorkItem( string name, string description, WorkItemType wit, WorkItemStatus status, Project project )
+      private static WorkItem CreateWorkItem( string name, string description, WorkItemType wit, WorkItemStatus status, Project project, int points = 1, int pointsRemaining = 0 )
       {
          var workItem = new WorkItem()
          {
@@ -393,14 +393,16 @@ namespace HomeScrum.Common.TestData
             Status = status,
             CreatedByUser = GetRandomUser(),
             LastModifiedUserRid = GetRandomUser().Id,
-            Project = project
+            Project = project,
+            Points = points,
+            PointsRemaining = pointsRemaining
          };
          _workItems.Add( workItem );
 
          return workItem;
       }
 
-      private static WorkItem CreateChildTask( WorkItem backlogItem, string name, string description, WorkItemType wit, WorkItemStatus status )
+      private static WorkItem CreateChildTask( WorkItem backlogItem, string name, string description, WorkItemType wit, WorkItemStatus status, int points = 1, int pointsRemaining = 0 )
       {
          var workItem = new WorkItem()
          {
@@ -411,7 +413,9 @@ namespace HomeScrum.Common.TestData
             Status = status,
             Project = backlogItem.Project,
             CreatedByUser = backlogItem.CreatedByUser,
-            LastModifiedUserRid = backlogItem.LastModifiedUserRid
+            LastModifiedUserRid = backlogItem.LastModifiedUserRid,
+            Points = points,
+            PointsRemaining = pointsRemaining
          };
 
          _workItems.Add( workItem );

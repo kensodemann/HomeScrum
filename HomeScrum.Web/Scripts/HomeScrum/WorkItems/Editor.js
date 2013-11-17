@@ -25,9 +25,8 @@
    }
 
    function ShowHideTaskList(effect) {
-      var canHaveChildren = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren");
       var mode = $("#Mode").val();
-      if (canHaveChildren == "True" && $("#Mode").val() != "Create") {
+      if (CanHaveChildren() && $("#Mode").val() != "Create") {
          $("#TaskListDiv").show(effect);
          $("#CreateNewTask").show(effect);
       }
@@ -168,7 +167,7 @@
    }
 
    function SetPointsAccess() {
-      if (WorkStartedOnWorkItem() || ReadOnlyMode()) {
+      if (CanHaveChildren() || WorkStartedOnWorkItem() || ReadOnlyMode()) {
          $("#Points").spinner("disable");
       } else {
          $("#Points").spinner("enable");
@@ -176,7 +175,7 @@
    }
 
    function SetPointsRemainingAccess() {
-      if (WorkItemIsClosed() || ReadOnlyMode()) {
+      if (CanHaveChildren() || WorkItemIsClosed() || ReadOnlyMode()) {
          $("#PointsRemaining").spinner("disable");
       } else {
          $("#PointsRemaining").spinner("enable");
@@ -204,6 +203,10 @@
       return (workStarted == "True");
    }
 
+   function CanHaveChildren() {
+      return ($("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren") === "True");
+   }
+
    function ReadOnlyMode() {
       return ($("#Mode").val() === "ReadOnly");
    }
@@ -211,6 +214,7 @@
    function SetupWorkItemTypeSelectList() {
       $("#WorkItemTypeId").change(function () {
          ShowHideDataItems("fade");
+         SetAccess();
       });
    }
 
