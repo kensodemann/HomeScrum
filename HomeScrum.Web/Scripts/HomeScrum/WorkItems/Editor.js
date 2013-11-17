@@ -198,7 +198,7 @@
       return (workStarted == "True");
    }
 
-   function ReadOnlyMode(){
+   function ReadOnlyMode() {
       return ($("#Mode").val() === "ReadOnly");
    }
 
@@ -233,8 +233,9 @@
    }
 
    function SetupPointsSpinners() {
+      var points = $("#Points").val();
       $("#Points").spinner({ min: 1, max: 12 });
-      $("#PointsRemaining").spinner({ min: 0, max: 12 });
+      $("#PointsRemaining").spinner({ min: 0, max: points });
 
       SetPointsAccess();
       SetPointsRemainingAccess();

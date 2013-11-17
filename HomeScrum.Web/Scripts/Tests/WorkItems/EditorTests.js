@@ -347,6 +347,20 @@ test('Points Disabled on status change if work started', function () {
    strictEqual($("#Points").prop("disabled"), true);
 });
 
+// Points and Points Remaining Values
+test('Points Min and Max 1 and 12', function () {
+   Editor.init();
+   strictEqual($("#Points").spinner("option", "min"), 1);
+   strictEqual($("#Points").spinner("option", "max"), 12);
+});
+
+test('Points Remaining Min and Max 0 and Points Value', function () {
+   $("#Points").val(8);
+   Editor.init();
+   strictEqual($("#PointsRemaining").spinner("option", "min"), 0);
+   strictEqual($("#PointsRemaining").spinner("option", "max"), 8);
+});
+
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
