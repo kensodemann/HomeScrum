@@ -48,7 +48,8 @@ namespace HomeScrum.Web.Extensions
             Selected = item.Id == selectedId,
             DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" }
+                                                             { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" },
+                                                             { "WorkStarted", item.Category != WorkItemStatusCategory.Unstarted ? "True" : "False" }
                                                           }
          } );
       }
