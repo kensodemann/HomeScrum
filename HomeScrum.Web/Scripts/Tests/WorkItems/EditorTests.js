@@ -195,6 +195,7 @@ test("Project ID is set to sprint's when sprint selected", function () {
 // Active & Inactive based on status
 test('Items Active on status change if status not complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "False");
+   $("#Mode").val("Edit");
    Editor.init();
    $("#selStatus").attr("data-IsOpenStatus", "True");
    $("#StatusId").change();
@@ -203,6 +204,7 @@ test('Items Active on status change if status not complete', function () {
 
 test('Items Inactive on status change if status complete', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#Mode").val("Edit");
    Editor.init();
    $("#selStatus").attr("data-IsOpenStatus", "False");
    $("#StatusId").change();
@@ -281,6 +283,94 @@ test('Sprint disabled on parent change if parent', function () {
    strictEqual($("#SprintId").prop("disabled"), true, "Sprint Disabled");
 });
 
+// Points / Points Remaining Enable / Disable
+test('Points enabled on init if not read-only and work not started', function () {
+   $("#selStatus").attr("data-WorkStarted", "False");
+   $("#Mode").val("Edit");
+   Editor.init();
+   strictEqual($("#Points").prop("disabled"), false);
+});
+
+test('Points disable on init if work started', function () {
+   $("#selStatus").attr("data-WorkStarted", "True");
+   $("#Mode").val("Edit");
+   Editor.init();
+   strictEqual($("#Points").prop("disabled"), true);
+});
+
+test('Points disabled on init if read-only', function () {
+   $("#selStatus").attr("data-WorkStarted", "False");
+   $("#Mode").val("ReadOnly");
+   Editor.init();
+   strictEqual($("#Points").prop("disabled"), true);
+});
+
+test('Points Remaining enabled on init if not read-only and status is open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-WorkStarted", "True");
+   $("#Mode").val("Edit");
+   Editor.init();
+   strictEqual($("#PointsRemaining").prop("disabled"), false);
+});
+
+test('Points Remaining disable on init if status is not open', function () {
+   $("#selStatus").attr("data-isopenstatus", "False");
+   $("#selStatus").attr("data-WorkStarted", "True");
+   $("#Mode").val("Edit");
+   Editor.init();
+   strictEqual($("#PointsRemaining").prop("disabled"), true);
+});
+
+test('Points Remaining disabled on init if read-only', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-WorkStarted", "True");
+   $("#Mode").val("ReadOnly");
+   Editor.init();
+   strictEqual($("#PointsRemaining").prop("disabled"), true);
+});
+
+test('Points Enabled on status change if work not started', function () {
+   $("#selStatus").attr("data-WorkStarted", "True");
+   $("#Mode").val("Edit");
+   Editor.init();
+   $("#selStatus").attr("data-WorkStarted", "False");
+   $("#StatusId").change();
+   strictEqual($("#Points").prop("disabled"), false);
+});
+
+test('Points Disabled on status change if work started', function () {
+   $("#selStatus").attr("data-WorkStarted", "False");
+   $("#Mode").val("Edit");
+   Editor.init();
+   $("#selStatus").attr("data-WorkStarted", "True");
+   $("#StatusId").change();
+   strictEqual($("#Points").prop("disabled"), true);
+});
+
+// Points and Points Remaining Values
+test('Points Min and Max 1 and 12', function () {
+   Editor.init();
+   strictEqual($("#Points").spinner("option", "min"), 1);
+   strictEqual($("#Points").spinner("option", "max"), 12);
+});
+
+test('Points Remaining Min and Max 0 and Points Value', function () {
+   $("#Points").val(8);
+   Editor.init();
+   strictEqual($("#PointsRemaining").spinner("option", "min"), 0);
+   strictEqual($("#PointsRemaining").spinner("option", "max"), 8);
+});
+
+test('Points Remaining Max And Value are Points Value on Points Value Change', function () {
+   $("#Points").val(8);
+   $("#PointsRemaining").val(2);
+   Editor.init();
+   $("#Points").val(4);
+   $("#Points").change();
+   strictEqual($("#PointsRemaining").spinner("option", "max"), 4);
+   strictEqual($("#PointsRemaining").spinner("value"), 4);
+});
+
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
@@ -293,6 +383,7 @@ function assertItemsAreActive() {
    strictEqual($("#SprintId").prop("disabled"), false, "Sprint not Disabled");
    strictEqual($("#AssignedToUserId").prop("disabled"), false, "Assigned To User not Disabled");
    strictEqual($("#CreateNewTask").prop("disabled"), false, "Create New Task not Disabled");
+   strictEqual($("#PointsRemaining").prop("disabled"), false, "Points Remaining not Disabled");
 }
 
 function assertItemsAreInactive() {
@@ -306,4 +397,5 @@ function assertItemsAreInactive() {
    strictEqual($("#SprintId").prop("disabled"), true, "Sprint Disabled");
    strictEqual($("#AssignedToUserId").prop("disabled"), true, "Assigned To User Disabled");
    strictEqual($("#CreateNewTask").prop("disabled"), true, "Create New Task Disabled");
+   strictEqual($("#PointsRemaining").prop("disabled"), true, "Points Remaining Disabled");
 }

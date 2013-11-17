@@ -15,6 +15,12 @@
          @Html.ValidationMessageFor( model => model.Points )
       </div>
 
+      <div class="formSelectList">
+         @Html.LabelFor( model => model.PointsRemaining )
+         @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData" } )
+         @Html.ValidationMessageFor( model => model.PointsRemaining )
+      </div>
+
       <div class="formStaticText">
          @Html.LabelFor( model => model.CreatedByUserUserName )
          @Html.DisplayFor( model => model.CreatedByUserUserName )

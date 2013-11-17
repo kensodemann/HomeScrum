@@ -191,6 +191,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             var item = model.Statuses.FirstOrDefault( x => new Guid( x.Value ) == status.Id );
             Assert.AreEqual( status.Name, item.Text );
             Assert.AreEqual( (status.Category != WorkItemStatusCategory.Complete) ? "True" : "False", item.DataAttributes["IsOpenStatus"] );
+            Assert.AreEqual( (status.Category != WorkItemStatusCategory.Unstarted) ? "True" : "False", item.DataAttributes["WorkStarted"] );
             Assert.IsFalse( item.Selected );
          }
       }
