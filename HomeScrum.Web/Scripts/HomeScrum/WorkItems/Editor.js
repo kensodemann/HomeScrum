@@ -183,6 +183,12 @@
       }
    }
 
+   function ClosePointsRemainingIfStatusIsClosed() {
+      if (WorkItemIsClosed()) {
+         $("#PointsRemaining").spinner("value", 0);
+      }
+   }
+
    function TaskListIsClosed() {
       var taskListIsClosed = $("#SprintId").find(":selected").attr("data-TaskListIsClosed");
       return (taskListIsClosed == "True");
@@ -212,6 +218,7 @@
       var selectList = $("#StatusId");
       selectList.change(function () {
          SetAccess();
+         ClosePointsRemainingIfStatusIsClosed();
       });
    }
 

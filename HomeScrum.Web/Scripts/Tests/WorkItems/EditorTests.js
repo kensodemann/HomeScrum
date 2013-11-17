@@ -371,6 +371,16 @@ test('Points Remaining Max And Value are Points Value on Points Value Change', f
    strictEqual($("#PointsRemaining").spinner("value"), 4);
 });
 
+test('Points Remaining set to zero on status change if status not open', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#Points").val(8);
+   $("#PointsRemaining").val(2);
+   Editor.init();
+   $("#selStatus").attr("data-IsOpenStatus", "False");
+   $("#StatusId").change();
+   strictEqual($("#PointsRemaining").spinner("value"), 0);
+});
+
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
