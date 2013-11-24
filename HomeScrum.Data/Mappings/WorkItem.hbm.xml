@@ -26,7 +26,7 @@
          inverse="true"
          cascade="none"
          lazy="true">
-      <key column="WorkItemRid"/>
+      <key column="ParentWorkItemRid"/>
       <one-to-many class="WorkItem"/>
     </set>
     <many-to-one name="Project"
