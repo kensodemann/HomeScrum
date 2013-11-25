@@ -141,6 +141,9 @@
   <data name="EndDate" xml:space="preserve">
     <value>End Date:</value>
   </data>
+  <data name="EstimatedPoints" xml:space="preserve">
+    <value>Estimated Points:</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First Name:</value>
   </data>
@@ -172,7 +175,7 @@
     <value>Backlog Item:</value>
   </data>
   <data name="Points" xml:space="preserve">
-    <value>Estimated Points:</value>
+    <value>Points:</value>
   </data>
   <data name="PointsRemaining" xml:space="preserve">
     <value>Points Remaining:</value>

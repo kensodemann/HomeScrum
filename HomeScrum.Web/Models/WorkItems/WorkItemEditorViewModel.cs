@@ -75,7 +75,7 @@ namespace HomeScrum.Web.Models.WorkItems
          }
       }
 
-      [Display( Name = "Points", ResourceType = typeof( DisplayStrings ) )]
+      [Display( Name = "EstimatedPoints", ResourceType = typeof( DisplayStrings ) )]
       public int Points { get; set; }
 
       [Display( Name = "PointsRemaining", ResourceType = typeof( DisplayStrings ) )]
