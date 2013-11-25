@@ -20,6 +20,7 @@ namespace HomeScrum.Data.Domain
       public virtual Project Project { get; set; }
 
       public virtual WorkItem ParentWorkItem { get; set; }
+      public virtual IEnumerable<WorkItem> Tasks { get; set; }
 
       public virtual Sprint Sprint { get; set; }
 
@@ -33,6 +34,8 @@ namespace HomeScrum.Data.Domain
 
       public virtual IEnumerable<AcceptanceCriterion> AcceptanceCriteria { get; set; }
 
-      //public virtual IEnumerable<WorkItem> Tasks { get; set; }
+      public virtual int Points { get; set; }
+
+      public virtual int PointsRemaining { get; set; }
    }
 }

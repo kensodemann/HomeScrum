@@ -3,6 +3,7 @@ using HomeScrum.Data.Domain;
 using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Admin;
+using HomeScrum.Web.Models.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NHibernate;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -23,6 +25,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
+
+      private Mock<ILogger> _logger;
 
       private EditUserViewModel CreateNewEditViewModel( User model )
       {
@@ -71,7 +75,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _securityService = new Mock<ISecurityService>();
 
-         _controller = new UsersController( _securityService.Object, _sessionFactory.Object );
+         _logger = new Mock<ILogger>();
+
+         _controller = new UsersController( _logger.Object, _securityService.Object, _sessionFactory.Object );
          _controller.ControllerContext = new ControllerContext();
       }
 
@@ -123,6 +129,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
+      public void CreateGet_SetsEditModeToCreate()
+      {
+         var parentId = Guid.NewGuid();
+         var result = _controller.Create() as ViewResult;
+         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
+
+         Assert.AreEqual( EditMode.Create, viewModel.Mode );
+      }
+
+      [TestMethod]
       public void CreatePost_SavesUserIfModelIsValid()
       {
          var viewModel = CreateNewCreateViewModel();
@@ -139,18 +155,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
-         var result = _controller.Create( viewModel ) as RedirectToRouteResult;
+         var result = _controller.Create( viewModel ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.IsNotNull( vm );
+         Assert.AreNotEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
@@ -170,14 +184,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      public void CreatePost_ReturnsToEditorModeCreate_IfModelIsNotValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
+         Assert.AreEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.Create, vm.Mode );
       }
 
       [TestMethod]
@@ -198,8 +214,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( model );
 
          Assert.AreEqual( 1, _controller.ModelState.Count );
-         Assert.IsTrue( _controller.ModelState.ContainsKey( "FirstName" ) );
-         Assert.IsTrue( result is ViewResult );
       }
 
       [TestMethod]
@@ -219,8 +233,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( model );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -266,6 +278,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( viewModel.CallingAction, "Details" );
          Assert.AreEqual( callingId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsEditModeToReadOnly()
+      {
+         var user = Users.ModelData.ToArray()[3];
+
+         var result = _controller.Edit( user.Id ) as ViewResult;
+         var viewModel = result.Model as EditUserViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, viewModel.Mode );
       }
 
       [TestMethod]
@@ -316,7 +339,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_ReturnsToEditorModeReadOnly_IfModelIsValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -329,18 +352,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = (user.StatusCd == 'A')
          };
 
-         var result = _controller.Edit( model ) as RedirectToRouteResult;
+         var result = _controller.Edit( model ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.IsNotNull( vm );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
       }
 
       [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
+      public void EditPost_ReturnsToEditorModeEdit_IfModelIsNotValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -355,8 +376,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( model ) as ViewResult;
+         var vm = result.Model as UserEditorViewModel;
 
-         Assert.IsNotNull( result );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.Edit, vm.Mode );
       }
 
       [TestMethod]
@@ -398,8 +421,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]

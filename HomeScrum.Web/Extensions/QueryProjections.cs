@@ -48,7 +48,8 @@ namespace HomeScrum.Web.Extensions
             Selected = item.Id == selectedId,
             DataAttributes = new Dictionary<string, string>()
                                                           {
-                                                             { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" }
+                                                             { "IsOpenStatus", item.Category != WorkItemStatusCategory.Complete ? "True" : "False" },
+                                                             { "WorkStarted", item.Category != WorkItemStatusCategory.Unstarted ? "True" : "False" }
                                                           }
          } );
       }
@@ -132,7 +133,9 @@ namespace HomeScrum.Web.Extensions
             Name = x.Name,
             WorkItemTypeName = x.WorkItemType.Name,
             StatusName = x.Status.Name,
-            IsComplete = x.Status.Category == WorkItemStatusCategory.Complete
+            IsComplete = x.Status.Category == WorkItemStatusCategory.Complete,
+            Points = (x.WorkItemType.Category == 0 ? (x.Tasks.Count() == 0 ? 0 : x.Tasks.Sum( t => t.Points )) : x.Points),
+            PointsRemaining = (x.WorkItemType.Category == 0 ? (x.Tasks.Count() == 0 ? 0 : x.Tasks.Sum( t => t.PointsRemaining )) : x.PointsRemaining)
          } );
       }
       #endregion

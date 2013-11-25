@@ -22,6 +22,13 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
+    <set name="Tasks"
+         inverse="true"
+         cascade="none"
+         lazy="true">
+      <key column="ParentWorkItemRid"/>
+      <one-to-many class="WorkItem"/>
+    </set>
     <many-to-one name="Project"
                  class="Project"
                  column="ProjectRid"
@@ -52,6 +59,8 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
+    <property name="Points"/>
+    <property name="PointsRemaining"/>
 
     <set name="AcceptanceCriteria"
          inverse="true"

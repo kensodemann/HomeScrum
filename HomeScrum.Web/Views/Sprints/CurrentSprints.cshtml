@@ -1,19 +1,17 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Sprints.SprintIndexViewModel>
 
 @{
-   ViewBag.Title = "Current Sprints";
+    ViewBag.Title = "Current Sprints";
 }
 
 @Html.Partial( "_SprintList", Model )
 
 <div id="ActionButtonArea">
     @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-    @*<input type="checkbox" id="ShowCompletedToggle" /><label for="ShowCompletedToggle">Show/Hide</label>*@
 </div>
 
 <script>
     $(function () {
         $("#CreateNewItem").button();
-        @*setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowCompletedToggle"), "Completed");*@
     });
 </script>

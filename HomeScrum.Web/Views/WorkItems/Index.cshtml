@@ -16,6 +16,6 @@
 <script>
     $(function () {
         $("#CreateNewItem").button();
-        setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowCompletedToggle"), "Completed");
+        Utilities.setupShowHideButton("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()", $("#ShowCompletedToggle"), "Completed");
     });
 </script>

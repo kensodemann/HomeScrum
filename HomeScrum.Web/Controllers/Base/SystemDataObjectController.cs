@@ -14,7 +14,7 @@ namespace HomeScrum.Web.Controllers.Base
    public abstract class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, EditorViewModelT>
       where ModelT : SystemDomainObject
       where ViewModelT : SystemDomainObjectViewModel
-      where EditorViewModelT : SystemDomainObjectViewModel, new()
+      where EditorViewModelT : SystemDomainObjectViewModel, IEditorViewModel, new()
    {
       public SystemDataObjectController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }

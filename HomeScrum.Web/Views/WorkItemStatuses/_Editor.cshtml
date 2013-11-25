@@ -2,7 +2,7 @@
 
 @model HomeScrum.Web.Models.Admin.WorkItemStatusEditorViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    @Html.ValidationSummary( true )
 
@@ -13,18 +13,25 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.Category )
-         @Html.EnumDropDownListFor( model => model.Category )
+         @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.Category )
       </div>
 
       <div class="formBooleanOption">
-         @Html.EditorFor( model => model.AllowUse )
+         @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
          @Html.LabelFor( model => model.AllowUse )
          @Html.ValidationMessageFor( model => model.AllowUse )
       </div>
    </fieldset>
  
-   <p>
-      <input type="submit" value="@ViewBag.EditorButtonLabel" />
-   </p>
+   @Html.HiddenFor( model => model.Mode );
 }
+
+<a href="#" id="SubmitButton"></a>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+<script>
+   $(document).ready(function () {
+      EditorBase.init();
+   });
+</script>

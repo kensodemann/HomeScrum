@@ -2,7 +2,7 @@
 
 @model HomeScrum.Web.Models.Admin.SprintStatusEditorViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    @Html.ValidationSummary( true )
 
@@ -13,30 +13,37 @@
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.Category )
-         @Html.EnumDropDownListFor( model => model.Category )
+         @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.Category )
       </div>
 
       <div class="formBooleanOption">
-         @Html.EditorFor( model => model.CanAddBacklogItems )
+         @Html.CheckBoxFor( model => model.CanAddBacklogItems, new { @class = "MainData" } )
          @Html.LabelFor( model => model.CanAddBacklogItems )
          @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
       </div>
 
       <div class="formBooleanOption">
-         @Html.EditorFor( model => model.CanAddTaskListItems )
+         @Html.CheckBoxFor( model => model.CanAddTaskListItems, new { @class = "MainData" } )
          @Html.LabelFor( model => model.CanAddTaskListItems )
          @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
       </div>
 
       <div class="formBooleanOption">
-         @Html.EditorFor( model => model.AllowUse )
+         @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
          @Html.LabelFor( model => model.AllowUse )
          @Html.ValidationMessageFor( model => model.AllowUse )
       </div>
    </fieldset>
     
-   <p>
-      <input type="submit" value="@ViewBag.EditorButtonLabel" />
-   </p>
+   @Html.HiddenFor( model => model.Mode );
 }
+
+<a href="#" id="SubmitButton"></a>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+<script>
+   $(document).ready(function () {
+      EditorBase.init();
+   });
+</script>

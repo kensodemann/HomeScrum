@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Work Items Editor Test Suite</title>
+   <link rel="stylesheet" href="../qunit/qunit-1.12.0.css">
+   <script src="../../jquery-2.0.3.js"></script>
+   <script src="../../jquery-ui-1.10.3.js"></script>
+   <script src="../../HomeScrum/utilities.js"></script>
+   <script src="../qunit/qunit-1.12.0.js"></script>
+   <script src="../../HomeScrum/Base/EditorBase.js"></script>
+   <script src="../../HomeScrum/WorkItems/Editor.js"></script>
+   <script src="EditorTests.js"></script>
+</head>
+<body>
+   <div id="qunit"></div>
+   <div id="qunit-fixture">
+      <div id="AssignedToUserDiv"></div>
+      <div id="ParentWorkItemDiv"></div>
+      <div id="TaskListDiv"></div>
+      <div id="CreateNewTask"></div>
+
+      <input id="Name" type="text" />
+      <input id="Description" type="text" />
+
+      <input id="Points" />
+      <input id="PointsRemaining" />
+
+      <select id="WorkItemTypeId">
+         <option id="selWorkItemType" selected="selected" value="1" data-canbeassigned="True" data-canhaveparent="True" data-canhavechildren="False">Selected Item</option>
+         <option id="NotSelWorkItemType" value="2" data-canbeassigned="True" data-canhaveparent="True" data-canhavechildren="True">Not Selected Item</option>
+      </select>
+
+      <select id="StatusId">
+         <option id="selStatus" selected="selected" value="1" data-isopenstatus="True" data-workstarted="False">Selected Item</option>
+         <option id="notSelStatus" value="2" data-isopenstatus="True" data-workstarted="False">Not Selected Item</option>
+      </select>
+
+      <select id="ParentWorkItemId">
+         <option id="selParentWorkItem" selected="selected" value="00000000-0000-0000-0000-000000000000" data-projectid="00000000-0000-0000-0000-000000000000" data-sprintid="00000000-0000-0000-0000-000000000000">Selected Item</option>
+         <option id="notSelParentWorkItem" value="2" data-projectid="4" data-sprintid="6">Not Selected Item</option>
+      </select>
+
+      <select id="ProjectId">
+         <option id="selProject" selected="selected" value="1">Selected Item</option>
+         <option id="notSelProject" value="2">Not Selected Item</option>
+         <option id="willBeSelProjectWithParent" value="3">Eventually Selected Item</option>
+         <option id="willNotBeSelProject" value="4">Never Selected Item</option>
+         <option id="willBeSelProjectWithSprint" value="7">Eventually Selected Item</option>
+      </select>
+
+      <select id="SprintId">
+         <option id="selSprint" selected="selected" value="00000000-0000-0000-0000-000000000000" data-projectid="00000000-0000-0000-0000-000000000000">Selected Item</option>
+         <option id="notSelSprint" value="2" data-projectid="4">Not Selected Item</option>
+         <option id="sprint3" value="3" data-projectid="4">Not Selected Item</option>
+         <option id="sprint4" value="4" data-projectid="4">Not Selected Item</option>
+         <option id="willBeSelSprint" value="5" data-projectid="4">Eventually Selected Item</option>
+         <option id="willNotBeSelSprint" value="6" data-projectid="4">Never Selected Item</option>
+      </select>
+
+      <select id="AssignedToUserId">
+         <option id="selAssignedToUser" selected="selected" value="1">Selected Item</option>
+         <option id="notSelAssignedToUser" value="2">Not Selected Item</option>
+      </select>
+      <input id="Mode" type="hidden" value="ReadOnly" value="Edit" />
+   </div>
+
+   <script>
+      $(document).ready(function () {
+         $("#Points").spinner();
+         $("#PointsRemaining").spinner();
+      });
+   </script>
+</body>
+</html>

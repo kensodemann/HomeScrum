@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Work Items Editor Test Suite</title>
+   <link rel="stylesheet" href="../qunit/qunit-1.12.0.css">
+   <script src="../../jquery-2.0.3.js"></script>
+   <script src="../../jquery-ui-1.10.3.js"></script>
+   <script src="../../HomeScrum/utilities.js"></script>
+   <script src="../qunit/qunit-1.12.0.js"></script>
+   <script src="../../HomeScrum/Base/EditorBase.js"></script>
+   <script src="../../HomeScrum/Sprints/Editor.js"></script>
+   <script src="EditorTests.js"></script>
+</head>
+<body>
+   <div id="qunit"></div>
+   <div id="qunit-fixture">
+      <div id="BacklogItems"></div>
+      <div id="Tasks"></div>
+
+      <input id="Name" type="text" />
+      <input id="Description" type="text" />
+      <input id="Goal" type="text" />
+
+      <select id="StatusId">
+         <option id="selStatus" selected="selected" value="1" data-isopenstatus="True">Selected Item</option>
+         <option id="notSelStatus" value="2" data-isopenstatus="True">Not Selected Item</option>
+      </select>
+
+      <select id="ProjectId">
+         <option id="selProject" selected="selected" value="1">Selected Item</option>
+         <option id="notSelProject" value="2">Not Selected Item</option>
+      </select>
+
+      <div id="Tasks">
+         <table id="TasksTable">
+            <tr>
+               <td>This one is the title</td>
+            </tr>
+         </table>
+      </div>
+      <a href="#" id="TaskListLink">Tasks</a>
+
+      <div id="BacklogItems">
+         <table id="BacklogItemsTable">
+            <tr>
+               <td>This one is the title</td>
+            </tr>
+         </table>
+      </div>
+      <a href="#" id="BacklogLink">Backlog</a>
+   </div>
+</body>
+</html>

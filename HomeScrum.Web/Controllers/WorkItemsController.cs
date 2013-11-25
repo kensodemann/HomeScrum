@@ -291,6 +291,11 @@ namespace HomeScrum.Web.Controllers
          if (viewModel != null)
          {
             viewModel.Tasks = GetChildTasks( session, id );
+            if (viewModel.Tasks.Count()> 0)
+            {
+               viewModel.Points = viewModel.Tasks.Sum( x => x.Points );
+               viewModel.PointsRemaining = viewModel.Tasks.Sum( x => x.PointsRemaining );
+            }
          }
 
          return viewModel;
@@ -354,6 +359,8 @@ namespace HomeScrum.Web.Controllers
          {
             model.AssignedToUser = null;
             model.ParentWorkItem = null;
+            model.Points = 0;
+            model.PointsRemaining = 0;
          }
       }
    }

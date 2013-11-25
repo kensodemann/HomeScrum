@@ -8,8 +8,18 @@ namespace HomeScrum.Web
       // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
       public static void RegisterBundles( BundleCollection bundles )
       {
+         // TODO: Move utilities into base and add to base scripts bundle
          bundles.Add( new ScriptBundle( "~/bundles/myScripts" )
-            .Include( "~/Scripts/myUIExtensions.js" ) );
+            .Include( "~/Scripts/HomeScrum/utilities.js" ) );
+
+         bundles.Add( new ScriptBundle( "~/bundles/baseScripts" )
+            .Include( "~/Scripts/HomeScrum/Base/EditorBase.js" ) );
+
+         bundles.Add( new ScriptBundle( "~/bundles/workItemScripts" )
+            .Include( "~/Scripts/HomeScrum/WorkItems/Editor.js" ) );
+
+         bundles.Add( new ScriptBundle( "~/bundles/sprintScripts" )
+            .Include( "~/Scripts/HomeScrum/Sprints/Editor.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/jquery" )
             .Include( "~/Scripts/jquery-{version}.js" )

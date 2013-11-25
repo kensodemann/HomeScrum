@@ -95,6 +95,51 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( model.Count() > 0 );
          Assert.AreEqual( WorkItems.ModelData.Count(), model.Count() );
       }
+
+      [TestMethod]
+      public void Index_ItemsMatchPoints_ForTasks()
+      {
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+
+         var view = _controller.Index() as ViewResult;
+         var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
+         var item = model.First( x => x.Id == expectedItem.Id );
+
+         Assert.AreEqual( expectedItem.Points, item.Points );
+         Assert.AreEqual( expectedItem.PointsRemaining, item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void Index_ItemsSumChildPoints_ForBacklog()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedItem = WorkItems.ModelData.First( x => x.Id == parentId );
+
+         var view = _controller.Index() as ViewResult;
+         var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
+         var item = model.First( x => x.Id == expectedItem.Id );
+
+         Assert.AreEqual( expectedItem.Tasks.Sum( x => x.Points ), item.Points );
+         Assert.AreEqual( expectedItem.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void Index_BacklogItemsReturnZeroPoints_IfNoTasksAssigned()
+      {
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0);
+
+         var view = _controller.Index() as ViewResult;
+         var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
+         var item = model.First( x => x.Id == expectedItem.Id );
+
+         Assert.AreEqual( 0, item.Points );
+         Assert.AreEqual( 0, item.PointsRemaining );
+      }
       #endregion
 
 
@@ -191,6 +236,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             var item = model.Statuses.FirstOrDefault( x => new Guid( x.Value ) == status.Id );
             Assert.AreEqual( status.Name, item.Text );
             Assert.AreEqual( (status.Category != WorkItemStatusCategory.Complete) ? "True" : "False", item.DataAttributes["IsOpenStatus"] );
+            Assert.AreEqual( (status.Category != WorkItemStatusCategory.Unstarted) ? "True" : "False", item.DataAttributes["WorkStarted"] );
             Assert.IsFalse( item.Selected );
          }
       }
@@ -492,6 +538,33 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
 
       }
+
+      [TestMethod]
+      public void CreateGet_SetsEditModeToCreate()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( EditMode.Create, model.Mode );
+      }
+
+      [TestMethod]
+      public void CreateGet_PointsIsOne()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( 1, model.Points );
+      }
+
+      [TestMethod]
+      public void CreateGet_PointsRemainingIsOne()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( 1, model.PointsRemaining );
+      }
       #endregion
 
 
@@ -514,27 +587,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid_AndNoCallingActionOrControllerSpecified()
+      public void CreatePost_RedirectsToEditor_IfModelIsValid()
       {
          var viewModel = CreateWorkItemEditorViewModel();
-
-         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
-
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
-      }
-
-      [TestMethod]
-      public void CreatePost_RedirectsToActionIfSpecified()
-      {
-         var viewModel = CreateWorkItemEditorViewModel();
-         viewModel.CallingAction = "Edit";
-         var Id = Guid.NewGuid();
-         viewModel.CallingId = Id;
 
          var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
@@ -546,46 +601,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Edit", value.ToString() );
 
          result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreEqual( Id, new Guid( value.ToString() ) );
-      }
-
-      [TestMethod]
-      public void CreatePost_RedirectsToControllerAndActionIfSpecified()
-      {
-         var viewModel = CreateWorkItemEditorViewModel();
-         viewModel.CallingAction = "Foo";
-         viewModel.CallingController = "Bar";
-
-         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
-
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 2, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Foo", value.ToString() );
-
-         result.RouteValues.TryGetValue( "controller", out value );
-         Assert.AreEqual( "Bar", value.ToString() );
-      }
-
-      [TestMethod]
-      public void CreatePost_RedirectsToControllerIndexIfOnlyControllerSpecified()
-      {
-         var viewModel = CreateWorkItemEditorViewModel();
-         viewModel.CallingController = "Bar";
-
-         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
-
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 2, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
-
-         result.RouteValues.TryGetValue( "controller", out value );
-         Assert.AreEqual( "Bar", value.ToString() );
+         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
       }
 
       [TestMethod]
@@ -605,15 +621,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      public void CreatePost_ReturnsToEditorModeCreate_IfModelIsNotValid()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as WorkItemEditorViewModel;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( viewModel, result.Model );
+         Assert.AreEqual( viewModel, vm );
+         Assert.AreEqual( EditMode.Create, vm.Mode );
       }
 
       [TestMethod]
@@ -708,7 +726,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( 1, _controller.ModelState.Count );
          Assert.IsTrue( _controller.ModelState.ContainsKey( "Name" ) );
-         Assert.IsTrue( result is ViewResult );
       }
 
       [TestMethod]
@@ -719,8 +736,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( viewModel, _principal.Object );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -1049,6 +1064,71 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void EditGet_SetsEditModeToReadOnly()
+      {
+         var model = WorkItems.ModelData[3];
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var returnedModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsToModelPoints_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( model.Points, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsRemainingToModelPointsRemaining_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsToSumOfChildPoints_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedPoints, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void EditGet_SetsPointsRemainingToSumOfChildPointsRemaining_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemEditorViewModel;
+
+         Assert.AreEqual( expectedPointsRemaining, viewModel.PointsRemaining );
+      }
       #endregion
 
 
@@ -1085,7 +1165,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid_AnNowCallingActionOrCallingControllerSet()
+      public void EditPost_ReturnsToEditorModeReadonly_IfModelIsValid()
       {
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1093,90 +1173,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
-      }
-
-      [TestMethod]
-      public void EditPost_RedirectsToActionIfSpecified()
-      {
-         var model = WorkItems.ModelData[2];
-         var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.CallingAction = "Edit";
-         var Id = Guid.NewGuid();
-         viewModel.CallingId = Id;
-
-         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
-
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 2, result.RouteValues.Count );
+         Assert.AreEqual( 5, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
          Assert.AreEqual( "Edit", value.ToString() );
 
          result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreEqual( Id, new Guid( value.ToString() ) );
+         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
+
+         result.RouteValues.ContainsKey( "callingController" );
+         result.RouteValues.ContainsKey( "callingAction" );
+         result.RouteValues.ContainsKey( "callingId" );
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToControllerAndActionIfSpecified()
-      {
-         var model = WorkItems.ModelData[2];
-         var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.CallingAction = "Foo";
-         viewModel.CallingController = "Bar";
-
-         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
-
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 2, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Foo", value.ToString() );
-
-         result.RouteValues.TryGetValue( "controller", out value );
-         Assert.AreEqual( "Bar", value.ToString() );
-      }
-
-      [TestMethod]
-      public void EditPost_RedirectsToControllerIndexIfOnlyControllerSpecified()
-      {
-         var model = WorkItems.ModelData[2];
-         var viewModel = CreateWorkItemEditorViewModel( model );
-         viewModel.CallingController = "Bar";
-
-         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
-
-         Assert.IsNotNull( result );
-         Assert.AreEqual( 2, result.RouteValues.Count );
-
-         object value;
-         result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
-
-         result.RouteValues.TryGetValue( "controller", out value );
-         Assert.AreEqual( "Bar", value.ToString() );
-      }
-
-      [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
+      public void EditPost_ReturnsToEditorModeEdit_IfModelIsNotValid()
       {
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as WorkItemEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.IsInstanceOfType( result.Model, typeof( WorkItemEditorViewModel ) );
-         Assert.AreEqual( model.Id, ((WorkItemEditorViewModel)result.Model).Id );
-         Assert.AreEqual( model.Name, ((WorkItemEditorViewModel)result.Model).Name );
-         Assert.AreEqual( model.Description, ((WorkItemEditorViewModel)result.Model).Description );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.Edit, vm.Mode );
       }
 
       [TestMethod]
@@ -1190,7 +1212,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( 1, _controller.ModelState.Count );
          Assert.IsTrue( _controller.ModelState.ContainsKey( "Name" ) );
-         Assert.IsTrue( result is ViewResult );
       }
 
       [TestMethod]
@@ -1202,8 +1223,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -1391,6 +1410,38 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             Assert.AreEqual( newSprintId, child.Sprint.Id );
          }
+      }
+
+      [TestMethod]
+      public void EditPost_SavesPointsAsZeroForBacklogItems()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         viewModel.Points = 42;
+         viewModel.PointsRemaining = 15;
+         _controller.Edit( viewModel, _principal.Object );
+
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( 0, item.Points );
+         Assert.AreEqual( 0, item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void EditPost_SavesPointsAsEnteredForNonBacklogItems()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         viewModel.Points = 12;
+         viewModel.PointsRemaining = 5;
+         _controller.Edit( viewModel, _principal.Object );
+
+         _session.Clear();
+         var item = _session.Get<WorkItem>( viewModel.Id );
+         Assert.AreEqual( 12, item.Points );
+         Assert.AreEqual( 5, item.PointsRemaining );
       }
       #endregion
 

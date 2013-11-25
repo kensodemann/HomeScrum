@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomeScrum.Web.Models.Admin
 {
-   public abstract class UserEditorViewModel : ViewModelBase
+   public abstract class UserEditorViewModel : ViewModelBase, IEditorViewModel
    {
       public Guid Id { get; set; }
 
@@ -29,5 +29,7 @@ namespace HomeScrum.Web.Models.Admin
 
       [DataType( DataType.Password )]
       public virtual string ConfirmPassword { get; set; }
+
+      public EditMode Mode { get; set; }
    }
 }

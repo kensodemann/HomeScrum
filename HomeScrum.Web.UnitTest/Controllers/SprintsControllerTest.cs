@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Controllers;
@@ -17,6 +12,11 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -435,6 +435,15 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( "Index", viewModel.CallingAction );
          Assert.AreEqual( Guid.Empty, viewModel.CallingId );
       }
+
+      [TestMethod]
+      public void CreateGet_SetsModeToCreate()
+      {
+         var result = _controller.Create() as ViewResult;
+         var model = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( EditMode.Create, model.Mode );
+      }
       #endregion
 
 
@@ -457,18 +466,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToIndexIfModelIsValid()
+      public void CreatePost_RedirectsToEditor_IfModelIsValid()
       {
          var viewModel = CreateSprintEditorViewModel();
 
          var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
+         Assert.AreEqual( 2, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
       }
 
       [TestMethod]
@@ -488,15 +500,16 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsViewIfModelIsNotValid()
+      public void CreatePost_ReturnsToEditorModeCreate_IfModelIsNotValid()
       {
          var viewModel = CreateSprintEditorViewModel();
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Create( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.AreEqual( viewModel, result.Model );
+         Assert.AreEqual( Guid.Empty, vm.Id );
+         Assert.AreEqual( EditMode.Create, vm.Mode );
       }
 
       [TestMethod]
@@ -562,8 +575,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( viewModel, _principal.Object );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -803,6 +814,61 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 0, viewModel.BacklogItems.Count() );
          Assert.AreEqual( 0, viewModel.Tasks.Count() );
       }
+
+      [TestMethod]
+      public void EditGet_SetsModeToReadOnly()
+      {
+         var model = Sprints.ModelData[3];
+
+         var result = _controller.Edit( model.Id ) as ViewResult;
+         var returnedModel = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
+      }
+
+      [TestMethod]
+      public void EditGet_GetsPointsForTasks()
+      {
+         var sprint = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, TaskCount = g.Count() } )
+            .OrderBy( x => x.TaskCount )
+            .Last();
+
+         var result = _controller.Edit( sprint.Id ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( sprint.TaskCount, vm.Tasks.Count() );
+         foreach (var task in vm.Tasks)
+         {
+            var model = WorkItems.ModelData.Single( x => x.Id == task.Id );
+            Assert.AreEqual( model.Points, task.Points );
+            Assert.AreEqual( model.PointsRemaining, task.PointsRemaining );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_SumsPointsForBacklogItems()
+      {
+         var sprint = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Tasks.Count() > 0 )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, BacklogCount = g.Count() } )
+            .OrderBy( x => x.BacklogCount )
+            .Last();
+
+         var result = _controller.Edit( sprint.Id ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( sprint.BacklogCount, vm.BacklogItems.Count() );
+         foreach (var item in vm.BacklogItems)
+         {
+            var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
+            Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
+            Assert.AreEqual(  model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+         }
+      }
       #endregion
 
 
@@ -839,7 +905,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToIndexIfModelIsValid()
+      public void EditPost_RedirectsToEditor_IfModelIsValid()
       {
          var model = Sprints.ModelData[2];
          var viewModel = CreateSprintEditorViewModel( model );
@@ -847,27 +913,32 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 1, result.RouteValues.Count );
+         Assert.AreEqual( 5, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Index", value.ToString() );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
+
+         result.RouteValues.ContainsKey( "callingController" );
+         result.RouteValues.ContainsKey( "callingAction" );
+         result.RouteValues.ContainsKey( "callingId" );
       }
 
       [TestMethod]
-      public void EditPost_ReturnsViewIfModelIsNotValid()
+      public void EditPost_ReturnsToEditorModeEdit_IfModelIsNotValid()
       {
          var model = Sprints.ModelData[2];
          var viewModel = CreateSprintEditorViewModel( model );
 
          _controller.ModelState.AddModelError( "Test", "This is an error" );
          var result = _controller.Edit( viewModel, _principal.Object ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
 
-         Assert.IsNotNull( result );
-         Assert.IsInstanceOfType( result.Model, typeof( SprintEditorViewModel ) );
-         Assert.AreEqual( model.Id, ((SprintEditorViewModel)result.Model).Id );
-         Assert.AreEqual( model.Name, ((SprintEditorViewModel)result.Model).Name );
-         Assert.AreEqual( model.Description, ((SprintEditorViewModel)result.Model).Description );
+         Assert.AreEqual( model.Id, vm.Id );
+         Assert.AreEqual( EditMode.Edit, vm.Mode );
       }
 
       [TestMethod]
@@ -893,8 +964,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object );
 
          Assert.AreEqual( 0, _controller.ModelState.Count );
-         Assert.IsNotNull( result );
-         Assert.IsTrue( result is RedirectToRouteResult );
       }
 
       [TestMethod]
@@ -1192,7 +1261,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          return new SprintEditorViewModel()
          {
-            Id = Guid.NewGuid(),
             Name = "New Work Item",
             Description = "This is a test",
             StatusId = SprintStatuses.ModelData.First( x => x.StatusCd == 'A' ).Id,

@@ -42,9 +42,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -53,13 +53,13 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.AspNet, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.AspNet, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.AspNet.1.4.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+      <HintPath>..\packages\Glimpse.AspNet.1.4.1\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.Core, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.1.6.0\lib\net45\Glimpse.Core.dll</HintPath>
+      <HintPath>..\packages\Glimpse.1.6.1\lib\net45\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="Glimpse.Mvc4, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,7 +80,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -231,6 +231,8 @@
     <Compile Include="Models\Admin\AcceptanceCriterionStatusViewModel.cs" />
     <Compile Include="Models\Admin\AccountModels.cs" />
     <Compile Include="Models\Base\DomainObjectViewModel.cs" />
+    <Compile Include="Models\Base\EditMode.cs" />
+    <Compile Include="Models\Base\IEditorViewModel.cs" />
     <Compile Include="Models\Base\NavigationData.cs" />
     <Compile Include="Models\Base\SystemDomainObjectViewModel.cs" />
     <Compile Include="Models\Admin\CreateUserViewModel.cs" />
@@ -270,6 +272,18 @@
   <ItemGroup>
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
+    <Content Include="Scripts\HomeScrum\Base\EditorBase.js" />
+    <Content Include="Scripts\HomeScrum\Sprints\Editor.js" />
+    <Content Include="Scripts\HomeScrum\WorkItems\Editor.js" />
+    <Content Include="Scripts\Tests\Base\EditorBaseTests.js" />
+    <Content Include="Scripts\Tests\Base\testEditorBase.html" />
+    <Content Include="Scripts\Tests\qunit\qunit-composite.css" />
+    <Content Include="Scripts\Tests\qunit\qunit-composite.js" />
+    <Content Include="Scripts\Tests\runAllTests.html" />
+    <Content Include="Scripts\Tests\Sprints\EditorTests.js" />
+    <Content Include="Scripts\Tests\Sprints\testEditor.html" />
+    <Content Include="Scripts\Tests\Utilities\UtilitiesTests.js" />
+    <Content Include="Scripts\Tests\qunit\qunit-1.12.0.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -373,10 +387,14 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\myUIExtensions.js" />
+    <Content Include="Scripts\HomeScrum\utilities.js" />
     <Content Include="Scripts\jquery.storage.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
+    <Content Include="Scripts\Tests\qunit\qunit-1.12.0.js" />
+    <Content Include="Scripts\Tests\Utilities\testUtilities.html" />
+    <Content Include="Scripts\Tests\WorkItems\EditorTests.js" />
+    <Content Include="Scripts\Tests\WorkItems\testEditor.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -385,6 +403,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
@@ -496,6 +515,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DisplayStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

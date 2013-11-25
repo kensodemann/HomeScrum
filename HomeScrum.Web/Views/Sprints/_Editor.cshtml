@@ -6,205 +6,101 @@
    ViewBag.SprintId = Model.Id;
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
 {
    <fieldset>
       <legend>Basic Information</legend>
 
       <div class="formSingleLineEdit">
          @Html.LabelFor( model => model.Name )
-         <span>@Html.EditorFor( model => model.Name )</span>
+         <span>@Html.TextBoxFor( model => model.Name, new { @class = "MainData" } )</span>
          @Html.ValidationMessageFor( model => model.Name )
       </div>
 
       <div class="formSingleLineEdit">
          @Html.LabelFor( model => model.Goal )
-         <span>@Html.EditorFor( model => model.Goal )</span>
+         <span>@Html.TextBoxFor( model => model.Goal, new { @class = "MainData" } )</span>
          @Html.ValidationMessageFor( model => model.Goal )
       </div>
 
       <div class="formLongText">
          @Html.LabelFor( model => model.Description )
-         <span>@Html.EditorFor( model => model.Description )</span>
+         <span>@Html.TextAreaFor( model => model.Description, new { @class = "MainData text-box multi-line" } )</span>
          @Html.ValidationMessageFor( model => model.Description )
       </div>
 
       @Html.HiddenFor( m => m.CreatedByUserId )
       @Html.HiddenFor( m => m.CreatedByUserUserName )
+      @Html.HiddenFor( m => m.Mode )
 
    </fieldset>
-   
+
    <fieldset>
       <legend>Properties</legend>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.SelectProjectId, Model.Projects )
-         @Html.HiddenFor( model => model.ProjectId )
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData" } )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses )
+         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData" } )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.StartDate )
-         @Html.EditorFor( model => model.StartDate )
+         @Html.TextBoxFor( model => model.StartDate, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.StartDate )
       </div>
 
       <div class="formSelectList">
          @Html.LabelFor( model => model.EndDate )
-         @Html.EditorFor( model => model.EndDate )
+         @Html.TextBoxFor( model => model.EndDate, new { @class = "MainData" } )
          @Html.ValidationMessageFor( model => model.EndDate )
       </div>
    </fieldset>
-   
+
    if (Model.Id != Guid.Empty)
    {
-   <fieldset>
-      <legend>WorkItems</legend>
+      <div class="ChildData">
+         <fieldset>
+            <legend>WorkItems</legend>
 
-      <div id="BacklogItems">
-         <h3>Backlog Items</h3>
-         @Html.Partial( "_WorkItemList", Model.BacklogItems )
-         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
-      </div>
+            <div id="BacklogItems">
+               <h3>Backlog Items</h3>
+               @Html.Partial( "_WorkItemList", Model.BacklogItems )
+               @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
+            </div>
 
-      <div id="Tasks">
-         <h3>Tasks</h3>
-         @Html.Partial( "_WorkItemList", Model.Tasks )
-         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
+            <div id="Tasks">
+               <h3>Tasks</h3>
+               @Html.Partial( "_WorkItemList", Model.Tasks )
+               @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
+            </div>
+         </fieldset>
       </div>
-   </fieldset>
    }
-   
+
    @Html.ValidationSummary( false )
-   
-   <p>
-      <input type="submit" value="@ViewBag.EditorButtonLabel" />
-   </p>
-       
-   <script>
-      function SyncHiddenElement(fromElement) {
-         var hiddenElementId = fromElement.id.substr(6);
-         $("#" + hiddenElementId).val($(fromElement).val());
-      }
-
-      function BacklogIsClosed() {
-         var isClosed = $("#StatusId").find(":selected").attr("data-BacklogIsClosed");
-         return (isClosed == "True");
-      }
-
-      function TaskListIsClosed() {
-         var isClosed = $("#StatusId").find(":selected").attr("data-TaskListIsClosed");
-         return (isClosed == "True");
-      }
-
-      function SprintIsClosed() {
-         var isOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
-         return (isOpen == "False");
-      }
-
-      function SetNameAccess() {
-         if (SprintIsClosed()) {
-            $("#Name").prop('readonly', true);
-            $("#Name").addClass("disabled");
-         }
-         else {
-            $("#Name").prop('readonly', false);
-            $("#Name").removeClass("disabled");
-         }
-      }
-
-      function SetDescriptionAccess() {
-         if (SprintIsClosed()) {
-            $("#Description").prop('readonly', true);
-            $("#Description").addClass("disabled");
-         }
-         else {
-            $("#Description").prop('readonly', false);
-            $("#Description").removeClass("disabled");
-         }
-      }
-
-      function SetGoalAccess() {
-         if (SprintIsClosed()) {
-            $("#Goal").prop('readonly', true);
-            $("#Goal").addClass("disabled");
-         }
-         else {
-            $("#Goal").prop('readonly', false);
-            $("#Goal").removeClass("disabled");
-         }
-      }
-
-      function SetBacklogLinkAccess() {
-         if (BacklogIsClosed() || SprintIsClosed()) {
-            $("#BacklogLink").hide();
-         }
-         else {
-            $("#BacklogLink").show();
-         }
-      }
-
-      function SetTaskListLinkAccess() {
-         if (TaskListIsClosed() || SprintIsClosed()) {
-            $("#TaskListLink").hide();
-         }
-         else {
-            $("#TaskListLink").show();
-         }
-      }
-
-      function SetProjectListAccess() {
-         var numberOfWorkItems = $("#BacklogItems table tr").length + $("#Tasks table tr").length - 2;
-         if (numberOfWorkItems > 0 || SprintIsClosed()) {
-            $("#SelectProjectId").prop('disabled', true);
-         }
-         else {
-            $("#SelectProjectId").prop('disabled', false);
-         }
-      }
-
-      function SetScreenElementAccess() {
-         SetNameAccess();
-         SetDescriptionAccess();
-         SetGoalAccess();
-         SetBacklogLinkAccess();
-         SetTaskListLinkAccess();
-         SetProjectListAccess();
-      }
-
-      function SetupStatusSelectList() {
-         $("#StatusId").change(function () {
-            SetScreenElementAccess();
-         });
-      }
-
-      function SetupProjectSelectList() {
-         var selectList = $("#SelectProjectId");
-         SyncHiddenElement(selectList.get(0));
-         selectList.change(function () {
-            SyncHiddenElement(this);
-         });
-      }
-
-      $(document).ready(function () {
-         SetScreenElementAccess();
-
-         $("#StartDate").datepicker({
-            changeMonth: true,
-            changeYear: true
-         });
-         $("#EndDate").datepicker({
-            changeMonth: true,
-            changeYear: true
-         });
-
-         SetupStatusSelectList();
-         SetupProjectSelectList();
-      });
-   </script>
 }
+
+<a href="#" id="SubmitButton"></a>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+@Scripts.Render( "~/bundles/sprintScripts" )
+
+<script>
+   $(document).ready(function () {
+      Editor.init();
+
+      $("#StartDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+      $("#EndDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+   });
+</script>

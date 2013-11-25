@@ -15,5 +15,9 @@ namespace HomeScrum.Web.Models.WorkItems
       public string StatusName { get; set; }
 
       public bool IsComplete { get; set; }
+
+      [Display( Name = "Points", ResourceType = typeof( DisplayStrings ) )]
+      public int Points { get; set; }
+      public int PointsRemaining { get; set; }
    }
 }

@@ -3,27 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using HomeScrum.Web.Extensions;
+using HomeScrum.Web.Models.Base;
 
 namespace HomeScrum.Web.Models.Sprints
 {
-   public class SprintEditorViewModel : Base.DomainObjectViewModel
+   public class SprintEditorViewModel : DomainObjectViewModel, IEditorViewModel
    {
       [Display( Name = "SprintStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
       public string StatusName { get; set; }
       public IEnumerable<SelectListItemWithAttributes> Statuses { get; set; }
 
-      // Any select list that can be disabled needs two Id properties.  One to use for the
-      // select list, and the actual one which is used in a hidden element.  This is done
-      // because disabled elements are not included in the form submission.
-
       [Display( Name = "Project", ResourceType = typeof( DisplayStrings ) )]
       public Guid ProjectId { get; set; }
-      public Guid SelectProjectId
-      {
-         get { return ProjectId; }
-         set { ;}
-      }
       public string ProjectName { get; set; }
       public IEnumerable<SelectListItem> Projects { get; set; }
 
@@ -43,5 +35,7 @@ namespace HomeScrum.Web.Models.Sprints
       public IEnumerable<SprintWorkItemViewModel> BacklogItems { get; set; }
 
       public IEnumerable<SprintWorkItemViewModel> Tasks { get; set; }
+
+      public EditMode Mode { get; set; }
    }
 }
