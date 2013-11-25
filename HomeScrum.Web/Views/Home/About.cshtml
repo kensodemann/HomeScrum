@@ -17,13 +17,13 @@
    <h2>@ViewBag.Title</h2>
    <p>
       Home Scrum is a very simple project tracking tool that is loosely built around the Scrum methodology of software development.
-        I am not sure this tool will ever completely implement all of the functionallity required to truly do scrum, so if you are
-        looking for a full fledged scrum management tool, you probably need to keep looking.  This is meant to be a scrum-like tool
-        for personal use (or very small groups).
+      I am not sure this tool will ever completely implement all of the functionallity required to truly do scrum, so if you are
+      looking for a full fledged scrum management tool, you probably need to keep looking.  This is meant to be a scrum-like tool
+      for personal use (or very small groups).
    </p>
    <p>
       Home Scrum was started because I wanted a simple project I could work on in order to practice using some technologies
-        that I do not get to use often at my day job.  These technologies include:
+      that I do not get to use often at my day job.  These technologies include:
    </p>
    <ul>
       <li>MVC</li>
@@ -32,15 +32,91 @@
    </ul>
    <p>
       I decided to go with this tool because I needed a way to keep track of tasks that I needed to do on these side projects I work on.
-        I only get to work on them sporadically, so I am constantly forgetting where I am on the project and what needs to be done.  So I 
-        figured I may as well make one of the projects be the building of a tool to help me out.
+      I only get to work on them sporadically, so I am constantly forgetting where I am on the project and what needs to be done.  So I
+      figured I may as well make one of the projects be the building of a tool to help me out.
    </p>
    <p>
       I named it "Home Scrum" because I suck at naming things, I am primarily going to use it for tracking projects that I work on
-        at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
+      at home in my spare time, and I didn't want to waste precious time (or brain cycles) coming up with a better name.
    </p>
 
    <div id="VersionHistoryDetails">
+      <h3>Version 1.3</h3>
+      <div>
+         <h4>Release Date: 2013/11/26</h4>
+         <h4>New Features</h4>
+         <p>
+            This release focused on cleaning up the editing workflow, especially as it applies to work items.
+            This release also added points estimates to the work items.
+         </p>
+         <ul>
+            <li>
+               Modifications to the editor workflow
+               <ul>
+                  <li>
+                     The editor has three modes
+                     <ul>
+                        <li>Read-Only - Base data is read-only, child data is visible and accessible</li>
+                        <li>Edit - Base data is editable, child data is hidden and inaccessible</li>
+                        <li>Create - Same as edit except the item is being created rather than modified</li>
+                     </ul>
+                  </li>
+                  <li>
+                     Edit Workflow
+                     <ul>
+                        <li>Item loaded into editor in Read-Only mode</li>
+                        <li>Press Edit to put editor in Edit mode</li>
+                        <li>
+                           Possible actions upon completion of edit:
+                           <ul>
+                              <li>Done Editing - save changes to database, back to read-only mode</li>
+                              <li>Close - abandon any changes, close the editor going back to previous screen</li>
+                           </ul>
+                        </li>
+                        <li>Press Close to close the editor and go back to previous screen</li>
+                     </ul>
+                  </li>
+                  <li>
+                     Create Workflow
+                     <ul>
+                        <li>Empty editor loads in Create mode</li>
+                        <li>
+                           Possible actions upon completion of create:
+                           <ul>
+                              <li>Create - add item to database, load newly created item in read-only mode</li>
+                              <li>Cancel - abandon any creation, close the editor going back to previous screen</li>
+                           </ul>
+                        </li>
+                        <li>Press Close to close the editor and go back to previous screen</li>
+                     </ul>
+                  </li>
+               </ul>
+            <li>
+               Added points estimates to the work items
+               <ul>
+                  <li>Points must be entered for non-backlog items</li>
+                  <li>
+                     Points cannot be entered for backlog items since points for a backlog item
+                     are the sum of the points for the child tasks
+                  </li>
+                  <li>Points Remaining defaults to points</li>
+                  <li>Points can only be updated if the work item is in an Unstarted status</li>
+                  <li>
+                     Points Remaining can be updated until the work item gets a Complete status, at which
+                     point Points Remaining is automatically set to zero
+                  </li>
+               </ul>
+            </li>
+         </ul>
+
+         <h4>Bug Fixes</h4>
+         <ul>
+            <li>None</li>
+         </ul>
+
+      </div>
+
+
       <h3>Version 1.2.1</h3>
       <div>
          <h4>Release Date: 2013/10/19</h4>
@@ -48,7 +124,8 @@
          <p>This incremental release focused on cleaning up some of the code in the previous release as well as improving the rendering of the editors.</p>
          <ul>
             <li>The code was refactored to increase performance and reduce opportunities for bugs.</li>
-            <li>Modified single and multi-line text inputs such that:
+            <li>
+               Modified single and multi-line text inputs such that:
                <ul>
                   <li>They fill up the remaining space</li>
                   <li>Their size adjusts when the browser is made more narrow than the maximum width of the application</li>
@@ -72,13 +149,14 @@
          <ul>
             <li>Work items can now be edited via a link from the sprint's edit page.</li>
             <li>When editing a work item in this way, control returns to the sprint edit page after editing of the work item is complete.</li>
-            <li>A handful of work item lists were added that will aid the user when either working on a sprint or planning a future sprint.  This are:
-            <ul>
-               <li>My Assignments - items assigned to the currently logged in user</li>
-               <li>Unassigned Backlog - backlog items currently not assigned to a sprint</li>
-               <li>Unassigned Tasks - any task currently not assigned to a sprint</li>
-               <li>Unassigned Problems - any problem type task currently not assigned to a sprint</li>
-            </ul>
+            <li>
+               A handful of work item lists were added that will aid the user when either working on a sprint or planning a future sprint.  This are:
+               <ul>
+                  <li>My Assignments - items assigned to the currently logged in user</li>
+                  <li>Unassigned Backlog - backlog items currently not assigned to a sprint</li>
+                  <li>Unassigned Tasks - any task currently not assigned to a sprint</li>
+                  <li>Unassigned Problems - any problem type task currently not assigned to a sprint</li>
+               </ul>
             </li>
          </ul>
 
@@ -105,15 +183,18 @@
          <h4>Bug Fixes</h4>
          <ul>
             <li>Fixed problems with certain values remaining null even though they appeared to default properly.</li>
-            <li>Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
-         HTML tags are displayed as text.
+            <li>
+               Editors no longer throw exceptions if HTML tags are used in names or descriptions.  Instead, the
+               HTML tags are displayed as text.
             </li>
-            <li>If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
-         displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
+            <li>
+               If no backlog items or stand-alone tasks are available to be assigned to a sprint, a message is now
+               displayed on the "Add" page.  Previously, the page would throw an exception upon posting the form.
             </li>
-            <li>HTML tags and other special characters no longer cause an application error.  HTML tags may be used, but
-         not as markup.  That is &lt;strong&gt;strong text&lt;/strong&gt; shows up as &lt;strong&gt;strong text&lt;/strong&gt;
-         and not <strong>strong text</strong> .
+            <li>
+               HTML tags and other special characters no longer cause an application error.  HTML tags may be used, but
+               not as markup.  That is &lt;strong&gt;strong text&lt;/strong&gt; shows up as &lt;strong&gt;strong text&lt;/strong&gt;
+               and not <strong>strong text</strong> .
             </li>
          </ul>
       </div>
@@ -134,7 +215,7 @@
          <h4>Release Date: Periodically Over Time (No Official Release)</h4>
          <p>
             These prior versions were released at periodic times thoughout the development cycle just so I could use the system to track
-      what I was doing.
+            what I was doing.
          </p>
          <ul>
             <li>No sprint support</li>
