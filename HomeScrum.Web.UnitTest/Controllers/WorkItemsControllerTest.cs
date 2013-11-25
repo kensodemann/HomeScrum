@@ -95,6 +95,51 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsTrue( model.Count() > 0 );
          Assert.AreEqual( WorkItems.ModelData.Count(), model.Count() );
       }
+
+      [TestMethod]
+      public void Index_ItemsMatchPoints_ForTasks()
+      {
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+
+         var view = _controller.Index() as ViewResult;
+         var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
+         var item = model.First( x => x.Id == expectedItem.Id );
+
+         Assert.AreEqual( expectedItem.Points, item.Points );
+         Assert.AreEqual( expectedItem.PointsRemaining, item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void Index_ItemsSumChildPoints_ForBacklog()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedItem = WorkItems.ModelData.First( x => x.Id == parentId );
+
+         var view = _controller.Index() as ViewResult;
+         var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
+         var item = model.First( x => x.Id == expectedItem.Id );
+
+         Assert.AreEqual( expectedItem.Tasks.Sum( x => x.Points ), item.Points );
+         Assert.AreEqual( expectedItem.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void Index_BacklogItemsReturnZeroPoints_IfNoTasksAssigned()
+      {
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0);
+
+         var view = _controller.Index() as ViewResult;
+         var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
+         var item = model.First( x => x.Id == expectedItem.Id );
+
+         Assert.AreEqual( 0, item.Points );
+         Assert.AreEqual( 0, item.PointsRemaining );
+      }
       #endregion
 
 

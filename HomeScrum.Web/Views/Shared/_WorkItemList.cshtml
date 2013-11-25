@@ -9,6 +9,9 @@
          @Html.DisplayNameFor( model => model.Name )
       </th>
       <th class="DataColumn">
+         @Html.DisplayNameFor( model => model.Points )
+      </th>
+      <th class="DataColumn">
          @Html.DisplayNameFor( model => model.StatusName )
       </th>
    </tr>
@@ -16,13 +19,17 @@
    @foreach (var item in Model)
    {
       var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
-        
+      var points = item.PointsRemaining.ToString() + "/" + item.Points.ToString();
+
       <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
          <td class="DataColumn">
             @Html.DisplayFor( modelItem => item.WorkItemTypeName )
          </td>
          <td class="DescriptiveText">
             @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = ViewBag.ActionName } )
+         </td>
+         <td class="DataColumn">
+            @Html.DisplayFor( modelItem => points )
          </td>
          <td class="DataColumn">
             @Html.DisplayFor( modelItem => item.StatusName )

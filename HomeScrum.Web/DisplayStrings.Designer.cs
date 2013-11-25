@@ -133,6 +133,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Estimated Points:.
+        /// </summary>
+        public static string EstimatedPoints {
+            get {
+                return ResourceManager.GetString("EstimatedPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name:.
         /// </summary>
         public static string FirstName {
@@ -223,7 +232,7 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated Points:.
+        ///   Looks up a localized string similar to Points:.
         /// </summary>
         public static string Points {
             get {

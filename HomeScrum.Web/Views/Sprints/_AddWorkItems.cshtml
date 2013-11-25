@@ -20,6 +20,9 @@
             @Html.DisplayNameFor( model => model.WorkItems[0].StatusName )
          </th>
          <th>
+            @Html.DisplayNameFor( model => model.WorkItems[0].Points )
+         </th>
+         <th>
             @Html.DisplayNameFor( model => model.WorkItems[0].IsInTargetSprint )
          </th>
 
@@ -40,6 +43,9 @@
             </td>
             <td>
                @Html.DisplayFor( m => m.WorkItems[i].StatusName )
+            </td>
+            <td>
+               @Html.DisplayFor( m => m.WorkItems[i].Points )
             </td>
             <td>
                @Html.EditorFor( m => m.WorkItems[i].IsInTargetSprint )
