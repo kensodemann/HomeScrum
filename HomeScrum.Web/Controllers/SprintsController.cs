@@ -320,7 +320,9 @@ namespace HomeScrum.Web.Controllers
                Description = x.Description,
                WorkItemTypeName = x.WorkItemType.Name,
                StatusName = x.Status.Name,
-               IsInTargetSprint = x.Sprint != null
+               IsInTargetSprint = x.Sprint != null,
+               Points = (x.WorkItemType.Category == 0 ? (x.Tasks.Count() == 0 ? 0 : x.Tasks.Sum( t => t.Points )) : x.Points),
+               PointsRemaining = (x.WorkItemType.Category == 0 ? (x.Tasks.Count() == 0 ? 0 : x.Tasks.Sum( t => t.PointsRemaining )) : x.PointsRemaining)
             } );
       }
    }

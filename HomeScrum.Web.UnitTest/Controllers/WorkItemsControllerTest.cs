@@ -99,7 +99,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_ItemsMatchPoints_ForTasks()
       {
-         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category != 0 );
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
 
          var view = _controller.Index() as ViewResult;
          var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;

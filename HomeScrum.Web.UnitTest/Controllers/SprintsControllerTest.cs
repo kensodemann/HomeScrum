@@ -825,6 +825,50 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
       }
+
+      [TestMethod]
+      public void EditGet_GetsPointsForTasks()
+      {
+         var sprint = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, TaskCount = g.Count() } )
+            .OrderBy( x => x.TaskCount )
+            .Last();
+
+         var result = _controller.Edit( sprint.Id ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( sprint.TaskCount, vm.Tasks.Count() );
+         foreach (var task in vm.Tasks)
+         {
+            var model = WorkItems.ModelData.Single( x => x.Id == task.Id );
+            Assert.AreEqual( model.Points, task.Points );
+            Assert.AreEqual( model.PointsRemaining, task.PointsRemaining );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_SumsPointsForBacklogItems()
+      {
+         var sprint = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Tasks.Count() > 0 )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, BacklogCount = g.Count() } )
+            .OrderBy( x => x.BacklogCount )
+            .Last();
+
+         var result = _controller.Edit( sprint.Id ) as ViewResult;
+         var vm = result.Model as SprintEditorViewModel;
+
+         Assert.AreEqual( sprint.BacklogCount, vm.BacklogItems.Count() );
+         foreach (var item in vm.BacklogItems)
+         {
+            var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
+            Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
+            Assert.AreEqual(  model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+         }
+      }
       #endregion
 
 
