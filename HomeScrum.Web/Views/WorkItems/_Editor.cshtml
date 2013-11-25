@@ -68,42 +68,44 @@
    </fieldset>
 
    <div id="TaskListDiv" class="ChildData">
-      <h3>Tasks</h3>
-      <table>
-         <tr>
-            <th>
-               @Html.DisplayNameFor( model => model.WorkItemTypeId )
-            </th>
-            <th>
-               @Html.DisplayNameFor( model => model.Name )
-            </th>
-            <th>
-               @Html.DisplayNameFor( model => model.StatusId )
-            </th>
-            <th></th>
-         </tr>
-
-         @foreach (var item in Model.Tasks)
-         {
-            var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
-
-            <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
-               <td>
-                  @Html.DisplayFor( modelItem => item.WorkItemTypeName )
-               </td>
-               <td>
-                  @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
-               </td>
-               <td>
-                  @Html.DisplayFor( modelItem => item.StatusName )
-               </td>
-               <td>
-                  @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
-                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
-               </td>
+      <fieldset>
+         <h3>Tasks</h3>
+         <table>
+            <tr>
+               <th>
+                  @Html.DisplayNameFor( model => model.WorkItemTypeId )
+               </th>
+               <th>
+                  @Html.DisplayNameFor( model => model.Name )
+               </th>
+               <th>
+                  @Html.DisplayNameFor( model => model.StatusId )
+               </th>
+               <th></th>
             </tr>
-         }
-      </table>
+
+            @foreach (var item in Model.Tasks)
+            {
+               var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
+
+               <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+                  <td>
+                     @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+                  </td>
+                  <td>
+                     @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
+                  </td>
+                  <td>
+                     @Html.DisplayFor( modelItem => item.StatusName )
+                  </td>
+                  <td>
+                     @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
+                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
+                  </td>
+               </tr>
+            }
+         </table>
+      </fieldset>
    </div>
 
    @Html.ValidationSummary( false )
