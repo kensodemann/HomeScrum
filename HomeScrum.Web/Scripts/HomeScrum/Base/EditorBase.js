@@ -2,14 +2,17 @@
    var editor = {
       init: init,
       submitButtonClicked: HandleSubmitButtonClicked,
+      cancelButtonClicked: HandleCancelButtonClicked,
    };
 
    return editor;
 
-   function init(submitClickHandler) {
+   function init(submitClickHandler, cancelClickHandler) {
+      SetupCancelButton(cancelClickHandler || HandleCancelButtonClicked);
       SetupSubmitButton(submitClickHandler || HandleSubmitButtonClicked);
       SetMainDataAccess();
       SetChildDataVisibility();
+      ShowHideButtons();
    }
 
    function SetSubmitButtonText() {
@@ -23,6 +26,31 @@
          $("#SubmitButton").text("Create");
       }
       $('#SubmitButton').button();
+   }
+
+   function ShowHideButtons(effect) {
+      ShowHideCancelButton(effect);
+      ShowHideCloseButton(effect);
+   }
+
+   function ShowHideCancelButton(effect) {
+      var editMode = $("#Mode").val();
+      if (editMode === "ReadOnly") {
+         $("#CancelButton").hide(effect);
+      }
+      else {
+         $("#CancelButton").show(effect);
+      }
+   }
+
+   function ShowHideCloseButton(effect) {
+      var editMode = $("#Mode").val();
+      if (editMode === "ReadOnly") {
+         $("#CloseButton").show(effect);
+      }
+      else {
+         $("#CloseButton").hide(effect);
+      }
    }
 
    function SetMainDataAccess() {
@@ -74,9 +102,7 @@
    function HandleSubmitButtonClicked() {
       if ($('#Mode').val() === 'ReadOnly') {
          $('#Mode').val('Edit');
-         SetSubmitButtonText();
-         SetChildDataVisibility('fade');
-         SetMainDataAccess();
+         HandleModeChange();
       } else {
          $(".MainData:disabled").prop("disabled", false);
          $("form#Editor").submit();
@@ -90,5 +116,29 @@
       $('#SubmitButton').click(function () {
          submitClickHandler();
       });
+   }
+
+   function HandleCancelButtonClicked() {
+      // In a Create, the cancel button should be wired to go back to the calling screen
+      // In Read-Only mode, the cance button should be hidden
+      // Edit should be the only mode we have to worry about, ever
+      var editMode = $("#Mode").val();
+      if (editMode === "Edit") {
+         $("#Mode").val("ReadOnly");
+         HandleModeChange();
+      }
+   }
+
+   function SetupCancelButton(cancelClickHandler) {
+      $("#CancelButton").click(function () {
+         cancelClickHandler();
+      })
+   }
+
+   function HandleModeChange() {
+      SetSubmitButtonText();
+      ShowHideButtons('fade');
+      SetChildDataVisibility('fade');
+      SetMainDataAccess();
    }
 })();

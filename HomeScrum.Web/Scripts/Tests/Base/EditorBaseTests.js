@@ -78,22 +78,105 @@ test('Child Data hidden on init if Mode is Create', function () {
 });
 
 
-// Button press tests
-test('Mode goes from ReadOnly to Edit on click', function () {
+// Cancel & Close button tests
+test('Cancel button visible in Edit mode on init', function () {
+   $("#Mode").val("Edit");
+   EditorBase.init();
+   ok($("#CancelButton").is(":visible"));
+});
+
+test('Cancel button visible in Create mode on init', function () {
+   $("#Mode").val("Create");
+   EditorBase.init();
+   ok($("#CancelButton").is(":visible"));
+});
+
+test('Cancel button hidden in Read-Only mode on init', function () {
+   $("#Mode").val("ReadOnly");
+   EditorBase.init();
+   ok($("#CancelButton").is(":hidden"));
+});
+
+test('Close button hidden in Edit mode on init', function () {
+   $("#Mode").val("Edit");
+   EditorBase.init();
+   ok($("#CloseButton").is(":hidden"));
+});
+
+test('Close button hidden in Create mode on init', function () {
+   $("#Mode").val("Create");
+   EditorBase.init();
+   ok($("#CloseButton").is(":hidden"));
+});
+
+test('Close button visible in Read-Only mode on init', function () {
+   $("#Mode").val("ReadOnly");
+   EditorBase.init();
+   ok($("#CloseButton").is(":visible"));
+});
+
+test('Cancel button visible Close button hidden in Edit mode on submit click', function () {
+   // Mode should go from read-only to Edit on click (see test that verifies this)
+   $("#Mode").val("ReadOnly");
+   EditorBase.init();
+   $("#SubmitButton").click();
+   ok($("#CancelButton").is(":visible"));
+   stop();
+   setTimeout(function () {
+      ok($("#CloseButton").is(":hidden"));
+      start();
+   }, 1000);
+});
+
+test('Mode goes from Edit to ReadOnly on cancel click', function () {
+   $('#Mode').val('Edit');
+   EditorBase.init();
+   $("#CancelButton").click();
+   strictEqual($('#Mode').val(), 'ReadOnly');
+});
+
+test("Child Data Visible on cancel click", function () {
+   $('#Mode').val('Edit');
+   EditorBase.init();
+   $("#CancelButton").click();
+   var els = $('.ChildData');
+   for (var i = 0; i < els.length; i++) {
+      ok($(els[i]).is(':visible'));
+   }
+});
+
+test("Main Data Disabled on cancel click", function () {
+   $('#Mode').val('ReadOnly');
+   EditorBase.init();
+   $("#CancelButton").click();
+   var els = $('.MainData');
+   for (var i = 0; i < els.length; i++) {
+      var el = $(els[i]);
+      if (el.is(':text') || el.is('textarea')) {
+         ok($(els[i]).hasClass("disabled"), "Has Disabled Class");
+         strictEqual($(els[i]).prop('readonly'), true, 'Is readonly');
+      } else if (el.is(':input')) {
+         strictEqual($(els[i]).prop('disabled'), true, 'Is disabled');
+      }
+   }
+});
+
+// Submit Button press tests
+test('Mode goes from ReadOnly to Edit on submit click', function () {
    $('#Mode').val('ReadOnly');
    EditorBase.init();
    $("#SubmitButton").click();
    strictEqual($('#Mode').val(), 'Edit');
 });
 
-test("Button Text goes to 'Done Editing' on click", function () {
+test("Button Text goes to 'Done Editing' on submit click", function () {
    $('#Mode').val('ReadOnly');
    EditorBase.init();
    $("#SubmitButton").click();
    strictEqual($('#SubmitButton').text(), 'Done Editing');
 });
 
-test("Child Data Hidden on click", function () {
+test("Child Data Hidden on submit click", function () {
    $('#Mode').val('ReadOnly');
    EditorBase.init();
    $("#SubmitButton").click();
@@ -107,7 +190,7 @@ test("Child Data Hidden on click", function () {
    }, 1000);
 });
 
-test("Main Data Enabled on click", function () {
+test("Main Data Enabled on submit click", function () {
    $('#Mode').val('ReadOnly');
    EditorBase.init();
    $("#SubmitButton").click();

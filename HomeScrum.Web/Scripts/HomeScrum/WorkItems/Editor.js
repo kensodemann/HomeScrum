@@ -1,4 +1,9 @@
 ﻿var Editor = (function () {
+   function DisableInputs() {
+      $("#Points").spinner("disable");
+      $("#PointsRemaining").spinner("disable");
+   }
+
    function EnableInputs() {
       $("#Points").spinner("enable");
       $("#PointsRemaining").spinner("enable");
@@ -273,8 +278,14 @@
       SetAccess();
    }
 
+   function HandleCancelClicked() {
+      DisableInputs();
+      EditorBase.cancelButtonClicked();
+      ShowHideDataItems();
+   }
+
    var init = function () {
-      EditorBase.init(HandleSubmitClicked);
+      EditorBase.init(HandleSubmitClicked, HandleCancelClicked);
       ShowHideDataItems();
 
       SetupStatusSelectList();
