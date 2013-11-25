@@ -114,6 +114,7 @@ namespace HomeScrum.Web.Controllers.Base
          {
             try
             {
+               PeekNavigationData( viewModel );
                viewModel.Mode = EditMode.Edit;
                if (ModelState.IsValid)
                {
@@ -122,7 +123,14 @@ namespace HomeScrum.Web.Controllers.Base
                   {
                      Update( session, model, user );
                      transaction.Commit();
-                     return RedirectToAction( "Edit", new { id = viewModel.Id.ToString() } );
+                     return RedirectToAction( "Edit",
+                        new
+                        {
+                           id = viewModel.Id.ToString(),
+                           callingController = viewModel.CallingController,
+                           callingAction = viewModel.CallingAction,
+                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
+                        } );
                   }
                   TransferErrorMessages( model );
                }

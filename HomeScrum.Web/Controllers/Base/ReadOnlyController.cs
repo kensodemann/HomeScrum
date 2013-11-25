@@ -118,7 +118,7 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
-      private void PeekNavigationData( ViewModelBase viewModel )
+      protected void PeekNavigationData( ViewModelBase viewModel )
       {
          var stack = Session["NavigationStack"] as Stack<NavigationData>;
          if (stack != null && stack.Count != 0)
