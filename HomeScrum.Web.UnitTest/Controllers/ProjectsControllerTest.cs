@@ -232,7 +232,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Create( model, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 2, result.RouteValues.Count );
+         Assert.AreEqual( 5, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
@@ -240,6 +240,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          result.RouteValues.TryGetValue( "id", out value );
          Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
+
+         Assert.IsTrue( result.RouteValues.ContainsKey( "callingController" ) );
+         Assert.IsTrue( result.RouteValues.ContainsKey( "callingAction" ) );
+         Assert.IsTrue( result.RouteValues.ContainsKey( "callingId" ) );
       }
 
       [TestMethod]
