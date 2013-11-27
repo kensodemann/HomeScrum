@@ -868,7 +868,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
             Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
-            Assert.AreEqual(  model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+            Assert.AreEqual( model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
          }
       }
       #endregion
@@ -1269,7 +1269,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( model.EndDate.ToString(), viewModel.EndDate.ToString() );
          Assert.AreEqual( model.Capacity, viewModel.Capacity );
       }
-      
+
       private SprintEditorViewModel CreateSprintEditorViewModel()
       {
          return new SprintEditorViewModel()
@@ -1282,7 +1282,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectName = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Name,
             StartDate = new DateTime( 2013, 4, 1 ),
             EndDate = new DateTime( 2013, 4, 30 ),
-            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id
+            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            Capacity = 42
          };
       }
 
@@ -1299,7 +1300,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectName = model.Project.Name,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
-            CreatedByUserId = model.CreatedByUser.Id
+            CreatedByUserId = model.CreatedByUser.Id,
+            Capacity = model.Capacity
          };
       }
 
