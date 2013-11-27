@@ -97,6 +97,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capacity (Total Points Available):.
+        /// </summary>
+        public static string Capacitry {
+            get {
+                return ResourceManager.GetString("Capacitry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created By:.
         /// </summary>
         public static string CreatedByUser {

@@ -38,6 +38,7 @@ namespace HomeScrum.Web.Models.Sprints
 
       public EditMode Mode { get; set; }
 
+      [Display( Name = "Capacity", ResourceType = typeof( DisplayStrings ) )]
       public int Capacity { get; set; }
    }
 }

@@ -456,13 +456,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( viewModel, _principal.Object );
 
          _session.Clear();
-         var items = _session.Query<Sprint>()
-            .Where( x => x.Name == viewModel.Name )
-            .ToList();
+         var model = _session.Query<Sprint>().Single( x => x.Name == viewModel.Name );
 
-         Assert.AreEqual( 1, items.Count );
-         Assert.AreEqual( viewModel.Name, items[0].Name );
-         Assert.AreEqual( viewModel.Description, items[0].Description );
+         // ViewModel will not have ID on a Create, so set it before the assert
+         viewModel.Id = model.Id;
+         AssertModelAndViewModelPropertiesEqual( model, viewModel );
       }
 
       [TestMethod]
@@ -618,7 +616,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          var returnedModel = result.Model as SprintEditorViewModel;
          Assert.IsNotNull( returnedModel );
-         Assert.AreEqual( model.Id, returnedModel.Id );
+         AssertModelAndViewModelPropertiesEqual( model, returnedModel );
       }
 
       [TestMethod]
@@ -888,7 +886,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _session.Clear();
          var item = _session.Get<Sprint>( viewModel.Id );
-         Assert.AreEqual( viewModel.Name, item.Name );
+         AssertModelAndViewModelPropertiesEqual( item, viewModel );
       }
 
       [TestMethod]
@@ -1261,6 +1259,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       #region Private Helpers
+      private static void AssertModelAndViewModelPropertiesEqual( Sprint model, SprintEditorViewModel viewModel )
+      {
+         Assert.AreEqual( model.Id, viewModel.Id );
+         Assert.AreEqual( model.Name, viewModel.Name );
+         Assert.AreEqual( model.Description, viewModel.Description );
+         Assert.AreEqual( model.Goal, viewModel.Goal );
+         Assert.AreEqual( model.StartDate.ToString(), viewModel.StartDate.ToString() );
+         Assert.AreEqual( model.EndDate.ToString(), viewModel.EndDate.ToString() );
+         Assert.AreEqual( model.Capacity, viewModel.Capacity );
+      }
+      
       private SprintEditorViewModel CreateSprintEditorViewModel()
       {
          return new SprintEditorViewModel()
