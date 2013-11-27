@@ -63,6 +63,8 @@
       SetTextInputAccess($("#Description"));
       SetTextInputAccess($("#Goal"));
       SetProjectIdAccess();
+      SetDateAccess($("#StartDate"));
+      SetDateAccess($("#EndDate"));
    }
 
    function SetupStatusSelectList() {
@@ -82,11 +84,21 @@
          changeMonth: true,
          changeYear: true
       });
+      SetDateAccess($("#StartDate"));
 
       $("#EndDate").datepicker({
          changeMonth: true,
          changeYear: true
       });
+      SetDateAccess("#EndDate");
+   }
+
+   function SetDateAccess(datePicker) {
+      if (EditorBase.readOnlyMode()) {
+         $(datePicker).datepicker("disable");
+      } else {
+         $(datePicker).datepicker("enable");
+      }
    }
 
    var init = function () {

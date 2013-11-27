@@ -172,7 +172,7 @@
    }
 
    function SetPointsAccess() {
-      if (CanHaveChildren() || WorkStartedOnWorkItem() || ReadOnlyMode()) {
+      if (CanHaveChildren() || WorkStartedOnWorkItem() || EditorBase.readOnlyMode()) {
          $("#Points").spinner("disable");
       } else {
          $("#Points").spinner("enable");
@@ -180,7 +180,7 @@
    }
 
    function SetPointsRemainingAccess() {
-      if (CanHaveChildren() || WorkItemIsClosed() || ReadOnlyMode()) {
+      if (CanHaveChildren() || WorkItemIsClosed() || EditorBase.readOnlyMode()) {
          $("#PointsRemaining").spinner("disable");
       } else {
          $("#PointsRemaining").spinner("enable");
@@ -210,10 +210,6 @@
 
    function CanHaveChildren() {
       return ($("#WorkItemTypeId").find(":selected").attr("data-CanHaveChildren") === "True");
-   }
-
-   function ReadOnlyMode() {
-      return ($("#Mode").val() === "ReadOnly");
    }
 
    function SetupWorkItemTypeSelectList() {

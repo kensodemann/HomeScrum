@@ -3,6 +3,7 @@
       init: init,
       submitButtonClicked: HandleSubmitButtonClicked,
       cancelButtonClicked: HandleCancelButtonClicked,
+      readOnlyMode:ReadOnlyMode,
    };
 
    return editor;
@@ -13,6 +14,10 @@
       SetMainDataAccess();
       SetChildDataVisibility();
       ShowHideButtons();
+   }
+
+   function ReadOnlyMode() {
+      return ($("#Mode").val() === "ReadOnly");
    }
 
    function SetSubmitButtonText() {
