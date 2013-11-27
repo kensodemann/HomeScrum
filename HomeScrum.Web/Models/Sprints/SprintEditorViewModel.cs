@@ -37,5 +37,7 @@ namespace HomeScrum.Web.Models.Sprints
       public IEnumerable<SprintWorkItemViewModel> Tasks { get; set; }
 
       public EditMode Mode { get; set; }
+
+      public int Capacity { get; set; }
    }
 }

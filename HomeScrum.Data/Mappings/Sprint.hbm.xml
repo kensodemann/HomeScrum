@@ -35,6 +35,8 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
+
+    <property name="Capacity"/>
     
   </class>
 

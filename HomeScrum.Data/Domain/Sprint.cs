@@ -29,6 +29,9 @@ namespace HomeScrum.Data.Domain
 
       public virtual DateTime? EndDate { get; set; }
 
+      [Required]
+      public virtual int Capacity { get; set; }
+
       #region Non-POCO stuff
       public Sprint()
          : this( null ) { }
