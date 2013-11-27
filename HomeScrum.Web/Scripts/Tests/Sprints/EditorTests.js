@@ -111,7 +111,6 @@ test('Capacity Enabled if backlog open on status change', function () {
    $("#selStatus").attr("data-BacklogIsClosed", "False");
    $("#StatusId").change();
    strictEqual($("#Capacity").prop("disabled"), false);
-   //strictEqual($("#Capacity").spinner("enabled"), true);
 });
 
 test('Capacity Disabled if backlog closed on status change', function () {
@@ -122,7 +121,6 @@ test('Capacity Disabled if backlog closed on status change', function () {
    $("#selStatus").attr("data-BacklogIsClosed", "True");
    $("#StatusId").change();
    strictEqual($("#Capacity").prop("disabled"), true);
-   //strictEqual($("#Capacity").spinner("disabled"), true);
 });
 
 function assertItemsAreActive() {
