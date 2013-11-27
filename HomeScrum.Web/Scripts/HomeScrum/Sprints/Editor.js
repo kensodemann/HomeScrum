@@ -112,7 +112,7 @@
 
    function SetCapacityAccess() {
       var c = $("#Capacity");
-      if (EditorBase.readOnlyMode()) {
+      if (EditorBase.readOnlyMode() || BacklogIsClosed()) {
          c.spinner("disable");
          c.prop("disabled", true);
       } else {
