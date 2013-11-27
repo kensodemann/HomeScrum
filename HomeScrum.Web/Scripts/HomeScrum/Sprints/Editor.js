@@ -65,6 +65,7 @@
       SetProjectIdAccess();
       SetDateAccess($("#StartDate"));
       SetDateAccess($("#EndDate"));
+      SetCapacityAccess();
    }
 
    function SetupStatusSelectList() {
@@ -101,11 +102,31 @@
       }
    }
 
+   function SetupCapacity() {
+      $("#Capacity").spinner({
+         min: 1,
+         max: 32767,
+      });
+      SetCapacityAccess();
+   }
+
+   function SetCapacityAccess() {
+      var c = $("#Capacity");
+      if (EditorBase.readOnlyMode()) {
+         c.spinner("disable");
+         c.prop("disabled", true);
+      } else {
+         c.spinner("enable");
+         c.prop("disabled", false);
+      }
+   }
+
    var init = function () {
       ShowHideDataItems();
-      
+
       SetupStatusSelectList();
       SetupDates();
+      SetupCapacity();
 
       EditorBase.init(handleSubmitClicked);
    };
