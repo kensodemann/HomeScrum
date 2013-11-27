@@ -99,9 +99,9 @@ namespace HomeScrum.Web {
         /// <summary>
         ///   Looks up a localized string similar to Capacity (Total Points Available):.
         /// </summary>
-        public static string Capacitry {
+        public static string Capacity {
             get {
-                return ResourceManager.GetString("Capacitry", resourceCulture);
+                return ResourceManager.GetString("Capacity", resourceCulture);
             }
         }
         

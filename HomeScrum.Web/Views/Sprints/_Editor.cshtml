@@ -39,6 +39,12 @@
       <legend>Properties</legend>
 
       <div class="formSelectList">
+         @Html.LabelFor( model => model.Capacity )
+         @Html.TextBoxFor( model => model.Capacity, new { @class = "MainData" } )
+         @Html.ValidationMessageFor( model => model.Capacity )
+      </div>
+
+      <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
          @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData" } )
       </div>

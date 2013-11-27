@@ -129,7 +129,7 @@
   <data name="AssignedToUser" xml:space="preserve">
     <value>Assigned To:</value>
   </data>
-  <data name="Capacitry" xml:space="preserve">
+  <data name="Capacity" xml:space="preserve">
     <value>Capacity (Total Points Available):</value>
   </data>
   <data name="CreatedByUser" xml:space="preserve">
