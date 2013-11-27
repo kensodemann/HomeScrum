@@ -77,10 +77,23 @@
       SetAccess();
    }
 
+   function SetupDates() {
+      $("#StartDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+
+      $("#EndDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+   }
+
    var init = function () {
       ShowHideDataItems();
       
       SetupStatusSelectList();
+      SetupDates();
 
       EditorBase.init(handleSubmitClicked);
    };
