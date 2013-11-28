@@ -97,7 +97,7 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Capacity (Total Points Available):.
+        ///   Looks up a localized string similar to Points Capacity:.
         /// </summary>
         public static string Capacity {
             get {
