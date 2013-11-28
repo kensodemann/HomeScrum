@@ -871,6 +871,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.AreEqual( model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
          }
       }
+
+      [TestMethod]
+      public void EditGet_CalculatesTotalPoints()
+      {
+         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.Sprint != null && 
+                                     x.Sprint.Id == sprint.Id && 
+                                     x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+                             .Sum(x=>x.Points),
+                          viewModel.TotalPoints );
+      }
       #endregion
 
 

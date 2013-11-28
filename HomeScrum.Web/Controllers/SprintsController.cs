@@ -256,6 +256,7 @@ namespace HomeScrum.Web.Controllers
          {
             viewModel.BacklogItems = GetBacklogItems( session, id );
             viewModel.Tasks = GetTasks( session, id );
+            viewModel.TotalPoints = viewModel.Tasks.Sum( x => x.Points );
          }
 
          return viewModel;

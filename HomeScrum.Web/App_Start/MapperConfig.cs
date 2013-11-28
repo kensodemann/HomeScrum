@@ -129,7 +129,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
             .ForMember( dest => dest.BacklogItems, opt => opt.Ignore() )
-            .ForMember( dest => dest.Tasks, opt => opt.Ignore() );
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
+            .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() );
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.Mode, opt => opt.Ignore() )
