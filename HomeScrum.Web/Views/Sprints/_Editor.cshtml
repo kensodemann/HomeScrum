@@ -45,6 +45,11 @@
       </div>
 
       <div class="formSelectList">
+         @Html.LabelFor( model => model.TotalPoints )
+         @Html.DisplayTextFor( model => model.TotalPoints )
+      </div>
+
+      <div class="formSelectList">
          @Html.LabelFor( model => model.ProjectId )
          @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData" } )
       </div>

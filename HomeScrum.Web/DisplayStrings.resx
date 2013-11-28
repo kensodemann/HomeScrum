@@ -183,6 +183,9 @@
   <data name="PointsRemaining" xml:space="preserve">
     <value>Points Remaining:</value>
   </data>
+  <data name="PointsScheduled" xml:space="preserve">
+    <value>Points Scheduled:</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>Project:</value>
   </data>

@@ -259,6 +259,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Points Scheduled:.
+        /// </summary>
+        public static string PointsScheduled {
+            get {
+                return ResourceManager.GetString("PointsScheduled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project:.
         /// </summary>
         public static string Project {
