@@ -456,13 +456,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( viewModel, _principal.Object );
 
          _session.Clear();
-         var items = _session.Query<Sprint>()
-            .Where( x => x.Name == viewModel.Name )
-            .ToList();
+         var model = _session.Query<Sprint>().Single( x => x.Name == viewModel.Name );
 
-         Assert.AreEqual( 1, items.Count );
-         Assert.AreEqual( viewModel.Name, items[0].Name );
-         Assert.AreEqual( viewModel.Description, items[0].Description );
+         // ViewModel will not have ID on a Create, so set it before the assert
+         viewModel.Id = model.Id;
+         AssertModelAndViewModelPropertiesEqual( model, viewModel );
       }
 
       [TestMethod]
@@ -618,7 +616,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          var returnedModel = result.Model as SprintEditorViewModel;
          Assert.IsNotNull( returnedModel );
-         Assert.AreEqual( model.Id, returnedModel.Id );
+         AssertModelAndViewModelPropertiesEqual( model, returnedModel );
       }
 
       [TestMethod]
@@ -870,8 +868,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
             Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
-            Assert.AreEqual(  model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+            Assert.AreEqual( model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
          }
+      }
+
+      [TestMethod]
+      public void EditGet_CalculatesTotalPoints()
+      {
+         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.Sprint != null && 
+                                     x.Sprint.Id == sprint.Id && 
+                                     x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+                             .Sum(x=>x.Points),
+                          viewModel.TotalPoints );
       }
       #endregion
 
@@ -888,7 +901,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _session.Clear();
          var item = _session.Get<Sprint>( viewModel.Id );
-         Assert.AreEqual( viewModel.Name, item.Name );
+         AssertModelAndViewModelPropertiesEqual( item, viewModel );
       }
 
       [TestMethod]
@@ -1261,6 +1274,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       #region Private Helpers
+      private static void AssertModelAndViewModelPropertiesEqual( Sprint model, SprintEditorViewModel viewModel )
+      {
+         Assert.AreEqual( model.Id, viewModel.Id );
+         Assert.AreEqual( model.Name, viewModel.Name );
+         Assert.AreEqual( model.Description, viewModel.Description );
+         Assert.AreEqual( model.Goal, viewModel.Goal );
+         Assert.AreEqual( model.StartDate.ToString(), viewModel.StartDate.ToString() );
+         Assert.AreEqual( model.EndDate.ToString(), viewModel.EndDate.ToString() );
+         Assert.AreEqual( model.Capacity, viewModel.Capacity );
+      }
+
       private SprintEditorViewModel CreateSprintEditorViewModel()
       {
          return new SprintEditorViewModel()
@@ -1273,7 +1297,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectName = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Name,
             StartDate = new DateTime( 2013, 4, 1 ),
             EndDate = new DateTime( 2013, 4, 30 ),
-            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id
+            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            Capacity = 42
          };
       }
 
@@ -1290,7 +1315,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectName = model.Project.Name,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
-            CreatedByUserId = model.CreatedByUser.Id
+            CreatedByUserId = model.CreatedByUser.Id,
+            Capacity = model.Capacity
          };
       }
 

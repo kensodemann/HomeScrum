@@ -129,6 +129,9 @@
   <data name="AssignedToUser" xml:space="preserve">
     <value>Assigned To:</value>
   </data>
+  <data name="Capacity" xml:space="preserve">
+    <value>Points Capacity:</value>
+  </data>
   <data name="CreatedByUser" xml:space="preserve">
     <value>Created By:</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="PointsRemaining" xml:space="preserve">
     <value>Points Remaining:</value>
+  </data>
+  <data name="PointsScheduled" xml:space="preserve">
+    <value>Points Scheduled:</value>
   </data>
   <data name="Project" xml:space="preserve">
     <value>Project:</value>
