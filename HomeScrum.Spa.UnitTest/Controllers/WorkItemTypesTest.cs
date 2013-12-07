@@ -7,6 +7,7 @@ using System.Security.Principal;
 using NHibernate;
 using HomeScrum.Common.TestData;
 using HomeScrum.Spa.Controllers;
+using System.Linq;
 
 namespace HomeScrum.Spa.UnitTest.Controllers
 {
@@ -79,9 +80,38 @@ namespace HomeScrum.Spa.UnitTest.Controllers
 
 
       #endregion
+
+
+      #region GET Tests
       [TestMethod]
-      public void TestMethod1()
+      public void Get_ReturnsAllWorkItemTypes()
       {
+         var result = _controller.Get();
+
+         Assert.AreEqual( WorkItemTypes.ModelData.Count(), result.Count() );
+         foreach(var item in result)
+         {
+            AssertItemsAreEqual( WorkItemTypes.ModelData.Single( x => x.Id == item.Id ), item );
+         }
       }
+
+      [TestMethod]
+      public void Get_RetunsWorkItemType_IdetifiedById()
+      {
+         var expected = WorkItemTypes.ModelData[2];
+         var result = _controller.Get( expected.Id.ToString() );
+
+         AssertItemsAreEqual( expected, result );
+      }
+      #endregion
+
+
+      #region Private Helpers
+      private void AssertItemsAreEqual(HomeScrum.Data.Domain.WorkItemType expected, HomeScrum.Spa.Models.WorkItemType actual)
+      {
+         Assert.AreEqual( expected.Name, actual.Name );
+         Assert.AreEqual( expected.Description, actual.Description );
+      }
+      #endregion
    }
 }

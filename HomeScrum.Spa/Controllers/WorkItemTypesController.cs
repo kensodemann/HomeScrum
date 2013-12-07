@@ -47,6 +47,11 @@ namespace HomeScrum.Spa.Controllers
          var witId = new Guid( id );
          var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
 
+         if (wit == null)
+         {
+            throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
+         }
+
          return new HomeScrum.Spa.Models.WorkItemType()
          {
             Id = wit.Id,
