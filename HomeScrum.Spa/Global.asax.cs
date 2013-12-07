@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using HomeScrum.Spa.App_Start;
+using NHibernate;
+using NHibernate.Context;
+using Ninject;
 
 namespace HomeScrum.Spa
 {
@@ -22,6 +21,24 @@ namespace HomeScrum.Spa
          RouteConfig.RegisterRoutes( RouteTable.Routes );
 
          NHibernateConfig.Configure();
+
+         log4net.Config.XmlConfigurator.Configure();
+
+         //ModelBinders.Binders[typeof( IPrincipal )] = new PrincipalModelBinder();
+      }
+
+      protected void Application_BeginRequest()
+      {
+         var sessionFactory = NinjectWebCommon.Kernel.Get<ISessionFactory>();
+         var session = sessionFactory.OpenSession();
+         CurrentSessionContext.Bind( session );
+      }
+
+      protected void Application_EndRequest()
+      {
+         var sessionFactory = NinjectWebCommon.Kernel.Get<ISessionFactory>();
+         var session = CurrentSessionContext.Unbind( sessionFactory );
+         session.Dispose();
       }
    }
 }
