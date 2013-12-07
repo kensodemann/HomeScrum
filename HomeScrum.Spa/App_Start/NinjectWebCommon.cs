@@ -15,6 +15,8 @@ namespace HomeScrum.Spa.App_Start
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
+        public static IKernel Kernel { get { return bootstrapper.Kernel; } }
+
         /// <summary>
         /// Starts the application
         /// </summary>

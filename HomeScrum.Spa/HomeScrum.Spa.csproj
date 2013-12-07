@@ -146,6 +146,7 @@
     <Compile Include="App_Start\DurandalBundleConfig.cs" />
     <Compile Include="App_Start\DurandalConfig.cs" />
     <Compile Include="App_Start\DurandalRouteConfig.cs" />
+    <Compile Include="App_Start\NHibernateConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\DurandalController.cs" />
     <Compile Include="Global.asax.cs">
@@ -298,6 +299,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
+      <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
+      <Name>HomeScrum.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
