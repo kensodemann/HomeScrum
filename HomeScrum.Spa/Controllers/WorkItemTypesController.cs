@@ -47,20 +47,28 @@ namespace HomeScrum.Spa.Controllers
 
          if (Guid.TryParse( id, out witId ))
          {
-            var session = _sessionFactory.GetCurrentSession();
-            var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
-            if (wit != null)
-            {
-               return new HomeScrum.Spa.Models.WorkItemType()
-                          {
-                             Id = wit.Id,
-                             Name = wit.Name,
-                             Description = wit.Description
-                          };
-            }
+            return FetchWorkItemType( witId );       
          }
 
          throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
+      }
+
+      private Models.WorkItemType FetchWorkItemType( Guid witId )
+      {
+         var session = _sessionFactory.GetCurrentSession();
+         var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
+
+         if (wit == null)
+         {
+            throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
+         }
+
+         return new HomeScrum.Spa.Models.WorkItemType()
+         {
+            Id = wit.Id,
+            Name = wit.Name,
+            Description = wit.Description
+         };
       }
 
       // POST api/<controller>
