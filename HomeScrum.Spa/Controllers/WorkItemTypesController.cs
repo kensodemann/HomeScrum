@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using NHibernate;
+using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 
@@ -23,15 +24,35 @@ namespace HomeScrum.Spa.Controllers
       }
 
       // GET api/<controller>
-      public IEnumerable<string> Get()
+      public IEnumerable<HomeScrum.Spa.Models.WorkItemType> Get()
       {
-         return new string[] { "value1", "value2" };
+         using (var session = _sessionFactory.GetCurrentSession())
+         {
+            return session.Query<HomeScrum.Data.Domain.WorkItemType>()
+               .Select( x=> new HomeScrum.Spa.Models.WorkItemType()
+               {
+                  Id = x.Id,
+                  Name = x.Name,
+                  Description = x.Description
+               } )
+               .ToList();
+         }
       }
 
       // GET api/<controller>/5
-      public string Get( int id )
+      public HomeScrum.Spa.Models.WorkItemType Get( string id )
       {
-         return "value";
+         using (var session = _sessionFactory.GetCurrentSession())
+         {
+            var witId = new Guid( id );
+            var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>(witId);
+            return new HomeScrum.Spa.Models.WorkItemType()
+            {
+               Id = wit.Id,
+               Name = wit.Name,
+               Description = wit.Description
+            };
+         }
       }
 
       // POST api/<controller>
