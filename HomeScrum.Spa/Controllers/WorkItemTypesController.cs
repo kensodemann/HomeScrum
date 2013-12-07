@@ -13,8 +13,10 @@ namespace HomeScrum.Spa.Controllers
 {
    public class WorkItemTypesController : ApiController
    {
-      private ISessionFactory _sessionFactory;
-      private ILogger _logger;
+      private readonly ISessionFactory _sessionFactory;
+      private readonly ILogger _logger;
+
+      protected ILogger Log { get { return _logger; } }
 
       [Inject]
       public WorkItemTypesController( ILogger logger, ISessionFactory sessionFactory )
@@ -26,48 +28,80 @@ namespace HomeScrum.Spa.Controllers
       // GET api/<controller>
       public IEnumerable<HomeScrum.Spa.Models.WorkItemType> Get()
       {
-         using (var session = _sessionFactory.GetCurrentSession())
-         {
-            return session.Query<HomeScrum.Data.Domain.WorkItemType>()
-               .Select( x=> new HomeScrum.Spa.Models.WorkItemType()
-               {
-                  Id = x.Id,
-                  Name = x.Name,
-                  Description = x.Description
-               } )
-               .ToList();
-         }
+         var session = _sessionFactory.GetCurrentSession();
+
+         return session.Query<HomeScrum.Data.Domain.WorkItemType>()
+            .Select( x => new HomeScrum.Spa.Models.WorkItemType()
+            {
+               Id = x.Id,
+               Name = x.Name,
+               Description = x.Description
+            } )
+            .ToList();
       }
 
       // GET api/<controller>/5
       public HomeScrum.Spa.Models.WorkItemType Get( string id )
       {
-         using (var session = _sessionFactory.GetCurrentSession())
+         var session = _sessionFactory.GetCurrentSession();
+         var witId = new Guid( id );
+         var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
+
+         return new HomeScrum.Spa.Models.WorkItemType()
          {
-            var witId = new Guid( id );
-            var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>(witId);
-            return new HomeScrum.Spa.Models.WorkItemType()
-            {
-               Id = wit.Id,
-               Name = wit.Name,
-               Description = wit.Description
-            };
-         }
+            Id = wit.Id,
+            Name = wit.Name,
+            Description = wit.Description
+         };
       }
 
       // POST api/<controller>
-      public void Post( [FromBody]string value )
+      public void Post( [FromBody]HomeScrum.Spa.Models.WorkItemType value )
       {
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            try
+            {
+               // Map to a domain type
+               // session.Save(wit);
+               transaction.Commit();
+            }
+            catch (Exception e)
+            {
+               Log.Error( e, "Insert Failed" );
+               transaction.Rollback();
+               throw e;
+            }
+         }
       }
 
       // PUT api/<controller>/5
-      public void Put( int id, [FromBody]string value )
+      public void Put( string id, [FromBody]HomeScrum.Spa.Models.WorkItemType value )
       {
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            try
+            {
+               // Get the domain type
+               // Update the data
+               // session.Update(wit);
+               transaction.Commit();
+            }
+            catch (Exception e)
+            {
+               Log.Error( e, "Update Failed" );
+               transaction.Rollback();
+               throw e;
+            }
+         }
       }
 
       // DELETE api/<controller>/5
       public void Delete( int id )
       {
+         throw new NotImplementedException( "Deletes are not allowed in this system" );
       }
    }
 }
