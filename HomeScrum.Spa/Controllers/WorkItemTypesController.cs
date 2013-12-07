@@ -43,21 +43,24 @@ namespace HomeScrum.Spa.Controllers
       // GET api/<controller>/5
       public HomeScrum.Spa.Models.WorkItemType Get( string id )
       {
-         var session = _sessionFactory.GetCurrentSession();
-         var witId = new Guid( id );
-         var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
+         Guid witId;
 
-         if (wit == null)
+         if (Guid.TryParse( id, out witId ))
          {
-            throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
+            var session = _sessionFactory.GetCurrentSession();
+            var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
+            if (wit != null)
+            {
+               return new HomeScrum.Spa.Models.WorkItemType()
+                          {
+                             Id = wit.Id,
+                             Name = wit.Name,
+                             Description = wit.Description
+                          };
+            }
          }
 
-         return new HomeScrum.Spa.Models.WorkItemType()
-         {
-            Id = wit.Id,
-            Name = wit.Name,
-            Description = wit.Description
-         };
+         throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
       }
 
       // POST api/<controller>

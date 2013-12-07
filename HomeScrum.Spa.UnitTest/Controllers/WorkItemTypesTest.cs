@@ -120,6 +120,34 @@ namespace HomeScrum.Spa.UnitTest.Controllers
             Assert.AreEqual( e.Response.StatusCode, HttpStatusCode.NotFound );
          }
       }
+
+      [TestMethod]
+      public void Get_RaisesNotFound_IfIdIsDefaultGuid()
+      {
+         try
+         {
+            var result = _controller.Get( Guid.Empty.ToString() );
+            Assert.Fail();
+         }
+         catch (HttpResponseException e)
+         {
+            Assert.AreEqual( e.Response.StatusCode, HttpStatusCode.NotFound );
+         }
+      }
+
+      [TestMethod]
+      public void Get_RaisesNotFound_IfIdIsNotAGuid()
+      {
+         try
+         {
+            var result = _controller.Get( "NotAGuid" );
+            Assert.Fail();
+         }
+         catch (HttpResponseException e)
+         {
+            Assert.AreEqual( e.Response.StatusCode, HttpStatusCode.NotFound );
+         }
+      }
       #endregion
 
 
