@@ -4,11 +4,24 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using NHibernate;
+using Ninject;
+using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Spa.Controllers
 {
    public class WorkItemTypesController : ApiController
    {
+      private ISession _session;
+      private ILogger _logger;
+
+      [Inject]
+      public WorkItemTypesController (ISession session, ILogger logger)
+      {
+         _session = session;
+         _logger = logger;
+      }
+
       // GET api/<controller>
       public IEnumerable<string> Get()
       {
