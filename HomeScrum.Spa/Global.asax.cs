@@ -20,6 +20,8 @@ namespace HomeScrum.Spa
          FilterConfig.RegisterGlobalFilters( GlobalFilters.Filters );
          RouteConfig.RegisterRoutes( RouteTable.Routes );
 
+         NinjectHttpContainer.RegisterModules( NinjectHttpModules.Modules );
+
          NHibernateConfig.Configure();
 
          log4net.Config.XmlConfigurator.Configure();
@@ -29,14 +31,14 @@ namespace HomeScrum.Spa
 
       protected void Application_BeginRequest()
       {
-         var sessionFactory = NinjectWebCommon.Kernel.Get<ISessionFactory>();
+         var sessionFactory = NinjectHttpContainer.Kernel.Get<ISessionFactory>();
          var session = sessionFactory.OpenSession();
          CurrentSessionContext.Bind( session );
       }
 
       protected void Application_EndRequest()
       {
-         var sessionFactory = NinjectWebCommon.Kernel.Get<ISessionFactory>();
+         var sessionFactory = NinjectHttpContainer.Kernel.Get<ISessionFactory>();
          var session = CurrentSessionContext.Unbind( sessionFactory );
          session.Dispose();
       }

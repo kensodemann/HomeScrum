@@ -12,13 +12,13 @@ namespace HomeScrum.Spa.Controllers
 {
    public class WorkItemTypesController : ApiController
    {
-      private ISession _session;
+      private ISessionFactory _sessionFactory;
       private ILogger _logger;
 
       [Inject]
-      public WorkItemTypesController (ISession session, ILogger logger)
+      public WorkItemTypesController( ILogger logger, ISessionFactory sessionFactory )
       {
-         _session = session;
+         _sessionFactory = sessionFactory;
          _logger = logger;
       }
 

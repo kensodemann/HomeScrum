@@ -8,7 +8,7 @@ namespace HomeScrum.Spa.App_Start
    {
       public static void Configure()
       {
-         var iocKernel = NinjectWebCommon.Kernel;
+         var iocKernel = NinjectHttpContainer.Kernel;
 
          // Experimental code - don't actually need NHibernate to do any injection right now, but
          // uncommenting this line and setting up a proxy factory in Ninject setup would do it.
