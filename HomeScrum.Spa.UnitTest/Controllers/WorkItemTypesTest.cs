@@ -8,6 +8,8 @@ using NHibernate;
 using HomeScrum.Common.TestData;
 using HomeScrum.Spa.Controllers;
 using System.Linq;
+using System.Web.Http;
+using System.Net;
 
 namespace HomeScrum.Spa.UnitTest.Controllers
 {
@@ -102,6 +104,21 @@ namespace HomeScrum.Spa.UnitTest.Controllers
          var result = _controller.Get( expected.Id.ToString() );
 
          AssertItemsAreEqual( expected, result );
+      }
+
+
+      [TestMethod]
+      public void Get_RaisesNotFound_IfIdDoesNotExist()
+      {
+         try
+         {
+            var result = _controller.Get( Guid.NewGuid().ToString() );
+            Assert.Fail();
+         }
+         catch(HttpResponseException e)
+         {
+            Assert.AreEqual( e.Response.StatusCode, HttpStatusCode.NotFound );
+         }
       }
       #endregion
 
