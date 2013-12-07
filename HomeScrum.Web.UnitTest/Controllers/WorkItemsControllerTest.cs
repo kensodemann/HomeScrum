@@ -50,7 +50,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         //CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
          SetupSession();
          CreateMockIOCKernel();
 
