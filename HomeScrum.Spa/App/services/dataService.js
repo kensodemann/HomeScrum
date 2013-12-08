@@ -6,9 +6,14 @@
    return service;
 
    function getWorkItemTypes(workItemTypesObservable) {
-      workItemTypesObservable([]);
+      return getData('WorkItemTypes', model.workItemType, workItemTypesObservable);
+   }
 
-      var url = 'api/WorkItemTypes';
+
+   function getData(endpoint, constructModel, container) {
+      container([]);
+
+      var url = '/api/' + endpoint;
 
       return $.ajax({
          url: url,
@@ -18,14 +23,14 @@
       }).then(processData);
 
       function processData(data) {
-         var workItemTypes = [];
+         var items = [];
 
          data.forEach(function (item) {
-            var wit = model.workItemType(item);
-            workItemTypes.push(wit);
+            var i = constructModel(item);
+            items.push(i);
          });
 
-         workItemTypesObservable(workItemTypes);
+         container(items);
       }
    }
 });
