@@ -8,7 +8,8 @@ namespace HomeScrum.Spa.App_Start
    {
       public static void Configure()
       {
-         var iocKernel = NinjectHttpContainer.Kernel;
+         var webApiKernel = NinjectHttpContainer.Kernel;
+         var mvcKernel = NinjectContainer.Kernel;
 
          // Experimental code - don't actually need NHibernate to do any injection right now, but
          // uncommenting this line and setting up a proxy factory in Ninject setup would do it.
@@ -20,7 +21,8 @@ namespace HomeScrum.Spa.App_Start
          configuration.Configure();
          var sessionFactory = configuration.BuildSessionFactory();
 
-         iocKernel.Bind<ISessionFactory>().ToConstant( sessionFactory );
+         webApiKernel.Bind<ISessionFactory>().ToConstant( sessionFactory );
+         mvcKernel.Bind<ISessionFactory>().ToConstant( sessionFactory );
       }
    }
 }

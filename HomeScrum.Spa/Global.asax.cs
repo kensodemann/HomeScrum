@@ -21,6 +21,7 @@ namespace HomeScrum.Spa
          RouteConfig.RegisterRoutes( RouteTable.Routes );
 
          NinjectHttpContainer.RegisterModules( NinjectHttpModules.Modules );
+         NinjectContainer.RegisterModules( NinjectHttpModules.Modules );
 
          NHibernateConfig.Configure();
 
