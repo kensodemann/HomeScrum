@@ -6,6 +6,8 @@ using HomeScrum.Data.Services;
 using HomeScrum.Spa.Controllers;
 using Ninject;
 using Ninject.Modules;
+using HomeScrum.Data.Repositories;
+using HomeScrum.Spa.Providers;
 
 namespace HomeScrum.Spa.App_Start
 {
@@ -60,7 +62,8 @@ namespace HomeScrum.Spa.App_Start
       {
          public override void Load()
          {
-            //TODO: Bind to Concrete Types Here
+            Kernel.Bind<ISecurityService>().To( typeof( SecurityService ) ).InSingletonScope();
+            Kernel.Bind<IWebSecurity>().ToConstant( new WebSecurityWrapper() );
          }
       }
    }
