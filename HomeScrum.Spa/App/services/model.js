@@ -1,5 +1,6 @@
 ﻿define(['knockout'], function (ko) {
    var model = {
+      workItemStatus: mapToObservable,
       workItemType: mapToObservable
    };
 

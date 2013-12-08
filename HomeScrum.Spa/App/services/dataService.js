@@ -1,12 +1,17 @@
 ﻿define(['jquery', 'services/model'], function ($, model) {
    var service = {
-      getWorkItemTypes: getWorkItemTypes
+      getWorkItemTypes: getWorkItemTypes,
+      getWorkItemStatuses: getWorkItemStatuses
    };
 
    return service;
 
-   function getWorkItemTypes(workItemTypesObservable) {
-      return getData('WorkItemTypes', model.workItemType, workItemTypesObservable);
+   function getWorkItemStatuses(observableArray) {
+      return getData('WorkItemStatuses', model.workItemStatus, observableArray);
+   }
+
+   function getWorkItemTypes(observableArray) {
+      return getData('WorkItemTypes', model.workItemType, observableArray);
    }
 
 
