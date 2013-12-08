@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HomeScrum.Web.Models.Admin
+namespace HomeScrum.Spa.Models.Admin
 {
    // TODO: Get the display strings from HomeScrum.Data.DisplayStrings
    public class LocalPasswordModel
