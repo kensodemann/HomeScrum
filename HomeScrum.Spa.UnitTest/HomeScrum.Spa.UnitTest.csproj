@@ -81,6 +81,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Controllers\WorkItemStatusesTest.cs" />
     <Compile Include="Controllers\WorkItemTypesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

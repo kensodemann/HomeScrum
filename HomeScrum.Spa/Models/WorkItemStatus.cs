@@ -2,5 +2,5 @@
 
 namespace HomeScrum.Spa.Models
 {
-   public class WorkItemType : HomeScrumObject { }
+   public class WorkItemStatus : HomeScrumObject { }
 }

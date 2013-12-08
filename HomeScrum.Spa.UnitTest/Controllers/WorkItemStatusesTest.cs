@@ -1,19 +1,20 @@
-﻿using HomeScrum.Common.TestData;
-using HomeScrum.Spa.Controllers;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using NHibernate;
-using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
+using Moq;
+using Ninject.Extensions.Logging;
+using System.Security.Principal;
+using NHibernate;
+using HomeScrum.Common.TestData;
+using HomeScrum.Spa.Controllers;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
+using System.Net;
 
 namespace HomeScrum.Spa.UnitTest.Controllers
 {
    [TestClass]
-   public class WorkItemTypesTest
+   public class WorkItemStatusesTest
    {
       #region Test Setup
       private static MoqMockingKernel _iocKernel;
@@ -22,7 +23,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
 
-      private WorkItemTypesController _controller;
+      private WorkItemStatusesController _controller;
 
       [ClassInitialize]
       public static void InitiailizeTestClass( TestContext context )
@@ -42,9 +43,9 @@ namespace HomeScrum.Spa.UnitTest.Controllers
          _controller = CreateController();
       }
 
-      private WorkItemTypesController CreateController()
+      private WorkItemStatusesController CreateController()
       {
-         var controller = new WorkItemTypesController( _logger.Object, _sessionFactory.Object );
+         var controller = new WorkItemStatusesController( _logger.Object, _sessionFactory.Object );
 
          return controller;
       }
@@ -58,7 +59,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
       private void BuildDatabase()
       {
          Database.Build( _session );
-         WorkItemTypes.Load( _sessionFactory.Object );
+         WorkItemStatuses.Load( _sessionFactory.Object );
       }
 
       private void SetupLogger()
@@ -85,21 +86,21 @@ namespace HomeScrum.Spa.UnitTest.Controllers
 
       #region GET Tests
       [TestMethod]
-      public void Get_ReturnsAllWorkItemTypes()
+      public void Get_ReturnsAllWorkItemStatuses()
       {
          var result = _controller.Get();
 
-         Assert.AreEqual( WorkItemTypes.ModelData.Count(), result.Count() );
-         foreach(var item in result)
+         Assert.AreEqual( WorkItemStatuses.ModelData.Count(), result.Count() );
+         foreach (var item in result)
          {
-            AssertItemsAreEqual( WorkItemTypes.ModelData.Single( x => x.Id == item.Id ), item );
+            AssertItemsAreEqual( WorkItemStatuses.ModelData.Single( x => x.Id == item.Id ), item );
          }
       }
 
       [TestMethod]
-      public void Get_RetunsWorkItemType_IdetifiedById()
+      public void Get_RetunsWorkItemStatus_IdetifiedById()
       {
-         var expected = WorkItemTypes.ModelData[2];
+         var expected = WorkItemStatuses.ModelData[2];
          var result = _controller.Get( expected.Id.ToString() );
 
          AssertItemsAreEqual( expected, result );
@@ -114,7 +115,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
             var result = _controller.Get( Guid.NewGuid().ToString() );
             Assert.Fail();
          }
-         catch(HttpResponseException e)
+         catch (HttpResponseException e)
          {
             Assert.AreEqual( e.Response.StatusCode, HttpStatusCode.NotFound );
          }
@@ -151,7 +152,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
 
 
       #region Private Helpers
-      private void AssertItemsAreEqual(HomeScrum.Data.Domain.WorkItemType expected, HomeScrum.Spa.Models.WorkItemType actual)
+      private void AssertItemsAreEqual( HomeScrum.Data.Domain.WorkItemStatus expected, HomeScrum.Spa.Models.WorkItemStatus actual )
       {
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
