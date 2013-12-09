@@ -51,6 +51,15 @@ namespace HomeScrum.Spa.Controllers
 
 
       //
+      // GET: /Account/Logout
+      public ActionResult Logout()
+      {
+         WebSecurity.Logout();
+
+         return RedirectToAction( "Index", "Home" );
+      }
+
+      //
       // POST: /Account/LogOff
       [HttpPost]
       [ValidateAntiForgeryToken]
