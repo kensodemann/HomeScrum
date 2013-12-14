@@ -95,7 +95,6 @@
     <Compile Include="Services\ISecurityService.cs" />
     <Compile Include="Validation\IValidatable.cs" />
     <Compile Include="TransactionType.cs" />
-    <Compile Include="Validation\ValidationListener.cs" />
     <Compile Include="Validation\Validations.cs" />
   </ItemGroup>
   <ItemGroup>
