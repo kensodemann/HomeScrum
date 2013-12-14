@@ -1108,7 +1108,6 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var viewModel = CreateBacklogItemsForSprintViewModel( sprint );
          viewModel.WorkItems[1].IsInTargetSprint = true;
          viewModel.WorkItems[3].IsInTargetSprint = true;
-         viewModel.WorkItems[4].IsInTargetSprint = true;
 
          _controller.AddBacklogItems( viewModel );
 
