@@ -29,13 +29,13 @@
     top: 40px;
 }
 
-.navbar-fixed-top .navbar-inner {
+.navbar-fixed-top .navbar-nav {
     padding-left: 1em;
     padding-right: 1em;
 }
 
-.navbar-fixed-top .icon-home {
-    font-size: 18px
+.navbar-fixed-top .glyphicon-home {
+    font-size: px
 }
 
 .loader {
