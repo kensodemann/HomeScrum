@@ -342,6 +342,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Common.Utility\HomeScrum.Common.Utility.csproj">
+      <Project>{bc5f0331-9795-4b3e-ae0b-7d78f8200686}</Project>
+      <Name>HomeScrum.Common.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
       <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
       <Name>HomeScrum.Data</Name>
