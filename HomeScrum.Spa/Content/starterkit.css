@@ -46,13 +46,3 @@
 .loader.active {
     visibility: visible;
 }
-
-@media (max-width: 979px) {
-    .page-host {
-        top: 0;
-    }
-
-    .navbar-fixed-top {
-        margin-bottom: 0;
-    }
-}
