@@ -1,21 +1,23 @@
 ﻿@model HomeScrum.Spa.Models.Admin.LoginModel
 
-@using (Html.BeginForm( "Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginForm", @class = "form-signin" } ))
-{
-   @Html.AntiForgeryToken()
-   @Html.ValidationSummary( true )
+<div class="container">
+   @using (Html.BeginForm( "Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginForm", @class = "form-signin" } ))
+   {
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary( true )
 
-   <h2 class="form-signin-heading">Sign in to Home Scrum</h2>
+      <h2 class="form-signin-heading">Sign in to Home Scrum</h2>
 
-   <fieldset>
-      <div>
-         @Html.TextBoxFor( m => m.UserName, new { @class = "form-control", placeholder = "User Id", required = true, autofocus = true } )
-         @Html.ValidationMessageFor( m => m.UserName )
-      </div>
-      <div>
-         @Html.PasswordFor( m => m.Password, new { @class = "form-control", placeholder="Password", required = true } )
-         @Html.ValidationMessageFor( m => m.Password )
-      </div>
-   </fieldset>
-   <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block" />
-}
+      <fieldset>
+         <div>
+            @Html.TextBoxFor( m => m.UserName, new { @class = "form-control", placeholder = "User Id", required = true, autofocus = true } )
+            @Html.ValidationMessageFor( m => m.UserName )
+         </div>
+         <div>
+            @Html.PasswordFor( m => m.Password, new { @class = "form-control", placeholder = "Password", required = true } )
+            @Html.ValidationMessageFor( m => m.Password )
+         </div>
+      </fieldset>
+      <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block" />
+   }
+</div>
