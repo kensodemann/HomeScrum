@@ -1,6 +1,19 @@
-﻿<section>
+﻿<section class="hs-content">
    <h2 data-bind="html:displayName"></h2>
-   <ul data-bind="foreach: items">
-      <li data-bind="html: $data.Name"></li>
-   </ul>
+   <table>
+      <thead>
+         <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
+         </tr>
+      </thead>
+      <tbody data-bind="foreach: items">
+         <tr>
+            <td data-bind="html: $data.Name"></td>
+            <td data-bind="html: $data.Description"></td>
+            <td data-bind="html: $data.CategoryName"></td>
+         </tr>
+      </tbody>
+   </table>
 </section>
