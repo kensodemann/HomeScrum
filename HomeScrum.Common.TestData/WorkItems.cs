@@ -281,76 +281,83 @@ namespace HomeScrum.Common.TestData
          AddAcceptanceCriteria( workItem, "Saved to INI", "Whatever elements are set are saved to the INI, even if they match the default", unverified );
          CloseCriteriaList( workItem );
 
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #2",
-               Description = "Description #2",
-               WorkItemType = WorkItemTypes.ModelData[2],
-               Status = WorkItemStatuses.ModelData[1],
-               CreatedByUser = Users.ModelData[2],
-               LastModifiedUserRid = Users.ModelData[0].Id,
-               AssignedToUser = Users.ModelData[1],
-               Project = Projects.ModelData[0]
-            } );
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #3",
-               Description = "Description #3",
-               WorkItemType = WorkItemTypes.ModelData[0],
-               Status = WorkItemStatuses.ModelData[2],
-               CreatedByUser = Users.ModelData[1],
-               LastModifiedUserRid = Users.ModelData[0].Id,
-               Project = Projects.ModelData[2]
-            } );
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #4",
-               Description = "Description #4",
-               WorkItemType = WorkItemTypes.ModelData[1],
-               Status = WorkItemStatuses.ModelData[2],
-               CreatedByUser = Users.ModelData[0],
-               LastModifiedUserRid = Users.ModelData[1].Id,
-               AssignedToUser = Users.ModelData[2],
-               Project = Projects.ModelData[1]
-            } );
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #5",
-               Description = "Description #5",
-               WorkItemType = WorkItemTypes.ModelData[0],
-               Status = WorkItemStatuses.ModelData[1],
-               CreatedByUser = Users.ModelData[0],
-               LastModifiedUserRid = Users.ModelData[1].Id,
-               Project = Projects.ModelData[2]
-            } );
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #6",
-               Description = "Description #6",
-               WorkItemType = WorkItemTypes.ModelData[1],
-               Status = WorkItemStatuses.ModelData[0],
-               CreatedByUser = Users.ModelData[2],
-               LastModifiedUserRid = Users.ModelData[1].Id,
-               AssignedToUser = Users.ModelData[2],
-               Project = Projects.ModelData[0]
-            } );
-         _workItems.Add(
-            new WorkItem()
-            {
-               Name = "Work Item #7",
-               Description = "PBI that is not open",
-               WorkItemType = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem ),
-               Status = WorkItemStatuses.ModelData.First( x => x.Category == WorkItemStatusCategory.Complete ),
-               CreatedByUser = Users.ModelData[2],
-               LastModifiedUserRid = Users.ModelData[1].Id,
-               AssignedToUser = Users.ModelData[2],
-               Project = Projects.ModelData[0]
-            } );
+         workItem = new WorkItem()
+         {
+            Name = "Work Item #2",
+            Description = "Description #2",
+            WorkItemType = WorkItemTypes.ModelData[2],
+            Status = WorkItemStatuses.ModelData[1],
+            CreatedByUser = Users.ModelData[2],
+            LastModifiedUserRid = Users.ModelData[0].Id,
+            AssignedToUser = Users.ModelData[1],
+            Project = Projects.ModelData[0]
+         };
+         session.Save( workItem );
+         _workItems.Add( workItem );
+
+         workItem = new WorkItem()
+         {
+            Name = "Work Item #3",
+            Description = "Description #3",
+            WorkItemType = WorkItemTypes.ModelData[0],
+            Status = WorkItemStatuses.ModelData[2],
+            CreatedByUser = Users.ModelData[1],
+            LastModifiedUserRid = Users.ModelData[0].Id,
+            Project = Projects.ModelData[2]
+         };
+         session.Save( workItem );
+         _workItems.Add( workItem );
+         workItem = new WorkItem()
+         {
+            Name = "Work Item #4",
+            Description = "Description #4",
+            WorkItemType = WorkItemTypes.ModelData[1],
+            Status = WorkItemStatuses.ModelData[2],
+            CreatedByUser = Users.ModelData[0],
+            LastModifiedUserRid = Users.ModelData[1].Id,
+            AssignedToUser = Users.ModelData[2],
+            Project = Projects.ModelData[1]
+         };
+         session.Save( workItem );
+         _workItems.Add( workItem );
+         workItem = new WorkItem()
+         {
+            Name = "Work Item #5",
+            Description = "Description #5",
+            WorkItemType = WorkItemTypes.ModelData[0],
+            Status = WorkItemStatuses.ModelData[1],
+            CreatedByUser = Users.ModelData[0],
+            LastModifiedUserRid = Users.ModelData[1].Id,
+            Project = Projects.ModelData[2]
+         };
+         session.Save( workItem );
+         _workItems.Add( workItem );
+         workItem = new WorkItem()
+         {
+            Name = "Work Item #6",
+            Description = "Description #6",
+            WorkItemType = WorkItemTypes.ModelData[1],
+            Status = WorkItemStatuses.ModelData[0],
+            CreatedByUser = Users.ModelData[2],
+            LastModifiedUserRid = Users.ModelData[1].Id,
+            AssignedToUser = Users.ModelData[2],
+            Project = Projects.ModelData[0]
+         };
+         session.Save( workItem );
+         _workItems.Add( workItem );
+         workItem = new WorkItem()
+         {
+            Name = "Work Item #7",
+            Description = "PBI that is not open",
+            WorkItemType = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem ),
+            Status = WorkItemStatuses.ModelData.First( x => x.Category == WorkItemStatusCategory.Complete ),
+            CreatedByUser = Users.ModelData[2],
+            LastModifiedUserRid = Users.ModelData[1].Id,
+            AssignedToUser = Users.ModelData[2],
+            Project = Projects.ModelData[0]
+         };
+         session.Save( workItem );
+         _workItems.Add( workItem );
       }
 
       private static void InitializeWorkItemTypes()
