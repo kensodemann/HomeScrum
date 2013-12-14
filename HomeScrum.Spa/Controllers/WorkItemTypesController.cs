@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using HomeScrum.Data.Domain;
+using NHibernate;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
@@ -26,35 +27,28 @@ namespace HomeScrum.Spa.Controllers
       }
 
       // GET api/<controller>
-      public IEnumerable<HomeScrum.Spa.Models.WorkItemType> Get()
+      public IEnumerable<WorkItemType> Get()
       {
          var session = _sessionFactory.GetCurrentSession();
 
-         return session.Query<HomeScrum.Data.Domain.WorkItemType>()
-            .Select( x => new HomeScrum.Spa.Models.WorkItemType()
-            {
-               Id = x.Id,
-               Name = x.Name,
-               Description = x.Description,
-               Category = x.Category
-            } )
+         return session.Query<WorkItemType>()
             .ToList();
       }
 
       // GET api/<controller>/5
-      public HomeScrum.Spa.Models.WorkItemType Get( string id )
+      public WorkItemType Get( string id )
       {
          Guid witId;
 
          if (Guid.TryParse( id, out witId ))
          {
-            return FetchWorkItemType( witId );       
+            return FetchWorkItemType( witId );
          }
 
          throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
       }
 
-      private Models.WorkItemType FetchWorkItemType( Guid witId )
+      private WorkItemType FetchWorkItemType( Guid witId )
       {
          var session = _sessionFactory.GetCurrentSession();
          var wit = session.Get<HomeScrum.Data.Domain.WorkItemType>( witId );
@@ -64,24 +58,18 @@ namespace HomeScrum.Spa.Controllers
             throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
          }
 
-         return new HomeScrum.Spa.Models.WorkItemType()
-         {
-            Id = wit.Id,
-            Name = wit.Name,
-            Description = wit.Description
-         };
+         return wit;
       }
 
       // POST api/<controller>
-      public void Post( [FromBody]HomeScrum.Spa.Models.WorkItemType value )
+      public void Post( [FromBody]WorkItemType value )
       {
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
             try
             {
-               // Map to a domain type
-               // session.Save(wit);
+               session.Save( value );
                transaction.Commit();
             }
             catch (Exception e)
@@ -94,16 +82,14 @@ namespace HomeScrum.Spa.Controllers
       }
 
       // PUT api/<controller>/5
-      public void Put( string id, [FromBody]HomeScrum.Spa.Models.WorkItemType value )
+      public void Put( string id, [FromBody]WorkItemType value )
       {
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
             try
             {
-               // Get the domain type
-               // Update the data
-               // session.Update(wit);
+               session.Update( value );
                transaction.Commit();
             }
             catch (Exception e)
