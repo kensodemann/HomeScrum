@@ -12,6 +12,7 @@ using System.Web.Http;
 
 namespace HomeScrum.Spa.Controllers
 {
+   [Authorize]
    public class DomainObjectApiController<T> : ApiController
       where T: DomainObjectBase
    {

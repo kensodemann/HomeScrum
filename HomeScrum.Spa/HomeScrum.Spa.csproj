@@ -170,6 +170,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DomainObjectApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\ProjectStatusesController.cs" />
+    <Compile Include="Controllers\SprintStatusesController.cs" />
     <Compile Include="Controllers\WorkItemStatusesController.cs" />
     <Compile Include="Controllers\WorkItemTypesController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
