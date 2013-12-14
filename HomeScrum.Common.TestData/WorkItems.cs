@@ -72,7 +72,7 @@ namespace HomeScrum.Common.TestData
             InitializeIds();
             var childWorkItem = ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' );
             var parentWorkItem = ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' );
-            childWorkItem.ParentWorkItem = parentWorkItem;
+            childWorkItem.ParentWorkItemRid = parentWorkItem.Id;
          }
       }
 
@@ -407,7 +407,7 @@ namespace HomeScrum.Common.TestData
       {
          var workItem = new WorkItem()
          {
-            ParentWorkItem = backlogItem,
+            ParentWorkItemRid = backlogItem.Id,
             Name = name,
             Description = description,
             WorkItemType = wit,
