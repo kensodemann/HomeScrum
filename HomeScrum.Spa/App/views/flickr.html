@@ -1,14 +1,12 @@
 ﻿<section>
    <h2 data-bind="html: displayName"></h2>
-   <div class="container">
-      <div class="row">
-         <ul class="list-unstyled" data-bind="foreach: images">
-            <li class="col-md-4">
-               <a href="#" class="img-thumbnail" data-bind="click:$parent.select">
-                  <img style="width: 260px; height: 180px;" data-bind="attr: { src: media.m }" />
-               </a>
-            </li>
-         </ul>
-      </div>
+   <div class="row">
+      <ul class="list-unstyled" data-bind="foreach: images">
+         <li class="col-md-4">
+            <a href="#" class="img-thumbnail" data-bind="click:$parent.select">
+               <img style="width: 260px; height: 180px;" data-bind="attr: { src: media.m }" />
+            </a>
+         </li>
+      </ul>
    </div>
 </section>
