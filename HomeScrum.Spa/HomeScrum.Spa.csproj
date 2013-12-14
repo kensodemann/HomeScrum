@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ProjectStatusesController.cs" />
     <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\SprintStatusesController.cs" />
+    <Compile Include="Controllers\WorkItemsController.cs" />
     <Compile Include="Controllers\WorkItemStatusesController.cs" />
     <Compile Include="Controllers\WorkItemTypesController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
