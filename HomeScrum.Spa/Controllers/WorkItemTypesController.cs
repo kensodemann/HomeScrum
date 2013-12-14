@@ -35,7 +35,8 @@ namespace HomeScrum.Spa.Controllers
             {
                Id = x.Id,
                Name = x.Name,
-               Description = x.Description
+               Description = x.Description,
+               Category = x.Category
             } )
             .ToList();
       }
