@@ -130,7 +130,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_BacklogItemsReturnZeroPoints_IfNoTasksAssigned()
       {
-         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0);
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0 );
 
          var view = _controller.Index() as ViewResult;
          var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
@@ -1399,7 +1399,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_SetsSprintInChildTasks()
       {
-         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItemRid != Guid.Empty ).ParentWorkItemRid;
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null && x.ParentWorkItemRid != Guid.Empty ).ParentWorkItemRid;
          var model = WorkItems.ModelData.Single( x => x.Id == parentId );
 
          var viewModel = CreateWorkItemEditorViewModel( model );
