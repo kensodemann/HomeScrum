@@ -214,6 +214,7 @@
     <Content Include="Content\images\icon.png" />
     <Content Include="Content\images\ios-startup-image-landscape.png" />
     <Content Include="Content\images\ios-startup-image-portrait.png" />
+    <Content Include="Content\site.css" />
     <Content Include="Content\starterkit.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -342,6 +343,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HomeScrum.Common.Utility\HomeScrum.Common.Utility.csproj">
+      <Project>{bc5f0331-9795-4b3e-ae0b-7d78f8200686}</Project>
+      <Name>HomeScrum.Common.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HomeScrum.Data\HomeScrum.Data.csproj">
       <Project>{a28ee600-6b54-4d61-8e60-8b32f3beefed}</Project>
       <Name>HomeScrum.Data</Name>
