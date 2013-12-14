@@ -17,7 +17,7 @@
     text-transform: uppercase;
 }
 
-.splash .icon-spinner {
+.splash .fa-spinner {
     text-align: center;
     display: inline-block;
     font-size: 5em;
@@ -35,7 +35,7 @@
 }
 
 .navbar-fixed-top .glyphicon-home {
-    font-size: px
+    font-size: 18px;
 }
 
 .loader {

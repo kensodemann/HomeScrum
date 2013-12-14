@@ -5,10 +5,10 @@ using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Spa.Controllers
 {
-   public class WorkItemTypesController : DomainObjectApiController<WorkItemType>
+   public class AcceptanceCriterionStatusesController : DomainObjectApiController<AcceptanceCriterionStatus>
    {
       [Inject]
-      public WorkItemTypesController( ILogger logger, ISessionFactory sessionFactory )
+      public AcceptanceCriterionStatusesController( ILogger logger, ISessionFactory sessionFactory )
          : base( logger, sessionFactory ) { }
    }
 }

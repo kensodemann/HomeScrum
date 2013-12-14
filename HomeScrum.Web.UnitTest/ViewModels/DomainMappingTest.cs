@@ -127,7 +127,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( 'A', ((ProjectStatus)domainModel).StatusCd );
       }
       #endregion
-      
+
 
       #region Sprint Status
       [TestMethod]
@@ -343,7 +343,6 @@ namespace HomeScrum.Web.UnitTest.ViewModels
             CreatedByUserId = Users.ModelData[1].Id,
             CreatedByUserUserName = Users.ModelData[1].UserName,
             ParentWorkItemId = WorkItems.ModelData[0].Id,
-            ParentWorkItemName = WorkItems.ModelData[0].Name,
             SprintId = Sprints.ModelData[1].Id,
             SprintName = Sprints.ModelData[1].Name
          };
@@ -356,7 +355,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          AssertDomainModelsEqual( Projects.ModelData[0], ((WorkItem)domainModel).Project );
          AssertUsersEqual( Users.ModelData[0], ((WorkItem)domainModel).AssignedToUser );
          AssertUsersEqual( Users.ModelData[1], ((WorkItem)domainModel).CreatedByUser );
-         AssertDomainModelsEqual( WorkItems.ModelData[0], ((WorkItem)domainModel).ParentWorkItem );
+         Assert.AreEqual( WorkItems.ModelData[0].Id, ((WorkItem)domainModel).ParentWorkItemRid );
          AssertDomainModelsEqual( Sprints.ModelData[1], ((WorkItem)domainModel).Sprint );
       }
       #endregion

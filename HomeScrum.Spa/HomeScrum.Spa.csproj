@@ -167,8 +167,16 @@
     <Compile Include="App_Start\NHibernateConfig.cs" />
     <Compile Include="App_Start\Ninject.Mvc.cs" />
     <Compile Include="App_Start\Ninject.WebApi.cs" />
+    <Compile Include="Controllers\AcceptanceCriteriaController.cs" />
+    <Compile Include="Controllers\AcceptanceCriterionStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DomainObjectApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\ProjectStatusesController.cs" />
+    <Compile Include="Controllers\SprintsController.cs" />
+    <Compile Include="Controllers\SprintStatusesController.cs" />
+    <Compile Include="Controllers\WorkItemsController.cs" />
     <Compile Include="Controllers\WorkItemStatusesController.cs" />
     <Compile Include="Controllers\WorkItemTypesController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -176,9 +184,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin\AccountModels.cs" />
-    <Compile Include="Models\Base\HomeScrumObject.cs" />
-    <Compile Include="Models\WorkItemStatus.cs" />
-    <Compile Include="Models\WorkItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\HomeScrumMembershipProvider.cs" />
     <Compile Include="Providers\HomeScrumRoleProvider.cs" />

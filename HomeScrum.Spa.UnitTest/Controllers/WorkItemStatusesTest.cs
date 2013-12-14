@@ -10,6 +10,7 @@ using HomeScrum.Spa.Controllers;
 using System.Linq;
 using System.Web.Http;
 using System.Net;
+using HomeScrum.Data.Domain;
 
 namespace HomeScrum.Spa.UnitTest.Controllers
 {
@@ -152,7 +153,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
 
 
       #region Private Helpers
-      private void AssertItemsAreEqual( HomeScrum.Data.Domain.WorkItemStatus expected, HomeScrum.Spa.Models.WorkItemStatus actual )
+      private void AssertItemsAreEqual( WorkItemStatus expected, WorkItemStatus actual )
       {
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );

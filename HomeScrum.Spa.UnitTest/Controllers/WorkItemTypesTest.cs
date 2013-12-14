@@ -1,4 +1,5 @@
 ﻿using HomeScrum.Common.TestData;
+using HomeScrum.Data.Domain;
 using HomeScrum.Spa.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -90,7 +91,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
          var result = _controller.Get();
 
          Assert.AreEqual( WorkItemTypes.ModelData.Count(), result.Count() );
-         foreach(var item in result)
+         foreach (var item in result)
          {
             AssertItemsAreEqual( WorkItemTypes.ModelData.Single( x => x.Id == item.Id ), item );
          }
@@ -114,7 +115,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
             var result = _controller.Get( Guid.NewGuid().ToString() );
             Assert.Fail();
          }
-         catch(HttpResponseException e)
+         catch (HttpResponseException e)
          {
             Assert.AreEqual( e.Response.StatusCode, HttpStatusCode.NotFound );
          }
@@ -151,7 +152,7 @@ namespace HomeScrum.Spa.UnitTest.Controllers
 
 
       #region Private Helpers
-      private void AssertItemsAreEqual(HomeScrum.Data.Domain.WorkItemType expected, HomeScrum.Spa.Models.WorkItemType actual)
+      private void AssertItemsAreEqual( WorkItemType expected, WorkItemType actual )
       {
          Assert.AreEqual( expected.Name, actual.Name );
          Assert.AreEqual( expected.Description, actual.Description );
