@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using HomeScrum.Data.Domain;
+using NHibernate;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
@@ -27,23 +28,16 @@ namespace HomeScrum.Spa.Controllers
 
 
       // GET api/<controller>
-      public IEnumerable<HomeScrum.Spa.Models.WorkItemStatus> Get()
+      public IEnumerable<WorkItemStatus> Get()
       {
          var session = _sessionFactory.GetCurrentSession();
 
-         return session.Query<HomeScrum.Data.Domain.WorkItemStatus>()
-            .Select( x => new HomeScrum.Spa.Models.WorkItemStatus()
-            {
-               Id = x.Id,
-               Name = x.Name,
-               Description = x.Description,
-               Category = x.Category
-            } )
+         return session.Query<WorkItemStatus>()
             .ToList();
       }
 
       // GET api/<controller>/5
-      public HomeScrum.Spa.Models.WorkItemStatus Get( string id )
+      public WorkItemStatus Get( string id )
       {
          Guid itemId;
 
@@ -55,32 +49,27 @@ namespace HomeScrum.Spa.Controllers
          throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
       }
 
-      private Models.WorkItemStatus FetchWorkItemStatus( Guid id )
+      private WorkItemStatus FetchWorkItemStatus( Guid id )
       {
          var session = _sessionFactory.GetCurrentSession();
-         var item = session.Get<HomeScrum.Data.Domain.WorkItemStatus>( id );
+         var item = session.Get<WorkItemStatus>( id );
 
          if (item == null)
          {
             throw new HttpResponseException( new HttpResponseMessage( HttpStatusCode.NotFound ) );
          }
 
-         return new HomeScrum.Spa.Models.WorkItemStatus()
-         {
-            Id = item.Id,
-            Name = item.Name,
-            Description = item.Description
-         };
+         return item;
       }
 
       // POST api/<controller>
-      public void Post( [FromBody]HomeScrum.Spa.Models.WorkItemStatus value )
+      public void Post( [FromBody]WorkItemStatus value )
       {
          throw new NotImplementedException();
       }
 
       // PUT api/<controller>/5
-      public void Put( string id, [FromBody]HomeScrum.Spa.Models.WorkItemStatus value )
+      public void Put( string id, [FromBody]WorkItemStatus value )
       {
          throw new NotImplementedException();
       }
