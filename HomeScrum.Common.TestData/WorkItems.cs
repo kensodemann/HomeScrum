@@ -1,6 +1,7 @@
 ﻿using HomeScrum.Common.Test.Utility;
 using HomeScrum.Data.Domain;
 using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace HomeScrum.Common.TestData
                CreateTestModelData( session );
                transaction.Commit();
             }
+            session.Clear();
          }
       }
 
@@ -407,10 +409,9 @@ namespace HomeScrum.Common.TestData
             Points = points,
             PointsRemaining = pointsRemaining
          };
-         workItem.Tasks = new List<WorkItem>();
-
          session.Save( workItem );
 
+         workItem.Tasks = new List<WorkItem>();
          _workItems.Add( workItem );
 
          return workItem;
@@ -431,8 +432,8 @@ namespace HomeScrum.Common.TestData
             Points = points,
             PointsRemaining = pointsRemaining
          };
-         //((List<WorkItem>)backlogItem.Tasks).Add( workItem );
          session.Save( workItem );
+         ((List<WorkItem>)backlogItem.Tasks).Add( workItem );
          _workItems.Add( workItem );
 
          return workItem;

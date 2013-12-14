@@ -133,6 +133,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() );
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
+            .ForMember( dest => dest.ParentWorkItemId, opt => opt.ResolveUsing( src => src.ParentWorkItemRid ) )
             .ForMember( dest => dest.Mode, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
