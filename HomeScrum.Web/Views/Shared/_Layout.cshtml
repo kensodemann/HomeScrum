@@ -5,11 +5,20 @@
    <title>HomeScrum - @ViewBag.Title</title>
    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
    <meta name="viewport" content="width=device-width" />
-   @Styles.Render( "~/Content/css" )
+   @Styles.Render( "~/Content/themes/jqueryDataTables/css" )
    @Styles.Render( "~/Content/themes/cupertino/css" )
+   @Styles.Render( "~/Content/css" )
    @Scripts.Render( "~/bundles/modernizr" )
    @Scripts.Render( "~/bundles/jquery" )
+   @Scripts.Render( "~/bundles/jqueryDataTables" )
    @Scripts.Render( "~/bundles/myScripts" )
+
+   <script type="text/javascript" charset="utf-8">
+      $(document).ready(function () {
+         $(".workItemList").dataTable({
+         });
+      });
+   </script>
 </head>
 <body>
    <header>

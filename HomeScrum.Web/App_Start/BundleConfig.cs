@@ -26,6 +26,9 @@ namespace HomeScrum.Web
             .Include( "~/Scripts/jquery.storage.js" )
             .Include( "~/Scripts/jquery-ui-{version}.js" ) );
 
+         bundles.Add( new ScriptBundle( "~/bundles/jqueryDataTables" )
+           .Include( "~/Scripts/DataTables-1.9.4/media/js/jquery.dataTables.js" ) );
+
          bundles.Add( new ScriptBundle( "~/bundles/jqueryval" ).Include(
                      "~/Scripts/jquery.unobtrusive*",
                      "~/Scripts/jquery.validate*" ) );
@@ -37,6 +40,10 @@ namespace HomeScrum.Web
 
          bundles.Add( new StyleBundle( "~/Content/themes/cupertino/css" ).Include(
                      "~/Content/themes/cupertino/jquery-ui.css" ) );
+
+         bundles.Add( new StyleBundle( "~/Content/themes/jqueryDataTables/css" )
+            .Include( "~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" )
+            .Include( "~/Content/DataTables-1.9.4/media/css/jquery.dataTables_themeroller.css" ) );
 
          bundles.Add( new StyleBundle( "~/Content/css" )
             .Include( "~/Content/Site.css" )
