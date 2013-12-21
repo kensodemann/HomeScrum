@@ -1,46 +1,50 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Admin.UserViewModel>
 
 @{
-   ViewBag.Title = "Index";
+   ViewBag.Title = "Users";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
-<p>
-   @Html.ActionLink( "Create New", "Create" )
-</p>
-<table>
-   <tr>
-      <th>
-         @Html.DisplayNameFor( model => model.UserName )
-      </th>
-      <th>
-         @Html.DisplayNameFor( model => model.FirstName )
-      </th>
-      <th>
-         @Html.DisplayNameFor( model => model.MiddleName )
-      </th>
-      <th>
-         @Html.DisplayNameFor( model => model.LastName )
-      </th>
-   </tr>
-
-   @foreach (var item in Model)
-   {
+<table class="dataTableList table table-striped table-bordered">
+   <thead class="ListHead">
       <tr>
-         <td>
-            @Html.ActionLink( item.UserName, "Edit", new { id = item.Id } )
-         </td>
-         <td>
-            @Html.DisplayFor( modelItem => item.FirstName )
-         </td>
-         <td>
-            @Html.DisplayFor( modelItem => item.MiddleName )
-         </td>
-         <td>
-            @Html.DisplayFor( modelItem => item.LastName )
-         </td>
+         <th>
+            @Html.DisplayNameFor( model => model.UserName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.FirstName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.MiddleName )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.LastName )
+         </th>
       </tr>
-   }
+   </thead>
 
+   <tbody class="ListBody">
+      @foreach (var item in Model)
+      {
+         <tr>
+            <td>
+               @Html.ActionLink( item.UserName, "Edit", new { id = item.Id } )
+            </td>
+            <td>
+               @Html.DisplayFor( modelItem => item.FirstName )
+            </td>
+            <td>
+               @Html.DisplayFor( modelItem => item.MiddleName )
+            </td>
+            <td>
+               @Html.DisplayFor( modelItem => item.LastName )
+            </td>
+         </tr>
+      }
+   </tbody>
 </table>
+
+<div id="ActionButtonArea">
+   @Html.ActionLink( "Create New", "Create", null, new { @class = "btn btn-primary" } )
+</div>

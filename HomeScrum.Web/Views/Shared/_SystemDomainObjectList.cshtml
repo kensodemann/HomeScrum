@@ -3,9 +3,12 @@
 @Html.DisplayFor( m => Model, "List" )
 
 <div id="ActionButtonArea">
-   @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-   <input type="checkbox" id="SortableToggle" /><label for="SortableToggle">Allow Sorting</label>
-   <input type="checkbox" id="ShowInactiveToggle" /><label for="ShowInactiveToggle">Show Inactive</label>
+   @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem", @class = "btn btn-primary" } )
+   @*<div class="btn-group" data-toggle="buttons">
+      <label id="SortableToggleLabel" class="btn btn-primary"><input type="checkbox" id="SortableToggle" />Allow Sorting</label>
+   </div>*@
+   <button id="SortableToggle" type="button" class="btn btn-default" data-toggle="button" data-ordering-text="Save Changes">Allow Sorting</button> 
+   @*<input type="checkbox" id="ShowInactiveToggle" /><label for="ShowInactiveToggle">Show Inactive</label>*@
 </div>
 
 <script>
@@ -30,23 +33,19 @@
       $(".SortIcon").hide();
 
       var sortableToggleButton = $("#SortableToggle");
-      sortableToggleButton.button();
-
       sortableToggleButton.click(
           function () {
-             if ($(this).is(":checked")) {
-                $(this).button("option", "label", "Save Changes");
+             if ($(this).hasClass('active')) {
+                $(".ListBody").sortable("disable");
+                $(".ListBody").enableSelection();
+                postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
+                $(".SortIcon").hide("fade");
+             }
+             else {              
                 $(".ListBody").sortable("enable");
                 $(".ListBody").disableSelection();
                 $(".SortIcon").show("fade");
              }
-             else {
-                $(this).button("option", "label", "Allow Sorting");
-                $(".ListBody").sortable("disable");
-                $(".ListBody").enableSelection();
-                postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
-                  $(".SortIcon").hide("fade");
-               }
-            });
+          });
    });
 </script>
