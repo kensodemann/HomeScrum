@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using HomeScrum.Web.Extensions
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="utf-8" />
@@ -39,37 +41,37 @@
 
       <div class="collapse navbar-collapse">
          <ul class="nav navbar-nav">
-            <li class="active">@Html.ActionLink( "My Assignments", "MyAssignments", "WorkItems" )</li>
-            <li>@Html.ActionLink( "Current Sprints", "CurrentSprints", "Sprints" )</li>
+            <li class="">@Html.MenuItem( "My Assignments", "MyAssignments", "WorkItems" )</li>
+            <li>@Html.MenuItem( "Current Sprints", "CurrentSprints", "Sprints" )</li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Work Items <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li>@Html.ActionLink( "Unassigned Problems", "UnassignedProblems", "WorkItems" )</li>
-                  <li>@Html.ActionLink( "Unassigned Tasks", "UnassignedTasks", "WorkItems" )</li>
-                  <li>@Html.ActionLink( "Unassigned Backlog", "UnassignedBacklog", "WorkItems" )</li>
+                  <li class="active">@Html.MenuItem( "Unassigned Problems", "UnassignedProblems", "WorkItems" )</li>
+                  <li>@Html.MenuItem( "Unassigned Tasks", "UnassignedTasks", "WorkItems" )</li>
+                  <li>@Html.MenuItem( "Unassigned Backlog", "UnassignedBacklog", "WorkItems" )</li>
                   <li class="divider"></li>
-                  <li>@Html.ActionLink( "All Work Items", "Index", "WorkItems" )</li>
+                  <li>@Html.MenuItem( "All Work Items", "Index", "WorkItems" )</li>
                </ul>
             </li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sprints <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li>@Html.ActionLink( "Open Sprints", "OpenSprints", "Sprints" )</li>
-                  <li>@Html.ActionLink( "All Sprints", "Index", "Sprints" )</li>
+                  <li>@Html.MenuItem( "Open Sprints", "OpenSprints", "Sprints" )</li>
+                  <li>@Html.MenuItem( "All Sprints", "Index", "Sprints" )</li>
                </ul>
             </li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li>@Html.ActionLink( "Acceptance Criterion Statuses", "Index", "AcceptanceCriterionStatuses" )</li>
-                  <li>@Html.ActionLink( "Project Statuses", "Index", "ProjectStatuses" )</li>
-                  <li>@Html.ActionLink( "Sprint Statuses", "Index", "SprintStatuses" )</li>
-                  <li>@Html.ActionLink( "Work Item Statuses", "Index", "WorkItemStatuses" )</li>
-                  <li>@Html.ActionLink( "Work Item Types", "Index", "WorkItemTypes" )</li>
+                  <li>@Html.MenuItem( "Acceptance Criterion Statuses", "Index", "AcceptanceCriterionStatuses" )</li>
+                  <li>@Html.MenuItem( "Project Statuses", "Index", "ProjectStatuses" )</li>
+                  <li>@Html.MenuItem( "Sprint Statuses", "Index", "SprintStatuses" )</li>
+                  <li>@Html.MenuItem( "Work Item Statuses", "Index", "WorkItemStatuses" )</li>
+                  <li>@Html.MenuItem( "Work Item Types", "Index", "WorkItemTypes" )</li>
                   <li class="divider"></li>
-                  <li>@Html.ActionLink( "Projects", "Index", "Projects" )</li>
+                  <li>@Html.MenuItem( "Projects", "Index", "Projects" )</li>
                   <li class="divider"></li>
-                  <li>@Html.ActionLink( "Users", "Index", "Users" )</li>
+                  <li>@Html.MenuItem( "Users", "Index", "Users" )</li>
                </ul>
             </li>
          </ul>
