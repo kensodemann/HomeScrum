@@ -1,39 +1,42 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Sprints.SprintWorkItemViewModel>
 
-<table>
-   <tr>
-      <th class="DataColumn">
-         @Html.DisplayNameFor( model => model.WorkItemTypeName )
-      </th>
-      <th class="DataColumn">
-         @Html.DisplayNameFor( model => model.StatusName )
-      </th>
-      <th class="DescriptiveText">
-         @Html.DisplayNameFor( model => model.Name )
-      </th>
-      <th class="DataColumn">
-         @Html.DisplayNameFor( model => model.Points )
-      </th>
-   </tr>
-
-   @foreach (var item in Model)
-   {
-      var points = item.PointsRemaining.ToString() + "/" + item.Points.ToString();
-      
+<table class="dataTableList table table-striped table-bordered">
+   <thead>
       <tr>
-         <td class="DataColumn">
-            @Html.DisplayFor( modelItem => item.WorkItemTypeName )
-         </td>
-         <td class="DataColumn">
-            @Html.DisplayFor( modelItem => item.StatusName )
-         </td>
-         <td class="DescriptiveText">
-            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Sprints", callingAction = "Edit", callingId = ViewBag.SprintId }, null )
-         </td>
-         <td class="DataColumn">
-            @Html.DisplayFor( modelItem => points )
-         </td>
+         <th class="DataColumn">
+            @Html.DisplayNameFor( model => model.WorkItemTypeName )
+         </th>
+         <th class="DataColumn">
+            @Html.DisplayNameFor( model => model.StatusName )
+         </th>
+         <th class="DescriptiveText">
+            @Html.DisplayNameFor( model => model.Name )
+         </th>
+         <th class="DataColumn">
+            @Html.DisplayNameFor( model => model.Points )
+         </th>
       </tr>
-   }
+   </thead>
 
+   <tbody>
+      @foreach (var item in Model)
+      {
+         var points = item.PointsRemaining.ToString() + "/" + item.Points.ToString();
+
+         <tr>
+            <td class="DataColumn">
+               @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+            </td>
+            <td class="DataColumn">
+               @Html.DisplayFor( modelItem => item.StatusName )
+            </td>
+            <td class="DescriptiveText">
+               @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Sprints", callingAction = "Edit", callingId = ViewBag.SprintId }, null )
+            </td>
+            <td class="DataColumn">
+               @Html.DisplayFor( modelItem => points )
+            </td>
+         </tr>
+      }
+   </tbody>
 </table>

@@ -1,10 +1,5 @@
 ﻿@model HomeScrum.Web.Models.Base.ViewModelBase
 
-
-@{
-   ViewBag.EditorButtonLabel = "Save";
-}
-
 <h2>@ViewBag.Title</h2>
 
 @Html.Partial( "_Editor", Model )
@@ -20,9 +15,3 @@
 @section Scripts {
    @Scripts.Render( "~/bundles/jqueryval" )
 }
-
-<script>
-   $(document).ready(function () {
-      $('#CloseButton').button();
-   });
-</script>

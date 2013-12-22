@@ -6,27 +6,33 @@
    ViewBag.SprintId = Model.Id;
 }
 
-@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
    <fieldset>
-      <legend>Basic Information</legend>
+      <legend class="hidden">Basic Information</legend>
 
-      <div class="formSingleLineEdit">
-         @Html.LabelFor( model => model.Name )
-         <span>@Html.TextBoxFor( model => model.Name, new { @class = "MainData" } )</span>
-         @Html.ValidationMessageFor( model => model.Name )
+      <div class="form-group">
+         @Html.LabelFor( model => model.Name, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.Name, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.Name )
+         </div>
       </div>
 
-      <div class="formSingleLineEdit">
-         @Html.LabelFor( model => model.Goal )
-         <span>@Html.TextBoxFor( model => model.Goal, new { @class = "MainData" } )</span>
-         @Html.ValidationMessageFor( model => model.Goal )
+      <div class="form-group">
+         @Html.LabelFor( model => model.Goal, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.Goal, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.Goal )
+         </div>
       </div>
 
-      <div class="formLongText">
-         @Html.LabelFor( model => model.Description )
-         <span>@Html.TextAreaFor( model => model.Description, new { @class = "MainData text-box multi-line" } )</span>
-         @Html.ValidationMessageFor( model => model.Description )
+      <div class="form-group">
+         @Html.LabelFor( model => model.Description, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextAreaFor( model => model.Description, new { @class = "MainData text-box multi-line form-control", rows = "5" } )
+            @Html.ValidationMessageFor( model => model.Description )
+         </div>
       </div>
 
       @Html.HiddenFor( m => m.CreatedByUserId )
@@ -36,39 +42,51 @@
    </fieldset>
 
    <fieldset>
-      <legend>Properties</legend>
+      <legend class="hidden">Properties</legend>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.Capacity )
-         @Html.TextBoxFor( model => model.Capacity, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.Capacity )
+      <div class="form-group">
+         @Html.LabelFor( model => model.Capacity, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.Capacity, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.Capacity )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.TotalPoints )
-         @Html.DisplayTextFor( model => model.TotalPoints )
+      <div class="form-group">
+         @Html.LabelFor( model => model.TotalPoints, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DisplayTextFor( model => model.TotalPoints )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData" } )
+      <div class="form-group">
+         @Html.LabelFor( model => model.ProjectId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData form-control" } )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData" } )
+      <div class="form-group">
+         @Html.LabelFor( model => model.StatusId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData form-control" } )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.StartDate )
-         @Html.TextBoxFor( model => model.StartDate, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.StartDate )
+      <div class="form-group">
+         @Html.LabelFor( model => model.StartDate, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.StartDate, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.StartDate )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.EndDate )
-         @Html.TextBoxFor( model => model.EndDate, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.EndDate )
+      <div class="form-group">
+         @Html.LabelFor( model => model.EndDate, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.EndDate, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.EndDate )
+         </div>
       </div>
    </fieldset>
 
@@ -76,18 +94,18 @@
    {
       <div class="ChildData">
          <fieldset>
-            <legend>WorkItems</legend>
+            <legend class="hidden">WorkItems</legend>
 
             <div id="BacklogItems">
                <h3>Backlog Items</h3>
                @Html.Partial( "_WorkItemList", Model.BacklogItems )
-               @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink" } )
+               @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink", @class = "btn btn-default" } )
             </div>
 
             <div id="Tasks">
                <h3>Tasks</h3>
                @Html.Partial( "_WorkItemList", Model.Tasks )
-               @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink" } )
+               @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink", @class = "btn btn-default" } )
             </div>
          </fieldset>
       </div>
@@ -96,7 +114,8 @@
    @Html.ValidationSummary( false )
 }
 
-<a href="#" id="SubmitButton"></a>
+<div id="ActionButtonArea"></div>
+<a href="#" id="SubmitButton" class="btn btn-primary"></a>
 
 @Scripts.Render( "~/Bundles/BaseScripts" )
 @Scripts.Render( "~/bundles/sprintScripts" )

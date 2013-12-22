@@ -2,44 +2,52 @@
 
 @model HomeScrum.Web.Models.Admin.SprintStatusEditorViewModel
 
-@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
    @Html.ValidationSummary( true )
 
    @Html.Partial( "_SystemDomainObjectEditor", Model )
 
    <fieldset>
-      <legend>Properties</legend>
+      <legend class="hidden">Properties</legend>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.Category )
-         @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.Category )
+      <div class="form-group">
+         @Html.LabelFor( model => model.Category, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.Category )
+         </div>
       </div>
 
-      <div class="formBooleanOption">
-         @Html.CheckBoxFor( model => model.CanAddBacklogItems, new { @class = "MainData" } )
-         @Html.LabelFor( model => model.CanAddBacklogItems )
-         @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
+      <div class="form-group">
+         <div class="col-sm-offset-2 col-sm-6">
+            @Html.CheckBoxFor( model => model.CanAddBacklogItems, new { @class = "MainData" } )
+            @Html.LabelFor( model => model.CanAddBacklogItems )
+            @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
+         </div>
       </div>
 
-      <div class="formBooleanOption">
-         @Html.CheckBoxFor( model => model.CanAddTaskListItems, new { @class = "MainData" } )
-         @Html.LabelFor( model => model.CanAddTaskListItems )
-         @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
+      <div class="form-group">
+         <div class="col-sm-offset-2 col-sm-6">
+            @Html.CheckBoxFor( model => model.CanAddTaskListItems, new { @class = "MainData" } )
+            @Html.LabelFor( model => model.CanAddTaskListItems )
+            @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
+         </div>
       </div>
 
-      <div class="formBooleanOption">
-         @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
-         @Html.LabelFor( model => model.AllowUse )
-         @Html.ValidationMessageFor( model => model.AllowUse )
+      <div class="form-group">
+         <div class="col-sm-offset-2 col-sm-6">
+            @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
+            @Html.LabelFor( model => model.AllowUse )
+            @Html.ValidationMessageFor( model => model.AllowUse )
+         </div>
       </div>
    </fieldset>
-    
+
    @Html.HiddenFor( model => model.Mode );
 }
 
-<a href="#" id="SubmitButton"></a>
+<a href="#" id="SubmitButton" class="btn btn-primary"></a>
 
 @Scripts.Render( "~/Bundles/BaseScripts" )
 <script>

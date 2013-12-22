@@ -579,7 +579,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\Index.cshtml" />
     <Content Include="Views\WorkItemTypes\Index.cshtml" />
     <Content Include="Views\WorkItemStatuses\Index.cshtml" />
@@ -618,7 +617,6 @@
     <Content Include="Views\WorkItems\Edit.cshtml" />
     <Content Include="Views\Shared\_WorkItemList.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectEditor.cshtml" />
-    <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
     <Content Include="Views\Sprints\Index.cshtml" />
     <Content Include="Views\Sprints\_Editor.cshtml" />
     <Content Include="Views\Sprints\Edit.cshtml" />
