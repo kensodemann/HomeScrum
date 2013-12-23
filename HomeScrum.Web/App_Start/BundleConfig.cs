@@ -53,7 +53,7 @@ namespace HomeScrum.Web
             .Include( "~/Content/Bootstrap.css" )
             .Include( "~/Content/Bootstrap-theme.css" )
             .Include( "~/Content/dataTables.bootstrap.css" )
-            .Include( "~/Content/Prototype.css" ) // Should become site.css eventually
+            .Include( "~/Content/Site.css" )
             .Include( "~/Content/Editor.css" )
             .Include( "~/Content/HeaderFooter.css" ) );
 

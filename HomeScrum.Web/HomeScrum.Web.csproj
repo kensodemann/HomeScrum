@@ -357,7 +357,6 @@
     <Content Include="Content\dataTables.bootstrap.css" />
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
-    <Content Include="Content\Prototype.css" />
     <Content Include="Content\SignIn.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\sort_asc.png" />
@@ -365,7 +364,6 @@
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
     <Content Include="Images\sort_desc_disabled.png" />
-    <Content Include="Prototype.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DataTables-1.9.4\docs\media\js\doc.js" />
