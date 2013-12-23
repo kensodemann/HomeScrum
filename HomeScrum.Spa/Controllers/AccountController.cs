@@ -41,12 +41,12 @@ namespace HomeScrum.Spa.Controllers
          if (ModelState.IsValid && WebSecurity.Login( model.UserName, model.Password, persistCookie: model.RememberMe ))
          {
             Log.Info( "User {0} successfully logged in.", model.UserName );
-            return RedirectToLocal( returnUrl );
          }
-
-         // If we got this far, something failed, redisplay form
-         ModelState.AddModelError( "", "The user name or password provided is incorrect." );
-         return View( model );
+         else
+         {
+            ModelState.AddModelError( "", "The user name or password provided is incorrect." );
+         }
+         return RedirectToLocal( returnUrl );
       }
 
 

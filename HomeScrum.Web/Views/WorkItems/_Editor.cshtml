@@ -2,66 +2,84 @@
 
 @model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
 
-@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor" } ))
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
    @Html.Partial( "_DomainObjectBaseEditor", Model )
 
    <fieldset>
-      <legend>Properties</legend>
+      <legend class="hidden">Properties</legend>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.Points )
-         @Html.TextBoxFor( model => model.Points, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.Points )
+      <div class="form-group">
+         @Html.LabelFor( model => model.Points, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.Points, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.Points )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.PointsRemaining )
-         @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.PointsRemaining )
+      <div class="form-group">
+         @Html.LabelFor( model => model.PointsRemaining, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.PointsRemaining )
+         </div>
       </div>
 
-      <div class="formStaticText">
-         @Html.LabelFor( model => model.CreatedByUserUserName )
-         @Html.DisplayFor( model => model.CreatedByUserUserName )
-         @Html.HiddenFor( model => model.CreatedByUserId )
-         @Html.ValidationMessageFor( model => model.CreatedByUserId )
+      <div class="form-group">
+         @Html.LabelFor( model => model.CreatedByUserUserName, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DisplayFor( model => model.CreatedByUserUserName )
+            @Html.HiddenFor( model => model.CreatedByUserId )
+            @Html.ValidationMessageFor( model => model.CreatedByUserId )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.WorkItemTypeId )
-         @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.WorkItemTypeId )
+      <div class="form-group">
+         @Html.LabelFor( model => model.WorkItemTypeId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.WorkItemTypeId )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.StatusId )
-         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.StatusId )
+      <div class="form-group">
+         @Html.LabelFor( model => model.StatusId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.StatusId )
+         </div>
       </div>
 
-      <div class="formSelectList" id="ParentWorkItemDiv">
-         @Html.LabelFor( model => model.ParentWorkItemId )
-         @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.ParentWorkItemId )
+      <div class="form-group" id="ParentWorkItemDiv">
+         @Html.LabelFor( model => model.ParentWorkItemId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.ParentWorkItemId )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.ProjectId )
-         @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.ProjectId )
+      <div class="form-group">
+         @Html.LabelFor( model => model.ProjectId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.ProjectId )
+         </div>
       </div>
 
-      <div class="formSelectList">
-         @Html.LabelFor( model => model.SprintId )
-         @Html.DropDownListWithDataAttributesFor( model => model.SprintId, Model.Sprints, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.SprintId )
+      <div class="form-group">
+         @Html.LabelFor( model => model.SprintId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListWithDataAttributesFor( model => model.SprintId, Model.Sprints, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.SprintId )
+         </div>
       </div>
 
-      <div class="formSelectList" id="AssignedToUserDiv">
-         @Html.LabelFor( model => model.AssignedToUserId )
-         @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers, new { @class = "MainData" } )
-         @Html.ValidationMessageFor( model => model.AssignedToUserId )
+      <div class="form-group" id="AssignedToUserDiv">
+         @Html.LabelFor( model => model.AssignedToUserId, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.AssignedToUserId )
+         </div>
       </div>
 
       @Html.HiddenFor( m => m.Mode )
@@ -70,40 +88,44 @@
    <div id="TaskListDiv" class="ChildData">
       <fieldset>
          <h3>Tasks</h3>
-         <table>
-            <tr>
-               <th>
-                  @Html.DisplayNameFor( model => model.WorkItemTypeId )
-               </th>
-               <th>
-                  @Html.DisplayNameFor( model => model.Name )
-               </th>
-               <th>
-                  @Html.DisplayNameFor( model => model.StatusId )
-               </th>
-               <th></th>
-            </tr>
-
-            @foreach (var item in Model.Tasks)
-            {
-               var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
-
-               <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
-                  <td>
-                     @Html.DisplayFor( modelItem => item.WorkItemTypeName )
-                  </td>
-                  <td>
-                     @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
-                  </td>
-                  <td>
-                     @Html.DisplayFor( modelItem => item.StatusName )
-                  </td>
-                  <td>
-                     @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
-                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
-                  </td>
+         <table class="dataTableList table table-striped table-bordered">
+            <thead>
+               <tr>
+                  <th>
+                     @Html.DisplayNameFor( model => model.WorkItemTypeId )
+                  </th>
+                  <th>
+                     @Html.DisplayNameFor( model => model.Name )
+                  </th>
+                  <th>
+                     @Html.DisplayNameFor( model => model.StatusId )
+                  </th>
+                  <th></th>
                </tr>
-            }
+            </thead>
+
+            <tbody>
+               @foreach (var item in Model.Tasks)
+               {
+                  var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
+
+                  <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+                     <td>
+                        @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+                     </td>
+                     <td>
+                        @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
+                     </td>
+                     <td>
+                        @Html.DisplayFor( modelItem => item.StatusName )
+                     </td>
+                     <td>
+                        @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
+                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
+                     </td>
+                  </tr>
+               }
+            </tbody>
          </table>
       </fieldset>
    </div>
@@ -111,8 +133,8 @@
    @Html.ValidationSummary( false )
 }
 
-<a href="#" id="SubmitButton"></a>
-@Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask" } )
+<a href="#" id="SubmitButton" class="btn btn-primary"></a>
+@Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask", @class = "btn btn-default" } )
 
 @Scripts.Render( "~/Bundles/BaseScripts" )
 @Scripts.Render( "~/bundles/workItemScripts" )
@@ -120,7 +142,5 @@
 <script>
    $(document).ready(function () {
       Editor.init();
-
-      $("#CreateNewTask").button();
    });
 </script>

@@ -1,185 +1,29 @@
-﻿/*
- *  General formatting
- */
-article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary
-{
-  display: block;
+﻿.page-host {
+   position: relative;
+   top: 65px;
 }
 
-body
-{
-  font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
-  max-width: 1024px;
-  margin: 0 auto; /* auto is same as lef/right auto, centers the content in the body */
+.navbar-right {
+   padding-right: 2em;
 }
 
-.endRegion
-{
-  clear: both;
+#ActionButtonArea {
+   margin-top: 2em;
 }
 
-
-/*
- * Tables
- */
-table
-{
-  border-color: #004a6a;
-  border-width: 1px;
-  border-style: solid;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 1em;
+table.dataTable tr.odd {
+   background-color: #f6f6f6;
 }
 
-  table th
-  {
-    background-color: #004a6a;
-    color: #ffffff;
-    border-width: 1px;
-    border-color: #004a6a;
-    border-style: solid;
-    padding: 3px;
-    text-align: left;
-  }
+table.dataTable tr.even {
+   background-color: white;
+}
 
-    table th.DescriptiveText
-    {
-      min-width: 400px;
-    }
-
-    table th.FirstDataColumn
-    {
-      border-left: none;
-    }
-
-    table th.LastDataColumn
-    {
-      border-right: none;
-    }
-
-  table td
-  {
-    background-color: #ffffff;
-    color: #000000;
-    border-width: 1px;
-    border-color: #004a6a;
-    border-style: none solid;
-    padding: 3px 5px;
-  }
-
-    table td.SortIcon
-    {
-      border-right: none;
-      width: 10px;
-    }
-
-    table td.FirstDataColumn
-    {
-      border-left: none;
-    }
-
-    table td.LastDataColumn
-    {
-      border-right: none;
-    }
-
-    table td.DescriptiveText
-    {
-      min-width: 400px;
-    }
-
-
-
-#SortableToggle
-{
-  margin-left: 20em;
+table.dataTable tr.odd td.sorting_1 {
+   background-color: #e6e6e6;
 }
 
 
-/*
- * Links
- */
-a
-{
-  color: #0070a3;
-}
-
-  a:hover
-  {
-    color: #ff8700;
-  }
-
-
-
-/*
- * Content Region
- */
-.Content
-{
-  margin-top: 0px;
-}
-
-.Sidebar
-{
-  padding: 10px;
-  float: left;
-  width: 180px;
-}
-
-  .Sidebar nav h2
-  {
-    font-size: large;
-    color: #004a6a;
-    border-bottom: thin #004a6a solid;
-  }
-
-  .Sidebar nav ul
-  {
-    padding-left: 0px;
-  }
-
-    .Sidebar nav ul li
-    {
-      font-size: small;
-      margin-top: 5px;
-      margin-bottom: 0px;
-      list-style-type: none;
-    }
-
-
-.WorkArea
-{
-  margin-left: 220px;
-}
-
-article
-{
-  padding: 20px 0px;
-  font-size: small;
-}
-
-
-  article h2
-  {
-    margin: 0px;
-    margin-bottom: 10px;
-    padding: 5px;
-    text-align: center;
-    font-size: large;
-    color: #0070a3;
-    background: #e4f1fb url(themes/cupertino/images/ui-bg_glass_100_e4f1fb_1x400.png) 50% 50% repeat-x;
-    border-top-left-radius: 0.5em;
-    border-top-right-radius: 0.5em;
-    border: 1px solid #74b2e2;
-  }
-
-  article h3
-  {
-    font-size: medium;
-  }
-
-#ActionButtonArea
-{
-  margin-top: 2em;
+table.dataTable tr.even td.sorting_1 {
+   background-color: #f6f6f6;
 }

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Admin.ProjectStatusViewModel>
 
-<table>
+<table class="adminList table table-bordered">
    <thead class="ListHead">
       <tr>
          <th class="SortIcon"></th>
@@ -20,12 +20,12 @@
       @foreach (var item in Model)
       {
          var rowClass = item.AllowUse ? "ActiveItemRow" : "InactiveItemRow";
-                 
+
          <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
             <td class="SortIcon"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>
             <td class="FirstDataColumn">
                @Html.ActionLink( item.Name, "Edit", new { id = item.Id } )
-            
+
             </td>
             <td class="DescriptiveText">
                @Html.DisplayFor( modelItem => item.Description )

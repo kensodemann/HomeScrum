@@ -4,32 +4,27 @@
     ViewBag.Title = "Log in";
 }
 
-<hgroup class="title">
-    <h2>@ViewBag.Title.</h2>
-</hgroup>
+@Styles.Render( "~/Content/SignInCss" )
 
-<section id="loginForm">
-    @using (Html.BeginForm( new { ReturnUrl = ViewBag.ReturnUrl } ))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary( true )
+<div class="container">
+   @using (Html.BeginForm( "Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginForm", @class = "form-signin" } ))
+   {
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary( true )
 
-        <fieldset>
-            <legend>Log in Form</legend>
-            <div class="formSingleLineEdit">
-                @Html.LabelFor( m => m.UserName )
-                <span>@Html.TextBoxFor( m => m.UserName )</span>
-                @Html.ValidationMessageFor( m => m.UserName )
-            </div>
-            <div class="formSingleLineEdit">
-                @Html.LabelFor( m => m.Password )
-                <span>@Html.PasswordFor( m => m.Password )</span>
-                @Html.ValidationMessageFor( m => m.Password )
-            </div>
-        </fieldset>
-        <input type="submit" value="Log in" />
-    }
-</section>
+      <fieldset>
+         <div>
+            @Html.TextBoxFor( m => m.UserName, new { @class = "form-control", placeholder = "Username", required = true, autofocus = true } )
+            @Html.ValidationMessageFor( m => m.UserName )
+         </div>
+         <div>
+            @Html.PasswordFor( m => m.Password, new { @class = "form-control", placeholder = "Password", required = true } )
+            @Html.ValidationMessageFor( m => m.Password )
+         </div>
+      </fieldset>
+      <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block" />
+   }
+</div>
 
 @section Scripts {
     @Scripts.Render( "~/bundles/jqueryval" )

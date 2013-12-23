@@ -6,7 +6,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<table>
+<table class="dataTableList table table-striped table-bordered">
    <thead class="ListHead">
       <tr>
          <th>
@@ -34,11 +34,5 @@
 </table>
 
 <div id="ActionButtonArea">
-   @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem" } )
-
-   <script>
-      $(function () {
-         $("#CreateNewItem").button();
-      });
-   </script>
+   @Html.ActionLink( "Create New", "Create", null, new { @class = "btn btn-primary" } )
 </div>
