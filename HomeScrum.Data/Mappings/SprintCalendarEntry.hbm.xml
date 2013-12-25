@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="HomeScrum.Data"
+                   namespace="HomeScrum.Data.Domain">
+
+  <class name="SprintCalendarEntry"
+         table="SprintCalendar">
+    <id name="Id">
+      <generator class="guid"></generator>
+    </id>
+    <property name="HistoryDate"/>
+    <property name="PointsRemaining"/>
+    <many-to-one name="Sprint"
+                 class ="Sprint"
+                 column="SprintRid"
+                 cascade="none"
+                 fetch="join"/>
+  </class>
+
+</hibernate-mapping>
