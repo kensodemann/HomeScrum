@@ -74,6 +74,7 @@
     <Compile Include="Domain\ProjectStatus.cs" />
     <Compile Include="Domain\ProjectStatusCategory.cs" />
     <Compile Include="Domain\Sprint.cs" />
+    <Compile Include="Domain\SprintCalendarEntry.cs" />
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SprintStatusCategory.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
@@ -156,6 +157,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Mappings\SprintCalendarEntry.hbm.xml" />
     <EmbeddedResource Include="Mappings\Sprint.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -37,6 +37,14 @@
                  fetch="join"/>
 
     <property name="Capacity"/>
+
+    <set name="Calendar"
+         inverse="true"
+         cascade="all-delete-orphan"
+         lazy="true">
+      <key column="SprintRid"/>
+      <one-to-many class="SprintCalendarEntry"/>
+    </set>
     
   </class>
 

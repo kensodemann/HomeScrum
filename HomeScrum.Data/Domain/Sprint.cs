@@ -33,6 +33,8 @@ namespace HomeScrum.Data.Domain
       [Range(1, 32767)]
       public virtual int Capacity { get; set; }
 
+      public virtual IEnumerable<SprintCalendarEntry> Calendar { get; set; }
+
       #region Non-POCO stuff
       public Sprint()
          : this( null ) { }
