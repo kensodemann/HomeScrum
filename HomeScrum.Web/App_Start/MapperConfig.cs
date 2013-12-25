@@ -47,7 +47,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.CreatedByUserId ) )
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<SprintStatus>>().FromMember( src => src.StatusId ) )
-            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) );
+            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) )
+            .ForMember( dest => dest.Calendar, opt => opt.Ignore() );
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
             .ConstructUsingServiceLocator()
