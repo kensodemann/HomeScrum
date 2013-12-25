@@ -48,7 +48,8 @@ namespace HomeScrum.Web.Models.WorkItems
       public IEnumerable<SelectListItem> AssignedToUsers { get; set; }
 
       [Display( Name = "ParentWorkItem", ResourceType = typeof( DisplayStrings ) )]
-      public Guid? ParentWorkItemId { get; set; }
+      public Guid ParentWorkItemId { get; set; }
+      public string ParentWorkItemName { get; set; }
       public IEnumerable<SelectListItemWithAttributes> ProductBacklogItems { get; set; }
 
       public IEnumerable<WorkItemIndexViewModel> Tasks { get; set; }

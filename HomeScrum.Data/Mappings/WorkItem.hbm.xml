@@ -35,7 +35,12 @@
                  lazy="false"
                  cascade="none"
                  fetch="join"/>
-    <property name="ParentWorkItemRid"/>
+    <many-to-one name="ParentWorkItem"
+                 class="WorkItem"
+                 column="ParentWorkItemRid"
+                 lazy="false"
+                 cascade="none"
+                 fetch="join"/>
     <many-to-one name="Sprint"
                  class="Sprint"
                  column="SprintRid"

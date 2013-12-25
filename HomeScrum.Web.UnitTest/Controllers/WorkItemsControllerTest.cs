@@ -112,8 +112,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void Index_ItemsSumChildPoints_ForBacklog()
       {
          var parentId = WorkItems.ModelData
-            .Where( x => x.ParentWorkItemRid != null )
-            .GroupBy( x => x.ParentWorkItemRid )
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
             .Select( g => new { Id = g.Key, Count = g.Count() } )
             .OrderBy( x => x.Count )
             .Last().Id;
@@ -130,7 +130,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_BacklogItemsReturnZeroPoints_IfNoTasksAssigned()
       {
-         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0 );
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0);
 
          var view = _controller.Index() as ViewResult;
          var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
@@ -897,7 +897,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_InitializesProductBacklog_ParentWorkItemSelected()
       {
-         var model = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null );
+         var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -915,8 +915,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
                var itemId = new Guid( item.Value );
                var workItem = WorkItems.ModelData.First( x => x.Id == itemId );
                Assert.AreEqual( workItem.Name, item.Text );
-               Assert.IsTrue( (model.ParentWorkItemRid != itemId && !item.Selected) ||
-                              (model.ParentWorkItemRid == itemId && item.Selected) );
+               Assert.IsTrue( (model.ParentWorkItem.Id != itemId && !item.Selected) ||
+                              (model.ParentWorkItem.Id == itemId && item.Selected) );
             }
          }
       }
@@ -932,14 +932,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_PopulatesTaskList_IfChildTasksExist()
       {
-         var parentId = ((Guid)WorkItems.ModelData
-            .Where( x => x.ParentWorkItemRid != null )
-            .GroupBy( x => x.ParentWorkItemRid )
+         var parentId = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
             .Select( g => new { Id = g.Key, Count = g.Count() } )
             .OrderBy( x => x.Count )
-            .Last().Id);
+            .Last().Id;
          var expectedChildWorkItems = WorkItems.ModelData
-            .Where( x => x.ParentWorkItemRid == parentId );
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
 
          var result = _controller.Edit( parentId ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -1109,9 +1109,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_SetsPointsToSumOfChildPoints_IfBacklogItem()
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
-             && (WorkItems.ModelData.Count( y => y.ParentWorkItemRid == x.Id ) > 2) );
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
 
-         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItemRid == model.Id ).Sum( x => x.Points );
+         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -1123,9 +1123,9 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void EditGet_SetsPointsRemainingToSumOfChildPointsRemaining_IfBacklogItem()
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
-             && (WorkItems.ModelData.Count( y => y.ParentWorkItemRid == x.Id ) > 2) );
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
 
-         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItemRid == model.Id ).Sum( x => x.PointsRemaining );
+         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
@@ -1366,7 +1366,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_ClearsParent_IfParentIsNotAllowedForType()
       {
-         var model = WorkItems.ModelData.First( x => x.ParentWorkItemRid != default( Guid ) );
+         var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != default( Guid ) );
          var viewModel = CreateWorkItemEditorViewModel( model );
          viewModel.WorkItemTypeId = WorkItemTypes.ModelData.First( x => x.Category == WorkItemTypeCategory.BacklogItem && x.StatusCd == 'A' ).Id;
 
@@ -1374,13 +1374,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _session.Clear();
          var item = _session.Get<WorkItem>( viewModel.Id );
-         Assert.IsNull( item.ParentWorkItemRid );
+         Assert.IsNull( item.ParentWorkItem );
       }
 
       [TestMethod]
       public void EditPost_SetsProjectInChildTasks()
       {
-         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null && x.ParentWorkItemRid != Guid.Empty ).ParentWorkItemRid;
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != Guid.Empty ).ParentWorkItem.Id;
          var model = WorkItems.ModelData.Single( x => x.Id == parentId );
 
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1389,7 +1389,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Edit( viewModel, _principal.Object );
 
          var children = _session.Query<WorkItem>()
-            .Where( x => x.ParentWorkItemRid == parentId );
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
          foreach (var child in children)
          {
             Assert.AreEqual( newProjectId, child.Project.Id );
@@ -1399,7 +1399,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditPost_SetsSprintInChildTasks()
       {
-         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null && x.ParentWorkItemRid != Guid.Empty ).ParentWorkItemRid;
+         var parentId = WorkItems.ModelData.First( x => x.ParentWorkItem != null && x.ParentWorkItem.Id != Guid.Empty ).ParentWorkItem.Id;
          var model = WorkItems.ModelData.Single( x => x.Id == parentId );
 
          var viewModel = CreateWorkItemEditorViewModel( model );
@@ -1408,7 +1408,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Edit( viewModel, _principal.Object );
 
          var children = _session.Query<WorkItem>()
-            .Where( x => x.ParentWorkItemRid == parentId );
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
          foreach (var child in children)
          {
             Assert.AreEqual( newSprintId, child.Sprint.Id );
@@ -1453,14 +1453,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void RemoveParent_MakesParentIdNull_IfWorkItemFound()
       {
-         var id = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null ).Id;
+         var id = WorkItems.ModelData.First( x => x.ParentWorkItem != null ).Id;
 
          _controller.RemoveParent( id );
 
          _session.Clear();
          var item = _session.Get<WorkItem>( id );
          Assert.IsNotNull( item );
-         Assert.IsNull( item.ParentWorkItemRid );
+         Assert.IsNull( item.ParentWorkItem );
       }
 
       [TestMethod]
@@ -1476,7 +1476,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void RemoveParent_RedirectsToCallingAction_IfSpecified()
       {
-         var id = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null ).Id;
+         var id = WorkItems.ModelData.First( x => x.ParentWorkItem != null ).Id;
          var callingId = Guid.NewGuid();
 
          var result = _controller.RemoveParent( id, "Edit", callingId.ToString() ) as RedirectToRouteResult;
@@ -1489,7 +1489,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void RemoveParent_RedirectsToIndex_IfNoCallingActionSpecified()
       {
-         var id = WorkItems.ModelData.First( x => x.ParentWorkItemRid != null ).Id;
+         var id = WorkItems.ModelData.First( x => x.ParentWorkItem != null ).Id;
 
          var result = _controller.RemoveParent( id ) as RedirectToRouteResult;
          Assert.AreEqual( 1, result.RouteValues.Count );
@@ -1548,7 +1548,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             CreatedByUserUserName = workItem.CreatedByUser.UserName,
             ProjectId = (workItem.Project == null) ? default( Guid ) : workItem.Project.Id,
             ProjectName = (workItem.Project == null) ? null : workItem.Project.Name,
-            ParentWorkItemId = workItem.ParentWorkItemRid,
+            ParentWorkItemId = (workItem.ParentWorkItem == null) ? default( Guid ) : workItem.ParentWorkItem.Id,
+            ParentWorkItemName = (workItem.ParentWorkItem == null) ? null : workItem.ParentWorkItem.Name,
             SprintId = (workItem.Sprint == null) ? Guid.Empty : workItem.Sprint.Id,
             SprintName = (workItem.Sprint == null) ? null : workItem.Sprint.Name
          };

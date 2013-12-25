@@ -60,7 +60,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<WorkItemStatus>>().FromMember( src => src.StatusId ) )
             .ForMember( dest => dest.WorkItemType, opt => opt.ResolveUsing<DomainModelResolver<WorkItemType>>().FromMember( src => src.WorkItemTypeId ) )
             .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) )
-            .ForMember( dest => dest.ParentWorkItemRid, opt => opt.ResolveUsing( src => (src.ParentWorkItemId == Guid.Empty) ? null : src.ParentWorkItemId ) )
+            .ForMember( dest => dest.ParentWorkItem, opt => opt.ResolveUsing<DomainModelResolver<WorkItem>>().FromMember( src => src.ParentWorkItemId ) )
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.CreatedByUserId ) )
             .ForMember( dest => dest.AssignedToUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.AssignedToUserId ) )
@@ -133,7 +133,6 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() );
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
-            .ForMember( dest => dest.ParentWorkItemId, opt => opt.ResolveUsing( src => src.ParentWorkItemRid ) )
             .ForMember( dest => dest.Mode, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )

@@ -148,7 +148,7 @@ namespace HomeScrum.Web.Controllers
          {
             var projectId = session.Query<Sprint>().Single( x => x.Id == id ).Project.Id;
             model.WorkItems = session.Query<WorkItem>()
-               .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItemRid == null && (x.Sprint == null || x.Sprint.Id == id) )
+               .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Project.Id == projectId && x.ParentWorkItem == null && (x.Sprint == null || x.Sprint.Id == id) )
                .ApplyStandardSorting()
                .SelectSprintWorkItemViewModel()
                .ToList();
@@ -201,7 +201,7 @@ namespace HomeScrum.Web.Controllers
       private void UpdateSprintOnChildTasks( ISession session, Guid parentId, Sprint sprint )
       {
          Log.Debug( "UpdateSprintOnWorkItem( {0}, {1} )", parentId.ToString(), (sprint == null) ? "Null" : sprint.Name );
-         var tasks = session.Query<WorkItem>().Where( x => x.ParentWorkItemRid == parentId ).ToList();
+         var tasks = session.Query<WorkItem>().Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId ).ToList();
          foreach (var task in tasks)
          {
             task.Sprint = sprint;

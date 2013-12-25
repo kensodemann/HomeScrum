@@ -19,7 +19,7 @@ namespace HomeScrum.Data.Domain
       [Required]
       public virtual Project Project { get; set; }
 
-      public virtual Guid? ParentWorkItemRid { get; set; }
+      public virtual WorkItem ParentWorkItem { get; set; }
       public virtual IEnumerable<WorkItem> Tasks { get; set; }
 
       public virtual Sprint Sprint { get; set; }

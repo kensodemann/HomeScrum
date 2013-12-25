@@ -151,7 +151,7 @@ namespace HomeScrum.Web.Controllers
                var workItem = session.Get<WorkItem>( id );
                if (workItem != null)
                {
-                  workItem.ParentWorkItemRid = null;
+                  workItem.ParentWorkItem = null;
                   session.Save( workItem );
                }
             }
@@ -178,7 +178,7 @@ namespace HomeScrum.Web.Controllers
          viewModel.WorkItemTypes = CreateWorkItemTypeSelectList( session, viewModel.WorkItemTypeId );
          viewModel.Projects = CreateProjectsSelectList( session, viewModel.ProjectId );
          viewModel.AssignedToUsers = CreateUserSelectList( session, viewModel.AssignedToUserId );
-         viewModel.ProductBacklogItems = CreateProductBacklogSelectList( session, viewModel.ParentWorkItemId ?? Guid.Empty );
+         viewModel.ProductBacklogItems = CreateProductBacklogSelectList( session, viewModel.ParentWorkItemId );
          viewModel.Sprints = CreateSprintSelectList( session, viewModel.SprintId );
          base.PopulateSelectLists( session, viewModel );
       }
@@ -304,7 +304,7 @@ namespace HomeScrum.Web.Controllers
       private IEnumerable<WorkItemIndexViewModel> GetChildTasks( ISession session, Guid id )
       {
          return session.Query<WorkItem>()
-            .Where( x => x.ParentWorkItemRid == id )
+            .Where( x => x.ParentWorkItem.Id == id )
             .OrderBy( x => x.Status.SortSequence )
             .ThenBy( x => x.WorkItemType.SortSequence )
             .ThenBy( x => x.Name.ToUpper() )
@@ -332,7 +332,7 @@ namespace HomeScrum.Web.Controllers
       private void UpdateChildTasks( ISession session, WorkItem model )
       {
          var children = session.Query<WorkItem>()
-            .Where( x => x.ParentWorkItemRid == model.Id )
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id )
             .Cacheable()
             .ToList();
 
@@ -358,7 +358,7 @@ namespace HomeScrum.Web.Controllers
          if (model.WorkItemType.Category == WorkItemTypeCategory.BacklogItem)
          {
             model.AssignedToUser = null;
-            model.ParentWorkItemRid = null;
+            model.ParentWorkItem = null;
             model.Points = 0;
             model.PointsRemaining = 0;
          }
