@@ -13,6 +13,9 @@ with lastRow as
            cast(HistoryTimestamp as Date))
 select workItems.Id as workItemRid,
        lastRow.HistoryDate,
+	   dense_rank()
+	      over( partition by lastRow.workItemRid
+		        order by lastRow.HistoryDate desc ) as SortSequenceNumber,
        workItems.Points,
        workItems.PointsRemaining
   from lastRow
