@@ -424,6 +424,20 @@ namespace HomeScrum.Common.TestData
          return workItem;
       }
 
+      private static WorkItemDailySnapshot CreateSnapshotEntry(WorkItem workItem, DateTime date, int points, int pointsRemaining)
+      {
+         var entry = new WorkItemDailySnapshot()
+         {
+            WorkItemRid = workItem.Id,
+            HistoryDate = date,
+            Points = points,
+            PointsRemaining = pointsRemaining,
+            WorkItem = workItem
+         };
+
+         return entry;
+      }
+
       private static void OpenCriteriaList()
       {
          _criteria = new List<AcceptanceCriterion>();
