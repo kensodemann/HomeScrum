@@ -68,6 +68,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ForMember( dest => dest.Sprint, opt => opt.ResolveUsing<DomainModelResolver<Sprint>>().FromMember( src => src.SprintId ) )
+            .ForMember( dest => dest.PointsHistory, opt => opt.Ignore() )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()

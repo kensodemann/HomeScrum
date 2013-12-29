@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="HomeScrum.Data"
+                   namespace="HomeScrum.Data.Domain">
+
+  <class name="WorkItemDailySnapshot"
+         table="WorkItemDailySnapshot">
+    <composite-id>
+      <key-many-to-one name="WorkItem"
+                       column="WorkItemRid"
+                       lazy="false"/>
+      <key-property name="SortSequenceNumber"></key-property>
+    </composite-id>
+    <property name="HistoryDate"/>
+    <property name="Points"/>
+    <property name="PointsRemaining"/>
+  </class>
+
+</hibernate-mapping>

@@ -69,5 +69,14 @@
       <key column="WorkItemRid"/>
       <one-to-many class="AcceptanceCriterion"/>
     </set>
+
+    <!-- This data is actually in a view, so we don't want to cascade the delete (if we even did them) -->
+    <set name="PointsHistory"
+         inverse="true"
+         cascade="none"
+         lazy="true">
+      <key column="WorkItemRid"/>
+      <one-to-many class="WorkItemDailySnapshot"/>
+    </set>
   </class>
 </hibernate-mapping>

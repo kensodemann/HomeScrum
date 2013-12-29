@@ -79,6 +79,7 @@
     <Compile Include="Domain\SprintStatusCategory.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\WorkItemDailySnapshot.cs" />
     <Compile Include="Domain\WorkItemStatusCategory.cs" />
     <Compile Include="Domain\WorkItemTypeCategory.cs" />
     <Compile Include="Services\SecurityService.cs" />
@@ -157,6 +158,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Mappings\WorkItemDailySnapshot.hbm.xml" />
     <EmbeddedResource Include="Mappings\SprintCalendarEntry.hbm.xml" />
     <EmbeddedResource Include="Mappings\Sprint.hbm.xml">
       <SubType>Designer</SubType>

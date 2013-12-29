@@ -37,5 +37,7 @@ namespace HomeScrum.Data.Domain
       public virtual int Points { get; set; }
 
       public virtual int PointsRemaining { get; set; }
+
+      public virtual IEnumerable<WorkItemDailySnapshot> PointsHistory { get; set; }
    }
 }
