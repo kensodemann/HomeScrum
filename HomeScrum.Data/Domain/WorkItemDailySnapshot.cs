@@ -8,7 +8,6 @@ namespace HomeScrum.Data.Domain
 {
    public class WorkItemDailySnapshot
    {
-      public virtual Guid WorkItemRid { get; set; }
       public virtual int SortSequenceNumber { get; set; }
       public virtual DateTime HistoryDate { get; set; }
       public virtual int Points { get; set; }
@@ -21,7 +20,7 @@ namespace HomeScrum.Data.Domain
 
          var item = other as WorkItemDailySnapshot;
 
-         if (item == null || this.WorkItemRid != item.WorkItemRid || this.SortSequenceNumber != item.SortSequenceNumber)
+         if (item == null || this.WorkItem != item.WorkItem || this.SortSequenceNumber != item.SortSequenceNumber)
          {
             return false;
          }
@@ -34,7 +33,7 @@ namespace HomeScrum.Data.Domain
          unchecked
          {
             int result;
-            result = WorkItemRid.GetHashCode();
+            result = WorkItem.GetHashCode();
             result = 29 * result + SortSequenceNumber.GetHashCode();
             return result;
          }

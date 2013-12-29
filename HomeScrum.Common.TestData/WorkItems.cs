@@ -398,6 +398,7 @@ namespace HomeScrum.Common.TestData
             PointsRemaining = pointsRemaining
          };
          workItem.Tasks = new List<WorkItem>();
+         workItem.PointsHistory = new List<WorkItemDailySnapshot>();
          _workItems.Add( workItem );
 
          return workItem;
@@ -419,23 +420,10 @@ namespace HomeScrum.Common.TestData
             PointsRemaining = pointsRemaining
          };
          ((List<WorkItem>)backlogItem.Tasks).Add( workItem );
+         workItem.PointsHistory = new List<WorkItemDailySnapshot>();
          _workItems.Add( workItem );
 
          return workItem;
-      }
-
-      private static WorkItemDailySnapshot CreateSnapshotEntry(WorkItem workItem, DateTime date, int points, int pointsRemaining)
-      {
-         var entry = new WorkItemDailySnapshot()
-         {
-            WorkItemRid = workItem.Id,
-            HistoryDate = date,
-            Points = points,
-            PointsRemaining = pointsRemaining,
-            WorkItem = workItem
-         };
-
-         return entry;
       }
 
       private static void OpenCriteriaList()
