@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+   <title>HomeScrum - My Assignments</title>
+   <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+   <meta name="viewport" content="width=device-width" />
+   <link href="/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+   <link href="/Content/Bootstrap.css" rel="stylesheet" />
+   <link href="/Content/Bootstrap-theme.css" rel="stylesheet" />
+   <link href="/Content/dataTables.bootstrap.css" rel="stylesheet" />
+   <link href="/Content/Site.css" rel="stylesheet" />
+   <link href="/Content/Editor.css" rel="stylesheet" />
+   <link href="/Content/HeaderFooter.css" rel="stylesheet" />
+
+   <link href="/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+   <link href="/Scripts/jqPlot/jquery.jqplot.css" rel="stylesheet" />
+
+
+
+   <script src="/Scripts/modernizr-2.7.1.js"></script>
+
+   <script src="/Scripts/jquery-2.0.2.js"></script>
+   <script src="/Scripts/jquery-2.0.3.js"></script>
+   <script src="/Scripts/jquery-ui-1.10.3.js"></script>
+   <script src="/Scripts/jquery.storage.js"></script>
+   <script src="/Scripts/Bootstrap.js"></script>
+   <script src="/Scripts/knockout-3.0.0.debug.js"></script>
+
+   <script src="/Scripts/DataTables-1.9.4/media/js/jquery.dataTables.js"></script>
+
+   <script src="/Scripts/dataTables.bootstrap.js"></script>
+
+   <script src="/Scripts/HomeScrum/utilities.js"></script>
+
+   <script src="/Scripts/jqPlot/jquery.jqplot.js"></script>
+   <script src="/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js"></script>
+   <script src="/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+   <script src="/Scripts/jqPlot/plugins/jqplot.dateAxisRenderer.js"></script>
+
+   <script type="text/javascript" charset="utf-8">
+      $(document).ready(function () {
+         $(".dataTableList").dataTable();
+      });
+   </script>
+   <script type="text/javascript"></script>
+   <link rel='stylesheet' type='text/css' href='/B1D671CF-E532-4481-99AA-19F420D90332/netdefender/hui/ndhui.css' />
+   <script type="text/javascript"></script>
+   <link rel='stylesheet' type='text/css' href='/B1D671CF-E532-4481-99AA-19F420D90332/netdefender/hui/ndhui.css' />
+</head>
+<body>
+   <script type='text/javascript' language='javascript' src='/B1D671CF-E532-4481-99AA-19F420D90332/netdefender/hui/ndhui.js?0=0&amp;0=0&amp;0=0'></script>
+   <script type='text/javascript' language='javascript' src='/B1D671CF-E532-4481-99AA-19F420D90332/netdefender/hui/ndhui.js?0=0&amp;0=0&amp;0=0'></script>
+   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href='/'>
+            <span class="glyphicon glyphicon-home"></span>
+            <span>HomeScrum</span>
+         </a>
+      </div>
+
+      <div class="collapse navbar-collapse">
+         <ul class="nav navbar-nav">
+            <li class="">
+            <li class="active"><a href="/WorkItems/MyAssignments">My Assignments</a></li></li>
+            <li>
+            <li><a href="/Sprints/CurrentSprints">Current Sprints</a></li></li>
+            <li class="dropdown">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Work Items <b class="caret"></b></a>
+               <ul class="dropdown-menu">
+                  <li class="active">
+                  <li><a href="/WorkItems/UnassignedProblems">Unassigned Problems</a></li>
+            </li>
+            <li>
+            <li><a href="/WorkItems/UnassignedTasks">Unassigned Tasks</a></li></li>
+            <li>
+            <li><a href="/WorkItems/UnassignedBacklog">Unassigned Backlog</a></li></li>
+            <li class="divider"></li>
+            <li>
+            <li><a href="/WorkItems">All Work Items</a></li></li>
+         </ul>
+         </li>
+         <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sprints <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+               <li>
+               <li><a href="/Sprints/OpenSprints">Open Sprints</a></li>
+         </li>
+         <li><li><a href="/Sprints">All Sprints</a></li></li>
+         </ul>
+         </li>
+         <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+               <li>
+               <li><a href="/AcceptanceCriterionStatuses">Acceptance Criterion Statuses</a></li>
+         </li>
+         <li><li><a href="/ProjectStatuses">Project Statuses</a></li></li>
+         <li><li><a href="/SprintStatuses">Sprint Statuses</a></li></li>
+         <li><li><a href="/WorkItemStatuses">Work Item Statuses</a></li></li>
+         <li><li><a href="/WorkItemTypes">Work Item Types</a></li></li>
+         <li class="divider"></li>
+         <li><li><a href="/Projects">Projects</a></li></li>
+         <li class="divider"></li>
+         <li><li><a href="/Users">Users</a></li></li>
+         <li><li><a href="/Account/Manage">Change Password</a></li></li>
+         </ul>
+         </li>
+         </ul>
+
+         <form action="/Account/LogOff" id="logoutForm" method="post">
+            <ul class="nav navbar-nav navbar-right">
+               <li>
+                  <input name="__RequestVerificationToken" type="hidden" value="i_pdl30XT2maDmcFXCevju7p6bFFmdNk2rs3AAi8rguqyshuAdXpxo6c-WiGVW0fgphzwzsQz6U-qDB5G7L10LshrLe0MRvOlIZGcKX2APs1" />
+                  <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+               </li>
+            </ul>
+         </form>
+
+         <ul class="nav navbar-nav navbar-right">
+            <li>
+            <li><a href="/Home/About">About</a></li></li>
+         </ul>
+
+
+      </div>
+   </nav>
+
+   <div class="container page-host">
+
+      <section class="WorkArea">
+
+         <article class="content-wrapper main-content clear-fix">
+
+
+            <h2>Burndown</h2>
+
+            <div id="chartdiv" style="height:400px;width:600px; "></div>
+
+         </article>
+      </section>
+
+      <footer>
+         <div id="copyright">
+            <p>&copy; 2013 - Ken Sodemann</p>
+         </div>
+      </footer>
+   </div>
+
+
+
+   <script type="text/javascript" charset="utf-8">
+      $(document).ready(function () {
+         $.jqplot('chartdiv', [[['2013-12-01', 100],  // Obtain from the sprint calendar
+                                ['2013-12-02', 100],
+                                ['2013-12-03', 97],
+                                ['2013-12-04', 89],
+                                ['2013-12-05', 83],
+                                ['2013-12-06', 75],
+                                ['2013-12-09', 63],
+                                ['2013-12-10', 64]]], {
+            title: "Name of Sprint",
+            axesDefaults: {
+               labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+            },
+            axes: {
+               xaxis: {
+                  label: "Date",
+                  renderer: $.jqplot.DateAxisRenderer,
+                  pad: 0,
+                  min: '2013-12-01',  // obtain from sprint begin date
+                  max: '2013-12-31'   // obtain from sprint end date
+               },
+               yaxis: {
+                  label: "Points Remaining",
+                  min: 0
+               }
+            }
+         });
+      });
+   </script>
+
+   <script>
+      $(function () {
+         $("input[type=submit], button").button();
+      });
+   </script>
+
+   <script type="text/javascript">
+      $(function () {
+         $("input[type=text]").first().focus();
+      });
+   </script>
+
+</body>
+</html>
