@@ -36,7 +36,9 @@
    <script src="/Scripts/HomeScrum/utilities.js"></script>
 
    <script src="/Scripts/jqPlot/jquery.jqplot.js"></script>
-
+   <script src="/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js"></script>
+   <script src="/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+   <script src="/Scripts/jqPlot/plugins/jqplot.dateAxisRenderer.js"></script>
 
    <script type="text/javascript" charset="utf-8">
       $(document).ready(function () {
@@ -141,7 +143,7 @@
 
             <h2>Burndown</h2>
 
-            <div id="chartdiv" style="height:400px;width:400px; "></div>
+            <div id="chartdiv" style="height:400px;width:600px; "></div>
 
          </article>
       </section>
@@ -157,7 +159,32 @@
 
    <script type="text/javascript" charset="utf-8">
       $(document).ready(function () {
-         $.jqplot('chartdiv', [[[1, 97], [3, 89], [5, 83], [7, 75], [9, 63], [11, 64]]]);
+         $.jqplot('chartdiv', [[['2013-12-01', 100],  // Obtain from the sprint calendar
+                                ['2013-12-02', 100],
+                                ['2013-12-03', 97],
+                                ['2013-12-04', 89],
+                                ['2013-12-05', 83],
+                                ['2013-12-06', 75],
+                                ['2013-12-09', 63],
+                                ['2013-12-10', 64]]], {
+            title: "Name of Sprint",
+            axesDefaults: {
+               labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+            },
+            axes: {
+               xaxis: {
+                  label: "Date",
+                  renderer: $.jqplot.DateAxisRenderer,
+                  pad: 0,
+                  min: '2013-12-01',  // obtain from sprint begin date
+                  max: '2013-12-31'   // obtain from sprint end date
+               },
+               yaxis: {
+                  label: "Points Remaining",
+                  min: 0
+               }
+            }
+         });
       });
    </script>
 
