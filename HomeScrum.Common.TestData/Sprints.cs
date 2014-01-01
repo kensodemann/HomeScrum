@@ -3,6 +3,7 @@ using HomeScrum.Data.Domain;
 using NHibernate;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace HomeScrum.Common.TestData
 {
@@ -77,7 +78,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Get the initial design finalized",
                LastModifiedUserRid = Users.ModelData[0].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 42
+               Capacity = 42,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -90,7 +92,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Develop pattern for the controller classes",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0],
-               Capacity = 35
+               Capacity = 35,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -103,7 +106,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Accomplish something else",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[2],
-               Capacity = 45
+               Capacity = 45,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -116,7 +120,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Create Domains Models and ORM Mappings",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 48
+               Capacity = 48,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -129,7 +134,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Expand controllers",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[2],
-               Capacity = 52
+               Capacity = 52,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -142,7 +148,8 @@ namespace HomeScrum.Common.TestData
                Goal = null,
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0],
-               Capacity = 20
+               Capacity = 20,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -155,7 +162,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Create editor views",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 25
+               Capacity = 25,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -168,7 +176,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Test Null End Date",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 38
+               Capacity = 38,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -181,7 +190,8 @@ namespace HomeScrum.Common.TestData
                Goal = "Accomplish something",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[0],
-               Capacity = 60
+               Capacity = 60,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -194,7 +204,8 @@ namespace HomeScrum.Common.TestData
                Goal = "The project is imploding, attempt to prevent that",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 22
+               Capacity = 22,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -207,7 +218,8 @@ namespace HomeScrum.Common.TestData
                Goal = "I don't know",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 65
+               Capacity = 65,
+               Calendar = new List<SprintCalendarEntry>()
             },
             new Sprint()
             {
@@ -220,9 +232,40 @@ namespace HomeScrum.Common.TestData
                Goal = "I still don't know",
                LastModifiedUserRid = Users.ModelData[1].Id,
                CreatedByUser = Users.ModelData[1],
-               Capacity = 43
+               Capacity = 43,
+               Calendar = new List<SprintCalendarEntry>()
             }
          };
+
+         InitializeCalendarData();
+      }
+
+      private static void InitializeCalendarData()
+      {
+         foreach (var sprint in ModelData)
+         {
+            if (sprint.StartDate != null && sprint.EndDate != null)
+            {
+               AddCalendarData( sprint );
+            }
+         }
+      }
+
+      private static void AddCalendarData( Sprint sprint )
+      {
+         var random = new Random();
+         var date = (DateTime)sprint.StartDate;
+         while (date <= sprint.EndDate)
+         {
+            var entry = new SprintCalendarEntry()
+            {
+               Sprint = sprint,
+               HistoryDate = date,
+               PointsRemaining = random.Next( 1, 42 )
+            };
+            ((IList<SprintCalendarEntry>)sprint.Calendar).Add( entry );
+            date = date.AddDays( 1 );
+         }
       }
    }
 }
