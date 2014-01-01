@@ -2,7 +2,7 @@
 
 namespace HomeScrum.Data.Services
 {
-   interface ISprintCalendarService
+   public interface ISprintCalendarService
    {
       void Update( Sprint sprint );
    }
