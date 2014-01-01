@@ -14,7 +14,7 @@ namespace HomeScrum.Data.Services
       private readonly ILogger _logger;
       private readonly ISessionFactory _sessionFactory;
 
-      public SprintCalendarService(ILogger logger, ISessionFactory sessionFactory)
+      public SprintCalendarService( ILogger logger, ISessionFactory sessionFactory )
       {
          _logger = logger;
          _sessionFactory = sessionFactory;
@@ -24,7 +24,7 @@ namespace HomeScrum.Data.Services
       {
          Log.Debug( "Updating Sprint Calendar" );
 
-         if (sprint.StartDate == null)
+         if (sprint.StartDate == null || sprint.EndDate == null)
          {
             return;
          }

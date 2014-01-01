@@ -83,7 +83,16 @@ namespace HomeScrum.Data.UnitTest.Services
       [TestMethod]
       public void Update_DoesNothingIfNoEndDate()
       {
+         WorkItemDailySnapshots.Load( _sessionFactory.Object );
+         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.PointsHistory.Count() > 0 ).Sprint;
+         var calCount = sprint.Calendar.Count();
+         var calHash = sprint.Calendar.GetHashCode();
 
+         sprint.EndDate = null;
+         _service.Update( sprint );
+
+         Assert.AreEqual( calCount, sprint.Calendar.Count() );
+         Assert.AreEqual( calHash, sprint.Calendar.GetHashCode() );
       }
 
       [TestMethod]
