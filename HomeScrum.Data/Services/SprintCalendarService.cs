@@ -42,7 +42,7 @@ namespace HomeScrum.Data.Services
             }
             date = date.AddDays( 1 );
          }
-         CreateCalendarEntry( sprint, DateTime.Now.Date );
+         CreateOrUpdateCalendarEntry( sprint, DateTime.Now.Date );
 
          Log.Debug( "Sprint Calendar Update Complete" );
       }
@@ -55,6 +55,19 @@ namespace HomeScrum.Data.Services
             .ToList();
       }
 
+      private void CreateOrUpdateCalendarEntry(Sprint sprint, DateTime date)
+      {
+         var entry = sprint.Calendar.SingleOrDefault( x => x.HistoryDate.Date == date.Date );
+         if (entry != null)
+         {
+            entry.PointsRemaining = PointsRemaining( sprint, date );
+         }
+         else
+         {
+            CreateCalendarEntry( sprint, date );
+         }
+      }
+      
       private void CreateCalendarEntry( Sprint sprint, DateTime date )
       {
          var p = PointsRemaining( sprint, date );
@@ -72,7 +85,9 @@ namespace HomeScrum.Data.Services
          int points = 0;
          foreach (var task in _sprintTasks)
          {
-            var snapshot = task.PointsHistory.LastOrDefault( x => x.HistoryDate <= date );
+            var snapshot = task.PointsHistory
+               .OrderBy( x => x.HistoryDate )
+               .LastOrDefault( x => x.HistoryDate <= date );
             if (snapshot != null)
             {
                points += snapshot.PointsRemaining;

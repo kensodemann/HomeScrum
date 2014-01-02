@@ -106,7 +106,7 @@ namespace HomeScrum.Data.UnitTest.Services
             .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
             .ToList();
 
-         sprint.Calendar = new List<SprintCalendarEntry>();
+         sprint.Calendar.Clear();
          _service.Update( sprint );
 
          Assert.AreEqual( 16, sprint.Calendar.Count() );
@@ -119,6 +119,23 @@ namespace HomeScrum.Data.UnitTest.Services
       [TestMethod]
       public void Update_UpdatesTodayIfEntryExists()
       {
+         var sprint = _session.Query<WorkItem>()
+            .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate < DateTime.Now.Date && x.Sprint.EndDate > DateTime.Now.Date )
+            .Sprint;
+         var sprintTasks = _session.Query<WorkItem>()
+            .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .ToList();
+
+         sprint.Calendar.Clear();
+         _service.Update( sprint );
+         sprint.Calendar.Single( x => x.HistoryDate == DateTime.Now.Date ).PointsRemaining += 143;
+         _service.Update( sprint );
+
+         Assert.AreEqual( 16, sprint.Calendar.Count() );
+         for (int i = 0; i < 16; i++)
+         {
+            AssertSprintCalendar( sprint, sprintTasks, i );
+         }
       }
 
       [TestMethod]
@@ -168,7 +185,7 @@ namespace HomeScrum.Data.UnitTest.Services
          var pointsRemaining = 0;
          foreach (var task in tasks)
          {
-            pointsRemaining += task.PointsHistory.Last( x => x.HistoryDate <= date ).PointsRemaining;
+            pointsRemaining += task.PointsHistory.OrderBy( x => x.HistoryDate ).Last( x => x.HistoryDate <= date ).PointsRemaining;
          }
          Assert.AreEqual( pointsRemaining, sprint.Calendar.Single( x => x.HistoryDate == date ).PointsRemaining );
       }
