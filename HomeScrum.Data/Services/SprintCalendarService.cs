@@ -26,7 +26,9 @@ namespace HomeScrum.Data.Services
       {
          Log.Debug( "Updating Sprint Calendar" );
 
-         if (sprint.StartDate == null || sprint.EndDate == null)
+         if (sprint.StartDate == null || sprint.EndDate == null ||
+             ((DateTime)sprint.StartDate).Date > DateTime.Now.Date ||
+             ((DateTime)sprint.EndDate).Date < DateTime.Now.Date)
          {
             return;
          }
@@ -55,7 +57,7 @@ namespace HomeScrum.Data.Services
             .ToList();
       }
 
-      private void CreateOrUpdateCalendarEntry(Sprint sprint, DateTime date)
+      private void CreateOrUpdateCalendarEntry( Sprint sprint, DateTime date )
       {
          var entry = sprint.Calendar.SingleOrDefault( x => x.HistoryDate.Date == date.Date );
          if (entry != null)
@@ -67,7 +69,7 @@ namespace HomeScrum.Data.Services
             CreateCalendarEntry( sprint, date );
          }
       }
-      
+
       private void CreateCalendarEntry( Sprint sprint, DateTime date )
       {
          var p = PointsRemaining( sprint, date );

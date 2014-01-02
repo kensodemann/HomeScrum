@@ -73,13 +73,13 @@ namespace HomeScrum.Data.UnitTest.Services
       {
          var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 ).Sprint;
          var calCount = sprint.Calendar.Count();
-         var calHash = sprint.Calendar.GetHashCode();
+         var calHash = CalendarHash( sprint );
 
          sprint.StartDate = null;
          _service.Update( sprint );
 
          Assert.AreEqual( calCount, sprint.Calendar.Count() );
-         Assert.AreEqual( calHash, sprint.Calendar.GetHashCode() );
+         Assert.AreEqual( calHash, CalendarHash( sprint ) );
       }
 
       [TestMethod]
@@ -87,13 +87,13 @@ namespace HomeScrum.Data.UnitTest.Services
       {
          var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 ).Sprint;
          var calCount = sprint.Calendar.Count();
-         var calHash = sprint.Calendar.GetHashCode();
+         var calHash = CalendarHash( sprint );
 
          sprint.EndDate = null;
          _service.Update( sprint );
 
          Assert.AreEqual( calCount, sprint.Calendar.Count() );
-         Assert.AreEqual( calHash, sprint.Calendar.GetHashCode() );
+         Assert.AreEqual( calHash, CalendarHash( sprint ) );
       }
 
       [TestMethod]
@@ -141,12 +141,32 @@ namespace HomeScrum.Data.UnitTest.Services
       [TestMethod]
       public void Update_DoesNothingIfTodayAfterEndDate()
       {
+         var sprint = _session.Query<WorkItem>()
+            .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate != null && x.Sprint.EndDate < DateTime.Now.Date )
+            .Sprint;
+         var calCount = sprint.Calendar.Count();
+         var calHash = CalendarHash( sprint );
+
+         _service.Update( sprint );
+
+         Assert.AreEqual( calCount, sprint.Calendar.Count() );
+         Assert.AreEqual( calHash, CalendarHash( sprint ) );
       }
 
       [TestMethod]
       public void Update_DoesNothingIfTodayBeforeStartDate()
       {
+         var sprint = _session.Query<WorkItem>()
+            .First( x => x.Sprint != null && x.Sprint.StartDate > DateTime.Now.Date )
+            .Sprint;
+         var calCount = sprint.Calendar.Count();
+         var calHash = CalendarHash( sprint );
 
+         sprint.EndDate = ((DateTime)sprint.StartDate).AddDays( 30 ).Date;
+         _service.Update( sprint );
+
+         Assert.AreEqual( calCount, sprint.Calendar.Count() );
+         Assert.AreEqual( calHash, CalendarHash( sprint ) );
       }
 
       [TestMethod]
@@ -188,6 +208,16 @@ namespace HomeScrum.Data.UnitTest.Services
             pointsRemaining += task.PointsHistory.OrderBy( x => x.HistoryDate ).Last( x => x.HistoryDate <= date ).PointsRemaining;
          }
          Assert.AreEqual( pointsRemaining, sprint.Calendar.Single( x => x.HistoryDate == date ).PointsRemaining );
+      }
+
+      private int CalendarHash( Sprint sprint )
+      {
+         var hash = 0;
+         foreach (var e in sprint.Calendar)
+         {
+            hash += e.GetHashCode();
+         }
+         return hash;
       }
    }
 }
