@@ -8,6 +8,7 @@ using System.Linq;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Services;
 using Ninject.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace HomeScrum.Data.UnitTest.Services
 {
@@ -43,6 +44,8 @@ namespace HomeScrum.Data.UnitTest.Services
          Database.Build( _session );
          Sprints.Load( _sessionFactory.Object );
          WorkItems.Load( _sessionFactory.Object );
+         WorkItemDailySnapshots.Load( _sessionFactory.Object );
+
       }
 
       private void SetupMocks()
@@ -68,8 +71,7 @@ namespace HomeScrum.Data.UnitTest.Services
       [TestMethod]
       public void Update_DoesNothingIfNoStartDate()
       {
-         WorkItemDailySnapshots.Load( _sessionFactory.Object );
-         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.PointsHistory.Count() > 0 ).Sprint;
+         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 ).Sprint;
          var calCount = sprint.Calendar.Count();
          var calHash = sprint.Calendar.GetHashCode();
 
@@ -83,8 +85,7 @@ namespace HomeScrum.Data.UnitTest.Services
       [TestMethod]
       public void Update_DoesNothingIfNoEndDate()
       {
-         WorkItemDailySnapshots.Load( _sessionFactory.Object );
-         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.PointsHistory.Count() > 0 ).Sprint;
+         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 ).Sprint;
          var calCount = sprint.Calendar.Count();
          var calHash = sprint.Calendar.GetHashCode();
 
@@ -98,11 +99,37 @@ namespace HomeScrum.Data.UnitTest.Services
       [TestMethod]
       public void Update_AddsDaysUpToToday_IfNotThere()
       {
+         var sprint = _session.Query<WorkItem>()
+            .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate < DateTime.Now.Date && x.Sprint.EndDate > DateTime.Now.Date )
+            .Sprint;
+         var sprintTasks = _session.Query<WorkItem>()
+            .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .ToList();
+
+         sprint.Calendar = new List<SprintCalendarEntry>();
+         _service.Update( sprint );
+
+         Assert.AreEqual( 16, sprint.Calendar.Count() );
+         for (int i = 0; i < 16; i++)
+         {
+            AssertSprintCalendar( sprint, sprintTasks, i );
+         }
       }
 
       [TestMethod]
       public void Update_UpdatesTodayIfEntryExists()
       {
+      }
+
+      [TestMethod]
+      public void Update_DoesNothingIfTodayAfterEndDate()
+      {
+      }
+
+      [TestMethod]
+      public void Update_DoesNothingIfTodayBeforeStartDate()
+      {
+
       }
 
       [TestMethod]
@@ -133,6 +160,17 @@ namespace HomeScrum.Data.UnitTest.Services
       public void Reset_RebuildsFullCalendar_IfCurrentDatePastEndDate()
       {
 
+      }
+
+      private void AssertSprintCalendar( Sprint sprint, IEnumerable<WorkItem> tasks, int day )
+      {
+         var date = ((DateTime)sprint.StartDate).AddDays( day );
+         var pointsRemaining = 0;
+         foreach (var task in tasks)
+         {
+            pointsRemaining += task.PointsHistory.Last( x => x.HistoryDate <= date ).PointsRemaining;
+         }
+         Assert.AreEqual( pointsRemaining, sprint.Calendar.Single( x => x.HistoryDate == date ).PointsRemaining );
       }
    }
 }
