@@ -127,7 +127,7 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( 'A', ((ProjectStatus)domainModel).StatusCd );
       }
       #endregion
-      
+
 
       #region Sprint Status
       [TestMethod]
@@ -299,6 +299,16 @@ namespace HomeScrum.Web.UnitTest.ViewModels
          Assert.AreEqual( viewModel.EndDate, ((Sprint)domainModel).EndDate );
          Assert.AreEqual( viewModel.StatusId, ((Sprint)domainModel).Status.Id );
          Assert.AreEqual( viewModel.ProjectId, ((Sprint)domainModel).Project.Id );
+      }
+
+      [TestMethod]
+      public void Sprint_EditorViewModelToDomain_IncludesCalendar()
+      {
+         var domainModel = Sprints.ModelData.First( x => x.Calendar.Count() > 0 );
+         var viewModel = Mapper.Map( domainModel, domainModel.GetType(), typeof( SprintEditorViewModel ) );
+         var mappedModel = Mapper.Map( viewModel, viewModel.GetType(), typeof( Sprint ) ) as Sprint;
+
+         Assert.AreEqual( domainModel.Calendar.Count(), mappedModel.Calendar.Count() );
       }
       #endregion
 

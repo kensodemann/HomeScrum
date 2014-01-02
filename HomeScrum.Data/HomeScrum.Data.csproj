@@ -82,7 +82,9 @@
     <Compile Include="Domain\WorkItemDailySnapshot.cs" />
     <Compile Include="Domain\WorkItemStatusCategory.cs" />
     <Compile Include="Domain\WorkItemTypeCategory.cs" />
+    <Compile Include="Services\ISprintCalendarService.cs" />
     <Compile Include="Services\SecurityService.cs" />
+    <Compile Include="Services\SprintCalendarService.cs" />
     <Compile Include="Validation\ValidatableObject.cs" />
     <Compile Include="Domain\WorkItem.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
