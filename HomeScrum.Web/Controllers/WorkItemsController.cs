@@ -12,14 +12,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
+using HomeScrum.Data.Services;
 
 namespace HomeScrum.Web.Controllers
 {
    public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemEditorViewModel>
    {
+      private readonly ISprintCalendarService _sprintCalendarService;
+
       [Inject]
-      public WorkItemsController( IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( translator, logger, sessionFactory ) { }
+      public WorkItemsController( IPropertyNameTranslator<WorkItem, WorkItemEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory, ISprintCalendarService sprintCalendarService )
+         : base( translator, logger, sessionFactory )
+      {
+         _sprintCalendarService = sprintCalendarService;
+      }
 
       //
       // GET: /WorkItems/
@@ -327,6 +333,12 @@ namespace HomeScrum.Web.Controllers
          base.Update( session, model, user );
 
          UpdateChildTasks( session, model );
+
+         if (model.Sprint != null)
+         {
+            session.Flush();
+            _sprintCalendarService.Update( model.Sprint );
+         }
       }
 
       private void UpdateChildTasks( ISession session, WorkItem model )
