@@ -1,6 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.Sprints;
@@ -12,11 +18,6 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -36,6 +37,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
+
+      private Mock<ISprintCalendarService> _sprintCalendarService;
 
       private SprintsController _controller;
 
@@ -63,6 +66,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _sessionFactory = new Mock<ISessionFactory>();
          _logger = new Mock<ILogger>();
+         _sprintCalendarService = new Mock<ISprintCalendarService>();
       }
 
       private void SetupSession()
@@ -81,7 +85,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         _controller = new SprintsController( new PropertyNameTranslator<Sprint, SprintEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         _controller = new SprintsController( new PropertyNameTranslator<Sprint, SprintEditorViewModel>(), _logger.Object, _sessionFactory.Object, _sprintCalendarService.Object );
          _controller.ControllerContext = _controllerConext.Object;
       }
 
@@ -1045,6 +1049,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
                            (model.Project.Id == itemId && item.Selected) );
          }
+      }
+
+      [TestMethod]
+      public void EditPost_CallsSprintCalendarService()
+      {
+         var model = Sprints.ModelData[3];
+         var viewModel = CreateSprintEditorViewModel( model );
+
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Reset( It.Is<Sprint>( s => s.Id == model.Id ) ), Times.Once() );
       }
       #endregion
 
