@@ -11,14 +11,15 @@ with lastRow as
       from WorkItemHistory
      group by WorkItemRID,
            cast(HistoryTimestamp as Date))
-select workItems.Id as workItemRid,
+select WorkItemHistory.WorkItemRID,
        lastRow.HistoryDate,
 	   dense_rank()
 	      over( partition by lastRow.workItemRid
 		        order by lastRow.HistoryDate desc ) as SortSequenceNumber,
-       workItems.Points,
-       workItems.PointsRemaining
+       WorkItemHistory.Points,
+       WorkItemHistory.PointsRemaining
   from lastRow
-       join workItems
-	     on workItems.id = lastRow.workItemRid;
+       join WorkItemHistory
+	     on WorkItemHistory.WorkItemRID = lastRow.workItemRid and
+		    WorkItemHistory.SequenceNumber = lastRow.maxSequenceNumber;
 GO
