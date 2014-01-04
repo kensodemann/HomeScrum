@@ -66,6 +66,7 @@ namespace HomeScrum.Web
       private static void RegisterServices( IKernel kernel )
       {
          kernel.Bind<ISecurityService>().To( typeof( SecurityService ) ).InSingletonScope();
+         kernel.Bind<ISprintCalendarService>().To( typeof( SprintCalendarService ) );
 
          kernel.Bind<IPropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>>()
             .ToConstant( new PropertyNameTranslator<AcceptanceCriterionStatus, AcceptanceCriterionStatusEditorViewModel>() );
