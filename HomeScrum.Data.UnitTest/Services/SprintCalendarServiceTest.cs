@@ -109,8 +109,8 @@ namespace HomeScrum.Data.UnitTest.Services
          sprint.Calendar.Clear();
          _service.Update( sprint );
 
-         Assert.AreEqual( 16, sprint.Calendar.Count() );
-         for (int i = 0; i < 16; i++)
+         Assert.AreEqual( 16, sprint.Calendar.Count );
+         for (int i = 0; i < sprint.Calendar.Count; i++)
          {
             AssertSprintCalendar( sprint, sprintTasks, i );
          }
@@ -170,33 +170,85 @@ namespace HomeScrum.Data.UnitTest.Services
       }
 
       [TestMethod]
-      public void Reset_DoesNothingIfNoStartDate()
+      public void Reset_RemovesCalendarIfNoStartDate()
       {
+         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 ).Sprint;
 
+         sprint.StartDate = null;
+         _service.Reset( sprint );
+
+         Assert.AreEqual( 0, sprint.Calendar.Count() );
       }
 
       [TestMethod]
-      public void Reset_DoesNothingIfNoEndDate()
+      public void Reset_RemovesCalendarIfNoEndDate()
       {
+         var sprint = _session.Query<WorkItem>().First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 ).Sprint;
 
+         sprint.EndDate = null;
+         _service.Reset( sprint );
+
+         Assert.AreEqual( 0, sprint.Calendar.Count() );
       }
 
       [TestMethod]
       public void Reset_CreatesEntryForStartDate_IfCurrentDateBeforeStartDate()
       {
+         var sprint = _session.Query<WorkItem>()
+            .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate < DateTime.Now.Date && x.Sprint.EndDate > DateTime.Now.Date )
+            .Sprint;
+         var sprintTasks = _session.Query<WorkItem>()
+            .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .ToList();
 
+         sprint.StartDate = DateTime.Now.AddDays( 1 ).Date;
+         sprint.EndDate = DateTime.Now.AddDays( 31 ).Date;
+         _service.Reset( sprint );
+
+         Assert.AreEqual( 1, sprint.Calendar.Count() );
+         AssertSprintCalendar( sprint, sprintTasks, 0 );
       }
 
       [TestMethod]
       public void Reset_RebuildsCalendarToDate_IfCurrentDateBetweenStartAndEndDate()
       {
+         var sprint = _session.Query<WorkItem>()
+            .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate < DateTime.Now.Date && x.Sprint.EndDate > DateTime.Now.Date )
+            .Sprint;
+         var sprintTasks = _session.Query<WorkItem>()
+            .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .ToList();
 
+         sprint.StartDate = DateTime.Now.AddDays( -10 ).Date;
+         sprint.EndDate = DateTime.Now.AddDays( 21 ).Date;
+         _service.Reset( sprint );
+
+         Assert.AreEqual( 11, sprint.Calendar.Count() );
+         for (int i = 0; i < sprint.Calendar.Count; i++)
+         {
+            AssertSprintCalendar( sprint, sprintTasks, i );
+         }
       }
 
       [TestMethod]
       public void Reset_RebuildsFullCalendar_IfCurrentDatePastEndDate()
       {
+         var sprint = _session.Query<WorkItem>()
+         .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate < DateTime.Now.Date && x.Sprint.EndDate > DateTime.Now.Date )
+         .Sprint;
+         var sprintTasks = _session.Query<WorkItem>()
+            .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .ToList();
 
+         sprint.StartDate = DateTime.Now.AddDays( -10 ).Date;
+         sprint.EndDate = DateTime.Now.AddDays( -1 ).Date;
+         _service.Reset( sprint );
+
+         Assert.AreEqual( 10, sprint.Calendar.Count() );
+         for (int i = 0; i < sprint.Calendar.Count; i++)
+         {
+            AssertSprintCalendar( sprint, sprintTasks, i );
+         }
       }
 
       private void AssertSprintCalendar( Sprint sprint, IEnumerable<WorkItem> tasks, int day )

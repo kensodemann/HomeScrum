@@ -16,11 +16,13 @@ namespace HomeScrum.Data.Services
       private readonly ISessionFactory _sessionFactory;
       private IEnumerable<WorkItem> _sprintTasks;
 
+
       public SprintCalendarService( ILogger logger, ISessionFactory sessionFactory )
       {
          _logger = logger;
          _sessionFactory = sessionFactory;
       }
+
 
       public void Update( Sprint sprint )
       {
@@ -33,21 +35,50 @@ namespace HomeScrum.Data.Services
             return;
          }
 
+         UpdateCalendar( sprint, DateTime.Now.Date );
+
+         Log.Debug( "Sprint Calendar Update Complete" );
+      }
+
+
+      public void Reset( Sprint sprint )
+      {
+         Log.Debug( "Reset Sprint Calendar" );
+
+         sprint.Calendar.Clear();
+
+         if (sprint.StartDate == null || sprint.EndDate == null)
+         {
+            return;
+         }
+
+         var startDate = ((DateTime)sprint.StartDate).Date;
+         var endDate = ((DateTime)sprint.EndDate).Date;
+         UpdateCalendar( sprint,
+            (DateTime.Now.Date < startDate) ? startDate :
+            (DateTime.Now.Date > endDate) ? endDate :
+            DateTime.Now.Date );
+
+         Log.Debug( "Sprint Calendar Reset Complete" );
+      }
+
+
+      private void UpdateCalendar( Sprint sprint, DateTime throughDate )
+      {
          GetSprintTasks( sprint );
 
          var date = ((DateTime)sprint.StartDate);
-         while (date < DateTime.Now.Date)
+         while (date < throughDate)
          {
-            if (sprint.Calendar.FirstOrDefault( x => x.HistoryDate == date ) == null)
+            if (sprint.Calendar.SingleOrDefault( x => x.HistoryDate == date ) == null)
             {
                CreateCalendarEntry( sprint, date );
             }
             date = date.AddDays( 1 );
          }
-         CreateOrUpdateCalendarEntry( sprint, DateTime.Now.Date );
-
-         Log.Debug( "Sprint Calendar Update Complete" );
+         CreateOrUpdateCalendarEntry( sprint, throughDate );
       }
+
 
       private void GetSprintTasks( Sprint sprint )
       {
@@ -56,6 +87,7 @@ namespace HomeScrum.Data.Services
             .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
             .ToList();
       }
+
 
       private void CreateOrUpdateCalendarEntry( Sprint sprint, DateTime date )
       {
@@ -70,6 +102,7 @@ namespace HomeScrum.Data.Services
          }
       }
 
+
       private void CreateCalendarEntry( Sprint sprint, DateTime date )
       {
          var p = PointsRemaining( sprint, date );
@@ -81,6 +114,7 @@ namespace HomeScrum.Data.Services
          };
          sprint.Calendar.Add( s );
       }
+
 
       private int PointsRemaining( Sprint sprint, DateTime date )
       {
@@ -98,6 +132,7 @@ namespace HomeScrum.Data.Services
 
          return points;
       }
+
 
       protected ILogger Log
       {
