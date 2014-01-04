@@ -1466,6 +1466,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _sprintCalendarService.Verify( x => x.Update( It.Is<Sprint>( s => s.Id == model.Sprint.Id ) ), Times.Once() );
       }
+
+      [TestMethod]
+      public void EditPost_DoesNotCallSprintCalendarService_IfSprintIsNull()
+      {
+         var model = WorkItems.ModelData.First( x => x.Sprint == null );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.IsAny<Sprint>() ), Times.Never() );
+      }
       #endregion
 
 
