@@ -154,19 +154,22 @@ namespace HomeScrum.Data.UnitTest.Services
       }
 
       [TestMethod]
-      public void Update_DoesNothingIfTodayBeforeStartDate()
+      public void Update_UpdatesFirstDayOfSprint_IfTodayBeforeStartDate()
       {
          var sprint = _session.Query<WorkItem>()
-            .First( x => x.Sprint != null && x.Sprint.StartDate > DateTime.Now.Date )
+            .First( x => x.Sprint != null && x.Sprint.Calendar.Count() > 0 && x.Sprint.StartDate < DateTime.Now.Date && x.Sprint.EndDate > DateTime.Now.Date )
             .Sprint;
-         var calCount = sprint.Calendar.Count();
-         var calHash = CalendarHash( sprint );
+         var sprintTasks = _session.Query<WorkItem>()
+            .Where( x => x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .ToList();
 
-         sprint.EndDate = ((DateTime)sprint.StartDate).AddDays( 30 ).Date;
+         sprint.StartDate = DateTime.Now.AddDays( 1 ).Date;
+         sprint.EndDate = DateTime.Now.AddDays( 31 ).Date;
+         sprint.Calendar.Clear();
          _service.Update( sprint );
 
-         Assert.AreEqual( calCount, sprint.Calendar.Count() );
-         Assert.AreEqual( calHash, CalendarHash( sprint ) );
+         Assert.AreEqual( 1, sprint.Calendar.Count() );
+         AssertSprintCalendar( sprint, sprintTasks, 0 );
       }
 
       [TestMethod]

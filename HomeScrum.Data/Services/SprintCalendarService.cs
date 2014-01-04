@@ -29,13 +29,15 @@ namespace HomeScrum.Data.Services
          Log.Debug( "Updating Sprint Calendar" );
 
          if (sprint.StartDate == null || sprint.EndDate == null ||
-             ((DateTime)sprint.StartDate).Date > DateTime.Now.Date ||
              ((DateTime)sprint.EndDate).Date < DateTime.Now.Date)
          {
             return;
          }
 
-         UpdateCalendar( sprint, DateTime.Now.Date );
+         var startDate = ((DateTime)sprint.StartDate).Date;
+         UpdateCalendar( sprint,
+            (DateTime.Now.Date < startDate) ? startDate :
+            DateTime.Now.Date );
 
          Log.Debug( "Sprint Calendar Update Complete" );
       }
