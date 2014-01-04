@@ -1,4 +1,9 @@
-﻿using HomeScrum.Data.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using HomeScrum.Data.Domain;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Sprints;
@@ -6,17 +11,18 @@ using HomeScrum.Web.Translators;
 using NHibernate;
 using NHibernate.Linq;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
    public class SprintsController : ReadWriteController<Sprint, SprintEditorViewModel>
    {
-      public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( translator, logger, sessionFactory ) { }
+      private readonly ISprintCalendarService _sprintCalendarService;
+
+      public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory, ISprintCalendarService sprintCalendarService )
+         : base( translator, logger, sessionFactory )
+      {
+         _sprintCalendarService = sprintCalendarService;
+      }
 
       //
       // GET: /Sprints/
@@ -246,6 +252,7 @@ namespace HomeScrum.Web.Controllers
       {
          model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Update( session, model, user );
+         _sprintCalendarService.Reset( model );
       }
 
       protected override SprintEditorViewModel GetEditorViewModel( ISession session, Guid id )
