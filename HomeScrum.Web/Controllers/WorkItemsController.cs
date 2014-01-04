@@ -324,6 +324,8 @@ namespace HomeScrum.Web.Controllers
          ClearNonAllowedItemsInModel( model );
          model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Save( session, model, user );
+
+         UpdateSprintCalendar( session, model );
       }
 
       protected override void Update( ISession session, WorkItem model, System.Security.Principal.IPrincipal user )
@@ -334,6 +336,11 @@ namespace HomeScrum.Web.Controllers
 
          UpdateChildTasks( session, model );
 
+         UpdateSprintCalendar( session, model );
+      }
+
+      private void UpdateSprintCalendar( ISession session, WorkItem model )
+      {
          if (model.Sprint != null)
          {
             session.Flush();

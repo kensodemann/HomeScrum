@@ -805,6 +805,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, items.Count );
          Assert.AreEqual( viewModel.AssignedToUserId, items[0].AssignedToUser.Id );
       }
+
+      [TestMethod]
+      public void CreatePost_CallsSprintCalendarService_IfSprintIsNotNull()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         viewModel.SprintId = Sprints.ModelData[0].Id;
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.Is<Sprint>( s => s.Id == Sprints.ModelData[0].Id ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallSprintCalendarService_IfSprintIsNull()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         viewModel.SprintId = Guid.Empty;
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.IsAny<Sprint>() ), Times.Never() );
+      }
       #endregion
 
 
