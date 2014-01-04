@@ -337,6 +337,7 @@ namespace HomeScrum.Web.Controllers
          if (model.Sprint != null)
          {
             session.Flush();
+            session.Refresh( model );
             _sprintCalendarService.Update( model.Sprint );
          }
       }
