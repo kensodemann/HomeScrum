@@ -7,7 +7,7 @@ using HomeScrum.Web.Models.Base;
 
 namespace HomeScrum.Web.Models.Sprints
 {
-   public class SprintEditorViewModel : DomainObjectViewModel, IEditorViewModel
+   public class SprintEditorViewModel : DomainObjectViewModel, IEditorViewModel, IBurndownChart
    {
       [Display( Name = "SprintStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
