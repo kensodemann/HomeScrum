@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
+   [Authorize]
    public class HomeController : Controller
    {
       public ActionResult Index()
@@ -13,6 +10,7 @@ namespace HomeScrum.Web.Controllers
          return View();
       }
 
+      [AllowAnonymous]
       public ActionResult About()
       {
          return View();

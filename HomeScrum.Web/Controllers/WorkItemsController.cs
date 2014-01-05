@@ -1,5 +1,9 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.WorkItems;
 using HomeScrum.Web.Translators;
@@ -7,12 +11,6 @@ using NHibernate;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web.Mvc;
-using HomeScrum.Data.Services;
 
 namespace HomeScrum.Web.Controllers
 {
