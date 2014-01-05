@@ -788,7 +788,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_LoadsBacklogItems()
       {
-         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Sandwiches" );
 
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
@@ -799,7 +799,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_LoadsTasksAndIssues()
       {
-         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Sandwiches" );
 
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
@@ -819,6 +819,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( viewModel.Tasks );
          Assert.AreEqual( 0, viewModel.BacklogItems.Count() );
          Assert.AreEqual( 0, viewModel.Tasks.Count() );
+      }
+
+      [TestMethod]
+      public void EditGet_LoadsCalendar()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Calendar.Count > 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( sprint.Calendar.Count, viewModel.Calendar.Count() );
+         foreach(var entry in sprint.Calendar)
+         {
+            Assert.IsNotNull( viewModel.Calendar.SingleOrDefault( x => x.HistoryDate == entry.HistoryDate && x.PointsRemaining == entry.PointsRemaining ) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_CreatesEmptyCalendar_IfNoEntriesExistForSprint()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Calendar.Count == 0 );
+         
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( 0, viewModel.Calendar.Count() );
       }
 
       [TestMethod]
