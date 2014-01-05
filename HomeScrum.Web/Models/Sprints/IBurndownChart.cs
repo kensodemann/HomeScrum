@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HomeScrum.Web.Models.Sprints
 {
-   interface IBurndownChart
+   public interface IBurndownChart
    {
+      Guid Id { get; }
       String Name { get; }
 
       // Technically, these need to be not-null in order to display a burndown, 

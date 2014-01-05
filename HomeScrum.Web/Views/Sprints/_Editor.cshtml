@@ -88,6 +88,12 @@
             @Html.ValidationMessageFor( model => model.EndDate )
          </div>
       </div>
+      @if(Model.EndDate != null && Model.StartDate != null)
+      {
+         <div class="form-group">
+            @Html.Partial( "_BurndownChart", Model )
+         </div>
+      }
    </fieldset>
 
    if (Model.Id != Guid.Empty)

@@ -1,0 +1,38 @@
+﻿@model HomeScrum.Web.Models.Sprints.IBurndownChart
+
+@{String chartId = String.Format( "chartdiv{0}", Model.Id.ToString( "N" ) );}
+<div id="@chartId" style="height:400px;width:600px; "></div>
+
+<script type="text/javascript" charset="utf-8">
+   $(document).ready(function () {
+      $.jqplot("@chartId",
+         [[['2013-12-01', 100],  // Obtain from the sprint calendar
+            ['2013-12-02', 100],
+            ['2013-12-03', 97],
+            ['2013-12-04', 89],
+            ['2013-12-05', 83],
+            ['2013-12-06', 75],
+            ['2013-12-09', 63],
+            ['2013-12-10', 64]]],
+         {
+            title: "@Model.Name",
+            axesDefaults: {
+               labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+            },
+            axes: {
+               xaxis: {
+                  label: "Date",
+                  renderer: $.jqplot.DateAxisRenderer,
+                  pad: 0,
+                  min: '@((DateTime)Model.StartDate).ToString("yyyy-MM-dd")',
+                  max: '@((DateTime)Model.EndDate).ToString("yyyy-MM-dd")'
+               },
+               yaxis: {
+                  label: "Points Remaining",
+                  min: 0
+               }
+            }
+         });
+   });
+
+</script>
