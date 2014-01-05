@@ -34,9 +34,17 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/jqueryDataTablesCust" )
             .Include( "~/Scripts/dataTables.bootstrap.js" ) );
 
-         bundles.Add( new ScriptBundle( "~/bundles/jqueryval" ).Include(
-                     "~/Scripts/jquery.unobtrusive*",
+         bundles.Add( new ScriptBundle( "~/bundles/jqueryval" )
+            .Include( "~/Scripts/jquery.unobtrusive*",
                      "~/Scripts/jquery.validate*" ) );
+
+         bundles.Add( new ScriptBundle( "~/jqPlot" )
+            .Include( "~/Scripts/jqPlot/jquery.jqplot.js" ) );
+
+         bundles.Add( new ScriptBundle( "~/jqPlot.plugins" )
+            .Include( "~/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js" )
+            .Include( "~/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js" )
+            .Include( "~/Scripts/jqPlot/plugins/jqplot.dateAxisRenderer.js" ) );
 
          // Use the development version of Modernizr to develop with and learn from. Then, when you're
          // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -59,6 +67,9 @@ namespace HomeScrum.Web
 
          bundles.Add( new StyleBundle( "~/Content/SignInCss" )
             .Include( "~/Content/SignIn.css" ) );
+
+         bundles.Add( new StyleBundle( "~/jqPlot.css" )
+            .Include( "~/Scripts/jqPlot/jquery.jqplot.css" ) );
       }
    }
 }
