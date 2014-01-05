@@ -43,5 +43,7 @@ namespace HomeScrum.Web.Models.Sprints
 
       [Display( Name = "PointsScheduled", ResourceType = typeof( DisplayStrings ) )]
       public int TotalPoints { get; set; }
+
+      public IEnumerable<SprintCalendarEntryViewModel> Calendar { get; set; }
    }
 }
