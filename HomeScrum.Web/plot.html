@@ -159,14 +159,36 @@
 
    <script type="text/javascript" charset="utf-8">
       $(document).ready(function () {
-         $.jqplot('chartdiv', [[['2013-12-01', 100],  // Obtain from the sprint calendar
-                                ['2013-12-02', 100],
-                                ['2013-12-03', 97],
-                                ['2013-12-04', 89],
-                                ['2013-12-05', 83],
-                                ['2013-12-06', 75],
-                                ['2013-12-09', 63],
-                                ['2013-12-10', 64]]], {
+         var json_data = [{ "HistoryDate": "2013-12-01", "PointsRemaining": 100 },
+            { "HistoryDate": "2013-12-02", "PointsRemaining": 100 },
+            { "HistoryDate": "2013-12-03", "PointsRemaining": 97 },
+            { "HistoryDate": "2013-12-04", "PointsRemaining": 89 },
+            { "HistoryDate": "2013-12-05", "PointsRemaining": 83 },
+            { "HistoryDate": "2013-12-06", "PointsRemaining": 75 },
+            { "HistoryDate": "2013-12-09", "PointsRemaining": 63 },
+            { "HistoryDate": "2013-12-10", "PointsRemaining": 64 }];
+
+         var dataArray = [];
+         var data = [];
+
+         for (var i in json_data) {
+            var json_element = json_data[i];
+            var element = [];
+            element.push(json_element["HistoryDate"]);
+            element.push(json_element["PointsRemaining"]);
+            dataArray.push(element);
+         }
+         data.push(dataArray);
+
+         //$.jqplot('chartdiv', [[['2013-12-01', 100],  // Obtain from the sprint calendar
+         //                       ['2013-12-02', 100],
+         //                       ['2013-12-03', 97],
+         //                       ['2013-12-04', 89],
+         //                       ['2013-12-05', 83],
+         //                       ['2013-12-06', 75],
+         //                       ['2013-12-09', 63],
+         //                       ['2013-12-10', 64]]], {
+         $.jqplot('chartdiv', data, {
             title: "Name of Sprint",
             axesDefaults: {
                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
