@@ -2,13 +2,15 @@
 
 @{
    var chartId = String.Format( "chartdiv{0}", Model.Id.ToString( "N" ) );
-   var startDate = ((DateTime)Model.StartDate).ToString("yyyy-MM-dd");
-   var endDate = ((DateTime)Model.EndDate).ToString("yyyy-MM-dd");
+   var startDate = ((DateTime)Model.StartDate).ToString( "yyyy-MM-dd" );
+   var endDate = ((DateTime)Model.EndDate).ToString( "yyyy-MM-dd" );
 }
 
 <div id="@chartId" style="height:400px;width:600px; "></div>
 
 <script type="text/javascript" charset="utf-8">
+   var values = @Html.Raw( Json.Encode( Model.Calendar ) );
+
    $(document).ready(function () {
       $.jqplot("@chartId",
          [[['2014-01-01', 100],  // Obtain from the sprint calendar
