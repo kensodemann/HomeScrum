@@ -97,6 +97,7 @@
     <Compile Include="Domains\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\SprintQueriesTest.cs" />
+    <Compile Include="Queries\WorkItemQueriesTest.cs" />
     <Compile Include="Services\SprintCalendarServiceTest.cs" />
     <Compile Include="TestStrings.Designer.cs">
       <AutoGen>True</AutoGen>

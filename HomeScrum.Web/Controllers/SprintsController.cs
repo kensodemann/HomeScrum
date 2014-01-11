@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Queries;
 using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
@@ -11,7 +12,6 @@ using HomeScrum.Web.Translators;
 using NHibernate;
 using NHibernate.Linq;
 using Ninject.Extensions.Logging;
-using HomeScrum.Data.Queries;
 
 namespace HomeScrum.Web.Controllers
 {
