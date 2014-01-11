@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Queries;
 using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
@@ -31,8 +32,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var query = session.Query<Sprint>()
-               .ApplyStandardSorting()
+         var query = session.AllSprints()
                .SelectSprintIndexViewModels();
 
          return IndexView( query );
@@ -46,10 +46,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "CurrentSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var query = session.Query<Sprint>()
-               .Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active &&
-                            x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
-               .ApplyStandardSorting()
+         var query = session.CurrentSprints()
                .SelectSprintIndexViewModels();
 
          return IndexView( query );
@@ -59,12 +56,10 @@ namespace HomeScrum.Web.Controllers
       // GET: /Sprints/OpenSprints
       public System.Web.Mvc.ActionResult OpenSprints()
       {
-         Log.Debug( "CurrentSprints()" );
+         Log.Debug( "OpenSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var query = session.Query<Sprint>()
-               .Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete )
-               .ApplyStandardSorting()
+         var query = session.OpenSprints()
                .SelectSprintIndexViewModels();
 
          return IndexView( query );
@@ -304,13 +299,6 @@ namespace HomeScrum.Web.Controllers
 
    internal static class SprintQueryExtentions
    {
-      public static IQueryable<Sprint> ApplyStandardSorting( this IQueryable<Sprint> query )
-      {
-         return query.OrderBy( x => x.Project.Name )
-            .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
-            .ThenBy( x => x.Status.SortSequence );
-      }
-
       public static IQueryable<WorkItem> ApplyStandardSorting( this IQueryable<WorkItem> query )
       {
          return query.OrderBy( x => (x.Sprint == null) ? 1 : 2 )

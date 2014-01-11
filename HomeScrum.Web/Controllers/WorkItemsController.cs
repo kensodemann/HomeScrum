@@ -11,6 +11,7 @@ using NHibernate;
 using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
+using HomeScrum.Data.Queries;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -30,7 +31,7 @@ namespace HomeScrum.Web.Controllers
       public override ActionResult Index()
       {
          var session = SessionFactory.GetCurrentSession();
-         var query = BaseWorkItemQuery( session )
+         var query = session.AllWorkItems()
                .SelectWorkItemIndexViewModels();
 
          return IndexView( query );
@@ -42,8 +43,9 @@ namespace HomeScrum.Web.Controllers
       {
          var session = SessionFactory.GetCurrentSession();
          var assignedToUserId = user.Identity.GetUserId( session );
-         var query = BaseWorkItemQuery( session )
-               .Where( x => x.AssignedToUser != null && x.AssignedToUser.Id == assignedToUserId && x.Status.Category != WorkItemStatusCategory.Complete )
+         var query = session.AllWorkItems()
+               .Mine( assignedToUserId )
+               .Where( x => x.Status.Category != WorkItemStatusCategory.Complete )
                .SelectWorkItemIndexViewModels();
 
          return IndexView( query );
@@ -54,11 +56,10 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedBacklog()
       {
          var session = SessionFactory.GetCurrentSession();
-         var query = BaseWorkItemQuery( session )
-              .Where( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem &&
-                 x.Status.Category != WorkItemStatusCategory.Complete &&
-                 x.Sprint == null )
-              .SelectWorkItemIndexViewModels();
+         var query = session.Backlog()
+            .Unassigned()
+            .Where( x => x.Status.Category != WorkItemStatusCategory.Complete )
+            .SelectWorkItemIndexViewModels();
 
          return IndexView( query );
       }
@@ -68,11 +69,10 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedProblems()
       {
          var session = SessionFactory.GetCurrentSession();
-         var query = BaseWorkItemQuery( session )
-               .Where( x => x.AssignedToUser == null
-                  && x.Status.Category != WorkItemStatusCategory.Complete
-                  && x.WorkItemType.Category == WorkItemTypeCategory.Issue )
-               .SelectWorkItemIndexViewModels();
+         var query = session.Problems()
+            .Unassigned()
+            .Where( x => x.Status.Category != WorkItemStatusCategory.Complete )
+            .SelectWorkItemIndexViewModels();
 
          return IndexView( query );
       }
@@ -82,23 +82,15 @@ namespace HomeScrum.Web.Controllers
       public ActionResult UnassignedTasks()
       {
          var session = SessionFactory.GetCurrentSession();
-         var query = BaseWorkItemQuery( session )
-               .Where( x => x.AssignedToUser == null
-                  && x.Status.Category != WorkItemStatusCategory.Complete
-                  && x.WorkItemType.Category == WorkItemTypeCategory.Task )
-               .SelectWorkItemIndexViewModels();
+         var query = session.Tasks()
+            .Unassigned()
+            .Where( x => x.Status.Category != WorkItemStatusCategory.Complete )
+            .SelectWorkItemIndexViewModels();
 
          return IndexView( query );
       }
 
-      private IQueryable<WorkItem> BaseWorkItemQuery( ISession session )
-      {
-         return session.Query<WorkItem>()
-            .OrderBy( x => x.WorkItemType.SortSequence )
-            .ThenBy( x => x.Status.SortSequence )
-            .ThenBy( x => x.Name.ToUpper() );
-      }
-
+      
       //
       // GET: /WorkItem/Create
       public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentId = null )
@@ -236,9 +228,8 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<SelectListItemWithAttributes> CreateProductBacklogSelectList( ISession session, Guid selectedId )
       {
-         var backlog = session.Query<WorkItem>()
-              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete &&
-                            x.WorkItemType.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem) || x.Id == selectedId )
+         var backlog = session.Backlog()
+              .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete) || x.Id == selectedId )
               .OrderBy( x => x.WorkItemType.SortSequence )
               .ThenBy( x => x.Status.SortSequence )
               .ThenBy( x => x.Name.ToUpper() )
@@ -295,7 +286,7 @@ namespace HomeScrum.Web.Controllers
          if (viewModel != null)
          {
             viewModel.Tasks = GetChildTasks( session, id );
-            if (viewModel.Tasks.Count()> 0)
+            if (viewModel.Tasks.Count() > 0)
             {
                viewModel.Points = viewModel.Tasks.Sum( x => x.Points );
                viewModel.PointsRemaining = viewModel.Tasks.Sum( x => x.PointsRemaining );
@@ -307,11 +298,8 @@ namespace HomeScrum.Web.Controllers
 
       private IEnumerable<WorkItemIndexViewModel> GetChildTasks( ISession session, Guid id )
       {
-         return session.Query<WorkItem>()
+         return session.AllWorkItems()
             .Where( x => x.ParentWorkItem.Id == id )
-            .OrderBy( x => x.Status.SortSequence )
-            .ThenBy( x => x.WorkItemType.SortSequence )
-            .ThenBy( x => x.Name.ToUpper() )
             .SelectWorkItemIndexViewModels()
             .ToList();
       }
@@ -349,7 +337,7 @@ namespace HomeScrum.Web.Controllers
 
       private void UpdateChildTasks( ISession session, WorkItem model )
       {
-         var children = session.Query<WorkItem>()
+         var children = session.AllWorkItems()
             .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id )
             .Cacheable()
             .ToList();

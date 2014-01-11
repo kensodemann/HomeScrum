@@ -82,6 +82,8 @@
     <Compile Include="Domain\WorkItemDailySnapshot.cs" />
     <Compile Include="Domain\WorkItemStatusCategory.cs" />
     <Compile Include="Domain\WorkItemTypeCategory.cs" />
+    <Compile Include="Queries\SprintQueries.cs" />
+    <Compile Include="Queries\WorkItemQueries.cs" />
     <Compile Include="Services\ISprintCalendarService.cs" />
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\SprintCalendarService.cs" />
