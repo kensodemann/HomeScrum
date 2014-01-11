@@ -247,6 +247,8 @@
     <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
     <Compile Include="Models\Base\ViewModelBase.cs" />
+    <Compile Include="Models\Sprints\IBurndownChart.cs" />
+    <Compile Include="Models\Sprints\SprintCalendarEntryViewModel.cs" />
     <Compile Include="Models\Sprints\SprintWorkItemViewModel.cs" />
     <Compile Include="Models\Sprints\SprintEditorViewModel.cs" />
     <Compile Include="Models\Sprints\SprintIndexViewModel.cs" />
@@ -713,6 +715,7 @@
     <Content Include="Views\WorkItems\UnassignedBacklog.cshtml" />
     <Content Include="Views\WorkItems\UnassignedTasks.cshtml" />
     <Content Include="Views\WorkItems\UnassignedProblems.cshtml" />
+    <Content Include="Views\Shared\_BurndownChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

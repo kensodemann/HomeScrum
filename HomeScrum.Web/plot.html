@@ -159,14 +159,40 @@
 
    <script type="text/javascript" charset="utf-8">
       $(document).ready(function () {
-         $.jqplot('chartdiv', [[['2013-12-01', 100],  // Obtain from the sprint calendar
-                                ['2013-12-02', 100],
-                                ['2013-12-03', 97],
-                                ['2013-12-04', 89],
-                                ['2013-12-05', 83],
-                                ['2013-12-06', 75],
-                                ['2013-12-09', 63],
-                                ['2013-12-10', 64]]], {
+         //var json_data = [{ "HistoryDate": "2013-12-01", "PointsRemaining": 100 },
+         //   { "HistoryDate": "2013-12-02", "PointsRemaining": 100 },
+         //   { "HistoryDate": "2013-12-03", "PointsRemaining": 97 },
+         //   { "HistoryDate": "2013-12-04", "PointsRemaining": 89 },
+         //   { "HistoryDate": "2013-12-05", "PointsRemaining": 83 },
+         //   { "HistoryDate": "2013-12-06", "PointsRemaining": 75 },
+         //   { "HistoryDate": "2013-12-09", "PointsRemaining": 63 },
+         //   { "HistoryDate": "2013-12-10", "PointsRemaining": 64 }];
+         var json_data = [{ "HistoryDate": "\/Date(1380603600000)\/", "PointsRemaining": 40 }, { "HistoryDate": "\/Date(1381035600000)\/", "PointsRemaining": 34 }, { "HistoryDate": "\/Date(1381640400000)\/", "PointsRemaining": 26 }, { "HistoryDate": "\/Date(1382331600000)\/", "PointsRemaining": 15 }, { "HistoryDate": "\/Date(1382763600000)\/", "PointsRemaining": 8 }, { "HistoryDate": "\/Date(1388556000000)\/", "PointsRemaining": 4 }, { "HistoryDate": "\/Date(1388642400000)\/", "PointsRemaining": 4 }, { "HistoryDate": "\/Date(1388728800000)\/", "PointsRemaining": 7 }]
+
+
+         var dataArray = [];
+         var data = [];
+
+         for (var i in json_data) {
+            var json_element = json_data[i];
+            var element = [];
+            element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
+            element.push(json_element["PointsRemaining"]);
+            dataArray.push(element);
+         }
+         data.push(dataArray);
+
+
+
+         //$.jqplot('chartdiv', [[['2013-12-01', 100],  // Obtain from the sprint calendar
+         //                       ['2013-12-02', 100],
+         //                       ['2013-12-03', 97],
+         //                       ['2013-12-04', 89],
+         //                       ['2013-12-05', 83],
+         //                       ['2013-12-06', 75],
+         //                       ['2013-12-09', 63],
+         //                       ['2013-12-10', 64]]], {
+         $.jqplot('chartdiv', data, {
             title: "Name of Sprint",
             axesDefaults: {
                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
@@ -176,8 +202,8 @@
                   label: "Date",
                   renderer: $.jqplot.DateAxisRenderer,
                   pad: 0,
-                  min: '2013-12-01',  // obtain from sprint begin date
-                  max: '2013-12-31'   // obtain from sprint end date
+                  min: '2013-10-01',  // obtain from sprint begin date
+                  max: '2013-10-31'   // obtain from sprint end date
                },
                yaxis: {
                   label: "Points Remaining",

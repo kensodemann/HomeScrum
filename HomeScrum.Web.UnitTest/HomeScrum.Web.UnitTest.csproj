@@ -171,6 +171,7 @@
     <Compile Include="ViewModels\EditUserViewModelTest.cs" />
     <Compile Include="ViewModels\CreateUserViewModelTest.cs" />
     <Compile Include="ViewModels\DomainMappingTest.cs" />
+    <Compile Include="ViewModels\SprintCalendarEntryViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomeScrum.Common.Test.Utility\HomeScrum.Common.Test.Utility.csproj">

@@ -264,6 +264,7 @@ namespace HomeScrum.Web.Controllers
             viewModel.BacklogItems = GetBacklogItems( session, id );
             viewModel.Tasks = GetTasks( session, id );
             viewModel.TotalPoints = viewModel.Tasks.Sum( x => x.Points );
+            viewModel.Calendar = GetCalendar( session, id );
          }
 
          return viewModel;
@@ -284,6 +285,19 @@ namespace HomeScrum.Web.Controllers
             .Where( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem && x.Sprint.Id == id )
             .ApplyStandardSorting()
             .SelectSprintWorkItemViewModel()
+            .ToList();
+      }
+
+      private IEnumerable<SprintCalendarEntryViewModel>GetCalendar(ISession session, Guid id)
+      {
+         return session.Query<SprintCalendarEntry>()
+            .Where( x => x.Sprint.Id == id )
+            .OrderBy( x => x.HistoryDate )
+            .Select( x => new SprintCalendarEntryViewModel()
+                          {
+                             HistoryDate = x.HistoryDate,
+                             PointsRemaining = x.PointsRemaining
+                          } )
             .ToList();
       }
    }
