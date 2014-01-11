@@ -6,7 +6,7 @@
    var endDate = ((DateTime)Model.EndDate).ToString( "yyyy-MM-dd" );
 }
 
-<div id="@chartId" style="height:400px;width:600px; "></div>
+<div id="@chartId" class="burndown"></div>
 
 <script type="text/javascript" charset="utf-8">
    var json_data = @Html.Raw( Json.Encode( Model.Calendar ) );
