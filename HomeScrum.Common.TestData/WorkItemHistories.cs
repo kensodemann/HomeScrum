@@ -11,6 +11,8 @@ namespace HomeScrum.Common.TestData
 {
    public class WorkItemHistories
    {
+      private static Random rnd = new Random();
+
       public static void Load( ISessionFactory sessionFactory )
       {
          LoadDependencies( sessionFactory );
@@ -49,7 +51,7 @@ namespace HomeScrum.Common.TestData
 
       private static void CreateRandomHistory( WorkItem w )
       {
-         var rnd = new Random();
+         //var rnd = new Random();
          var entries = rnd.Next( 1, 20 );
          var prevEntryTimestamp = DateTime.Now;
          
@@ -62,7 +64,7 @@ namespace HomeScrum.Common.TestData
             var entry = new WorkItemHistory()
             {
                HistoryTimestamp = prevEntryTimestamp,
-               SequenceNumber = i + 1,
+               SequenceNumber = entries - i,
                LastModifiedUser = user,
                WorkItem = w
             };

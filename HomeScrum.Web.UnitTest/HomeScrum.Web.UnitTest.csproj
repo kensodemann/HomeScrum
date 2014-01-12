@@ -156,6 +156,7 @@
     <Compile Include="Controllers\ProjectsControllerTest.cs" />
     <Compile Include="Controllers\SystemDataObjectControllerTestBase.cs" />
     <Compile Include="Controllers\SprintsControllerTest.cs" />
+    <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\WorkItemsControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionsTest.cs" />
