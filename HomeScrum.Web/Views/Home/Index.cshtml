@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HomeScrum.Web.Models.Home.Snapshot
+
+@{
    ViewBag.Title = "Home Scrum";
 }
 @section featured {
@@ -15,137 +17,48 @@
 @Scripts.Render( "~/jqPlot" )
 @Scripts.Render( "~/jqPlot.plugins" )
 
-<h2>Today's Snapshot</h2>
+<h2>Recent Activity</h2>
 
 <div class="row">
    <div class="col-md-4">
       <h3>My Activity</h3>
-      <ul>
-         <li>Modified Task #1</li>
-         <li>Modified Task #2</li>
-         <li>Modified Task #3</li>
-         <li>Modified Task #4</li>
-         <li>Modified Task #5</li>
-      </ul>
+      <div class="list-group">
+         @foreach (var item in Model.RecentActivity)
+         {
+            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+         }
+      </div>
    </div>
 
    <div class="col-md-4">
-      <h3>Newst Items</h3>
-      <ul>
-         <li>New Task #1</li>
-         <li>New Task #2</li>
-         <li>New Task #3</li>
-         <li>New Task #4</li>
-         <li>New Task #5</li>
-      </ul>
+      <h3>Newest Work Items</h3>
+      <div class="list-group">
+         @foreach (var item in Model.NewestWorkItems)
+         {
+            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+         }
+      </div>
    </div>
 
    <div class="col-md-4">
       <h3>Latest Sprints</h3>
-      <ul>
-         <li>In a Retro....</li>
-         <li>Current Ones</li>
-         <li>InPlanning</li>
-      </ul>
+      <div class="list-group">
+         @foreach (var item in Model.LatestSprints)
+         {
+            @Html.ActionLink( item.Name, "Edit", "Sprints", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+         }
+      </div>
    </div>
 </div>
 
+
+<h2>Burndowns for Current Sprints</h2>
 
 <div class="row">
-   <div id="burndown" class="col-lg-6">
-
-
-      <div id="chartdiv3dc298a1b052499b95fe3ca714c03b3a" class="burndown"></div>
-
-      <script type="text/javascript" charset="utf-8">
-         var json_data = [{ "HistoryDate": "\/Date(1380603600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380690000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380776400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380862800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380949200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381035600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381122000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381208400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381294800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381381200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381467600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381554000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381640400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381726800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381813200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381899600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381986000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382072400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382158800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382245200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382331600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382418000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382504400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382590800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382677200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382763600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382850000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382936400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383022800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383109200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383195600000)\/", "PointsRemaining": 1 }];
-
-         var dataArray = [];
-         var data = [];
-
-         for (var i in json_data) {
-            var json_element = json_data[i];
-            var element = [];
-            element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
-            element.push(json_element["PointsRemaining"]);
-            dataArray.push(element);
-         }
-         data.push(dataArray);
-
-         $(document).ready(function () {
-            $.jqplot("chartdiv3dc298a1b052499b95fe3ca714c03b3a",
-               data,
-               {
-                  title: "This is a test Sprint",
-                  axesDefaults: {
-                     labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-                  },
-                  axes: {
-                     xaxis: {
-                        label: "Date",
-                        renderer: $.jqplot.DateAxisRenderer,
-                        pad: 0,
-                        min: '2013-10-01',
-                        max: '2013-10-31'
-                     },
-                     yaxis: {
-                        label: "Points Remaining",
-                        min: 0
-                     }
-                  }
-               });
-         });
-
-      </script>
-
-   </div>
-
-   <div id="burndown" class="col-lg-6">
-
-
-      <div id="chartdiv42" class="burndown"></div>
-
-      <script type="text/javascript" charset="utf-8">
-         var json_data = [{ "HistoryDate": "\/Date(1380603600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380690000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380776400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380862800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380949200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381035600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381122000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381208400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381294800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381381200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381467600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381554000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381640400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381726800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381813200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381899600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381986000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382072400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382158800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382245200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382331600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382418000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382504400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382590800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382677200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382763600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382850000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382936400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383022800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383109200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383195600000)\/", "PointsRemaining": 1 }];
-
-         var dataArray = [];
-         var data = [];
-
-         for (var i in json_data) {
-            var json_element = json_data[i];
-            var element = [];
-            element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
-            element.push(json_element["PointsRemaining"]);
-            dataArray.push(element);
-         }
-         data.push(dataArray);
-
-         $(document).ready(function () {
-            $.jqplot("chartdiv42",
-               data,
-               {
-                  title: "This is another test Sprint",
-                  axesDefaults: {
-                     labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-                  },
-                  axes: {
-                     xaxis: {
-                        label: "Date",
-                        renderer: $.jqplot.DateAxisRenderer,
-                        pad: 0,
-                        min: '2013-10-01',
-                        max: '2013-10-31'
-                     },
-                     yaxis: {
-                        label: "Points Remaining",
-                        min: 0
-                     }
-                  }
-               });
-         });
-
-      </script>
-
-   </div>
+   @foreach (var chart in Model.BurndownCharts)
+   {
+      <div id="burndown" class="col-lg-6">
+         @Html.Partial( "_BurndownChart", chart )
+      </div>
+   }
 </div>
-

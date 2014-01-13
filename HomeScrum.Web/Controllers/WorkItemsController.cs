@@ -230,9 +230,6 @@ namespace HomeScrum.Web.Controllers
       {
          var backlog = session.Backlog()
               .Where( x => (x.Status.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete) || x.Id == selectedId )
-              .OrderBy( x => x.WorkItemType.SortSequence )
-              .ThenBy( x => x.Status.SortSequence )
-              .ThenBy( x => x.Name.ToUpper() )
               .SelectSelectListItems( selectedId )
               .ToList();
 
