@@ -1,8 +1,10 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="utf-8" />
-   <title>HomeScrum - Edit Sprint</title>
+   <title>HomeScrum - Home Page</title>
    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
    <meta name="viewport" content="width=device-width" />
    <link href="/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" rel="stylesheet" />
@@ -109,7 +111,7 @@
          <form action="/Account/LogOff" id="logoutForm" method="post">
             <ul class="nav navbar-nav navbar-right">
                <li>
-                  <input name="__RequestVerificationToken" type="hidden" value="a2fQf5sbMpMBVog_bueoRXNqVDdpMf86xkvMd_GosFB6mIdEmilqDlujSBz-YjblIF83LPtWND35dU4acAJNH4VWZustupa3P1wK2nYgv6c1" />
+                  <input name="__RequestVerificationToken" type="hidden" value="eZfjRyqC08n3uKvAwAYGtusIgvpZXOVd11iiy3PYyvKfOUV2EmuBA_v5KuXgM0gvvcvlqcfbD0veSdlWbrIrc2RrT4NTeJxLQ1QRMhaEJDI1" />
                   <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
                </li>
             </ul>
@@ -124,314 +126,168 @@
       </div>
    </nav>
 
-   <div class="container page-host">
+   <div class="page-host">
+
+      <script src="/Scripts/jqPlot/jquery.jqplot.js"></script>
+
+      <script src="/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js"></script>
+      <script src="/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+      <script src="/Scripts/jqPlot/plugins/jqplot.dateAxisRenderer.js"></script>
+
 
       <section class="WorkArea">
+         <article class="featured container">
+            <div class="content-wrapper jumbotron">
+               <h2>Welcome to HomeScrum</h2>
+               <p>
+                  Important information will eventually go here, but for now, maybe just list the current version and release date.
+               </p>
+            </div>
+         </article>
 
-         <article class="content-wrapper main-content clear-fix">
+         <article class="container content-wrapper main-content clear-fix">
 
+            <h2>Today's Snapshot</h2>
 
-            <h2>Edit Sprint</h2>
-
-
-
-
-            <script src="/Scripts/jqPlot/jquery.jqplot.js"></script>
-
-            <script src="/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js"></script>
-            <script src="/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
-            <script src="/Scripts/jqPlot/plugins/jqplot.dateAxisRenderer.js"></script>
-
-
-            <form action="/Sprints/Edit/3dc298a1-b052-499b-95fe-3ca714c03b3a" class="form-horizontal" id="Editor" method="post" role="form">
-               <fieldset>
-                  <legend class="hidden">Basic Information</legend>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="Name">Name:</label>
-                     <div class="col-sm-6">
-                        <input class="MainData form-control" id="Name" name="Name" type="text" value="This is a test Sprint" />
-                        <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="Goal">Goal:</label>
-                     <div class="col-sm-6">
-                        <input class="MainData form-control" id="Goal" name="Goal" type="text" value="Test the v1.2 release" />
-                        <span class="field-validation-valid" data-valmsg-for="Goal" data-valmsg-replace="true"></span>
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="Description">Description:</label>
-                     <div class="col-sm-6">
-                        <textarea class="MainData text-box multi-line form-control" cols="20" id="Description" name="Description" rows="5">
-                           This is just set up for testing.
-                        </textarea>
-                        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
-                     </div>
-                  </div>
-
-                  <input data-val="true" data-val-required="The CreatedByUserId field is required." id="CreatedByUserId" name="CreatedByUserId" type="hidden" value="5cc74492-6619-4f92-915a-e47bb691ad65" />
-                  <input id="CreatedByUserUserName" name="CreatedByUserUserName" type="hidden" value="kws" />
-                  <input data-val="true" data-val-required="The Mode field is required." id="Mode" name="Mode" type="hidden" value="ReadOnly" />
-
-               </fieldset>
-               <fieldset>
-                  <legend class="hidden">Properties</legend>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="Capacity">Points Capacity:</label>
-                     <div class="col-sm-6">
-                        <input class="MainData form-control" data-val="true" data-val-number="The field Points Capacity: must be a number." data-val-required="The Points Capacity: field is required." id="Capacity" name="Capacity" type="text" value="40" />
-                        <span class="field-validation-valid" data-valmsg-for="Capacity" data-valmsg-replace="true"></span>
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="TotalPoints">Points Scheduled:</label>
-                     <div class="col-sm-6">
-                        2
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="ProjectId">Project:</label>
-                     <div class="col-sm-6">
-                        <select class="MainData form-control" data-val="true" data-val-required="The Project: field is required." id="ProjectId" name="ProjectId">
-                           <option value="893B8F63-B16F-43E1-B133-CBC451B3D292">Bogus Project</option>
-                           <option value="D57E77CB-C581-4976-BF90-B83BB075A214">Health Tracker</option>
-                           <option selected="selected" value="B2BA482B-5106-4DAE-B2E2-638DEF13BB6E">Home Scrum</option>
-                        </select>
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="StatusId">Status:</label>
-                     <div class="col-sm-6">
-                        <select class="MainData form-control" data-val="true" data-val-required="The Status: field is required." id="StatusId" name="StatusId">
-                           <option value="D054AC3A-5E87-4C64-8FAE-367F8287E9D9" data-isopenstatus="True" data-tasklistisclosed="False" data-backlogisclosed="False">Future</option>
-                           <option selected="selected" value="67883727-EBFC-426E-8F1A-596AE26B9287" data-isopenstatus="True" data-tasklistisclosed="False" data-backlogisclosed="False">Planning</option>
-                           <option value="789720A1-E85F-48CE-AA50-2842FDA554F1" data-isopenstatus="True" data-tasklistisclosed="False" data-backlogisclosed="True">In Process</option>
-                           <option value="4C65B86A-E1D1-4099-8322-D3B336C0EF00" data-isopenstatus="True" data-tasklistisclosed="True" data-backlogisclosed="True">Retrospective</option>
-                           <option value="81F0F32F-2B16-41ED-B360-B9DFD4619444" data-isopenstatus="False" data-tasklistisclosed="True" data-backlogisclosed="True">Complete</option>
-                        </select>
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="StartDate">Start Date:</label>
-                     <div class="col-sm-6">
-                        <input class="MainData form-control" data-val="true" data-val-date="The field Start Date: must be a date." id="StartDate" name="StartDate" type="text" value="10/1/2013 12:00:00 AM" />
-                        <span class="field-validation-valid" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-sm-2 control-label" for="EndDate">End Date:</label>
-                     <div class="col-sm-6">
-                        <input class="MainData form-control" data-val="true" data-val-date="The field End Date: must be a date." id="EndDate" name="EndDate" type="text" value="10/31/2013 12:00:00 AM" />
-                        <span class="field-validation-valid" data-valmsg-for="EndDate" data-valmsg-replace="true"></span>
-                     </div>
-                  </div>
-                  
-               </fieldset>
-               <div class="ChildData">
-                  <fieldset>
-                     <legend class="hidden">WorkItems</legend>
-                     <div id="accordion">
-                        <h3>Backlog Items</h3>
-                        <div id="BacklogItems">   
-                           <table class="dataTableList table table-striped table-bordered">
-                              <thead>
-                                 <tr>
-                                    <th class="DataColumn">
-                                       Work Item Type:
-                                    </th>
-                                    <th class="DataColumn">
-                                       Status:
-                                    </th>
-                                    <th class="DescriptiveText">
-                                       Name:
-                                    </th>
-                                    <th class="DataColumn">
-                                       Points:
-                                    </th>
-                                 </tr>
-                              </thead>
-
-                              <tbody>
-                                 <tr>
-                                    <td class="DataColumn">
-                                       PBI
-                                    </td>
-                                    <td class="DataColumn">
-                                       New
-                                    </td>
-                                    <td class="DescriptiveText">
-                                       <a href="/WorkItems/Edit/5f48cfaa-4d2f-4380-b728-fee8fb978661?callingController=Sprints&amp;callingAction=Edit&amp;callingId=3dc298a1-b052-499b-95fe-3ca714c03b3a">Work Item Status Categories</a>
-                                    </td>
-                                    <td class="DataColumn">
-                                       1/1
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td class="DataColumn">
-                                       PBI
-                                    </td>
-                                    <td class="DataColumn">
-                                       New
-                                    </td>
-                                    <td class="DescriptiveText">
-                                       <a href="/WorkItems/Edit/b87c1da3-7648-41b2-8b46-ab314beeaa04?callingController=Sprints&amp;callingAction=Edit&amp;callingId=3dc298a1-b052-499b-95fe-3ca714c03b3a">Work Item Type Categories</a>
-                                    </td>
-                                    <td class="DataColumn">
-                                       0/1
-                                    </td>
-                                 </tr>
-                              </tbody>
-                           </table>
-
-                           <a class="btn btn-default" href="/Sprints/AddBacklogItems/3dc298a1-b052-499b-95fe-3ca714c03b3a?callingId=3dc298a1-b052-499b-95fe-3ca714c03b3a&amp;callingAction=Edit" id="BacklogLink">Select Backlog Items</a>
-                        </div>
-
-                        <h3>Tasks</h3>
-                        <div id="Tasks">
-                           <table class="dataTableList table table-striped table-bordered">
-                              <thead>
-                                 <tr>
-                                    <th class="DataColumn">
-                                       Work Item Type:
-                                    </th>
-                                    <th class="DataColumn">
-                                       Status:
-                                    </th>
-                                    <th class="DescriptiveText">
-                                       Name:
-                                    </th>
-                                    <th class="DataColumn">
-                                       Points:
-                                    </th>
-                                 </tr>
-                              </thead>
-
-                              <tbody>
-                                 <tr>
-                                    <td class="DataColumn">
-                                       SBI
-                                    </td>
-                                    <td class="DataColumn">
-                                       New
-                                    </td>
-                                    <td class="DescriptiveText">
-                                       <a href="/WorkItems/Edit/e52250a2-a411-4803-b425-e64e722b70e6?callingController=Sprints&amp;callingAction=Edit&amp;callingId=3dc298a1-b052-499b-95fe-3ca714c03b3a">This is another test</a>
-                                    </td>
-                                    <td class="DataColumn">
-                                       1/1
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td class="DataColumn">
-                                       SBI
-                                    </td>
-                                    <td class="DataColumn">
-                                       Complete
-                                    </td>
-                                    <td class="DescriptiveText">
-                                       <a href="/WorkItems/Edit/50bdbb43-9583-4efb-900e-34a814cd1285?callingController=Sprints&amp;callingAction=Edit&amp;callingId=3dc298a1-b052-499b-95fe-3ca714c03b3a">This is a test</a>
-                                    </td>
-                                    <td class="DataColumn">
-                                       0/1
-                                    </td>
-                                 </tr>
-                              </tbody>
-                           </table>
-
-                           <a class="btn btn-default" href="/Sprints/AddTasks/3dc298a1-b052-499b-95fe-3ca714c03b3a?callingId=3dc298a1-b052-499b-95fe-3ca714c03b3a&amp;callingAction=Edit" id="TaskListLink">Select Tasks</a>
-                        </div>
-                        <h3>Burndown</h3>
-                        <div>
-                           <div class="col-md-2"></div>
-                           <div id="chartdiv3dc298a1b052499b95fe3ca714c03b3a" style="height:400px;width:600px;" class="col-md-2"></div>
-                           <div class="col-md-2"></div>
-
-                           <script type="text/javascript" charset="utf-8">
-                              var json_data = [{ "HistoryDate": "\/Date(1380603600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380690000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380776400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380862800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380949200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381035600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381122000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381208400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381294800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381381200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381467600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381554000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381640400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381726800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381813200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381899600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381986000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382072400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382158800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382245200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382331600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382418000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382504400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382590800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382677200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382763600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382850000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382936400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383022800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383109200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383195600000)\/", "PointsRemaining": 1 }];
-
-                              var dataArray = [];
-                              var data = [];
-
-                              for (var i in json_data) {
-                                 var json_element = json_data[i];
-                                 var element = [];
-                                 element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
-                                 element.push(json_element["PointsRemaining"]);
-                                 dataArray.push(element);
-                              }
-                              data.push(dataArray);
-
-                              $(document).ready(function () {
-                                 $.jqplot("chartdiv3dc298a1b052499b95fe3ca714c03b3a",
-                                    data,
-                                    {
-                                       title: "This is a test Sprint",
-                                       axesDefaults: {
-                                          labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-                                       },
-                                       axes: {
-                                          xaxis: {
-                                             label: "Date",
-                                             renderer: $.jqplot.DateAxisRenderer,
-                                             pad: 0,
-                                             min: '2013-10-01',
-                                             max: '2013-10-31'
-                                          },
-                                          yaxis: {
-                                             label: "Points Remaining",
-                                             min: 0
-                                          }
-                                       }
-                                    });
-                              });
-
-                           </script>
-
-                        </div>
-                     </div>
-                  </fieldset>
-               </div>
-               <div class="validation-summary-valid" data-valmsg-summary="true">
+            <div class="row">
+               <div class="col-md-4">
+                  <h3>My Activity</h3>
                   <ul>
-                     <li style="display:none"></li>
+                     <li>Modified Task #1</li>
+                     <li>Modified Task #2</li>
+                     <li>Modified Task #3</li>
+                     <li>Modified Task #4</li>
+                     <li>Modified Task #5</li>
                   </ul>
                </div>
-            </form>
-            <div id="ActionButtonArea"></div>
-            <a href="#" id="SubmitButton" class="btn btn-primary"></a>
 
-            <script src="/Scripts/HomeScrum/Base/EditorBase.js"></script>
+               <div class="col-md-4">
+                  <h3>Newst Items</h3>
+                  <ul>
+                     <li>New Task #1</li>
+                     <li>New Task #2</li>
+                     <li>New Task #3</li>
+                     <li>New Task #4</li>
+                     <li>New Task #5</li>
+                  </ul>
+               </div>
 
-            <script src="/Scripts/HomeScrum/Sprints/Editor.js"></script>
+               <div class="col-md-4">
+                  <h3>Latest Sprints</h3>
+                  <ul>
+                     <li>In a Retro....</li>
+                     <li>Current Ones</li>
+                     <li>InPlanning</li>
+                  </ul>
+               </div>
+            </div>
+
+            <div class="row">
+               <div id="burndown" class="col-lg-6">
 
 
-            <script>
-               $(document).ready(function () {
-                  Editor.init();
-               });
-            </script>
+                  <div id="chartdiv3dc298a1b052499b95fe3ca714c03b3a" style="height:400px;width:500px; margin-top:2em;"></div>
+
+                  <script type="text/javascript" charset="utf-8">
+                     var json_data = [{ "HistoryDate": "\/Date(1380603600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380690000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380776400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380862800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380949200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381035600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381122000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381208400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381294800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381381200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381467600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381554000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381640400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381726800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381813200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381899600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381986000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382072400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382158800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382245200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382331600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382418000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382504400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382590800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382677200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382763600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382850000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382936400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383022800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383109200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383195600000)\/", "PointsRemaining": 1 }];
+
+                     var dataArray = [];
+                     var data = [];
+
+                     for (var i in json_data) {
+                        var json_element = json_data[i];
+                        var element = [];
+                        element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
+                        element.push(json_element["PointsRemaining"]);
+                        dataArray.push(element);
+                     }
+                     data.push(dataArray);
+
+                     $(document).ready(function () {
+                        $.jqplot("chartdiv3dc298a1b052499b95fe3ca714c03b3a",
+                           data,
+                           {
+                              title: "This is a test Sprint",
+                              axesDefaults: {
+                                 labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+                              },
+                              axes: {
+                                 xaxis: {
+                                    label: "Date",
+                                    renderer: $.jqplot.DateAxisRenderer,
+                                    pad: 0,
+                                    min: '2013-10-01',
+                                    max: '2013-10-31'
+                                 },
+                                 yaxis: {
+                                    label: "Points Remaining",
+                                    min: 0
+                                 }
+                              }
+                           });
+                     });
+
+                  </script>
+
+               </div>
+
+               <div id="burndown" class="col-lg-6">
 
 
-            <span>
-               <a href="/Sprints" id="CloseButton">Close</a>
-            </span>
-            <span>
-               <a href="#" id="CancelButton">Cancel</a>
-            </span>
+                  <div id="chartdiv42" style="height: 400px; width: 500px; margin-top: 2em; "></div>
 
+                  <script type="text/javascript" charset="utf-8">
+                     var json_data = [{ "HistoryDate": "\/Date(1380603600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380690000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380776400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380862800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1380949200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381035600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381122000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381208400000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381294800000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381381200000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381467600000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381554000000)\/", "PointsRemaining": 0 }, { "HistoryDate": "\/Date(1381640400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381726800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381813200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381899600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1381986000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382072400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382158800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382245200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382331600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382418000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382504400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382590800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382677200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382763600000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382850000000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1382936400000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383022800000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383109200000)\/", "PointsRemaining": 1 }, { "HistoryDate": "\/Date(1383195600000)\/", "PointsRemaining": 1 }];
+
+                     var dataArray = [];
+                     var data = [];
+
+                     for (var i in json_data) {
+                        var json_element = json_data[i];
+                        var element = [];
+                        element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
+                        element.push(json_element["PointsRemaining"]);
+                        dataArray.push(element);
+                     }
+                     data.push(dataArray);
+
+                     $(document).ready(function () {
+                        $.jqplot("chartdiv42",
+                           data,
+                           {
+                              title: "This is another test Sprint",
+                              axesDefaults: {
+                                 labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+                              },
+                              axes: {
+                                 xaxis: {
+                                    label: "Date",
+                                    renderer: $.jqplot.DateAxisRenderer,
+                                    pad: 0,
+                                    min: '2013-10-01',
+                                    max: '2013-10-31'
+                                 },
+                                 yaxis: {
+                                    label: "Points Remaining",
+                                    min: 0
+                                 }
+                              }
+                           });
+                     });
+
+                  </script>
+
+               </div>
+            </div>
 
          </article>
+
+
+         <article class="content-wrapper main-content clear-fix" />
       </section>
+
+
+
 
       <footer>
          <div id="copyright">
@@ -441,16 +297,6 @@
    </div>
 
 
-   <script>
-      $(function () {
-         $("#accordion").accordion({
-            heightStyle: "content",
-            collapsible: true,
-            active: false
-         });
-
-      });
-   </script>
 
 
 
@@ -467,12 +313,12 @@
    </script>
    <script type='text/javascript' src='/Glimpse.axd?n=glimpse_client&amp;hash=c96ca1b0'></script>
    <script type='text/javascript' src='/Glimpse.axd?n=glimpse_metadata&amp;hash=c96ca1b0&amp;callback=glimpse.data.initMetadata'></script>
-   <script type='text/javascript' src='/Glimpse.axd?n=glimpse_request&amp;requestId=fea77667-3a5f-4ac5-a27e-2b52cd68204f&amp;hash=c96ca1b0&amp;callback=glimpse.data.initData'></script>
+   <script type='text/javascript' src='/Glimpse.axd?n=glimpse_request&amp;requestId=3e317db7-51f8-41de-b35c-ff08c2b1b8f8&amp;hash=c96ca1b0&amp;callback=glimpse.data.initData'></script>
    <!-- Visual Studio Browser Link -->
    <script type="application/json" id="__browserLink_initializationData">
-      {"appName":"Chrome","requestId":"1a049fe5678948bdb907db19e4369f72"}
+      {"appName":"Chrome","requestId":"1d1b95d323524bacaf868a0edcc87a04"}
    </script>
-   <script type="text/javascript" src="http://localhost:52448/c231e6e367d64905b0641bd82a5303d5/browserLink" async="async"></script>
+   <script type="text/javascript" src="http://localhost:58113/6c10413359364569b807d1bf05611f9e/browserLink" async="async"></script>
    <!-- End Browser Link -->
 
 </body>

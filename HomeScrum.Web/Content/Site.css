@@ -27,3 +27,9 @@ table.dataTable tr.odd td.sorting_1 {
 table.dataTable tr.even td.sorting_1 {
    background-color: #f6f6f6;
 }
+
+div.burndown {
+   height: 400px;
+   width: 500px;
+   margin-top: 2em;
+}

@@ -1,20 +1,64 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model HomeScrum.Web.Models.Home.Snapshot
+
+@{
+   ViewBag.Title = "Home Scrum";
 }
 @section featured {
-    <article class="featured">
-        <div class="content-wrapper">
-            <h2>Welcome</h2>
-            <p>
-                Welcome to HomeScrum.  There isn't much here right now, but I am working on it.  At some point, this
-                message will be replaced with something useful.  Examples may include:
-            </p>
-            <ul>
-                <li>Statuses of current sprints (open work items, etc)</li>
-                <li>Burndown Charts for current sprints</li>
-                <li>A list of open items for the current user</li>
-                <li>Articles about new features</li>
-            </ul>
-        </div>
-    </article>
+   <article class="featured container">
+      <div class="content-wrapper jumbotron">
+         <h2>Welcome to HomeScrum</h2>
+         <p>
+            You are currently using Version 1.4.0.  This version was released on 2014/01/11.  New versions are released roughly monthly.  Enjoy!!
+         </p>
+      </div>
+   </article>
 }
+
+@Scripts.Render( "~/jqPlot" )
+@Scripts.Render( "~/jqPlot.plugins" )
+
+<h2>Recent Activity</h2>
+
+<div class="row">
+   <div class="col-md-4">
+      <h3>My Activity</h3>
+      <div class="list-group">
+         @foreach (var item in Model.RecentActivity)
+         {
+            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+         }
+      </div>
+   </div>
+
+   <div class="col-md-4">
+      <h3>Newest Work Items</h3>
+      <div class="list-group">
+         @foreach (var item in Model.NewestWorkItems)
+         {
+            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+         }
+      </div>
+   </div>
+
+   <div class="col-md-4">
+      <h3>Latest Sprints</h3>
+      <div class="list-group">
+         @foreach (var item in Model.LatestSprints)
+         {
+            @Html.ActionLink( item.Name, "Edit", "Sprints", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+         }
+      </div>
+   </div>
+</div>
+
+
+<h2>Burndowns for Current Sprints</h2>
+
+<div class="row">
+   @foreach (var chart in Model.BurndownCharts)
+   {
+      <div id="burndown" class="col-lg-6">
+         @Html.Partial( "_BurndownChart", chart )
+      </div>
+   }
+</div>

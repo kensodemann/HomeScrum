@@ -247,6 +247,8 @@
     <Compile Include="Models\Admin\WorkItemTypeEditorViewModel.cs" />
     <Compile Include="Models\Admin\WorkItemTypeViewModel.cs" />
     <Compile Include="Models\Base\ViewModelBase.cs" />
+    <Compile Include="Models\Home\Snapshot.cs" />
+    <Compile Include="Models\Home\SprintBurndown.cs" />
     <Compile Include="Models\Sprints\IBurndownChart.cs" />
     <Compile Include="Models\Sprints\SprintCalendarEntryViewModel.cs" />
     <Compile Include="Models\Sprints\SprintWorkItemViewModel.cs" />

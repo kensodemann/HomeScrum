@@ -73,6 +73,7 @@
     <Compile Include="SprintStatuses.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="WorkItemDailySnapshots.cs" />
+    <Compile Include="WorkItemHistories.cs" />
     <Compile Include="WorkItems.cs" />
     <Compile Include="WorkItemStatuses.cs" />
     <Compile Include="WorkItemTypes.cs" />
