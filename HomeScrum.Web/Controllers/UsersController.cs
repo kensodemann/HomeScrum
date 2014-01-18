@@ -93,8 +93,15 @@ namespace HomeScrum.Web.Controllers
                   if (model.IsValidFor( Data.TransactionType.Insert ))
                   {
                      session.Save( model );
-                     viewModel.Mode = EditMode.ReadOnly;
-                     viewModel.Id = model.Id;
+                     transaction.Commit();
+                     return RedirectToAction( "Edit",
+                        new
+                        {
+                           id = model.Id.ToString(),
+                           callingController = viewModel.CallingController,
+                           callingAction = viewModel.CallingAction,
+                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
+                        } );
                   }
                   else
                   {
