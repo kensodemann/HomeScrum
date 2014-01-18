@@ -11,7 +11,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.UserName, new { @class = "col-sm-2 control-label" } )
          <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.UserName, new { @class = "form-control" } )
+            @Html.TextBoxFor( model => model.UserName, new { @class = "form-control MainData" } )
             @Html.ValidationMessageFor( model => model.UserName )
          </div>
       </div>
@@ -22,7 +22,7 @@
          <div class="form-group">
             @Html.LabelFor( model => model.NewPassword, new { @class = "col-sm-2 control-label" } )
             <div class="col-sm-6">
-               @Html.PasswordFor( model => model.NewPassword, new { @class = "form-control" } )
+               @Html.PasswordFor( model => model.NewPassword, new { @class = "form-control MainData" } )
                @Html.ValidationMessageFor( model => model.NewPassword )
             </div>
          </div>
@@ -30,7 +30,7 @@
          <div class="form-group">
             @Html.LabelFor( model => model.ConfirmPassword, new { @class = "col-sm-2 control-label" } )
             <div class="col-sm-6">
-               @Html.PasswordFor( model => model.ConfirmPassword, new { @class = "form-control" } )
+               @Html.PasswordFor( model => model.ConfirmPassword, new { @class = "form-control MainData" } )
                @Html.ValidationMessageFor( model => model.ConfirmPassword )
             </div>
          </div>
@@ -39,7 +39,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.FirstName, new { @class = "col-sm-2 control-label" } )
          <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.FirstName, new { @class = "form-control" } )
+            @Html.TextBoxFor( model => model.FirstName, new { @class = "form-control MainData" } )
             @Html.ValidationMessageFor( model => model.FirstName )
          </div>
       </div>
@@ -47,7 +47,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.MiddleName, new { @class = "col-sm-2 control-label" } )
          <div class="col-sm-6">
-            <span>@Html.TextBoxFor( model => model.MiddleName, new { @class = "form-control" } )</span>
+            <span>@Html.TextBoxFor( model => model.MiddleName, new { @class = "form-control MainData" } )</span>
             @Html.ValidationMessageFor( model => model.MiddleName )
          </div>
       </div>
@@ -55,7 +55,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.LastName, new { @class = "col-sm-2 control-label" } )
          <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.LastName, new { @class = "form-control" } )
+            @Html.TextBoxFor( model => model.LastName, new { @class = "form-control MainData" } )
             @Html.ValidationMessageFor( model => model.LastName )
          </div>
       </div>
@@ -69,9 +69,15 @@
       </div>
    </fieldset>
 
-
-   <input type="submit" value="@ViewBag.EditorButtonLabel" class="btn btn-primary" />
-   @Html.ActionLink( "Cancel", Model.CallingAction ?? "Index", Model.CallingController,
-       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, new { id = "CancelButton" } )
+   
+   @Html.HiddenFor( model => model.Mode );
 }
 
+<a href="#" id="SubmitButton" class="btn btn-primary"></a>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+<script>
+   $(document).ready(function () {
+      EditorBase.init();
+   });
+</script>
