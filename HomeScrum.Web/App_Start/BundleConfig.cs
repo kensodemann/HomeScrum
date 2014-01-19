@@ -41,7 +41,7 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/jqPlot" )
             .Include( "~/Scripts/jqPlot/jquery.jqplot.js" ) );
 
-         bundles.Add( new ScriptBundle( "~/jqPlot.plugins" )
+         bundles.Add( new ScriptBundle( "~/jqPlotplugins" )
             .Include( "~/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js" )
             .Include( "~/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js" )
             .Include( "~/Scripts/jqPlot/plugins/jqplot.dateAxisRenderer.js" ) );
@@ -68,7 +68,7 @@ namespace HomeScrum.Web
          bundles.Add( new StyleBundle( "~/Content/SignInCss" )
             .Include( "~/Content/SignIn.css" ) );
 
-         bundles.Add( new StyleBundle( "~/jqPlot.css" )
+         bundles.Add( new StyleBundle( "~/jqPlotcss" )
             .Include( "~/Scripts/jqPlot/jquery.jqplot.css" ) );
       }
    }
