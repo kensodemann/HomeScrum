@@ -36,12 +36,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NHibernate.3.3.3.4000\lib\Net35\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -50,7 +51,8 @@
     <Reference Include="Ninject.Extensions.Logging">
       <HintPath>..\packages\Ninject.Extensions.Logging.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.Extensions.Logging.Log4Net">
+    <Reference Include="Ninject.Extensions.Logging.Log4Net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.Extensions.Logging.Log4net.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -72,13 +74,20 @@
     <Compile Include="Domain\ProjectStatus.cs" />
     <Compile Include="Domain\ProjectStatusCategory.cs" />
     <Compile Include="Domain\Sprint.cs" />
+    <Compile Include="Domain\SprintCalendarEntry.cs" />
     <Compile Include="Domain\SprintStatus.cs" />
     <Compile Include="Domain\SprintStatusCategory.cs" />
     <Compile Include="Domain\SystemDomainObject.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\WorkItemDailySnapshot.cs" />
+    <Compile Include="Domain\WorkItemHistory.cs" />
     <Compile Include="Domain\WorkItemStatusCategory.cs" />
     <Compile Include="Domain\WorkItemTypeCategory.cs" />
+    <Compile Include="Queries\SprintQueries.cs" />
+    <Compile Include="Queries\WorkItemQueries.cs" />
+    <Compile Include="Services\ISprintCalendarService.cs" />
     <Compile Include="Services\SecurityService.cs" />
+    <Compile Include="Services\SprintCalendarService.cs" />
     <Compile Include="Validation\ValidatableObject.cs" />
     <Compile Include="Domain\WorkItem.cs" />
     <Compile Include="Domain\WorkItemStatus.cs" />
@@ -93,7 +102,6 @@
     <Compile Include="Services\ISecurityService.cs" />
     <Compile Include="Validation\IValidatable.cs" />
     <Compile Include="TransactionType.cs" />
-    <Compile Include="Validation\ValidationListener.cs" />
     <Compile Include="Validation\Validations.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +163,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Mappings\WorkItemHistory.hbm.xml" />
+    <EmbeddedResource Include="Mappings\WorkItemDailySnapshot.hbm.xml" />
+    <EmbeddedResource Include="Mappings\SprintCalendarEntry.hbm.xml" />
     <EmbeddedResource Include="Mappings\Sprint.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="HomeScrum.Data"
+                   namespace="HomeScrum.Data.Domain">
+
+  <class name="WorkItemHistory"
+         table="WorkItemHistory">
+    <id name="Id">
+      <generator class="guid"></generator>
+    </id>
+    <property name="HistoryTimestamp"/>
+    <property name="SequenceNumber"/>    
+    <many-to-one name="WorkItem"
+                 class="WorkItem"
+                 column="WorkItemRid"
+                 lazy="false"
+                 cascade="none"
+                 fetch="join"/>
+    <many-to-one name="LastModifiedUser"
+                 class="User"
+                 column="LastModifiedUserRid"
+                 lazy="false"
+                 cascade="none"
+                 fetch="join"/>
+  </class>
+</hibernate-mapping>

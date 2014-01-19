@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web.Mvc;
+using HomeScrum.Data.Services;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -37,6 +38,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private ISession _session;
       private Mock<ISessionFactory> _sessionFactory;
 
+      private Mock<ISprintCalendarService> _sprintCalendarService;
+
       private WorkItemsController _controller;
 
       [ClassInitialize]
@@ -50,13 +53,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestInitialize]
       public virtual void InitializeTest()
       {
-         //CurrentSessionContext.Bind( Database.SessionFactory.OpenSession() );
          SetupSession();
          CreateMockIOCKernel();
 
          BuildDatabase();
          SetupCurrentUser();
          SetupLogger();
+         BuildMocks();
          SetupControllerContext();
 
          _controller = CreateController();
@@ -66,6 +69,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          Database.Build( _session );
          WorkItems.Load( _sessionFactory.Object );
+      }
+
+      private void BuildMocks()
+      {
+         _sprintCalendarService = new Mock<ISprintCalendarService>();
       }
 
       private void SetupSession()
@@ -131,7 +139,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void Index_BacklogItemsReturnZeroPoints_IfNoTasksAssigned()
       {
-         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0);
+         var expectedItem = WorkItems.ModelData.First( x => x.WorkItemType.Category == 0 && x.Tasks != null && x.Tasks.Count() == 0 );
 
          var view = _controller.Index() as ViewResult;
          var model = (IEnumerable<WorkItemIndexViewModel>)view.Model;
@@ -797,6 +805,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, items.Count );
          Assert.AreEqual( viewModel.AssignedToUserId, items[0].AssignedToUser.Id );
       }
+
+      [TestMethod]
+      public void CreatePost_CallsSprintCalendarService_IfSprintIsNotNull()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         viewModel.SprintId = Sprints.ModelData[0].Id;
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.Is<Sprint>( s => s.Id == Sprints.ModelData[0].Id ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void CreatePost_DoesNotCallSprintCalendarService_IfSprintIsNull()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         viewModel.SprintId = Guid.Empty;
+
+         _controller.Create( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.IsAny<Sprint>() ), Times.Never() );
+      }
       #endregion
 
 
@@ -1447,6 +1479,28 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 12, item.Points );
          Assert.AreEqual( 5, item.PointsRemaining );
       }
+
+      [TestMethod]
+      public void EditPost_CallsSprintCalendarService_IfSprintIsNotNull()
+      {
+         var model = WorkItems.ModelData.First( x => x.Sprint != null );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.Is<Sprint>( s => s.Id == model.Sprint.Id ) ), Times.Once() );
+      }
+
+      [TestMethod]
+      public void EditPost_DoesNotCallSprintCalendarService_IfSprintIsNull()
+      {
+         var model = WorkItems.ModelData.First( x => x.Sprint == null );
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         _controller.Edit( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Update( It.IsAny<Sprint>() ), Times.Never() );
+      }
       #endregion
 
 
@@ -1573,7 +1627,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private WorkItemsController CreateController()
       {
-         var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object );
+         var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object, _sprintCalendarService.Object );
          controller.ControllerContext = _controllerConext.Object;
 
          return controller;

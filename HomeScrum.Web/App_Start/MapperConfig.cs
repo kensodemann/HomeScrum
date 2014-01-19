@@ -1,15 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using HomeScrum.Data.Domain;
-using HomeScrum.Data.Repositories;
 using HomeScrum.Web.Models.Admin;
-using HomeScrum.Web.Models.Base;
-using HomeScrum.Web.Models.WorkItems;
-using Ninject;
-using System;
-using AutoMapper.Mappers;
-using HomeScrum.Common.Utility;
-using NHibernate;
 using HomeScrum.Web.Models.Sprints;
+using HomeScrum.Web.Models.WorkItems;
+using NHibernate;
+using NHibernate.Linq;
+using Ninject;
 
 namespace HomeScrum.Web
 {
@@ -47,7 +46,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.LastModifiedUserRid, opt => opt.Ignore() )
             .ForMember( dest => dest.CreatedByUser, opt => opt.ResolveUsing<DomainModelResolver<User>>().FromMember( src => src.CreatedByUserId ) )
             .ForMember( dest => dest.Status, opt => opt.ResolveUsing<DomainModelResolver<SprintStatus>>().FromMember( src => src.StatusId ) )
-            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) );
+            .ForMember( dest => dest.Project, opt => opt.ResolveUsing<DomainModelResolver<Project>>().FromMember( src => src.ProjectId ) )
+            .ForMember( dest => dest.Calendar, opt => opt.ResolveUsing<CalendarResolver>().FromMember( src => src.Id ) );
 
          Mapper.CreateMap<ProjectEditorViewModel, Project>()
             .ConstructUsingServiceLocator()
@@ -67,6 +67,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.AcceptanceCriteria, opt => opt.Ignore() )
             .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
             .ForMember( dest => dest.Sprint, opt => opt.ResolveUsing<DomainModelResolver<Sprint>>().FromMember( src => src.SprintId ) )
+            .ForMember( dest => dest.PointsHistory, opt => opt.Ignore() )
             .ConstructUsingServiceLocator();
 
          Mapper.CreateMap<CreateUserViewModel, User>()
@@ -129,7 +130,9 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
             .ForMember( dest => dest.BacklogItems, opt => opt.Ignore() )
-            .ForMember( dest => dest.Tasks, opt => opt.Ignore() );
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
+            .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() )
+            .ForMember( dest => dest.Calendar, opt => opt.Ignore() );
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.Mode, opt => opt.Ignore() )
@@ -195,6 +198,25 @@ namespace HomeScrum.Web
 
             ModelT model = session.Get<ModelT>( sourceId );
             return model;
+         }
+      }
+
+      public class CalendarResolver : ValueResolver<Guid, IEnumerable<SprintCalendarEntry>>
+      {
+         [Inject]
+         public CalendarResolver( ISessionFactory sessionFactory )
+         {
+            _sessionFactory = sessionFactory;
+         }
+
+         private readonly ISessionFactory _sessionFactory;
+
+         protected override IEnumerable<SprintCalendarEntry> ResolveCore( Guid source )
+         {
+            var session = _sessionFactory.GetCurrentSession();
+
+            IEnumerable<SprintCalendarEntry> calendar = session.Query<SprintCalendarEntry>().Where( x => x.Sprint.Id == source ).ToList();
+            return calendar;
          }
       }
       #endregion

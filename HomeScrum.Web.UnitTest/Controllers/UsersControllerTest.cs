@@ -155,16 +155,25 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_ReturnsToEditorModeReadOnly_IfModelIsValid()
+      public void CreatePost_RedirectsToEditorModeReadOnly_IfModelIsValid()
       {
          var viewModel = CreateNewCreateViewModel();
 
-         var result = _controller.Create( viewModel ) as ViewResult;
-         var vm = result.Model as UserEditorViewModel;
+         var result = _controller.Create( viewModel ) as RedirectToRouteResult;
 
-         Assert.IsNotNull( vm );
-         Assert.AreNotEqual( Guid.Empty, vm.Id );
-         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 5, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
+
+         result.RouteValues.ContainsKey( "callingController" );
+         result.RouteValues.ContainsKey( "callingAction" );
+         result.RouteValues.ContainsKey( "callingId" );
       }
 
       [TestMethod]
@@ -339,7 +348,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_ReturnsToEditorModeReadOnly_IfModelIsValid()
+      public void EditPost_RedirectsToEditorModeReadOnly_IfModelIsValid()
       {
          var user = Users.ModelData.ToArray()[2];
          var model = new EditUserViewModel()
@@ -352,12 +361,21 @@ namespace HomeScrum.Web.UnitTest.Controllers
             IsActive = (user.StatusCd == 'A')
          };
 
-         var result = _controller.Edit( model ) as ViewResult;
-         var vm = result.Model as UserEditorViewModel;
+         var result = _controller.Edit( model ) as RedirectToRouteResult;
 
-         Assert.IsNotNull( vm );
-         Assert.AreEqual( model.Id, vm.Id );
-         Assert.AreEqual( EditMode.ReadOnly, vm.Mode );
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 5, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Edit", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
+
+         result.RouteValues.ContainsKey( "callingController" );
+         result.RouteValues.ContainsKey( "callingAction" );
+         result.RouteValues.ContainsKey( "callingId" );
       }
 
       [TestMethod]

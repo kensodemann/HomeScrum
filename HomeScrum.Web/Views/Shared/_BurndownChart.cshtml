@@ -1,0 +1,50 @@
+﻿@model HomeScrum.Web.Models.Sprints.IBurndownChart
+
+@{
+   var chartId = String.Format( "chartdiv{0}", Model.Id.ToString( "N" ) );
+   var startDate = ((DateTime)Model.StartDate).ToString( "yyyy-MM-dd" );
+   var endDate = ((DateTime)Model.EndDate).ToString( "yyyy-MM-dd" );
+}
+
+<div id="@chartId" class="burndown"></div>
+
+<script type="text/javascript" charset="utf-8">
+   var json_data = @Html.Raw( Json.Encode( Model.Calendar ) );
+
+   var dataArray = [];
+   var data = [];
+
+   for (var i in json_data) {
+      var json_element = json_data[i];
+      var element = [];
+      element.push(new Date(parseInt(json_element["HistoryDate"].replace('/Date(', ''))));
+      element.push(json_element["PointsRemaining"]);
+      dataArray.push(element);
+   }
+   data.push(dataArray);
+
+   $(document).ready(function () {
+      $.jqplot("@chartId",
+         data,
+         {
+            title: "@Model.Name",
+            axesDefaults: {
+               labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+            },
+            axes: {
+               xaxis: {
+                  label: "Date",
+                  renderer: $.jqplot.DateAxisRenderer,
+                  pad: 0,
+                  min: '@startDate',
+                  max: '@endDate'
+               },
+               yaxis: {
+                  label: "Points Remaining",
+                  min: 0
+               }
+            }
+         });
+   });
+
+</script>

@@ -1,62 +1,83 @@
 ﻿@model HomeScrum.Web.Models.Admin.UserEditorViewModel
 
-<div id="UserEditor">
-    @using (Html.BeginForm())
-    {
-        @Html.ValidationSummary( true )
 
-        <fieldset>
-            <legend>User</legend>
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
+{
+   @Html.ValidationSummary( true )
 
-            <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.UserName )
-                <span>@Html.EditorFor( model => model.UserName )</span>
-                @Html.ValidationMessageFor( model => model.UserName )
+   <fieldset>
+      <legend class="hidden">User</legend>
+
+      <div class="form-group">
+         @Html.LabelFor( model => model.UserName, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.UserName, new { @class = "form-control MainData" } )
+            @Html.ValidationMessageFor( model => model.UserName )
+         </div>
+      </div>
+
+      @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
+      @if (Model == null || Model.IsNewUser)
+      {
+         <div class="form-group">
+            @Html.LabelFor( model => model.NewPassword, new { @class = "col-sm-2 control-label" } )
+            <div class="col-sm-6">
+               @Html.PasswordFor( model => model.NewPassword, new { @class = "form-control MainData" } )
+               @Html.ValidationMessageFor( model => model.NewPassword )
             </div>
+         </div>
 
-            @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
-            @if (Model == null || Model.IsNewUser)
-            {
-                <div class="formSingleLineEdit">
-                    @Html.LabelFor( model => model.NewPassword )
-                    <span>@Html.EditorFor( model => model.NewPassword )</span>
-                    @Html.ValidationMessageFor( model => model.NewPassword )
-                </div>
-            
-                <div class="formSingleLineEdit">
-                    @Html.LabelFor( model => model.ConfirmPassword )
-                    <span>@Html.EditorFor( model => model.ConfirmPassword )</span>
-                    @Html.ValidationMessageFor( model => model.ConfirmPassword )
-                </div>
-            }
-
-            <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.FirstName )
-                <span>@Html.EditorFor( model => model.FirstName )</span>
-                @Html.ValidationMessageFor( model => model.FirstName )
+         <div class="form-group">
+            @Html.LabelFor( model => model.ConfirmPassword, new { @class = "col-sm-2 control-label" } )
+            <div class="col-sm-6">
+               @Html.PasswordFor( model => model.ConfirmPassword, new { @class = "form-control MainData" } )
+               @Html.ValidationMessageFor( model => model.ConfirmPassword )
             </div>
+         </div>
+      }
 
-            <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.MiddleName )
-                <span>@Html.EditorFor( model => model.MiddleName )</span>
-                @Html.ValidationMessageFor( model => model.MiddleName )
-            </div>
+      <div class="form-group">
+         @Html.LabelFor( model => model.FirstName, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.FirstName, new { @class = "form-control MainData" } )
+            @Html.ValidationMessageFor( model => model.FirstName )
+         </div>
+      </div>
 
-            <div class="formSingleLineEdit">
-                @Html.LabelFor( model => model.LastName )
-                <span>@Html.EditorFor( model => model.LastName )</span>
-                @Html.ValidationMessageFor( model => model.LastName )
-            </div>
+      <div class="form-group">
+         @Html.LabelFor( model => model.MiddleName, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            <span>@Html.TextBoxFor( model => model.MiddleName, new { @class = "form-control MainData" } )</span>
+            @Html.ValidationMessageFor( model => model.MiddleName )
+         </div>
+      </div>
 
-            <div class="formBooleanOption">
-                @Html.EditorFor( model => model.IsActive )
-                @Html.LabelFor( model => model.IsActive )
-                @Html.ValidationMessageFor( model => model.IsActive )
-            </div>
-        </fieldset>
-    
-        <p>
-            <input type="submit" value="@ViewBag.EditorButtonLabel" />
-        </p>
-    }
-</div>
+      <div class="form-group">
+         @Html.LabelFor( model => model.LastName, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-6">
+            @Html.TextBoxFor( model => model.LastName, new { @class = "form-control MainData" } )
+            @Html.ValidationMessageFor( model => model.LastName )
+         </div>
+      </div>
+
+      <div class="form-group">
+         <div class="col-sm-offset-2 col-sm-6">
+            @Html.EditorFor( model => model.IsActive )
+            @Html.LabelFor( model => model.IsActive )
+            @Html.ValidationMessageFor( model => model.IsActive )
+         </div>
+      </div>
+   </fieldset>
+
+   
+   @Html.HiddenFor( model => model.Mode );
+}
+
+<a href="#" id="SubmitButton" class="btn btn-primary"></a>
+
+@Scripts.Render( "~/Bundles/BaseScripts" )
+<script>
+   $(document).ready(function () {
+      EditorBase.init();
+   });
+</script>

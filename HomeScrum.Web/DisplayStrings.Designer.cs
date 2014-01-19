@@ -97,6 +97,15 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Points Capacity:.
+        /// </summary>
+        public static string Capacity {
+            get {
+                return ResourceManager.GetString("Capacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created By:.
         /// </summary>
         public static string CreatedByUser {
@@ -246,6 +255,15 @@ namespace HomeScrum.Web {
         public static string PointsRemaining {
             get {
                 return ResourceManager.GetString("PointsRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Points Scheduled:.
+        /// </summary>
+        public static string PointsScheduled {
+            get {
+                return ResourceManager.GetString("PointsScheduled", resourceCulture);
             }
         }
         

@@ -63,6 +63,9 @@
       SetTextInputAccess($("#Description"));
       SetTextInputAccess($("#Goal"));
       SetProjectIdAccess();
+      SetDateAccess($("#StartDate"));
+      SetDateAccess($("#EndDate"));
+      SetCapacityAccess();
    }
 
    function SetupStatusSelectList() {
@@ -77,10 +80,53 @@
       SetAccess();
    }
 
+   function SetupDates() {
+      $("#StartDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+      SetDateAccess($("#StartDate"));
+
+      $("#EndDate").datepicker({
+         changeMonth: true,
+         changeYear: true
+      });
+      SetDateAccess("#EndDate");
+   }
+
+   function SetDateAccess(datePicker) {
+      if (EditorBase.readOnlyMode()) {
+         $(datePicker).datepicker("disable");
+      } else {
+         $(datePicker).datepicker("enable");
+      }
+   }
+
+   function SetupCapacity() {
+      $("#Capacity").spinner({
+         min: 1,
+         max: 32767,
+      });
+      SetCapacityAccess();
+   }
+
+   function SetCapacityAccess() {
+      var c = $("#Capacity");
+      if (EditorBase.readOnlyMode() || BacklogIsClosed()) {
+         c.spinner("disable");
+         c.prop("disabled", true);
+      } else {
+         c.spinner("enable");
+         c.prop("disabled", false);
+      }
+   }
+
    var init = function () {
       ShowHideDataItems();
-      
+
       SetupStatusSelectList();
+      SetupDates();
+      SetupCapacity();
 
       EditorBase.init(handleSubmitClicked);
    };

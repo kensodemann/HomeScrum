@@ -1,6 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.Sprints;
@@ -12,11 +18,6 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -36,6 +37,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private Mock<IPrincipal> _principal;
       private Mock<IIdentity> _userIdentity;
+
+      private Mock<ISprintCalendarService> _sprintCalendarService;
 
       private SprintsController _controller;
 
@@ -63,6 +66,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          _sessionFactory = new Mock<ISessionFactory>();
          _logger = new Mock<ILogger>();
+         _sprintCalendarService = new Mock<ISprintCalendarService>();
       }
 
       private void SetupSession()
@@ -81,7 +85,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void CreateController()
       {
-         _controller = new SprintsController( new PropertyNameTranslator<Sprint, SprintEditorViewModel>(), _logger.Object, _sessionFactory.Object );
+         _controller = new SprintsController( new PropertyNameTranslator<Sprint, SprintEditorViewModel>(), _logger.Object, _sessionFactory.Object, _sprintCalendarService.Object );
          _controller.ControllerContext = _controllerConext.Object;
       }
 
@@ -456,13 +460,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( viewModel, _principal.Object );
 
          _session.Clear();
-         var items = _session.Query<Sprint>()
-            .Where( x => x.Name == viewModel.Name )
-            .ToList();
+         var model = _session.Query<Sprint>().Single( x => x.Name == viewModel.Name );
 
-         Assert.AreEqual( 1, items.Count );
-         Assert.AreEqual( viewModel.Name, items[0].Name );
-         Assert.AreEqual( viewModel.Description, items[0].Description );
+         // ViewModel will not have ID on a Create, so set it before the assert
+         viewModel.Id = model.Id;
+         AssertModelAndViewModelPropertiesEqual( model, viewModel );
       }
 
       [TestMethod]
@@ -618,7 +620,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( result );
          var returnedModel = result.Model as SprintEditorViewModel;
          Assert.IsNotNull( returnedModel );
-         Assert.AreEqual( model.Id, returnedModel.Id );
+         AssertModelAndViewModelPropertiesEqual( model, returnedModel );
       }
 
       [TestMethod]
@@ -786,7 +788,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_LoadsBacklogItems()
       {
-         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Sandwiches" );
 
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
@@ -797,7 +799,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void EditGet_LoadsTasksAndIssues()
       {
-         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Sandwiches" );
 
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
@@ -817,6 +819,30 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.IsNotNull( viewModel.Tasks );
          Assert.AreEqual( 0, viewModel.BacklogItems.Count() );
          Assert.AreEqual( 0, viewModel.Tasks.Count() );
+      }
+
+      [TestMethod]
+      public void EditGet_LoadsCalendar()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Calendar.Count > 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( sprint.Calendar.Count, viewModel.Calendar.Count() );
+         foreach(var entry in sprint.Calendar)
+         {
+            Assert.IsNotNull( viewModel.Calendar.SingleOrDefault( x => x.HistoryDate == entry.HistoryDate && x.PointsRemaining == entry.PointsRemaining ) );
+         }
+      }
+
+      [TestMethod]
+      public void EditGet_CreatesEmptyCalendar_IfNoEntriesExistForSprint()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Calendar.Count == 0 );
+         
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( 0, viewModel.Calendar.Count() );
       }
 
       [TestMethod]
@@ -870,8 +896,23 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
             Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
-            Assert.AreEqual(  model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+            Assert.AreEqual( model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
          }
+      }
+
+      [TestMethod]
+      public void EditGet_CalculatesTotalPoints()
+      {
+         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
+
+         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
+
+         Assert.AreEqual( WorkItems.ModelData
+                             .Where( x => x.Sprint != null && 
+                                     x.Sprint.Id == sprint.Id && 
+                                     x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+                             .Sum(x=>x.Points),
+                          viewModel.TotalPoints );
       }
       #endregion
 
@@ -888,7 +929,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _session.Clear();
          var item = _session.Get<Sprint>( viewModel.Id );
-         Assert.AreEqual( viewModel.Name, item.Name );
+         AssertModelAndViewModelPropertiesEqual( item, viewModel );
       }
 
       [TestMethod]
@@ -1032,6 +1073,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
             Assert.IsTrue( (model.Project.Id != itemId && !item.Selected) ||
                            (model.Project.Id == itemId && item.Selected) );
          }
+      }
+
+      [TestMethod]
+      public void EditPost_CallsSprintCalendarService()
+      {
+         var model = Sprints.ModelData[3];
+         var viewModel = CreateSprintEditorViewModel( model );
+
+         var result = _controller.Edit( viewModel, _principal.Object );
+
+         _sprintCalendarService.Verify( x => x.Reset( It.Is<Sprint>( s => s.Id == model.Id ) ), Times.Once() );
       }
       #endregion
 
@@ -1261,6 +1313,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
 
       #region Private Helpers
+      private static void AssertModelAndViewModelPropertiesEqual( Sprint model, SprintEditorViewModel viewModel )
+      {
+         Assert.AreEqual( model.Id, viewModel.Id );
+         Assert.AreEqual( model.Name, viewModel.Name );
+         Assert.AreEqual( model.Description, viewModel.Description );
+         Assert.AreEqual( model.Goal, viewModel.Goal );
+         Assert.AreEqual( model.StartDate.ToString(), viewModel.StartDate.ToString() );
+         Assert.AreEqual( model.EndDate.ToString(), viewModel.EndDate.ToString() );
+         Assert.AreEqual( model.Capacity, viewModel.Capacity );
+      }
+
       private SprintEditorViewModel CreateSprintEditorViewModel()
       {
          return new SprintEditorViewModel()
@@ -1273,7 +1336,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectName = Projects.ModelData.First( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ).Name,
             StartDate = new DateTime( 2013, 4, 1 ),
             EndDate = new DateTime( 2013, 4, 30 ),
-            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id
+            CreatedByUserId = Users.ModelData.First( x => x.StatusCd == 'A' ).Id,
+            Capacity = 42
          };
       }
 
@@ -1290,7 +1354,8 @@ namespace HomeScrum.Web.UnitTest.Controllers
             ProjectName = model.Project.Name,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
-            CreatedByUserId = model.CreatedByUser.Id
+            CreatedByUserId = model.CreatedByUser.Id,
+            Capacity = model.Capacity
          };
       }
 

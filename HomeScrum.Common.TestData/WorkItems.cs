@@ -398,6 +398,7 @@ namespace HomeScrum.Common.TestData
             PointsRemaining = pointsRemaining
          };
          workItem.Tasks = new List<WorkItem>();
+         workItem.PointsHistory = new List<WorkItemDailySnapshot>();
          _workItems.Add( workItem );
 
          return workItem;
@@ -419,6 +420,7 @@ namespace HomeScrum.Common.TestData
             PointsRemaining = pointsRemaining
          };
          ((List<WorkItem>)backlogItem.Tasks).Add( workItem );
+         workItem.PointsHistory = new List<WorkItemDailySnapshot>();
          _workItems.Add( workItem );
 
          return workItem;

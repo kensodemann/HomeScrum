@@ -1,4 +1,10 @@
-﻿using HomeScrum.Data.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using HomeScrum.Data.Domain;
+using HomeScrum.Data.Queries;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Sprints;
@@ -6,17 +12,18 @@ using HomeScrum.Web.Translators;
 using NHibernate;
 using NHibernate.Linq;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers
 {
    public class SprintsController : ReadWriteController<Sprint, SprintEditorViewModel>
    {
-      public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
-         : base( translator, logger, sessionFactory ) { }
+      private readonly ISprintCalendarService _sprintCalendarService;
+
+      public SprintsController( IPropertyNameTranslator<Sprint, SprintEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory, ISprintCalendarService sprintCalendarService )
+         : base( translator, logger, sessionFactory )
+      {
+         _sprintCalendarService = sprintCalendarService;
+      }
 
       //
       // GET: /Sprints/
@@ -25,8 +32,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "Index()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var query = session.Query<Sprint>()
-               .ApplyStandardSorting()
+         var query = session.AllSprints()
                .SelectSprintIndexViewModels();
 
          return IndexView( query );
@@ -40,10 +46,7 @@ namespace HomeScrum.Web.Controllers
          Log.Debug( "CurrentSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var query = session.Query<Sprint>()
-               .Where( x => x.Status.StatusCd == 'A' && x.Status.Category == SprintStatusCategory.Active &&
-                            x.StartDate != null && x.StartDate <= DateTime.Now.Date && (x.EndDate == null || x.EndDate >= DateTime.Now.Date) )
-               .ApplyStandardSorting()
+         var query = session.CurrentSprints()
                .SelectSprintIndexViewModels();
 
          return IndexView( query );
@@ -53,12 +56,10 @@ namespace HomeScrum.Web.Controllers
       // GET: /Sprints/OpenSprints
       public System.Web.Mvc.ActionResult OpenSprints()
       {
-         Log.Debug( "CurrentSprints()" );
+         Log.Debug( "OpenSprints()" );
 
          var session = SessionFactory.GetCurrentSession();
-         var query = session.Query<Sprint>()
-               .Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete )
-               .ApplyStandardSorting()
+         var query = session.OpenSprints()
                .SelectSprintIndexViewModels();
 
          return IndexView( query );
@@ -246,6 +247,7 @@ namespace HomeScrum.Web.Controllers
       {
          model.LastModifiedUserRid = user.Identity.GetUserId( session );
          base.Update( session, model, user );
+         _sprintCalendarService.Reset( model );
       }
 
       protected override SprintEditorViewModel GetEditorViewModel( ISession session, Guid id )
@@ -256,6 +258,8 @@ namespace HomeScrum.Web.Controllers
          {
             viewModel.BacklogItems = GetBacklogItems( session, id );
             viewModel.Tasks = GetTasks( session, id );
+            viewModel.TotalPoints = viewModel.Tasks.Sum( x => x.Points );
+            viewModel.Calendar = GetCalendar( session, id );
          }
 
          return viewModel;
@@ -278,17 +282,23 @@ namespace HomeScrum.Web.Controllers
             .SelectSprintWorkItemViewModel()
             .ToList();
       }
+
+      private IEnumerable<SprintCalendarEntryViewModel>GetCalendar(ISession session, Guid id)
+      {
+         return session.Query<SprintCalendarEntry>()
+            .Where( x => x.Sprint.Id == id )
+            .OrderBy( x => x.HistoryDate )
+            .Select( x => new SprintCalendarEntryViewModel()
+                          {
+                             HistoryDate = x.HistoryDate,
+                             PointsRemaining = x.PointsRemaining
+                          } )
+            .ToList();
+      }
    }
 
    internal static class SprintQueryExtentions
    {
-      public static IQueryable<Sprint> ApplyStandardSorting( this IQueryable<Sprint> query )
-      {
-         return query.OrderBy( x => x.Project.Name )
-            .ThenBy( x => x.StartDate ?? DateTime.MaxValue )
-            .ThenBy( x => x.Status.SortSequence );
-      }
-
       public static IQueryable<WorkItem> ApplyStandardSorting( this IQueryable<WorkItem> query )
       {
          return query.OrderBy( x => (x.Sprint == null) ? 1 : 2 )

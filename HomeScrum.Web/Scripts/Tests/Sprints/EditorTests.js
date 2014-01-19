@@ -101,7 +101,27 @@ test('Task List Link hidden on status change if status open and task list closed
    $("#StatusId").change();
    ok($("#TaskListLink").is(":hidden"), "Task List link is hidden");
    ok($("#BacklogLink").is(":visible"), "Backlog link is visible");
-}); 
+});
+
+test('Capacity Enabled if backlog open on status change', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-BacklogIsClosed", "True");
+   $("#selStatus").attr("data-TaskListIsClosed", "False");
+   Editor.init();
+   $("#selStatus").attr("data-BacklogIsClosed", "False");
+   $("#StatusId").change();
+   strictEqual($("#Capacity").prop("disabled"), false);
+});
+
+test('Capacity Disabled if backlog closed on status change', function () {
+   $("#selStatus").attr("data-IsOpenStatus", "True");
+   $("#selStatus").attr("data-BacklogIsClosed", "False");
+   $("#selStatus").attr("data-TaskListIsClosed", "False");
+   Editor.init();
+   $("#selStatus").attr("data-BacklogIsClosed", "True");
+   $("#StatusId").change();
+   strictEqual($("#Capacity").prop("disabled"), true);
+});
 
 function assertItemsAreActive() {
    strictEqual($("#Name").prop("readonly"), false, "Name not Readonly");
