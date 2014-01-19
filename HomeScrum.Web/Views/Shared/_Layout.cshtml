@@ -34,7 +34,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
          </button>
-         <a class="navbar-brand" href='/'>
+         <a class="navbar-brand" href='home'>
             <span class="glyphicon glyphicon-home"></span>
             <span>HomeScrum</span>
          </a>
@@ -42,45 +42,45 @@
 
       <div class="collapse navbar-collapse">
          <ul class="nav navbar-nav">
-            <li class="">@Html.MenuItem( "My Assignments", "MyAssignments", "WorkItems" )</li>
-            <li>@Html.MenuItem( "Current Sprints", "CurrentSprints", "Sprints" )</li>
+            @Html.MenuItem( "My Assignments", "MyAssignments", "WorkItems" )
+            @Html.MenuItem( "Current Sprints", "CurrentSprints", "Sprints" )
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Work Items <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li class="active">@Html.MenuItem( "Unassigned Problems", "UnassignedProblems", "WorkItems" )</li>
-                  <li>@Html.MenuItem( "Unassigned Tasks", "UnassignedTasks", "WorkItems" )</li>
-                  <li>@Html.MenuItem( "Unassigned Backlog", "UnassignedBacklog", "WorkItems" )</li>
+                  @Html.MenuItem( "Unassigned Problems", "UnassignedProblems", "WorkItems" )
+                  @Html.MenuItem( "Unassigned Tasks", "UnassignedTasks", "WorkItems" )
+                  @Html.MenuItem( "Unassigned Backlog", "UnassignedBacklog", "WorkItems" )
                   <li class="divider"></li>
-                  <li>@Html.MenuItem( "All Work Items", "Index", "WorkItems" )</li>
+                  @Html.MenuItem( "All Work Items", "Index", "WorkItems" )
                </ul>
             </li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sprints <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li>@Html.MenuItem( "Open Sprints", "OpenSprints", "Sprints" )</li>
-                  <li>@Html.MenuItem( "All Sprints", "Index", "Sprints" )</li>
+                  @Html.MenuItem( "Open Sprints", "OpenSprints", "Sprints" )
+                  @Html.MenuItem( "All Sprints", "Index", "Sprints" )
                </ul>
             </li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li>@Html.MenuItem( "Acceptance Criterion Statuses", "Index", "AcceptanceCriterionStatuses" )</li>
-                  <li>@Html.MenuItem( "Project Statuses", "Index", "ProjectStatuses" )</li>
-                  <li>@Html.MenuItem( "Sprint Statuses", "Index", "SprintStatuses" )</li>
-                  <li>@Html.MenuItem( "Work Item Statuses", "Index", "WorkItemStatuses" )</li>
-                  <li>@Html.MenuItem( "Work Item Types", "Index", "WorkItemTypes" )</li>
+                  @Html.MenuItem( "Acceptance Criterion Statuses", "Index", "AcceptanceCriterionStatuses" )
+                  @Html.MenuItem( "Project Statuses", "Index", "ProjectStatuses" )
+                  @Html.MenuItem( "Sprint Statuses", "Index", "SprintStatuses" )
+                  @Html.MenuItem( "Work Item Statuses", "Index", "WorkItemStatuses" )
+                  @Html.MenuItem( "Work Item Types", "Index", "WorkItemTypes" )
                   <li class="divider"></li>
-                  <li>@Html.MenuItem( "Projects", "Index", "Projects" )</li>
+                  @Html.MenuItem( "Projects", "Index", "Projects" )
                   <li class="divider"></li>
-                  <li>@Html.MenuItem( "Users", "Index", "Users" )</li>
-                  <li>@Html.MenuItem( "Change Password", "Manage", "Account" )</li>
+                  @Html.MenuItem( "Users", "Index", "Users" )
+                  @Html.MenuItem( "Change Password", "Manage", "Account" )
                </ul>
             </li>
          </ul>
 
          @Html.Partial( "_LoginPartial" )
          <ul class="nav navbar-nav navbar-right">
-            <li>@Html.MenuItem( "About", "About", "Home" )</li>
+            @Html.MenuItem( "About", "About", "Home" )
          </ul>
 
 
