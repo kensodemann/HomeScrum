@@ -20,3 +20,4 @@ log-file.*
 *.user
 *.suo
 *.swp
+Thumbs.db
