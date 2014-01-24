@@ -51,8 +51,8 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/modernizr" ).Include(
                      "~/Scripts/modernizr-*" ) );
 
-         bundles.Add( new StyleBundle( "~/Content/themes/base/css" ).Include(
-                     "~/Content/themes/base/jquery-ui.css" ) );
+         bundles.Add( new StyleBundle( "~/Content/JQueryUItheme" ).Include(
+                     "~/Content/themes/redmond/jquery-ui.css" ) );
 
          bundles.Add( new StyleBundle( "~/Content/themes/jqueryDataTables/css" )
             .Include( "~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" ) );
