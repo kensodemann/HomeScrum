@@ -47,7 +47,7 @@ namespace HomeScrum.Data.Services
       {
          Log.Debug( "Reset Sprint Calendar" );
 
-         sprint.Calendar.Clear();
+         ClearCalendar( sprint );
 
          if (sprint.StartDate == null || sprint.EndDate == null)
          {
@@ -62,6 +62,17 @@ namespace HomeScrum.Data.Services
             DateTime.Now.Date );
 
          Log.Debug( "Sprint Calendar Reset Complete" );
+      }
+
+
+      private void ClearCalendar( Sprint sprint )
+      {
+         var session = _sessionFactory.GetCurrentSession();
+         foreach (var item in sprint.Calendar)
+         {
+            session.Delete( item );
+         }
+         sprint.Calendar.Clear();
       }
 
 
