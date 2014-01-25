@@ -49,7 +49,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public override void InitializeTest()
       {
          base.InitializeTest();
-         
+
          Database.Build( _session );
          Users.Load( _sessionFactory.Object );
          ProjectStatuses.Load( _sessionFactory.Object );
@@ -61,7 +61,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _session.Dispose();
       }
 
-      public override ReadWriteController<ProjectStatus, ProjectStatusEditorViewModel> CreateController()
+      public override ReadWriteController<ProjectStatus, ProjectStatusViewModel, ProjectStatusEditorViewModel> CreateController()
       {
          var controller = new ProjectStatusesController( new PropertyNameTranslator<ProjectStatus, ProjectStatusEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;

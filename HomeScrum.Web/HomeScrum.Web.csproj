@@ -719,6 +719,10 @@
     <Content Include="Views\WorkItems\UnassignedTasks.cshtml" />
     <Content Include="Views\WorkItems\UnassignedProblems.cshtml" />
     <Content Include="Views\Shared\_BurndownChart.cshtml" />
+    <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
+    <Content Include="Views\Shared\_DetailsTemplate.cshtml" />
+    <Content Include="Views\WorkItemTypes\Details.cshtml" />
+    <Content Include="Views\WorkItemTypes\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

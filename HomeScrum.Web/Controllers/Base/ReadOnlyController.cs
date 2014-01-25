@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Extensions;
@@ -19,8 +20,9 @@ namespace HomeScrum.Web.Controllers.Base
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
    [Authorize]
-   public abstract class ReadOnlyController<ModelT> : Controller
+   public abstract class ReadOnlyController<ModelT, ViewModelT> : Controller
       where ModelT : DomainObjectBase
+      where ViewModelT : DomainObjectViewModel
    {
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
@@ -56,6 +58,38 @@ namespace HomeScrum.Web.Controllers.Base
             ClearNavigationStack();
             return View( items );
          }
+      }
+
+      //
+      // GET: /ModelTs/Display/Guid
+      public virtual ActionResult Details( Guid id, string callingController = null, string callingAction = null, string callingId = null )
+      {
+         ViewModelT viewModel;
+         Log.Debug( "Display({0}", id.ToString() );
+
+         var session = SessionFactory.GetCurrentSession();
+
+         using (var transaction = session.BeginTransaction())
+         {
+            viewModel = GetViewModel( session, id );
+            transaction.Commit();
+         }
+
+         if (viewModel == null)
+         {
+            return HttpNotFound();
+         }
+
+         UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
+
+         return View( viewModel );
+      }
+
+
+      protected virtual ViewModelT GetViewModel( ISession session, Guid id )
+      {
+         var model = session.Get<ModelT>( id );
+         return (model != null) ? Mapper.Map<ViewModelT>( model ) : null;
       }
 
 

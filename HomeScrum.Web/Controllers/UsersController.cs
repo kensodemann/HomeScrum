@@ -134,7 +134,7 @@ namespace HomeScrum.Web.Controllers
             if (model != null)
             {
                var viewModel = Mapper.Map<EditUserViewModel>( model );
-               viewModel.Mode = EditMode.ReadOnly;
+               viewModel.Mode = EditMode.Edit;
                Guid parsedCallingId;
                Guid.TryParse( callingId, out parsedCallingId );
                viewModel.CallingId = parsedCallingId;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Models.Admin;
 using HomeScrum.Web.Models.Sprints;
@@ -18,6 +19,8 @@ namespace HomeScrum.Web
       {
          MapDomainsToEditorViewModels();
          MapEditorViewModelsToDomains();
+
+         MapDomainsToViewModels();
       }
 
 
@@ -162,6 +165,81 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.NewPassword, opt => opt.Ignore() )
             .ForMember( dest => dest.ConfirmPassword, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
+      }
+
+      private static void MapDomainsToViewModels()
+      {
+         Mapper.CreateMap<AcceptanceCriterionStatus, AcceptanceCriterionStatusViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
+         Mapper.CreateMap<ProjectStatus, ProjectStatusViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
+         Mapper.CreateMap<SprintStatus, SprintStatusViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
+            .ForMember( dest => dest.CanAddBacklogItems, opt => opt.MapFrom( src => !src.BacklogIsClosed ) )
+            .ForMember( dest => dest.CanAddTaskListItems, opt => opt.MapFrom( src => !src.TaskListIsClosed ) )
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
+         Mapper.CreateMap<WorkItemStatus, WorkItemStatusViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
+         Mapper.CreateMap<WorkItemType, WorkItemTypeViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.Category, opt => opt.MapFrom( src => EnumHelper.GetDescription( src.Category ) ) )
+            .ForMember( dest => dest.AllowUse, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
+
+         Mapper.CreateMap<Sprint, SprintViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == SprintStatusCategory.Complete ) )
+            .ForMember( dest => dest.CanAddBacklog, opt => opt.MapFrom( src => !src.Status.BacklogIsClosed ) )
+            .ForMember( dest => dest.CanAddTasks, opt => opt.MapFrom( src => !src.Status.TaskListIsClosed ) );
+
+         Mapper.CreateMap<AcceptanceCriterion, AcceptanceCriterionViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsAccepted, opt => opt.MapFrom( src => src.Status.Category == AcceptanceCriterionStatusCategory.VerificationPassed ) );
+
+         Mapper.CreateMap<Project, ProjectViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() );
+
+         Mapper.CreateMap<WorkItem, WorkItemViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == WorkItemStatusCategory.Complete ) )
+            .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
+            .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
+         Mapper.CreateMap<WorkItem, WorkItemIndexViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
+            .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == WorkItemStatusCategory.Complete ) );
+
+         Mapper.CreateMap<User, UserViewModel>()
+            .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )
+            .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.IsActive, opt => opt.ResolveUsing<StatusCdToBooleanResolver>().FromMember( src => src.StatusCd ) );
       }
 

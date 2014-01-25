@@ -15,7 +15,7 @@ using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class SprintsController : ReadWriteController<Sprint, SprintEditorViewModel>
+   public class SprintsController : ReadWriteController<Sprint, SprintViewModel, SprintEditorViewModel>
    {
       private readonly ISprintCalendarService _sprintCalendarService;
 

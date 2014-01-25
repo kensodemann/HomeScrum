@@ -10,9 +10,10 @@ using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public abstract class ReadWriteController<ModelT, EditorViewModelT>
-      : ReadOnlyController<ModelT>
+   public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
+      : ReadOnlyController<ModelT, ViewModelT>
       where ModelT : DomainObjectBase, HomeScrum.Data.Validation.IValidatable
+      where ViewModelT : DomainObjectViewModel
       where EditorViewModelT : DomainObjectViewModel, IEditorViewModel, new()
    {
       public ReadWriteController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
@@ -99,7 +100,7 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
-               viewModel.Mode = EditMode.ReadOnly;
+               viewModel.Mode = EditMode.Edit;
                UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();

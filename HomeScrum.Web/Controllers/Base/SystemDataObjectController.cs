@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public abstract class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, EditorViewModelT>
+   public abstract class SystemDataObjectController<ModelT, ViewModelT, EditorViewModelT> : ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
       where ModelT : SystemDomainObject
       where ViewModelT : SystemDomainObjectViewModel
       where EditorViewModelT : SystemDomainObjectViewModel, IEditorViewModel, new()
