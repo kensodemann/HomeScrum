@@ -723,6 +723,8 @@
     <Content Include="Views\Shared\_DetailsTemplate.cshtml" />
     <Content Include="Views\WorkItemTypes\Details.cshtml" />
     <Content Include="Views\WorkItemTypes\_Details.cshtml" />
+    <Content Include="Views\WorkItemStatuses\_Details.cshtml" />
+    <Content Include="Views\WorkItemStatuses\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
