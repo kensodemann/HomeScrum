@@ -725,6 +725,8 @@
     <Content Include="Views\WorkItemTypes\_Details.cshtml" />
     <Content Include="Views\WorkItemStatuses\_Details.cshtml" />
     <Content Include="Views\WorkItemStatuses\Details.cshtml" />
+    <Content Include="Views\SprintStatuses\Details.cshtml" />
+    <Content Include="Views\SprintStatuses\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
