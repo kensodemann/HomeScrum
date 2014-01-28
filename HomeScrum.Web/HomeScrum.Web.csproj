@@ -729,6 +729,8 @@
     <Content Include="Views\SprintStatuses\_Details.cshtml" />
     <Content Include="Views\ProjectStatuses\_Details.cshtml" />
     <Content Include="Views\ProjectStatuses\Details.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\Details.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
