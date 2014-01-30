@@ -1102,14 +1102,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_SetsEditModeToReadOnly()
+      public void EditGet_SetsEditModeToEdit()
       {
          var model = WorkItems.ModelData[3];
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
+         Assert.AreEqual( EditMode.Edit, returnedModel.Mode );
       }
 
       [TestMethod]

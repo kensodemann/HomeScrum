@@ -290,14 +290,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_SetsEditModeToReadOnly()
+      public void EditGet_SetsEditModeToEdit()
       {
          var user = Users.ModelData.ToArray()[3];
 
          var result = _controller.Edit( user.Id ) as ViewResult;
          var viewModel = result.Model as EditUserViewModel;
 
-         Assert.AreEqual( EditMode.ReadOnly, viewModel.Mode );
+         Assert.AreEqual( EditMode.Edit, viewModel.Mode );
       }
 
       [TestMethod]

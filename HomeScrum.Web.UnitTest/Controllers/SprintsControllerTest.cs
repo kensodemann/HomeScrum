@@ -846,14 +846,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_SetsModeToReadOnly()
+      public void EditGet_SetsModeToEdit()
       {
          var model = Sprints.ModelData[3];
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var returnedModel = result.Model as SprintEditorViewModel;
 
-         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
+         Assert.AreEqual( EditMode.Edit, returnedModel.Mode );
       }
 
       [TestMethod]

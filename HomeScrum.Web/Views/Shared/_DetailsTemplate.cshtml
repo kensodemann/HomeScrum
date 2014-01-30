@@ -1,0 +1,10 @@
+﻿@model HomeScrum.Web.Models.Base.DomainObjectViewModel
+
+@Html.Partial( "_Details", Model )
+
+<div>
+    @Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() } ) |
+    @Html.ActionLink( "Done", Model.CallingAction ?? "Index",
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
+</div>
+

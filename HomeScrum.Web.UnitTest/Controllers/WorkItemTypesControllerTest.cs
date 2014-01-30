@@ -61,7 +61,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _session.Dispose();
       }
 
-      public override ReadWriteController<WorkItemType, WorkItemTypeEditorViewModel> CreateController()
+      public override ReadWriteController<WorkItemType, WorkItemTypeViewModel, WorkItemTypeEditorViewModel> CreateController()
       {
          var controller = new WorkItemTypesController( new PropertyNameTranslator<WorkItemType, WorkItemTypeEditorViewModel>(), _logger.Object, _sessionFactory.Object );
          controller.ControllerContext = _controllerConext.Object;

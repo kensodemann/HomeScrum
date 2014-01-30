@@ -1,0 +1,14 @@
+﻿@model HomeScrum.Web.Models.Admin.WorkItemTypeViewModel
+
+@Html.Partial( "_DomainObjectBaseDetails", Model )
+
+<fieldset>
+   <legend class="hidden">WorkItemType</legend>
+
+   <dl>
+      <dt>Category</dt>
+      <dd>@Html.DisplayFor( model => model.Category )</dd>
+      <dt>@Html.DisplayNameFor( model => model.AllowUse )</dt>
+      <dd>@(Model.AllowUse ? "Yes" : "No")</dd>
+   </dl>
+</fieldset>

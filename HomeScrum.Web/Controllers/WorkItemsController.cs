@@ -15,7 +15,7 @@ using HomeScrum.Data.Queries;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemEditorViewModel>
+   public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemViewModel, WorkItemEditorViewModel>
    {
       private readonly ISprintCalendarService _sprintCalendarService;
 

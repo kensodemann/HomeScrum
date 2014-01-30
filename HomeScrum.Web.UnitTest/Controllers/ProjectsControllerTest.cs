@@ -487,7 +487,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_SetsEditModeToReadOnly()
+      public void EditGet_SetsEditModeToEdit()
       {
          var controller = CreateController();
          var model = Projects.ModelData[3];
@@ -495,7 +495,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = controller.Edit( model.Id ) as ViewResult;
          var returnedModel = result.Model as ProjectEditorViewModel;
 
-         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
+         Assert.AreEqual( EditMode.Edit, returnedModel.Mode );
       }
 
       [TestMethod]
