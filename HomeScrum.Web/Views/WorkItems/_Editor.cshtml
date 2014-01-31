@@ -136,7 +136,6 @@
 <a href="#" id="SubmitButton" class="btn btn-primary"></a>
 @Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask", @class = "btn btn-default" } )
 
-@Scripts.Render( "~/Bundles/BaseScripts" )
 @Scripts.Render( "~/bundles/workItemScripts" )
 
 <script>

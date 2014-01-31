@@ -63,8 +63,6 @@
       SetTextInputAccess($("#Description"));
       SetTextInputAccess($("#Goal"));
       SetProjectIdAccess();
-      SetDateAccess($("#StartDate"));
-      SetDateAccess($("#EndDate"));
       SetCapacityAccess();
    }
 
@@ -75,31 +73,16 @@
       });
    }
 
-   function handleSubmitClicked() {
-      EditorBase.submitButtonClicked();
-      SetAccess();
-   }
-
    function SetupDates() {
       $("#StartDate").datepicker({
          changeMonth: true,
          changeYear: true
       });
-      SetDateAccess($("#StartDate"));
 
       $("#EndDate").datepicker({
          changeMonth: true,
          changeYear: true
       });
-      SetDateAccess("#EndDate");
-   }
-
-   function SetDateAccess(datePicker) {
-      if (EditorBase.readOnlyMode()) {
-         $(datePicker).datepicker("disable");
-      } else {
-         $(datePicker).datepicker("enable");
-      }
    }
 
    function SetupCapacity() {
@@ -112,7 +95,7 @@
 
    function SetCapacityAccess() {
       var c = $("#Capacity");
-      if (EditorBase.readOnlyMode() || BacklogIsClosed()) {
+      if (BacklogIsClosed()) {
          c.spinner("disable");
          c.prop("disabled", true);
       } else {
@@ -127,8 +110,6 @@
       SetupStatusSelectList();
       SetupDates();
       SetupCapacity();
-
-      EditorBase.init(handleSubmitClicked);
    };
 
    return {

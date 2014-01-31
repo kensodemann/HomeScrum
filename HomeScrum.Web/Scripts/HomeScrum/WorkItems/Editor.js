@@ -44,7 +44,6 @@
    function ShowHideDataItems(effect) {
       ShowHideParentWorkItem(effect);
       ShowHideAssignedUser(effect);
-      ShowHideTaskList(effect);
    }
 
    function SetProjectToParentWorkItemProject() {
@@ -172,7 +171,7 @@
    }
 
    function SetPointsAccess() {
-      if (CanHaveChildren() || WorkStartedOnWorkItem() || EditorBase.readOnlyMode()) {
+      if (CanHaveChildren() || WorkStartedOnWorkItem()) {
          $("#Points").spinner("disable");
       } else {
          $("#Points").spinner("enable");
@@ -180,7 +179,7 @@
    }
 
    function SetPointsRemainingAccess() {
-      if (CanHaveChildren() || WorkItemIsClosed() || EditorBase.readOnlyMode()) {
+      if (CanHaveChildren() || WorkItemIsClosed()) {
          $("#PointsRemaining").spinner("disable");
       } else {
          $("#PointsRemaining").spinner("enable");
@@ -268,20 +267,7 @@
       $("#PointsRemaining").spinner("value", points);
    }
 
-   function HandleSubmitClicked() {
-      EnableInputs();
-      EditorBase.submitButtonClicked();
-      SetAccess();
-   }
-
-   function HandleCancelClicked() {
-      DisableInputs();
-      EditorBase.cancelButtonClicked();
-      ShowHideDataItems();
-   }
-
    var init = function () {
-      EditorBase.init(HandleSubmitClicked, HandleCancelClicked);
       ShowHideDataItems();
 
       SetupStatusSelectList();
