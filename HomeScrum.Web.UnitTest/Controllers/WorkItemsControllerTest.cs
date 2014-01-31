@@ -1,6 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.WorkItems;
@@ -12,12 +18,6 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using HomeScrum.Data.Services;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -32,7 +32,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IIdentity> _userIdentity;
       private User _user;
 
-      private Mock<ControllerContext> _controllerConext;
+      private Mock<ControllerContext> _controllerContext;
       private Stack<NavigationData> _navigationStack;
 
       private ISession _session;
@@ -1673,7 +1673,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateController()
       {
          var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object, _sprintCalendarService.Object );
-         controller.ControllerContext = _controllerConext.Object;
+         controller.ControllerContext = _controllerContext.Object;
 
          return controller;
       }
@@ -1685,11 +1685,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void SetupControllerContext()
       {
-         _controllerConext = new Mock<ControllerContext>();
-         _controllerConext
+         _controllerContext = new Mock<ControllerContext>();
+         _controllerContext
             .SetupSet( x => x.HttpContext.Session["NavigationStack"] = It.IsAny<Stack<NavigationData>>() )
             .Callback( ( string name, object m ) => { _navigationStack = (Stack<NavigationData>)m; } );
-         _controllerConext
+         _controllerContext
             .Setup( x => x.HttpContext.Session["NavigationStack"] )
             .Returns( () => _navigationStack );
       }

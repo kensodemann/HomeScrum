@@ -517,7 +517,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.Details( id, callingAction: "Index" );
          controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
+         var viewModel = ((ViewResult)controller.Details( id )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 

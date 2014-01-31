@@ -1,0 +1,50 @@
+﻿@model HomeScrum.Web.Models.Admin.UserViewModel
+
+<div>
+   <p class="lead">@Html.DisplayNameFor( model => model.UserName ) @Html.DisplayFor( model => model.UserName )</p>
+
+   <hr />
+
+   <dl class="dl-horizontal">
+      <dt>
+         @Html.DisplayNameFor( model => model.FirstName )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.FirstName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.MiddleName )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.MiddleName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.LastName )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.LastName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.IsActive )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.IsActive )
+      </dd>
+
+   </dl>
+</div>
+
+<div class="ActionButtonArea">
+   @Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }, new { @class = "btn btn-primary" } )
+   <span>
+      @Html.ActionLink( "Close", Model.CallingAction ?? "Index",
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null )
+   </span>
+</div>
