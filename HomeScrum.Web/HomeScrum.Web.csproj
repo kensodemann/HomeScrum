@@ -682,8 +682,7 @@
     <Content Include="Views\Users\_Editor.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Shared\_EditTemplate.cshtml" />
-    <Content Include="Views\Shared\_CreateTemplate.cshtml" />
+    <Content Include="Views\Shared\_EditorButtonArea.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseEditor.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\_Editor.cshtml" />

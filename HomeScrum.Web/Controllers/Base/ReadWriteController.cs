@@ -63,14 +63,7 @@ namespace HomeScrum.Web.Controllers.Base
                   {
                      Save( session, model, user );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = model.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToCaller( viewModel );
                   }
 
                   TransferErrorMessages( model );
@@ -87,7 +80,6 @@ namespace HomeScrum.Web.Controllers.Base
             return View( viewModel );
          }
       }
-
 
       //
       // GET: /ModelTs/Edit/Guid
@@ -132,14 +124,7 @@ namespace HomeScrum.Web.Controllers.Base
                   {
                      Update( session, model, user );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = viewModel.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToCaller( viewModel );
                   }
                   TransferErrorMessages( model );
                }
@@ -156,6 +141,13 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
+      private ActionResult RedirectToCaller( EditorViewModelT viewModel )
+      {
+         return RedirectToAction(
+            viewModel.CallingAction ?? "index",
+            viewModel.CallingController,
+            viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null );
+      }
 
       private void TransferErrorMessages( ModelT model )
       {

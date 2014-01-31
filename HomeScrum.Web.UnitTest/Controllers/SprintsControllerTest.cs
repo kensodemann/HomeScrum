@@ -468,25 +468,46 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToEditor_IfModelIsValid()
+      public void CreatePost_RedirectsToCaller_IfModelIsValid()
+      {
+         var viewModel = CreateSprintEditorViewModel();
+
+         var callingId = Guid.NewGuid();
+         _controller.Create( callingAction: "MyStuff", callingController: "Stuff", callingId: callingId.ToString() );
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 3, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "MyStuff", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Stuff", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Guid actualId;
+         if (!Guid.TryParse( value.ToString(), out actualId ))
+         {
+            Assert.Fail( "id was not a GUID" );
+         }
+         Assert.AreEqual( callingId, actualId );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndex_IfModeIsValidAndNoCaller()
       {
          var viewModel = CreateSprintEditorViewModel();
 
          var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
-
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingController" ) );
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingAction" ) );
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingId" ) );
+         Assert.AreEqual( "index", value.ToString() );
       }
 
       [TestMethod]
@@ -950,7 +971,37 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToEditor_IfModelIsValid()
+      public void EditPost_RedirectsToCaller_IfModelIsValid()
+      {
+         var model = Sprints.ModelData[2];
+         var viewModel = CreateSprintEditorViewModel( model );
+
+         var callingId = Guid.NewGuid();
+         _controller.Edit( model.Id, callingAction: "Run", callingController: "FredFlintstone", callingId: callingId.ToString() );
+         _session.Clear();
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 3, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Run", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "FredFlintstone", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Guid actualId;
+         if (!Guid.TryParse( value.ToString(), out actualId ))
+         {
+            Assert.Fail( "id was not a GUID" );
+         }
+         Assert.AreEqual( callingId, actualId );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToIndex_IfModelIsValidAndNoCaller()
       {
          var model = Sprints.ModelData[2];
          var viewModel = CreateSprintEditorViewModel( model );
@@ -958,18 +1009,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
-
-         result.RouteValues.ContainsKey( "callingController" );
-         result.RouteValues.ContainsKey( "callingAction" );
-         result.RouteValues.ContainsKey( "callingId" );
+         Assert.AreEqual( "index", value.ToString() );
       }
 
       [TestMethod]

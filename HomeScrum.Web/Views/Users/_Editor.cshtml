@@ -1,5 +1,6 @@
 ﻿@model HomeScrum.Web.Models.Admin.UserEditorViewModel
 
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
@@ -70,7 +71,9 @@
    </fieldset>
 
    
-   @Html.HiddenFor( model => model.Mode );
+   @Html.Partial( "_EditorButtonArea", Model )
 }
 
-<a href="#" id="SubmitButton" class="btn btn-primary">Save</a>
+@section Scripts {
+   @Scripts.Render( "~/bundles/jqueryval" )
+}

@@ -93,6 +93,15 @@ namespace HomeScrum.Web.Controllers.Base
       }
 
 
+      /// <summary>
+      /// This method is intended to be called from the GET actions.  All NavigationStack maintenence is done from the GET
+      /// because the user will not go through a POST, which is where a pop() would logically ding, in the case where they
+      /// nav back or where they use the Cancel link.
+      /// </summary>
+      /// <param name="viewModel">Receives the new top calling information</param>
+      /// <param name="callingController">Calling controller, null in case of cancel</param>
+      /// <param name="callingAction">Calling action, null in case of cancel</param>
+      /// <param name="callingId">Calling Id, null in case of cancel</param>
       protected void UpdateNavigationStack( ViewModelBase viewModel, string callingController, string callingAction, string callingId )
       {
          if (callingController != null || callingAction != null)

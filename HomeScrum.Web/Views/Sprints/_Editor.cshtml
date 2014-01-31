@@ -1,5 +1,4 @@
 ﻿@using HomeScrum.Web.Extensions
-
 @model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
 
 @{
@@ -8,6 +7,8 @@
 
 @Scripts.Render( "~/jqPlot" )
 @Scripts.Render( "~/jqPlotplugins" )
+
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
@@ -123,13 +124,13 @@
       </div>
    }
 
-   @Html.ValidationSummary( false )
+   @Html.Partial( "_EditorButtonArea", Model )
 }
 
-<div id="ActionButtonArea"></div>
-<a href="#" id="SubmitButton" class="btn btn-primary">Save</a>
-
-@Scripts.Render( "~/bundles/sprintScripts" )
+@section Scripts {
+   @Scripts.Render( "~/bundles/jqueryval" )
+   @Scripts.Render( "~/bundles/sprintScripts" )
+}
 
 <script>
    $(document).ready(function () {
