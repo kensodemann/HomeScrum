@@ -1,7 +1,20 @@
 ﻿@model HomeScrum.Web.Models.Admin.SprintStatusViewModel
 
-@{
-   ViewBag.Title = "Sprint Status";
-}
+@Html.Partial( "_DomainObjectBaseDetails", Model )
 
-@Html.Partial( "_DetailsTemplate", Model )
+<fieldset>
+   <legend class="hidden">SprintStatus</legend>
+
+   <dl>
+      <dt>Category</dt>
+      <dd>@Html.DisplayFor( model => model.Category )</dd>
+      <dt>@Html.DisplayNameFor( model => model.CanAddBacklogItems )</dt>
+      <dd>@(Model.CanAddBacklogItems ? "Yes" : "No")</dd>
+      <dt>@Html.DisplayNameFor( model => model.CanAddTaskListItems )</dt>
+      <dd>@(Model.CanAddTaskListItems ? "Yes" : "No")</dd>
+      <dt>@Html.DisplayNameFor( model => model.AllowUse )</dt>
+      <dd>@(Model.AllowUse ? "Yes" : "No")</dd>
+   </dl>
+</fieldset>
+
+@Html.Partial( "_DetailsButtonArea", Model )

@@ -1,0 +1,9 @@
+﻿@model HomeScrum.Web.Models.Base.ViewModelBase
+
+<div class="ActionButtonArea">
+   <button id="SubmitButton" class="btn btn-primary">Save</button>
+   <span>
+      @Html.ActionLink( "Cancel", Model.CallingAction ?? "Index", Model.CallingController,
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, new { id = "CancelButton" } )
+   </span>
+</div>

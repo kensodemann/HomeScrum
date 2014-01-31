@@ -1,7 +1,16 @@
 ﻿@model HomeScrum.Web.Models.Admin.AcceptanceCriterionStatusViewModel
 
-@{
-   ViewBag.Title = "Acceptance Criterion Status";
-}
+@Html.Partial( "_DomainObjectBaseDetails", Model )
 
-@Html.Partial( "_DetailsTemplate", Model )
+<fieldset>
+   <legend class="hidden">ProjectStatus</legend>
+
+   <dl>
+      <dt>Category</dt>
+      <dd>@Html.DisplayFor( model => model.Category )</dd>
+      <dt>@Html.DisplayNameFor( model => model.AllowUse )</dt>
+      <dd>@(Model.AllowUse ? "Yes" : "No")</dd>
+   </dl>
+</fieldset>
+
+@Html.Partial( "_DetailsButtonArea", Model )

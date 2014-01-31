@@ -1,6 +1,7 @@
 ﻿@using HomeScrum.Web.Extensions
-
 @model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
+
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
@@ -131,12 +132,13 @@
    </div>
 
    @Html.ValidationSummary( false )
+   @Html.Partial( "_EditorButtonArea", Model )
 }
 
-<a href="#" id="SubmitButton" class="btn btn-primary"></a>
-@Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask", @class = "btn btn-default" } )
-
-@Scripts.Render( "~/bundles/workItemScripts" )
+@section Scripts {
+   @Scripts.Render( "~/bundles/jqueryval" )
+   @Scripts.Render( "~/bundles/workItemScripts" )
+}
 
 <script>
    $(document).ready(function () {
