@@ -1,9 +1,5 @@
 ﻿@model HomeScrum.Web.Models.Base.DomainObjectViewModel
 
-@Html.Partial( "_Details", Model )
-
-@* TODO: Make this into a template for just the button bar and then embed it in each details view *@
-
 <div class="ActionButtonArea">
     @Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }, new { @class = "btn btn-primary" } )
     <span>@Html.ActionLink( "Close", Model.CallingAction ?? "Index",
