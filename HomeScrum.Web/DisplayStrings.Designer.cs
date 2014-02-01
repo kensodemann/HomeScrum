@@ -79,7 +79,7 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active for use in system.
+        ///   Looks up a localized string similar to Allow Use:.
         /// </summary>
         public static string AllowUse {
             get {
@@ -313,7 +313,7 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backlog items can be added to sprints of this status.
+        ///   Looks up a localized string similar to Allow New Backlog:.
         /// </summary>
         public static string SprintStatusAllowNewBacklogItems {
             get {
@@ -322,7 +322,7 @@ namespace HomeScrum.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks can be added to sprints of this status.
+        ///   Looks up a localized string similar to Allow New Tasks:.
         /// </summary>
         public static string SprintStatusAllowNewTaskListItems {
             get {

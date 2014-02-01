@@ -3,10 +3,10 @@
 @Html.Partial( "_DomainObjectBaseDetails", Model )
 
 <fieldset>
-   <legend class="hidden">SprintStatus</legend>
+   <legend>Attributes</legend>
 
-   <dl>
-      <dt>Category</dt>
+   <dl class="dl-horizontal">
+      <dt>@Html.DisplayNameFor( model => model.Category )</dt>
       <dd>@Html.DisplayFor( model => model.Category )</dd>
       <dt>@Html.DisplayNameFor( model => model.CanAddBacklogItems )</dt>
       <dd>@(Model.CanAddBacklogItems ? "Yes" : "No")</dd>
