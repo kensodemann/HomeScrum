@@ -1,0 +1,135 @@
+﻿@model HomeScrum.Web.Models.WorkItems.WorkItemViewModel
+
+@Html.Partial( "_DomainObjectBaseDetails", Model )
+
+<fieldset>
+   <legend>Attributes</legend>
+
+   <dl class="dl-horizontal">
+      <dt>
+         @Html.DisplayNameFor( model => model.WorkItemTypeName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.WorkItemTypeName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.ParentWorkItemName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.ParentWorkItemName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.ProjectName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.ProjectName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.SprintName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.SprintName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.StatusName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.StatusName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.CreatedByUserName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.CreatedByUserName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.AssignedToUserName )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.AssignedToUserName )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.Points )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.Points )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.PointsRemaining )
+      </dt>
+      <dd>
+         @Html.DisplayFor( model => model.PointsRemaining )
+      </dd>
+   </dl>
+
+   @Html.HiddenFor( model => model.CanHaveChildren )
+</fieldset>
+
+<hr />
+
+<div id="TaskListDiv" class="ChildData">
+   <fieldset>
+      <h3>Tasks</h3>
+      <table class="dataTableList table table-striped table-bordered">
+         <thead>
+            <tr>
+               <th>
+                  @Html.DisplayNameFor( model => model.WorkItemTypeName )
+               </th>
+               <th>
+                  @Html.DisplayNameFor( model => model.Name )
+               </th>
+               <th>
+                  @Html.DisplayNameFor( model => model.StatusName )
+               </th>
+               <th></th>
+            </tr>
+         </thead>
+
+         <tbody>
+            @foreach (var item in Model.Tasks)
+            {
+               var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
+
+               <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+                  <td>
+                     @Html.DisplayFor( modelItem => item.WorkItemTypeName )
+                  </td>
+                  <td>
+                     @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Details", callingId = Model.Id.ToString() } )
+                  </td>
+                  <td>
+                     @Html.DisplayFor( modelItem => item.StatusName )
+                  </td>
+                  <td>
+                     @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Details", callingId = Model.Id.ToString() },
+                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
+                  </td>
+               </tr>
+            }
+         </tbody>
+      </table>
+   </fieldset>
+</div>
+
+@Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }, new { @class = "btn btn-primary" } )
+@Html.ActionLink( "Add New Task", "Create", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString(), parentId = Model.Id.ToString() },
+   new { id = "AddNewButton", @class = "btn btn-default" } )
+@Html.ActionLink( "Close", Model.CallingAction ?? "Index", Model.CallingController,
+   (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, null )
+
+@Scripts.Render( "~/bundles/workItemScripts" )
+
+<script>
+   $(document).ready(function () {
+      Details.init();
+   });
+</script>

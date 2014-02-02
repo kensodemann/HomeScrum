@@ -40,5 +40,7 @@ namespace HomeScrum.Web.Models.WorkItems
 
       [Display( Name = "PointsRemaining", ResourceType = typeof( DisplayStrings ) )]
       public int PointsRemaining { get; set; }
+
+      public bool CanHaveChildren { get; set; }
    }
 }

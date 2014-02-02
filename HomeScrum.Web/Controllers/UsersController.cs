@@ -211,11 +211,5 @@ namespace HomeScrum.Web.Controllers
             return View( viewModel );
          }
       }
-
-      protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
-      {
-         var actionName = ClassHelper.ExtractMethodName( expression );
-         return this.RedirectToAction( actionName );
-      }
    }
 }

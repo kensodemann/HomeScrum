@@ -13,6 +13,7 @@ namespace HomeScrum.Web
             .Include( "~/Scripts/HomeScrum/utilities.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/workItemScripts" )
+            .Include( "~/Scripts/HomeScrum/WorkItems/Details.js" )
             .Include( "~/Scripts/HomeScrum/WorkItems/Editor.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/sprintScripts" )

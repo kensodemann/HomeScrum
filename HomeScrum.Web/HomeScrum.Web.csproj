@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -433,6 +434,7 @@
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\HomeScrum\Sprints\Editor.js" />
+    <Content Include="Scripts\HomeScrum\WorkItems\Details.js" />
     <Content Include="Scripts\HomeScrum\WorkItems\Editor.js" />
     <Content Include="Scripts\jqPlot\changes.txt" />
     <Content Include="Scripts\jqPlot\copyright.txt" />
@@ -621,7 +623,9 @@
     <Content Include="Scripts\jquery.storage.js" />
     <Content Include="Scripts\Tests\qunit\qunit-1.12.0.js" />
     <Content Include="Scripts\Tests\Utilities\testUtilities.html" />
+    <Content Include="Scripts\Tests\WorkItems\DetailsTests.js" />
     <Content Include="Scripts\Tests\WorkItems\EditorTests.js" />
+    <Content Include="Scripts\Tests\WorkItems\testDetails.html" />
     <Content Include="Scripts\Tests\WorkItems\testEditor.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -693,7 +697,7 @@
     <Content Include="Views\WorkItems\Create.cshtml" />
     <Content Include="Views\WorkItems\_Editor.cshtml" />
     <Content Include="Views\WorkItems\Edit.cshtml" />
-    <Content Include="Views\Shared\_WorkItemList.cshtml" />
+    <Content Include="Views\WorkItems\_WorkItemList.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectEditor.cshtml" />
     <Content Include="Views\Sprints\Index.cshtml" />
     <Content Include="Views\Sprints\_Editor.cshtml" />
@@ -724,6 +728,7 @@
     <Content Include="Views\ProjectStatuses\Details.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\Details.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\WorkItems\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

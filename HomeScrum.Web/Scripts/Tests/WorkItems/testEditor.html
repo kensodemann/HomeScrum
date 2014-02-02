@@ -16,14 +16,15 @@
    <div id="qunit-fixture">
       <div id="AssignedToUserDiv"></div>
       <div id="ParentWorkItemDiv"></div>
-      <div id="TaskListDiv"></div>
       <div id="CreateNewTask"></div>
 
       <input id="Name" type="text" />
       <input id="Description" type="text" />
 
-      <input id="Points" />
-      <input id="PointsRemaining" />
+      <div id="PointsArea">
+         <input id="Points" />
+         <input id="PointsRemaining" />
+      </div>
 
       <select id="WorkItemTypeId">
          <option id="selWorkItemType" selected="selected" value="1" data-canbeassigned="True" data-canhaveparent="True" data-canhavechildren="False">Selected Item</option>

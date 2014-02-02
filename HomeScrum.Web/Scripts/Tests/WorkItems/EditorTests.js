@@ -185,7 +185,7 @@ test('Sprint disabled on parent change if parent', function () {
 });
 
 // Points / Points Remaining Enable / Disable
-test('Points enabled on init if not read-only and work not started', function () {
+test('Points enabled on init if work not started', function () {
    $("#selStatus").attr("data-WorkStarted", "False");
    $("#Mode").val("Edit");
    Editor.init();
@@ -199,7 +199,7 @@ test('Points disable on init if work started', function () {
    strictEqual($("#Points").prop("disabled"), true);
 });
 
-test('Points Remaining enabled on init if not read-only and status is open', function () {
+test('Points Remaining enabled on init if status is open', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    $("#selStatus").attr("data-WorkStarted", "True");
    $("#Mode").val("Edit");
@@ -233,24 +233,26 @@ test('Points Disabled on status change if work started', function () {
    strictEqual($("#Points").prop("disabled"), true);
 });
 
-test('Points disabled on init for items that can have child tasks', function () {
+test('Points hidden on init for items that can have child tasks', function () {
    $("#selStatus").attr("data-WorkStarted", "False");
    $("#Mode").val("Edit");
    $("#selWorkItemType").attr("data-canhavechildren", "True");
    Editor.init();
-   strictEqual($("#Points").prop("disabled"), true);
-   strictEqual($("#PointsRemaining").prop("disabled"), true);
+   ok($("#PointsArea").is(":hidden"));
 });
 
-test('Points Remaining disabled on type change items that can have child tasks', function () {
+test('Points Remaining hidden on type change items that can have child tasks', function () {
    $("#selStatus").attr("data-WorkStarted", "False");
    $("#Mode").val("Edit");
    $("#selWorkItemType").attr("data-canhavechildren", "False");
    Editor.init();
    $("#selWorkItemType").attr("data-canhavechildren", "True");
    $("#WorkItemTypeId").change();
-   strictEqual($("#Points").prop("disabled"), true);
-   strictEqual($("#PointsRemaining").prop("disabled"), true);
+   stop();
+   setTimeout(function () {
+      ok($("#PointsArea").is(":hidden"));
+      start();
+   }, 1000);
 });
 
 // Points and Points Remaining Values

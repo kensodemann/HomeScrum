@@ -229,7 +229,8 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == WorkItemStatusCategory.Complete ) )
             .ForMember( dest => dest.AssignedToUserName, opt => opt.MapFrom( src => src.AssignedToUser.UserName ) )
-            .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) );
+            .ForMember( dest => dest.CreatedByUserName, opt => opt.MapFrom( src => src.CreatedByUser.UserName ) )
+            .ForMember( dest => dest.CanHaveChildren, opt => opt.MapFrom( src => src.WorkItemType.Category == WorkItemTypeCategory.BacklogItem ) );
          Mapper.CreateMap<WorkItem, WorkItemIndexViewModel>()
             .ForMember( dest => dest.CallingController, opt => opt.Ignore() )
             .ForMember( dest => dest.CallingAction, opt => opt.Ignore() )

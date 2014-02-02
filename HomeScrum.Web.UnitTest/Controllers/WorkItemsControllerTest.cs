@@ -853,6 +853,245 @@ namespace HomeScrum.Web.UnitTest.Controllers
       #endregion
 
 
+      #region Details GET Tests
+      [TestMethod]
+      public void DetailsGet_ReturnsViewWithModel()
+      {
+         var model = WorkItems.ModelData[3];
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         var returnedModel = result.Model as WorkItemViewModel;
+         Assert.IsNotNull( returnedModel );
+         Assert.AreEqual( model.Id, returnedModel.Id );
+      }
+
+      [TestMethod]
+      public void DetailsGet_ReturnsNoDataFoundIfModelNotFound()
+      {
+         var result = _controller.Details( Guid.NewGuid() ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopulatesTaskList_IfChildTasksExist()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedChildWorkItems = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+
+         var result = _controller.Details( parentId ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
+         foreach (var child in expectedChildWorkItems)
+         {
+            Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var id = WorkItems.ModelData[0].Id;
+
+         var viewModel = ((ViewResult)_controller.Details( id )).Model as WorkItemViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var modelId = WorkItems.ModelData[0].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Details( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PushesToNavigationStack_IfCallingDataGiven()
+      {
+         var controller = CreateController();
+         var id = WorkItems.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         controller.Details( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+
+         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 2, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_DoesNotPush_IfCallingDataAlreadyOnTop()
+      {
+         var controller = CreateController();
+         var id = WorkItems.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         controller.Details( id, callingAction: "Index" );
+         controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         controller.Details( id, callingAction: "Index" );
+
+         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 4, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.AreEqual( "Sprints", navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopsFromNavigationStack_IfCallingDataNotGiven()
+      {
+         var controller = CreateController();
+         var id = WorkItems.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         controller.Details( id, callingAction: "Index" );
+         controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         var viewModel = ((ViewResult)controller.Details( id )).Model as ViewModelBase;
+
+         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 1, stack.Count );
+
+         var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Index", viewModel.CallingAction );
+         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsToModelPoints_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( model.Points, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsRemainingToModelPointsRemaining_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsToSumOfChildPoints_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedPoints, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsRemainingToSumOfChildPointsRemaining_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedPointsRemaining, viewModel.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsCanHaveChildrenFalse_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.IsFalse( viewModel.CanHaveChildren );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsCanHaveChildrenTrue_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.IsTrue( viewModel.CanHaveChildren );
+      }
+      #endregion
+
+
       #region Edit GET Tests
       [TestMethod]
       public void EditGet_ReturnsViewWithModel()
