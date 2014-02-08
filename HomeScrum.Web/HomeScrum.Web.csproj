@@ -729,6 +729,7 @@
     <Content Include="Views\AcceptanceCriterionStatuses\Details.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\WorkItems\Details.cshtml" />
+    <Content Include="Views\Projects\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
