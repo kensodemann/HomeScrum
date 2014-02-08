@@ -1,10 +1,6 @@
 ﻿@using HomeScrum.Web.Extensions
 @model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
 
-@{
-   ViewBag.SprintId = Model.Id;
-}
-
 @Scripts.Render( "~/jqPlot" )
 @Scripts.Render( "~/jqPlotplugins" )
 
@@ -94,36 +90,6 @@
       </div>
    </fieldset>
 
-   if (Model.Id != Guid.Empty)
-   {
-      <div class="ChildData">
-         <fieldset>
-            <legend class="hidden">WorkItems</legend>
-            <div id="sprintData">
-               <h3>Backlog Items</h3>
-               <div id="BacklogItems">
-                  @Html.Partial( "_WorkItemList", Model.BacklogItems )
-                  @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink", @class = "btn btn-default" } )
-               </div>
-
-               <h3>Tasks</h3>
-               <div id="Tasks">
-                  @Html.Partial( "_WorkItemList", Model.Tasks )
-                  @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink", @class = "btn btn-default" } )
-               </div>
-
-               @if (Model.EndDate != null && Model.StartDate != null && Model.Calendar.Count() > 0)
-               {
-                  <h3>Burndown</h3>
-                  <div id="burndown">
-                     @Html.Partial( "_BurndownChart", Model )
-                  </div>
-               }
-            </div>
-         </fieldset>
-      </div>
-   }
-
    @Html.Partial( "_EditorButtonArea", Model )
 }
 
@@ -135,11 +101,5 @@
 <script>
    $(document).ready(function () {
       Editor.init();
-
-      $("#sprintData").accordion({
-         heightStyle: "content",
-         collapsible: true,
-         active: false
-      });
    });
 </script>

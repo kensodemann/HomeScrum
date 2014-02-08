@@ -132,10 +132,7 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.Statuses, opt => opt.Ignore() )
             .ForMember( dest => dest.Projects, opt => opt.Ignore() )
-            .ForMember( dest => dest.BacklogItems, opt => opt.Ignore() )
-            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
-            .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() )
-            .ForMember( dest => dest.Calendar, opt => opt.Ignore() );
+            .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() );
 
          Mapper.CreateMap<WorkItem, WorkItemEditorViewModel>()
             .ForMember( dest => dest.Mode, opt => opt.Ignore() )
@@ -209,7 +206,11 @@ namespace HomeScrum.Web
             .ForMember( dest => dest.CallingId, opt => opt.Ignore() )
             .ForMember( dest => dest.IsComplete, opt => opt.MapFrom( src => src.Status.Category == SprintStatusCategory.Complete ) )
             .ForMember( dest => dest.CanAddBacklog, opt => opt.MapFrom( src => !src.Status.BacklogIsClosed ) )
-            .ForMember( dest => dest.CanAddTasks, opt => opt.MapFrom( src => !src.Status.TaskListIsClosed ) );
+            .ForMember( dest => dest.CanAddTasks, opt => opt.MapFrom( src => !src.Status.TaskListIsClosed ) )
+            .ForMember( dest => dest.BacklogItems, opt => opt.Ignore() )
+            .ForMember( dest => dest.Tasks, opt => opt.Ignore() )
+            .ForMember( dest => dest.TotalPoints, opt => opt.Ignore() )
+            .ForMember( dest => dest.Calendar, opt => opt.Ignore() );
 
          Mapper.CreateMap<AcceptanceCriterion, AcceptanceCriterionViewModel>()
             .ForMember( dest => dest.CallingController, opt => opt.Ignore() )

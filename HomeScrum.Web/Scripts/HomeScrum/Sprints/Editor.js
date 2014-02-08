@@ -4,11 +4,6 @@
       return (isClosed == "True");
    }
 
-   function TaskListIsClosed() {
-      var isClosed = $("#StatusId").find(":selected").attr("data-TaskListIsClosed");
-      return (isClosed == "True");
-   }
-
    function SprintIsClosed() {
       var isOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
       return (isOpen == "False");
@@ -35,29 +30,6 @@
       }
    }
 
-   function ShowHideDataItems() {
-      ShowHideBacklogLink();
-      ShowHideTaskListLink();
-   }
-
-   function ShowHideBacklogLink() {
-      if (BacklogIsClosed() || SprintIsClosed()) {
-         $("#BacklogLink").hide();
-      }
-      else {
-         $("#BacklogLink").show();
-      }
-   }
-
-   function ShowHideTaskListLink() {
-      if (TaskListIsClosed() || SprintIsClosed()) {
-         $("#TaskListLink").hide();
-      }
-      else {
-         $("#TaskListLink").show();
-      }
-   }
-
    function SetAccess() {
       SetTextInputAccess($("#Name"));
       SetTextInputAccess($("#Description"));
@@ -68,7 +40,6 @@
 
    function SetupStatusSelectList() {
       $("#StatusId").change(function () {
-         ShowHideDataItems();
          SetAccess();
       });
    }
@@ -105,8 +76,6 @@
    }
 
    var init = function () {
-      ShowHideDataItems();
-
       SetupStatusSelectList();
       SetupDates();
       SetupCapacity();

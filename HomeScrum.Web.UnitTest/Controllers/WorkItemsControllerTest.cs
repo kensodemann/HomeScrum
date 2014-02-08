@@ -923,14 +923,13 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void DetailsGet_PushesToNavigationStack_IfCallingDataGiven()
       {
-         var controller = CreateController();
          var id = WorkItems.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Details( id, callingAction: "Index" );
-         var viewModel = ((ViewResult)controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         _controller.Details( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)_controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
-         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
          Assert.IsNotNull( stack );
          Assert.AreEqual( 2, stack.Count );
@@ -952,18 +951,17 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void DetailsGet_DoesNotPush_IfCallingDataAlreadyOnTop()
       {
-         var controller = CreateController();
          var id = WorkItems.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Details( id, callingAction: "Index" );
-         controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
-         controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
-         controller.Details( id, callingController: "Sprints", callingAction: "Index" );
-         controller.Details( id, callingController: "Sprints", callingAction: "Index" );
-         controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         _controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         _controller.Details( id, callingAction: "Index" );
 
-         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
          Assert.IsNotNull( stack );
          Assert.AreEqual( 4, stack.Count );
@@ -992,15 +990,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void DetailsGet_PopsFromNavigationStack_IfCallingDataNotGiven()
       {
-         var controller = CreateController();
          var id = WorkItems.ModelData[3].Id;
          var parentId = Guid.NewGuid();
 
-         controller.Details( id, callingAction: "Index" );
-         controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Details( id )).Model as ViewModelBase;
+         _controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         var viewModel = ((ViewResult)_controller.Details( id )).Model as ViewModelBase;
 
-         var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
          Assert.IsNotNull( stack );
          Assert.AreEqual( 1, stack.Count );

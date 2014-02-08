@@ -250,20 +250,36 @@ namespace HomeScrum.Web.Controllers
          _sprintCalendarService.Reset( model );
       }
 
+
       protected override SprintEditorViewModel GetEditorViewModel( ISession session, Guid id )
       {
-         var viewModel = base.GetEditorViewModel( session, id );
+         var vm = base.GetEditorViewModel( session, id );
 
-         if (viewModel != null)
+         if (vm != null)
          {
-            viewModel.BacklogItems = GetBacklogItems( session, id );
-            viewModel.Tasks = GetTasks( session, id );
-            viewModel.TotalPoints = viewModel.Tasks.Sum( x => x.Points );
-            viewModel.Calendar = GetCalendar( session, id );
+            var tasks = GetTasks( session, id );
+            vm.TotalPoints = tasks.Sum( x => x.Points );
          }
 
-         return viewModel;
+         return vm;
       }
+
+
+      protected override SprintViewModel GetViewModel( ISession session, Guid id )
+      {
+         var vm = base.GetViewModel( session, id );
+
+         if (vm != null)
+         {
+            vm.BacklogItems = GetBacklogItems( session, id );
+            vm.Tasks = GetTasks( session, id );
+            vm.TotalPoints = vm.Tasks.Sum( x => x.Points );
+            vm.Calendar = GetCalendar( session, id );
+         }
+
+         return vm;
+      }
+
 
       private IEnumerable<SprintWorkItemViewModel> GetBacklogItems( ISession session, Guid id )
       {
