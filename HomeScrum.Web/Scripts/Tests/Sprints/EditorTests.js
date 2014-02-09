@@ -17,7 +17,6 @@ test('Items Disabled on sprint change if sprint not open', function () {
 test('Capacity Enabled if backlog open on status change', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    $("#selStatus").attr("data-BacklogIsClosed", "True");
-   $("#selStatus").attr("data-TaskListIsClosed", "False");
    Editor.init();
    $("#selStatus").attr("data-BacklogIsClosed", "False");
    $("#StatusId").change();
@@ -27,7 +26,6 @@ test('Capacity Enabled if backlog open on status change', function () {
 test('Capacity Disabled if backlog closed on status change', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    $("#selStatus").attr("data-BacklogIsClosed", "False");
-   $("#selStatus").attr("data-TaskListIsClosed", "False");
    Editor.init();
    $("#selStatus").attr("data-BacklogIsClosed", "True");
    $("#StatusId").change();
