@@ -1453,7 +1453,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void AddBacklogItem_RedirectsToEditor()
+      public void AddBacklogItem_RedirectsBackToDetails()
       {
          var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.BacklogIsClosed );
          var viewModel = CreateBacklogItemsForSprintViewModel( sprint );
@@ -1465,7 +1465,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
+         Assert.AreEqual( "Details", value.ToString() );
 
          result.RouteValues.TryGetValue( "id", out value );
          Assert.AreEqual( value, sprint.Id );
@@ -1552,7 +1552,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void AddTasksPost_RedirectsToEditor()
+      public void AddTasksPost_RedirectsBackToDetails()
       {
          var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.TaskListIsClosed );
          var viewModel = CreateTasksForSprintViewModel( sprint );
@@ -1564,7 +1564,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
+         Assert.AreEqual( "Details", value.ToString() );
 
          result.RouteValues.TryGetValue( "id", out value );
          Assert.AreEqual( value, sprint.Id );

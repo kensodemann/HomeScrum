@@ -130,7 +130,7 @@ namespace HomeScrum.Web.Controllers
             }
          }
 
-         return RedirectToAction( "Edit", new { id = viewModel.Id } );
+         return RedirectToAction( "Details", new { id = viewModel.Id } );
       }
 
       //
@@ -187,7 +187,7 @@ namespace HomeScrum.Web.Controllers
             }
          }
 
-         return RedirectToAction( "Edit", new { id = viewModel.Id } );
+         return RedirectToAction( "Details", new { id = viewModel.Id } );
       }
 
       private void UpdateSprintOnWorkItem( ISession session, Guid id, Sprint sprint )

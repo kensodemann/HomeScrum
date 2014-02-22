@@ -43,13 +43,13 @@
       <h3>Backlog Items</h3>
       <div id="BacklogItems">
          @Html.Partial( "_WorkItemList", Model.BacklogItems )
-         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Edit" }, new { id = "BacklogLink", @class = "btn btn-default" } )
+         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Detais" }, new { id = "BacklogLink", @class = "btn btn-default" } )
       </div>
 
       <h3>Tasks</h3>
       <div id="Tasks">
          @Html.Partial( "_WorkItemList", Model.Tasks )
-         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Edit" }, new { id = "TaskListLink", @class = "btn btn-default" } )
+         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Details" }, new { id = "TaskListLink", @class = "btn btn-default" } )
       </div>
    </div>
 
