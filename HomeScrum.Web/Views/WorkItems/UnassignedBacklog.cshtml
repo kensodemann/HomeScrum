@@ -10,5 +10,5 @@
 @Html.Partial( "_WorkItemList", Model )
 
 <div class="ActionButtonArea">
-   @Html.ActionLink( "Create New Work Item", "Create", new { callingAction = "UnassignedBacklog" }, new { @class = "btn btn-primary" } )
+   @Html.ActionLink( "Create New Work Item", "Create", new { callingAction = ViewBag.ActionName }, new { @class = "btn btn-primary" } )
 </div>

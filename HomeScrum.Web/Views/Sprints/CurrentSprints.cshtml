@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Sprints.SprintIndexViewModel>
 
 @{
-    ViewBag.Title = "Current Sprints";
-    ViewBag.ActionName = "CurrentSprints";
+   ViewBag.Title = "Current Sprints";
+   ViewBag.ActionName = "CurrentSprints";
 }
 
 @Html.Partial( "_SprintList", Model )
 
 <div class="ActionButtonArea">
-    @Html.ActionLink( "Create New", "Create", null, new { @class = "btn btn-primary" } )
+   @Html.ActionLink( "Create New", "Create", new { callingAction = ViewBag.ActionName }, new { @class = "btn btn-primary" } )
 </div>
