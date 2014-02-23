@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
 using HomeScrum.Web.Extensions;
@@ -19,8 +20,9 @@ namespace HomeScrum.Web.Controllers.Base
    /// </summary>
    /// <typeparam name="ModelT">The Domain Model Type for the main data</typeparam>
    [Authorize]
-   public abstract class ReadOnlyController<ModelT> : Controller
+   public abstract class ReadOnlyController<ModelT, ViewModelT> : HomeScrumControllerBase
       where ModelT : DomainObjectBase
+      where ViewModelT : DomainObjectViewModel
    {
       private readonly ISessionFactory _sessionFactory;
       protected ISessionFactory SessionFactory { get { return _sessionFactory; } }
@@ -58,90 +60,36 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
-
-      protected void UpdateNavigationStack( ViewModelBase viewModel, string callingController, string callingAction, string callingId )
+      //
+      // GET: /ModelTs/Display/Guid
+      public virtual ActionResult Details( Guid id, string callingController = null, string callingAction = null, string callingId = null )
       {
-         if (callingController != null || callingAction != null)
+         ViewModelT viewModel;
+         Log.Debug( "Display({0}", id.ToString() );
+
+         var session = SessionFactory.GetCurrentSession();
+
+         using (var transaction = session.BeginTransaction())
          {
-            PushNavigationData( callingController, callingAction, callingId );
+            viewModel = GetViewModel( session, id );
+            transaction.Commit();
          }
-         else
+
+         if (viewModel == null)
          {
-            PopNavigationData();
+            return HttpNotFound();
          }
-         PeekNavigationData( viewModel );
+
+         UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
+
+         return View( viewModel );
       }
 
 
-      protected void ClearNavigationStack()
+      protected virtual ViewModelT GetViewModel( ISession session, Guid id )
       {
-         var stack = Session["NavigationStack"] as Stack<NavigationData>;
-         if (stack != null && stack.Count != 0)
-         {
-            stack.Clear();
-            Session["NavigationStack"] = stack;
-         }
-      }
-
-
-      private void PushNavigationData( string callingController, string callingAction, string callingId )
-      {
-         var stack = Session["NavigationStack"] as Stack<NavigationData>;
-         if (stack == null)
-         {
-            stack = new Stack<NavigationData>();
-         }
-
-         if (stack.Count != 0)
-         {
-            var top = stack.Peek();
-            if (top.Controller == callingController && top.Action == callingAction && top.Id == callingId)
-            {
-               return;
-            }
-         }
-
-         stack.Push( new NavigationData() { Controller = callingController, Action = callingAction, Id = callingId } );
-         Session["NavigationStack"] = stack;
-      }
-
-
-      private void PopNavigationData()
-      {
-         var stack = Session["NavigationStack"] as Stack<NavigationData>;
-         if (stack != null && stack.Count != 0)
-         {
-            stack.Pop();
-            Session["NavigationStack"] = stack;
-         }
-      }
-
-
-      protected void PeekNavigationData( ViewModelBase viewModel )
-      {
-         var stack = Session["NavigationStack"] as Stack<NavigationData>;
-         if (stack != null && stack.Count != 0)
-         {
-            var data = stack.Peek();
-            Guid parsedId;
-            Guid.TryParse( data.Id, out parsedId );
-            viewModel.CallingController = data.Controller;
-            viewModel.CallingAction = data.Action;
-            viewModel.CallingId = parsedId;
-         }
-         else
-         {
-            viewModel.CallingController = null;
-            viewModel.CallingAction = null;
-            viewModel.CallingId = Guid.Empty;
-         }
-      }
-
-
-      protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
-      {
-         var actionName = ClassHelper.ExtractMethodName( expression );
-         return this.RedirectToAction( actionName );
+         var model = session.Get<ModelT>( id );
+         return (model != null) ? Mapper.Map<ViewModelT>( model ) : null;
       }
    }
 }

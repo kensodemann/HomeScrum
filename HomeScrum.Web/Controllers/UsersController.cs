@@ -13,11 +13,12 @@ using NHibernate;
 using System.Collections.Generic;
 using HomeScrum.Web.Models.Base;
 using Ninject.Extensions.Logging;
+using HomeScrum.Web.Controllers.Base;
 
 namespace HomeScrum.Web.Controllers
 {
    [Authorize]
-   public class UsersController : Controller
+   public class UsersController : HomeScrumControllerBase
    {
       [Inject]
       public UsersController( ILogger logger, ISecurityService securityService, ISessionFactory sessionFactory )
@@ -66,10 +67,7 @@ namespace HomeScrum.Web.Controllers
             Mode = EditMode.Create
          };
 
-         Guid parsedId;
-         Guid.TryParse( callingId, out parsedId );
-         viewModel.CallingId = parsedId;
-         viewModel.CallingAction = callingAction;
+         UpdateNavigationStack( viewModel, null, callingAction, callingId );
 
          return View( viewModel );
       }
@@ -123,6 +121,28 @@ namespace HomeScrum.Web.Controllers
          }
       }
 
+
+      //
+      // GET: /Users/Edit/Guid
+      public ActionResult Details( Guid id, string callingAction = null, string callingId = null )
+      {
+         var session = _sessionFactory.GetCurrentSession();
+         using (var transaction = session.BeginTransaction())
+         {
+            var model = session.Get<User>( id );
+            if (model != null)
+            {
+               var viewModel = Mapper.Map<UserViewModel>( model );
+               transaction.Commit();
+               UpdateNavigationStack( viewModel, null, callingAction, callingId );
+               return View( viewModel );
+            }
+         }
+
+         return HttpNotFound();
+      }
+
+
       //
       // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
@@ -134,11 +154,8 @@ namespace HomeScrum.Web.Controllers
             if (model != null)
             {
                var viewModel = Mapper.Map<EditUserViewModel>( model );
-               viewModel.Mode = EditMode.ReadOnly;
-               Guid parsedCallingId;
-               Guid.TryParse( callingId, out parsedCallingId );
-               viewModel.CallingId = parsedCallingId;
-               viewModel.CallingAction = callingAction;
+               viewModel.Mode = EditMode.Edit;
+               UpdateNavigationStack( viewModel, null, callingAction, callingId );
                transaction.Commit();
                return View( viewModel );
             }
@@ -193,12 +210,6 @@ namespace HomeScrum.Web.Controllers
 
             return View( viewModel );
          }
-      }
-
-      protected internal RedirectToRouteResult RedirectToAction<T>( Expression<Func<T>> expression )
-      {
-         var actionName = ClassHelper.ExtractMethodName( expression );
-         return this.RedirectToAction( actionName );
       }
    }
 }

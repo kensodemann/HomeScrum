@@ -3,7 +3,6 @@
    public enum EditMode
    {
       Create,
-      Edit,
-      ReadOnly
+      Edit
    }
 }

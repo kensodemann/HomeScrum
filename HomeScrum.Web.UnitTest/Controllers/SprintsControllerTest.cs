@@ -468,25 +468,46 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToEditor_IfModelIsValid()
+      public void CreatePost_RedirectsToCaller_IfModelIsValid()
+      {
+         var viewModel = CreateSprintEditorViewModel();
+
+         var callingId = Guid.NewGuid();
+         _controller.Create( callingAction: "MyStuff", callingController: "Stuff", callingId: callingId.ToString() );
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 3, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "MyStuff", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Stuff", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Guid actualId;
+         if (!Guid.TryParse( value.ToString(), out actualId ))
+         {
+            Assert.Fail( "id was not a GUID" );
+         }
+         Assert.AreEqual( callingId, actualId );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndex_IfModeIsValidAndNoCaller()
       {
          var viewModel = CreateSprintEditorViewModel();
 
          var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
-
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingController" ) );
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingAction" ) );
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingId" ) );
+         Assert.AreEqual( "index", value.ToString() );
       }
 
       [TestMethod]
@@ -605,6 +626,326 @@ namespace HomeScrum.Web.UnitTest.Controllers
          Assert.AreEqual( 1, items.Count );
          Assert.AreEqual( user.Id, items[0].LastModifiedUserRid );
          Assert.AreEqual( user.Id, items[0].CreatedByUser.Id );
+      }
+      #endregion
+
+
+      #region Details GET Tests
+      [TestMethod]
+      public void DetailsGet_ReturnsViewWithModel()
+      {
+         var model = Sprints.ModelData[3];
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         var returnedModel = result.Model as SprintViewModel;
+         Assert.IsNotNull( returnedModel );
+         Assert.AreEqual( model.Id, returnedModel.Id );
+      }
+
+      [TestMethod]
+      public void DetailsGet_ReturnsNoDataFoundIfModelNotFound()
+      {
+         var result = _controller.Details( Guid.NewGuid() ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopulatesTaskList_IfTasksExist()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedChildWorkItems = WorkItems.ModelData
+            .Where( x => x.Sprint != null &&
+               x.Sprint.Id == parentId &&
+               x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+
+         var result = _controller.Details( parentId ) as ViewResult;
+         var viewModel = result.Model as SprintViewModel;
+
+         Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
+         foreach (var child in expectedChildWorkItems)
+         {
+            Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopulatesBacklogList_IfTasksExist()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedChildWorkItems = WorkItems.ModelData
+            .Where( x => x.Sprint != null &&
+               x.Sprint.Id == parentId &&
+               x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem );
+
+         var result = _controller.Details( parentId ) as ViewResult;
+         var viewModel = result.Model as SprintViewModel;
+
+         Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.BacklogItems.Count() );
+         foreach (var child in expectedChildWorkItems)
+         {
+            Assert.IsNotNull( viewModel.BacklogItems.FirstOrDefault( x => x.Id == child.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var id = Sprints.ModelData[0].Id;
+
+         var viewModel = ((ViewResult)_controller.Details( id )).Model as SprintViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var modelId = Sprints.ModelData[0].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Details( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as SprintViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PushesToNavigationStack_IfCallingDataGiven()
+      {
+         var id = Sprints.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         _controller.Details( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)_controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 2, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_DoesNotPush_IfCallingDataAlreadyOnTop()
+      {
+         var id = Sprints.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         _controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         _controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         _controller.Details( id, callingAction: "Index" );
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 4, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.AreEqual( "Sprints", navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopsFromNavigationStack_IfCallingDataNotGiven()
+      {
+         var id = Sprints.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         _controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         var viewModel = ((ViewResult)_controller.Details( id )).Model as ViewModelBase;
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 1, stack.Count );
+
+         var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Index", viewModel.CallingAction );
+         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsTotalPointsToTaskItemPoints_IfTasksExist()
+      {
+         var sprintId = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedPoints = WorkItems.ModelData
+            .Where( x => x.Sprint != null &&
+               x.Sprint.Id == sprintId &&
+               x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .Sum( x => x.Points );
+
+         var result = _controller.Details( sprintId ) as ViewResult;
+         var viewModel = result.Model as SprintViewModel;
+
+         Assert.AreEqual( expectedPoints, viewModel.TotalPoints );
+      }
+
+
+      [TestMethod]
+      public void DetailsGet_LoadsCalendar()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Calendar.Count > 0 );
+
+         var viewModel = ((ViewResult)_controller.Details( sprint.Id )).Model as SprintViewModel;
+
+         Assert.AreEqual( sprint.Calendar.Count, viewModel.Calendar.Count() );
+         foreach (var entry in sprint.Calendar)
+         {
+            Assert.IsNotNull( viewModel.Calendar.SingleOrDefault( x => x.HistoryDate == entry.HistoryDate && x.PointsRemaining == entry.PointsRemaining ) );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_CreatesEmptyCalendar_IfNoEntriesExistForSprint()
+      {
+         var sprint = Sprints.ModelData.First( x => x.Calendar.Count == 0 );
+
+         var viewModel = ((ViewResult)_controller.Details( sprint.Id )).Model as SprintViewModel;
+
+         Assert.AreEqual( 0, viewModel.Calendar.Count() );
+      }
+
+      [TestMethod]
+      public void DetailsGet_GetsPointsForTasks()
+      {
+         var sprint = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, TaskCount = g.Count() } )
+            .OrderBy( x => x.TaskCount )
+            .Last();
+
+         var result = _controller.Details( sprint.Id ) as ViewResult;
+         var vm = result.Model as SprintViewModel;
+
+         Assert.AreEqual( sprint.TaskCount, vm.Tasks.Count() );
+         foreach (var task in vm.Tasks)
+         {
+            var model = WorkItems.ModelData.Single( x => x.Id == task.Id );
+            Assert.AreEqual( model.Points, task.Points );
+            Assert.AreEqual( model.PointsRemaining, task.PointsRemaining );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_SumsPointsForBacklogItems()
+      {
+         var sprint = WorkItems.ModelData
+            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Tasks.Count() > 0 )
+            .GroupBy( x => x.Sprint.Id )
+            .Select( g => new { Id = g.Key, BacklogCount = g.Count() } )
+            .OrderBy( x => x.BacklogCount )
+            .Last();
+
+         var result = _controller.Details( sprint.Id ) as ViewResult;
+         var vm = result.Model as SprintViewModel;
+
+         Assert.AreEqual( sprint.BacklogCount, vm.BacklogItems.Count() );
+         foreach (var item in vm.BacklogItems)
+         {
+            var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
+            Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
+            Assert.AreEqual( model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_CanAddBacklog_IfBacklogNotClosed()
+      {
+         var id = Sprints.ModelData.First( x => !x.Status.BacklogIsClosed ).Id;
+
+         var result = _controller.Details( id ) as ViewResult;
+         var vm = result.Model as SprintViewModel;
+
+         Assert.IsTrue( vm.CanAddBacklog );
+      }
+
+      [TestMethod]
+      public void DetailsGet_CannotAddBacklog_IfBacklogClosed()
+      {
+         var id = Sprints.ModelData.First( x => x.Status.BacklogIsClosed ).Id;
+
+         var result = _controller.Details( id ) as ViewResult;
+         var vm = result.Model as SprintViewModel;
+
+         Assert.IsFalse( vm.CanAddBacklog );
+      }
+
+      [TestMethod]
+      public void DetailsGet_CanAddTasks_IfTaskListNotClosed()
+      {
+         var id = Sprints.ModelData.First( x => !x.Status.TaskListIsClosed ).Id;
+
+         var result = _controller.Details( id ) as ViewResult;
+         var vm = result.Model as SprintViewModel;
+
+         Assert.IsTrue( vm.CanAddTasks );
+      }
+
+      [TestMethod]
+      public void DetailsGet_CannotAddTask_IfTaskListClosed()
+      {
+         var id = Sprints.ModelData.First( x => x.Status.TaskListIsClosed ).Id;
+
+         var result = _controller.Details( id ) as ViewResult;
+         var vm = result.Model as SprintViewModel;
+
+         Assert.IsFalse( vm.CanAddTasks );
       }
       #endregion
 
@@ -786,118 +1127,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_LoadsBacklogItems()
-      {
-         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Sandwiches" );
-
-         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
-
-         Assert.IsNotNull( viewModel.BacklogItems );
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem ), viewModel.BacklogItems.Count() );
-      }
-
-      [TestMethod]
-      public void EditGet_LoadsTasksAndIssues()
-      {
-         var sprint = Sprints.ModelData.First( x => x.Project.Name == "Sandwiches" );
-
-         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
-
-         Assert.IsNotNull( viewModel.Tasks );
-         Assert.AreEqual( WorkItems.ModelData.Count( x => x.Sprint != null && x.Sprint.Id == sprint.Id && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem ), viewModel.Tasks.Count() );
-      }
-
-      [TestMethod]
-      public void EditGet_CreatesEmptyTaskAndBacklogLists_IfNoWorkItemsForSprint()
-      {
-         RemoveAllWorkItemsFromSprints();
-         var sprint = Sprints.ModelData.Where( x => x.Project.Name == "Sandwiches" ).ElementAt( 0 );
-
-         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
-
-         Assert.IsNotNull( viewModel.BacklogItems );
-         Assert.IsNotNull( viewModel.Tasks );
-         Assert.AreEqual( 0, viewModel.BacklogItems.Count() );
-         Assert.AreEqual( 0, viewModel.Tasks.Count() );
-      }
-
-      [TestMethod]
-      public void EditGet_LoadsCalendar()
-      {
-         var sprint = Sprints.ModelData.First( x => x.Calendar.Count > 0 );
-
-         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
-
-         Assert.AreEqual( sprint.Calendar.Count, viewModel.Calendar.Count() );
-         foreach(var entry in sprint.Calendar)
-         {
-            Assert.IsNotNull( viewModel.Calendar.SingleOrDefault( x => x.HistoryDate == entry.HistoryDate && x.PointsRemaining == entry.PointsRemaining ) );
-         }
-      }
-
-      [TestMethod]
-      public void EditGet_CreatesEmptyCalendar_IfNoEntriesExistForSprint()
-      {
-         var sprint = Sprints.ModelData.First( x => x.Calendar.Count == 0 );
-         
-         var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
-
-         Assert.AreEqual( 0, viewModel.Calendar.Count() );
-      }
-
-      [TestMethod]
-      public void EditGet_SetsModeToReadOnly()
+      public void EditGet_SetsModeToEdit()
       {
          var model = Sprints.ModelData[3];
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var returnedModel = result.Model as SprintEditorViewModel;
 
-         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
-      }
-
-      [TestMethod]
-      public void EditGet_GetsPointsForTasks()
-      {
-         var sprint = WorkItems.ModelData
-            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
-            .GroupBy( x => x.Sprint.Id )
-            .Select( g => new { Id = g.Key, TaskCount = g.Count() } )
-            .OrderBy( x => x.TaskCount )
-            .Last();
-
-         var result = _controller.Edit( sprint.Id ) as ViewResult;
-         var vm = result.Model as SprintEditorViewModel;
-
-         Assert.AreEqual( sprint.TaskCount, vm.Tasks.Count() );
-         foreach (var task in vm.Tasks)
-         {
-            var model = WorkItems.ModelData.Single( x => x.Id == task.Id );
-            Assert.AreEqual( model.Points, task.Points );
-            Assert.AreEqual( model.PointsRemaining, task.PointsRemaining );
-         }
-      }
-
-      [TestMethod]
-      public void EditGet_SumsPointsForBacklogItems()
-      {
-         var sprint = WorkItems.ModelData
-            .Where( x => x.Sprint != null && x.ParentWorkItem == null && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.Tasks.Count() > 0 )
-            .GroupBy( x => x.Sprint.Id )
-            .Select( g => new { Id = g.Key, BacklogCount = g.Count() } )
-            .OrderBy( x => x.BacklogCount )
-            .Last();
-
-         var result = _controller.Edit( sprint.Id ) as ViewResult;
-         var vm = result.Model as SprintEditorViewModel;
-
-         Assert.AreEqual( sprint.BacklogCount, vm.BacklogItems.Count() );
-         foreach (var item in vm.BacklogItems)
-         {
-            var model = WorkItems.ModelData.Single( x => x.Id == item.Id );
-            Assert.AreEqual( model.Tasks.Sum( x => x.Points ), item.Points );
-            Assert.AreEqual( model.Tasks.Sum( x => x.PointsRemaining ), item.PointsRemaining );
-         }
+         Assert.AreEqual( EditMode.Edit, returnedModel.Mode );
       }
 
       [TestMethod]
@@ -908,10 +1145,10 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var viewModel = ((ViewResult)_controller.Edit( sprint.Id )).Model as SprintEditorViewModel;
 
          Assert.AreEqual( WorkItems.ModelData
-                             .Where( x => x.Sprint != null && 
-                                     x.Sprint.Id == sprint.Id && 
+                             .Where( x => x.Sprint != null &&
+                                     x.Sprint.Id == sprint.Id &&
                                      x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem )
-                             .Sum(x=>x.Points),
+                             .Sum( x => x.Points ),
                           viewModel.TotalPoints );
       }
       #endregion
@@ -950,7 +1187,37 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_RedirectsToEditor_IfModelIsValid()
+      public void EditPost_RedirectsToCaller_IfModelIsValid()
+      {
+         var model = Sprints.ModelData[2];
+         var viewModel = CreateSprintEditorViewModel( model );
+
+         var callingId = Guid.NewGuid();
+         _controller.Edit( model.Id, callingAction: "Run", callingController: "FredFlintstone", callingId: callingId.ToString() );
+         _session.Clear();
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 3, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "Run", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "FredFlintstone", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Guid actualId;
+         if (!Guid.TryParse( value.ToString(), out actualId ))
+         {
+            Assert.Fail( "id was not a GUID" );
+         }
+         Assert.AreEqual( callingId, actualId );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToIndex_IfModelIsValidAndNoCaller()
       {
          var model = Sprints.ModelData[2];
          var viewModel = CreateSprintEditorViewModel( model );
@@ -958,18 +1225,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
-
-         result.RouteValues.ContainsKey( "callingController" );
-         result.RouteValues.ContainsKey( "callingAction" );
-         result.RouteValues.ContainsKey( "callingId" );
+         Assert.AreEqual( "index", value.ToString() );
       }
 
       [TestMethod]
@@ -1193,7 +1453,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void AddBacklogItem_RedirectsToEditor()
+      public void AddBacklogItem_RedirectsBackToDetails()
       {
          var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.BacklogIsClosed );
          var viewModel = CreateBacklogItemsForSprintViewModel( sprint );
@@ -1205,7 +1465,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
+         Assert.AreEqual( "Details", value.ToString() );
 
          result.RouteValues.TryGetValue( "id", out value );
          Assert.AreEqual( value, sprint.Id );
@@ -1292,7 +1552,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void AddTasksPost_RedirectsToEditor()
+      public void AddTasksPost_RedirectsBackToDetails()
       {
          var sprint = Sprints.ModelData.First( x => x.Project.Name == "Home Scrum" && !x.Status.TaskListIsClosed );
          var viewModel = CreateTasksForSprintViewModel( sprint );
@@ -1304,7 +1564,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
+         Assert.AreEqual( "Details", value.ToString() );
 
          result.RouteValues.TryGetValue( "id", out value );
          Assert.AreEqual( value, sprint.Id );

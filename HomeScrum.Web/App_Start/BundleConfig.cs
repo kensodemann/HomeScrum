@@ -12,13 +12,12 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/myScripts" )
             .Include( "~/Scripts/HomeScrum/utilities.js" ) );
 
-         bundles.Add( new ScriptBundle( "~/bundles/baseScripts" )
-            .Include( "~/Scripts/HomeScrum/Base/EditorBase.js" ) );
-
          bundles.Add( new ScriptBundle( "~/bundles/workItemScripts" )
+            .Include( "~/Scripts/HomeScrum/WorkItems/Details.js" )
             .Include( "~/Scripts/HomeScrum/WorkItems/Editor.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/sprintScripts" )
+            .Include( "~/Scripts/HomeScrum/Sprints/Details.js" )
             .Include( "~/Scripts/HomeScrum/Sprints/Editor.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/vendor" )
@@ -51,8 +50,8 @@ namespace HomeScrum.Web
          bundles.Add( new ScriptBundle( "~/bundles/modernizr" ).Include(
                      "~/Scripts/modernizr-*" ) );
 
-         bundles.Add( new StyleBundle( "~/Content/themes/base/css" ).Include(
-                     "~/Content/themes/base/jquery-ui.css" ) );
+         bundles.Add( new StyleBundle( "~/Content/JQueryUItheme" ).Include(
+                     "~/Content/themes/redmond/jquery-ui.css" ) );
 
          bundles.Add( new StyleBundle( "~/Content/themes/jqueryDataTables/css" )
             .Include( "~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" ) );

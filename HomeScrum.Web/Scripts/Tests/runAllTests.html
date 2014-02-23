@@ -10,9 +10,13 @@
    <script src="qunit/qunit-composite.js"></script>
 
    <script>
+      QUnit.testSuites("Details",
+         [
+            "Sprints/testDetails.html",
+            "WorkItems/testDetails.html",
+         ]);
       QUnit.testSuites("Editors",
          [
-            "Base/testEditorBase.html",
             "Sprints/testEditor.html",
             "WorkItems/testEditor.html",
          ]);

@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -199,6 +200,7 @@
     <Compile Include="Controllers\Admin\AcceptanceCriterionStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Base\HomeScrumControllerBase.cs" />
     <Compile Include="Controllers\Base\ReadOnlyController.cs" />
     <Compile Include="Controllers\Base\ReadWriteController.cs" />
     <Compile Include="Controllers\Base\SystemDataObjectController.cs" />
@@ -362,6 +364,25 @@
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
     <Content Include="Content\SignIn.css" />
+    <Content Include="Content\themes\redmond\images\animated-overlay.gif" />
+    <Content Include="Content\themes\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\themes\redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\themes\redmond\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\themes\redmond\jquery-ui.css" />
+    <Content Include="Content\themes\redmond\jquery-ui.min.css" />
+    <Content Include="Content\themes\redmond\jquery.ui.theme.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_asc_disabled.png" />
@@ -412,8 +433,9 @@
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
-    <Content Include="Scripts\HomeScrum\Base\EditorBase.js" />
+    <Content Include="Scripts\HomeScrum\Sprints\Details.js" />
     <Content Include="Scripts\HomeScrum\Sprints\Editor.js" />
+    <Content Include="Scripts\HomeScrum\WorkItems\Details.js" />
     <Content Include="Scripts\HomeScrum\WorkItems\Editor.js" />
     <Content Include="Scripts\jqPlot\changes.txt" />
     <Content Include="Scripts\jqPlot\copyright.txt" />
@@ -495,12 +517,12 @@
     <Content Include="Scripts\knockout-3.0.0.debug.js" />
     <Content Include="Scripts\knockout-3.0.0.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
-    <Content Include="Scripts\Tests\Base\EditorBaseTests.js" />
-    <Content Include="Scripts\Tests\Base\testEditorBase.html" />
     <Content Include="Scripts\Tests\qunit\qunit-composite.css" />
     <Content Include="Scripts\Tests\qunit\qunit-composite.js" />
     <Content Include="Scripts\Tests\runAllTests.html" />
+    <Content Include="Scripts\Tests\Sprints\DetailsTests.js" />
     <Content Include="Scripts\Tests\Sprints\EditorTests.js" />
+    <Content Include="Scripts\Tests\Sprints\testDetails.html" />
     <Content Include="Scripts\Tests\Sprints\testEditor.html" />
     <Content Include="Scripts\Tests\Utilities\UtilitiesTests.js" />
     <Content Include="Scripts\Tests\qunit\qunit-1.12.0.css" />
@@ -566,24 +588,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="Content\themes\cupertino\images\animated-overlay.gif" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
-    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
-    <Content Include="Content\themes\cupertino\images\ui-icons_2694e8_256x240.png" />
-    <Content Include="Content\themes\cupertino\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\cupertino\images\ui-icons_3d80b3_256x240.png" />
-    <Content Include="Content\themes\cupertino\images\ui-icons_72a7cf_256x240.png" />
-    <Content Include="Content\themes\cupertino\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="Content\themes\cupertino\jquery-ui.css" />
-    <Content Include="Content\themes\cupertino\jquery-ui.min.css" />
-    <Content Include="Content\themes\cupertino\jquery.ui.theme.css" />
     <Content Include="Content\Editor.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -622,7 +626,9 @@
     <Content Include="Scripts\jquery.storage.js" />
     <Content Include="Scripts\Tests\qunit\qunit-1.12.0.js" />
     <Content Include="Scripts\Tests\Utilities\testUtilities.html" />
+    <Content Include="Scripts\Tests\WorkItems\DetailsTests.js" />
     <Content Include="Scripts\Tests\WorkItems\EditorTests.js" />
+    <Content Include="Scripts\Tests\WorkItems\testDetails.html" />
     <Content Include="Scripts\Tests\WorkItems\testEditor.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -684,8 +690,7 @@
     <Content Include="Views\Users\_Editor.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Shared\_EditTemplate.cshtml" />
-    <Content Include="Views\Shared\_CreateTemplate.cshtml" />
+    <Content Include="Views\Shared\_EditorButtonArea.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseEditor.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\_Editor.cshtml" />
@@ -695,7 +700,7 @@
     <Content Include="Views\WorkItems\Create.cshtml" />
     <Content Include="Views\WorkItems\_Editor.cshtml" />
     <Content Include="Views\WorkItems\Edit.cshtml" />
-    <Content Include="Views\Shared\_WorkItemList.cshtml" />
+    <Content Include="Views\WorkItems\_WorkItemList.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectEditor.cshtml" />
     <Content Include="Views\Sprints\Index.cshtml" />
     <Content Include="Views\Sprints\_Editor.cshtml" />
@@ -718,6 +723,17 @@
     <Content Include="Views\WorkItems\UnassignedTasks.cshtml" />
     <Content Include="Views\WorkItems\UnassignedProblems.cshtml" />
     <Content Include="Views\Shared\_BurndownChart.cshtml" />
+    <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
+    <Content Include="Views\Shared\_DetailsButtonArea.cshtml" />
+    <Content Include="Views\WorkItemTypes\Details.cshtml" />
+    <Content Include="Views\WorkItemStatuses\Details.cshtml" />
+    <Content Include="Views\SprintStatuses\Details.cshtml" />
+    <Content Include="Views\ProjectStatuses\Details.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\Details.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\WorkItems\Details.cshtml" />
+    <Content Include="Views\Projects\Details.cshtml" />
+    <Content Include="Views\Sprints\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

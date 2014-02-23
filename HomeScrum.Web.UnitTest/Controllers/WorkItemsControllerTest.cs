@@ -1,6 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Web.Mvc;
+using AutoMapper;
 using HomeScrum.Common.TestData;
 using HomeScrum.Data.Domain;
+using HomeScrum.Data.Services;
 using HomeScrum.Web.Controllers;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Models.WorkItems;
@@ -12,12 +18,6 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using Ninject.MockingKernel.Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web.Mvc;
-using HomeScrum.Data.Services;
 
 namespace HomeScrum.Web.UnitTest.Controllers
 {
@@ -32,7 +32,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private Mock<IIdentity> _userIdentity;
       private User _user;
 
-      private Mock<ControllerContext> _controllerConext;
+      private Mock<ControllerContext> _controllerContext;
       private Stack<NavigationData> _navigationStack;
 
       private ISession _session;
@@ -595,25 +595,46 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void CreatePost_RedirectsToEditor_IfModelIsValid()
+      public void CreatePost_RedirectsToCaller_IfModelIsValid()
+      {
+         var viewModel = CreateWorkItemEditorViewModel();
+
+         var callingId = Guid.NewGuid();
+         _controller.Create( callingAction: "MyStuff", callingController: "Stuff", callingId: callingId.ToString() );
+         var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 3, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "MyStuff", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "Stuff", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Guid actualId;
+         if (!Guid.TryParse( value.ToString(), out actualId ))
+         {
+            Assert.Fail( "id was not a GUID" );
+         }
+         Assert.AreEqual( callingId, actualId );
+      }
+
+      [TestMethod]
+      public void CreatePost_RedirectsToIndex_IfModeIsValidAndNoCaller()
       {
          var viewModel = CreateWorkItemEditorViewModel();
 
          var result = _controller.Create( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
-
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingController" ) );
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingAction" ) );
-         Assert.IsTrue( result.RouteValues.ContainsKey( "callingId" ) );
+         Assert.AreEqual( "index", value.ToString() );
       }
 
       [TestMethod]
@@ -828,6 +849,242 @@ namespace HomeScrum.Web.UnitTest.Controllers
          _controller.Create( viewModel, _principal.Object );
 
          _sprintCalendarService.Verify( x => x.Update( It.IsAny<Sprint>() ), Times.Never() );
+      }
+      #endregion
+
+
+      #region Details GET Tests
+      [TestMethod]
+      public void DetailsGet_ReturnsViewWithModel()
+      {
+         var model = WorkItems.ModelData[3];
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+
+         Assert.IsNotNull( result );
+         var returnedModel = result.Model as WorkItemViewModel;
+         Assert.IsNotNull( returnedModel );
+         Assert.AreEqual( model.Id, returnedModel.Id );
+      }
+
+      [TestMethod]
+      public void DetailsGet_ReturnsNoDataFoundIfModelNotFound()
+      {
+         var result = _controller.Details( Guid.NewGuid() ) as HttpNotFoundResult;
+
+         Assert.IsNotNull( result );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopulatesTaskList_IfChildTasksExist()
+      {
+         var parentId = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null )
+            .GroupBy( x => x.ParentWorkItem.Id )
+            .Select( g => new { Id = g.Key, Count = g.Count() } )
+            .OrderBy( x => x.Count )
+            .Last().Id;
+         var expectedChildWorkItems = WorkItems.ModelData
+            .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
+
+         var result = _controller.Details( parentId ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
+         foreach (var child in expectedChildWorkItems)
+         {
+            Assert.IsNotNull( viewModel.Tasks.FirstOrDefault( x => x.Id == child.Id ) );
+         }
+      }
+
+      [TestMethod]
+      public void DetailsGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
+      {
+         var id = WorkItems.ModelData[0].Id;
+
+         var viewModel = ((ViewResult)_controller.Details( id )).Model as WorkItemViewModel;
+
+         Assert.IsNull( viewModel.CallingAction );
+         Assert.AreEqual( default( Guid ), viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_AddsCallingActionAndId_IfSpecified()
+      {
+         var modelId = WorkItems.ModelData[0].Id;
+         var parentId = Guid.NewGuid();
+
+         var viewModel = ((ViewResult)_controller.Details( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemViewModel;
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PushesToNavigationStack_IfCallingDataGiven()
+      {
+         var id = WorkItems.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         _controller.Details( id, callingAction: "Index" );
+         var viewModel = ((ViewResult)_controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 2, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Edit", viewModel.CallingAction );
+         Assert.AreEqual( parentId, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_DoesNotPush_IfCallingDataAlreadyOnTop()
+      {
+         var id = WorkItems.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         _controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         _controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         _controller.Details( id, callingController: "Sprints", callingAction: "Index" );
+         _controller.Details( id, callingAction: "Index" );
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 4, stack.Count );
+
+         var navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.AreEqual( "Sprints", navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         navData = stack.Pop();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Edit", navData.Action );
+         Assert.AreEqual( parentId, new Guid( navData.Id ) );
+
+         navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+      }
+
+      [TestMethod]
+      public void DetailsGet_PopsFromNavigationStack_IfCallingDataNotGiven()
+      {
+         var id = WorkItems.ModelData[3].Id;
+         var parentId = Guid.NewGuid();
+
+         _controller.Details( id, callingAction: "Index" );
+         _controller.Details( id, callingAction: "Edit", callingId: parentId.ToString() );
+         var viewModel = ((ViewResult)_controller.Details( id )).Model as ViewModelBase;
+
+         var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
+
+         Assert.IsNotNull( stack );
+         Assert.AreEqual( 1, stack.Count );
+
+         var navData = stack.Peek();
+         Assert.IsNull( navData.Controller );
+         Assert.AreEqual( "Index", navData.Action );
+         Assert.IsNull( navData.Id );
+
+         Assert.AreEqual( "Index", viewModel.CallingAction );
+         Assert.AreEqual( Guid.Empty, viewModel.CallingId );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsToModelPoints_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( model.Points, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsRemainingToModelPointsRemaining_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem
+            && x.PointsRemaining != x.Points
+            && x.PointsRemaining != 1 );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsToSumOfChildPoints_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedPoints, viewModel.Points );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsPointsRemainingToSumOfChildPointsRemaining_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem
+             && (WorkItems.ModelData.Count( y => y.ParentWorkItem != null && y.ParentWorkItem.Id == x.Id ) > 2) );
+
+         var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.AreEqual( expectedPointsRemaining, viewModel.PointsRemaining );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsCanHaveChildrenFalse_IfNotBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category != WorkItemTypeCategory.BacklogItem );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.IsFalse( viewModel.CanHaveChildren );
+      }
+
+      [TestMethod]
+      public void DetailsGet_SetsCanHaveChildrenTrue_IfBacklogItem()
+      {
+         var model = WorkItems.ModelData.First( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem );
+
+         var result = _controller.Details( model.Id ) as ViewResult;
+         var viewModel = result.Model as WorkItemViewModel;
+
+         Assert.IsTrue( viewModel.CanHaveChildren );
       }
       #endregion
 
@@ -1102,14 +1359,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditGet_SetsEditModeToReadOnly()
+      public void EditGet_SetsEditModeToEdit()
       {
          var model = WorkItems.ModelData[3];
 
          var result = _controller.Edit( model.Id ) as ViewResult;
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
-         Assert.AreEqual( EditMode.ReadOnly, returnedModel.Mode );
+         Assert.AreEqual( EditMode.Edit, returnedModel.Mode );
       }
 
       [TestMethod]
@@ -1201,26 +1458,50 @@ namespace HomeScrum.Web.UnitTest.Controllers
       }
 
       [TestMethod]
-      public void EditPost_ReturnsToEditorModeReadonly_IfModelIsValid()
+      public void EditPost_RedirectsToCaller_IfModelIsValid()
       {
+         var model = WorkItems.ModelData[2];
+         var viewModel = CreateWorkItemEditorViewModel( model );
+
+         var callingId = Guid.NewGuid();
+         _controller.Edit( model.Id, callingAction: "JimBob", callingController: "BillyJoe", callingId: callingId.ToString() );
+         _session.Clear();
+         var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
+
+         Assert.IsNotNull( result );
+         Assert.AreEqual( 3, result.RouteValues.Count );
+
+         object value;
+         result.RouteValues.TryGetValue( "action", out value );
+         Assert.AreEqual( "JimBob", value.ToString() );
+
+         result.RouteValues.TryGetValue( "controller", out value );
+         Assert.AreEqual( "BillyJoe", value.ToString() );
+
+         result.RouteValues.TryGetValue( "id", out value );
+         Guid actualId;
+         if (!Guid.TryParse( value.ToString(), out actualId ))
+         {
+            Assert.Fail( "id was not a GUID" );
+         }
+         Assert.AreEqual( callingId, actualId );
+      }
+
+      [TestMethod]
+      public void EditPost_RedirectsToIndex_IfModelIsValidAndNoCaller()
+      {
+         var controller = CreateController();
          var model = WorkItems.ModelData[2];
          var viewModel = CreateWorkItemEditorViewModel( model );
 
          var result = _controller.Edit( viewModel, _principal.Object ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
-
-         result.RouteValues.ContainsKey( "callingController" );
-         result.RouteValues.ContainsKey( "callingAction" );
-         result.RouteValues.ContainsKey( "callingId" );
+         Assert.AreEqual( "index", value.ToString() );
       }
 
       [TestMethod]
@@ -1628,7 +1909,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       private WorkItemsController CreateController()
       {
          var controller = new WorkItemsController( new WorkItemPropertyNameTranslator(), _logger.Object, _sessionFactory.Object, _sprintCalendarService.Object );
-         controller.ControllerContext = _controllerConext.Object;
+         controller.ControllerContext = _controllerContext.Object;
 
          return controller;
       }
@@ -1640,11 +1921,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
       private void SetupControllerContext()
       {
-         _controllerConext = new Mock<ControllerContext>();
-         _controllerConext
+         _controllerContext = new Mock<ControllerContext>();
+         _controllerContext
             .SetupSet( x => x.HttpContext.Session["NavigationStack"] = It.IsAny<Stack<NavigationData>>() )
             .Callback( ( string name, object m ) => { _navigationStack = (Stack<NavigationData>)m; } );
-         _controllerConext
+         _controllerContext
             .Setup( x => x.HttpContext.Session["NavigationStack"] )
             .Returns( () => _navigationStack );
       }

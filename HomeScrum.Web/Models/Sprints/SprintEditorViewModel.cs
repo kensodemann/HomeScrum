@@ -7,7 +7,7 @@ using HomeScrum.Web.Models.Base;
 
 namespace HomeScrum.Web.Models.Sprints
 {
-   public class SprintEditorViewModel : DomainObjectViewModel, IEditorViewModel, IBurndownChart
+   public class SprintEditorViewModel : DomainObjectViewModel, IEditorViewModel
    {
       [Display( Name = "SprintStatus", ResourceType = typeof( DisplayStrings ) )]
       public Guid StatusId { get; set; }
@@ -32,10 +32,6 @@ namespace HomeScrum.Web.Models.Sprints
       [Display( Name = "CreatedByUser", ResourceType = typeof( DisplayStrings ) )]
       public string CreatedByUserUserName { get; set; }
 
-      public IEnumerable<SprintWorkItemViewModel> BacklogItems { get; set; }
-
-      public IEnumerable<SprintWorkItemViewModel> Tasks { get; set; }
-
       public EditMode Mode { get; set; }
 
       [Display( Name = "Capacity", ResourceType = typeof( DisplayStrings ) )]
@@ -43,7 +39,5 @@ namespace HomeScrum.Web.Models.Sprints
 
       [Display( Name = "PointsScheduled", ResourceType = typeof( DisplayStrings ) )]
       public int TotalPoints { get; set; }
-
-      public IEnumerable<SprintCalendarEntryViewModel> Calendar { get; set; }
    }
 }

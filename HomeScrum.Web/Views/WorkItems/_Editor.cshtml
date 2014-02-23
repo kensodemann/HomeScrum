@@ -1,6 +1,8 @@
 ﻿@using HomeScrum.Web.Extensions
-
 @model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
+
+
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
@@ -9,28 +11,21 @@
    <fieldset>
       <legend class="hidden">Properties</legend>
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.Points, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.Points, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.Points )
+      <div id="PointsArea">
+         <div class="form-group">
+            @Html.LabelFor( model => model.Points, new { @class = "col-sm-2 control-label" } )
+            <div class="col-sm-6">
+               @Html.TextBoxFor( model => model.Points, new { @class = "MainData form-control" } )
+               @Html.ValidationMessageFor( model => model.Points )
+            </div>
          </div>
-      </div>
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.PointsRemaining, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.PointsRemaining )
-         </div>
-      </div>
-
-      <div class="form-group">
-         @Html.LabelFor( model => model.CreatedByUserUserName, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DisplayFor( model => model.CreatedByUserUserName )
-            @Html.HiddenFor( model => model.CreatedByUserId )
-            @Html.ValidationMessageFor( model => model.CreatedByUserId )
+         <div class="form-group">
+            @Html.LabelFor( model => model.PointsRemaining, new { @class = "col-sm-2 control-label" } )
+            <div class="col-sm-6">
+               @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData form-control" } )
+               @Html.ValidationMessageFor( model => model.PointsRemaining )
+            </div>
          </div>
       </div>
 
@@ -82,62 +77,18 @@
          </div>
       </div>
 
+      @Html.HiddenFor( model => model.CreatedByUserId )
       @Html.HiddenFor( m => m.Mode )
    </fieldset>
 
-   <div id="TaskListDiv" class="ChildData">
-      <fieldset>
-         <h3>Tasks</h3>
-         <table class="dataTableList table table-striped table-bordered">
-            <thead>
-               <tr>
-                  <th>
-                     @Html.DisplayNameFor( model => model.WorkItemTypeId )
-                  </th>
-                  <th>
-                     @Html.DisplayNameFor( model => model.Name )
-                  </th>
-                  <th>
-                     @Html.DisplayNameFor( model => model.StatusId )
-                  </th>
-                  <th></th>
-               </tr>
-            </thead>
-
-            <tbody>
-               @foreach (var item in Model.Tasks)
-               {
-                  var rowClass = item.IsComplete ? "CompletedItemRow" : "NotCompletedItemRow";
-
-                  <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
-                     <td>
-                        @Html.DisplayFor( modelItem => item.WorkItemTypeName )
-                     </td>
-                     <td>
-                        @Html.ActionLink( item.Name, "Edit", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() } )
-                     </td>
-                     <td>
-                        @Html.DisplayFor( modelItem => item.StatusName )
-                     </td>
-                     <td>
-                        @Html.ActionLink( "Remove", "RemoveParent", new { id = item.Id, callingAction = "Edit", callingId = Model.Id.ToString() },
-                           new { Class = "action add", title = "Removes the work item from this list, but does not delete the work item." } )
-                     </td>
-                  </tr>
-               }
-            </tbody>
-         </table>
-      </fieldset>
-   </div>
-
    @Html.ValidationSummary( false )
+   @Html.Partial( "_EditorButtonArea", Model )
 }
 
-<a href="#" id="SubmitButton" class="btn btn-primary"></a>
-@Html.ActionLink( "Add New Task", "Create", new { parentId = Model.Id.ToString(), callingAction = "Edit", callingId = Model.Id.ToString() }, new { id = "CreateNewTask", @class = "btn btn-default" } )
 
-@Scripts.Render( "~/Bundles/BaseScripts" )
+@Scripts.Render( "~/bundles/jqueryval" )
 @Scripts.Render( "~/bundles/workItemScripts" )
+
 
 <script>
    $(document).ready(function () {

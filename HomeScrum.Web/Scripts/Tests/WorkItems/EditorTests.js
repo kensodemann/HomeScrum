@@ -65,105 +65,6 @@ test('Assign To User Visible if can be assigned on change', function () {
    ok($("#AssignedToUserDiv").is(":visible"));
 });
 
-
-// Show / Hide Task List
-test('Task List Hidden if cannot have children on init', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   Editor.init();
-   ok($("#TaskListDiv").is(":hidden"));
-});
-
-test('Task List Hidden if cannot have children on change', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   Editor.init();
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   $("#WorkItemTypeId").change();
-   stop();
-   setTimeout(function () {
-      ok($("#TaskListDiv").is(":hidden"));
-      start();
-   }, 1000);
-});
-
-test('Task List Visible if can have children on init', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   Editor.init();
-   ok($("#TaskListDiv").is(":visible"));
-});
-
-test('Task List Visible if can have children on change', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   Editor.init();
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   $("#WorkItemTypeId").change();
-   ok($("#TaskListDiv").is(":visible"));
-});
-
-test('Task List Hidden if mode is create on init', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   $("#Mode").val("Create");
-   Editor.init();
-   ok($("#TaskListDiv").is(":hidden"));
-});
-
-test('Task List remains hidden on change if Mode is Create', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   $("#Mode").val("Create");
-   Editor.init();
-   $("#WorkItemTypeId").change();
-   ok($("#TaskListDiv").is(":hidden"));
-});
-
-
-// Show / Hide Task Button
-test('Task Button Hidden if cannot have children on init', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   Editor.init();
-   ok($("#CreateNewTask").is(":hidden"));
-});
-
-test('Task Button Hidden if cannot have children on change', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   Editor.init();
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   $("#WorkItemTypeId").change();
-   stop();
-   setTimeout(function () {
-      ok($("#CreateNewTask").is(":hidden"));
-      start();
-   }, 1000);
-});
-
-test('Task Button Visible if can have children on init', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   Editor.init();
-   ok($("#CreateNewTask").is(":visible"));
-});
-
-test('Task Button Visible if can have children on change', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "False");
-   Editor.init();
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   $("#WorkItemTypeId").change();
-   ok($("#CreateNewTask").is(":visible"));
-});
-
-test('Task Button Hidden if mode is Create on init', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   $("#Mode").val("Create");
-   Editor.init();
-   ok($("#CreateNewTask").is(":hidden"));
-});
-
-test('Task Button remains hidden on change if mode is Create', function () {
-   $("#selWorkItemType").attr("data-CanHaveChildren", "True");
-   $("#Mode").val("Create");
-   Editor.init();
-   $("#WorkItemTypeId").change();
-   ok($("#CreateNewTask").is(":hidden"));
-});
-
-
 // Project & Sprint Setting
 test("Project ID is set to parent's when parent selected", function () {
    Editor.init();
@@ -284,7 +185,7 @@ test('Sprint disabled on parent change if parent', function () {
 });
 
 // Points / Points Remaining Enable / Disable
-test('Points enabled on init if not read-only and work not started', function () {
+test('Points enabled on init if work not started', function () {
    $("#selStatus").attr("data-WorkStarted", "False");
    $("#Mode").val("Edit");
    Editor.init();
@@ -298,14 +199,7 @@ test('Points disable on init if work started', function () {
    strictEqual($("#Points").prop("disabled"), true);
 });
 
-test('Points disabled on init if read-only', function () {
-   $("#selStatus").attr("data-WorkStarted", "False");
-   $("#Mode").val("ReadOnly");
-   Editor.init();
-   strictEqual($("#Points").prop("disabled"), true);
-});
-
-test('Points Remaining enabled on init if not read-only and status is open', function () {
+test('Points Remaining enabled on init if status is open', function () {
    $("#selStatus").attr("data-IsOpenStatus", "True");
    $("#selStatus").attr("data-WorkStarted", "True");
    $("#Mode").val("Edit");
@@ -317,14 +211,6 @@ test('Points Remaining disable on init if status is not open', function () {
    $("#selStatus").attr("data-isopenstatus", "False");
    $("#selStatus").attr("data-WorkStarted", "True");
    $("#Mode").val("Edit");
-   Editor.init();
-   strictEqual($("#PointsRemaining").prop("disabled"), true);
-});
-
-test('Points Remaining disabled on init if read-only', function () {
-   $("#selStatus").attr("data-IsOpenStatus", "True");
-   $("#selStatus").attr("data-WorkStarted", "True");
-   $("#Mode").val("ReadOnly");
    Editor.init();
    strictEqual($("#PointsRemaining").prop("disabled"), true);
 });
@@ -347,24 +233,26 @@ test('Points Disabled on status change if work started', function () {
    strictEqual($("#Points").prop("disabled"), true);
 });
 
-test('Points disabled on init for items that can have child tasks', function () {
+test('Points hidden on init for items that can have child tasks', function () {
    $("#selStatus").attr("data-WorkStarted", "False");
    $("#Mode").val("Edit");
    $("#selWorkItemType").attr("data-canhavechildren", "True");
    Editor.init();
-   strictEqual($("#Points").prop("disabled"), true);
-   strictEqual($("#PointsRemaining").prop("disabled"), true);
+   ok($("#PointsArea").is(":hidden"));
 });
 
-test('Points Remaining disabled on type change items that can have child tasks', function () {
+test('Points Remaining hidden on type change items that can have child tasks', function () {
    $("#selStatus").attr("data-WorkStarted", "False");
    $("#Mode").val("Edit");
    $("#selWorkItemType").attr("data-canhavechildren", "False");
    Editor.init();
    $("#selWorkItemType").attr("data-canhavechildren", "True");
    $("#WorkItemTypeId").change();
-   strictEqual($("#Points").prop("disabled"), true);
-   strictEqual($("#PointsRemaining").prop("disabled"), true);
+   stop();
+   setTimeout(function () {
+      ok($("#PointsArea").is(":hidden"));
+      start();
+   }, 1000);
 });
 
 // Points and Points Remaining Values

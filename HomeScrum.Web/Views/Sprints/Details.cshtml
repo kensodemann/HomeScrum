@@ -1,0 +1,68 @@
+﻿@model HomeScrum.Web.Models.Sprints.SprintViewModel
+
+@{
+   @* The _WorkItemList needs this *@
+   ViewBag.SprintId = Model.Id;
+}
+
+@Scripts.Render( "~/jqPlot" )
+@Scripts.Render( "~/jqPlotplugins" )
+
+@Html.Partial( "_DomainObjectBaseDetails", Model )
+
+<fieldset>
+   <legend>Attributes</legend>
+
+   <dl class="dl-horizontal col-md-6">
+      <dt>@Html.DisplayNameFor( model => model.ProjectName )</dt>
+      <dd>@Html.DisplayFor( model => model.ProjectName )</dd>
+      <dt>@Html.DisplayNameFor( model => model.StartDate )</dt>
+      <dd>@Html.DisplayFor( model => model.StartDate )</dd>
+      <dt>@Html.DisplayNameFor( model => model.EndDate )</dt>
+      <dd>@Html.DisplayFor( model => model.EndDate )</dd>
+      <dt>@Html.DisplayNameFor( model => model.StatusName )</dt>
+      <dd>@Html.DisplayFor( model => model.StatusName )</dd>
+      <dt>@Html.DisplayNameFor( model => model.Capacity )</dt>
+      <dd>@Html.DisplayFor( model => model.Capacity )</dd>
+      <dt>@Html.DisplayNameFor( model => model.TotalPoints )</dt>
+      <dd>@Html.DisplayFor( model => model.TotalPoints )</dd>
+   </dl>
+
+   @if (Model.EndDate != null && Model.StartDate != null && Model.Calendar.Count() > 0)
+   {
+      <div id="burndown" class="col-md-6">
+         @Html.Partial( "_BurndownChart", Model )
+      </div>
+   }
+</fieldset>
+
+<fieldset>
+   <legend>Work Items</legend>
+
+   <div id="sprintData">
+      <h3>Backlog Items</h3>
+      <div id="BacklogItems">
+         @Html.Partial( "_WorkItemList", Model.BacklogItems )
+         @Html.ActionLink( "Select Backlog Items", "AddBacklogItems", new { Id = Model.Id, callingId = Model.Id.ToString(), callingAction = "Detais" }, new { id = "BacklogLink", @class = "btn btn-default" } )
+      </div>
+
+      <h3>Tasks</h3>
+      <div id="Tasks">
+         @Html.Partial( "_WorkItemList", Model.Tasks )
+         @Html.ActionLink( "Select Tasks", "AddTasks", new { Id = Model.Id, callingId = Model.Id, callingAction = "Details" }, new { id = "TaskListLink", @class = "btn btn-default" } )
+      </div>
+   </div>
+
+   @Html.HiddenFor( x => x.CanAddBacklog )
+   @Html.HiddenFor( x => x.CanAddTasks )
+</fieldset>
+
+@Html.Partial( "_DetailsButtonArea", Model )
+
+@Scripts.Render( "~/bundles/sprintScripts" )
+
+<script>
+   $(document).ready(function () {
+      Details.init();
+   });
+</script>

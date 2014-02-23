@@ -124,7 +124,7 @@
     <value>Category:</value>
   </data>
   <data name="AllowUse" xml:space="preserve">
-    <value>Active for use in system</value>
+    <value>Allow Use:</value>
   </data>
   <data name="AssignedToUser" xml:space="preserve">
     <value>Assigned To:</value>
@@ -202,10 +202,10 @@
     <value>Status:</value>
   </data>
   <data name="SprintStatusAllowNewBacklogItems" xml:space="preserve">
-    <value>Backlog items can be added to sprints of this status</value>
+    <value>Allow New Backlog:</value>
   </data>
   <data name="SprintStatusAllowNewTaskListItems" xml:space="preserve">
-    <value>Tasks can be added to sprints of this status</value>
+    <value>Allow New Tasks:</value>
   </data>
   <data name="SprintStatusCategory" xml:space="preserve">
     <value>Category:</value>

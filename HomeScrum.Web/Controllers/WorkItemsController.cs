@@ -15,7 +15,7 @@ using HomeScrum.Data.Queries;
 
 namespace HomeScrum.Web.Controllers
 {
-   public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemEditorViewModel>
+   public class WorkItemsController : Base.ReadWriteController<WorkItem, WorkItemViewModel, WorkItemEditorViewModel>
    {
       private readonly ISprintCalendarService _sprintCalendarService;
 
@@ -278,19 +278,36 @@ namespace HomeScrum.Web.Controllers
 
       protected override WorkItemEditorViewModel GetEditorViewModel( ISession session, Guid id )
       {
-         var viewModel = base.GetEditorViewModel( session, id );
+         var vm = base.GetEditorViewModel( session, id );
 
-         if (viewModel != null)
+         if (vm != null)
          {
-            viewModel.Tasks = GetChildTasks( session, id );
-            if (viewModel.Tasks.Count() > 0)
+            vm.Tasks = GetChildTasks( session, id );
+            if (vm.Tasks.Count() > 0)
             {
-               viewModel.Points = viewModel.Tasks.Sum( x => x.Points );
-               viewModel.PointsRemaining = viewModel.Tasks.Sum( x => x.PointsRemaining );
+               vm.Points = vm.Tasks.Sum( x => x.Points );
+               vm.PointsRemaining = vm.Tasks.Sum( x => x.PointsRemaining );
             }
          }
 
-         return viewModel;
+         return vm;
+      }
+
+      protected override WorkItemViewModel GetViewModel( ISession session, Guid id )
+      {
+         var vm = base.GetViewModel( session, id );
+
+         if (vm != null)
+         {
+            vm.Tasks = GetChildTasks( session, id );
+            if (vm.Tasks.Count() > 0)
+            {
+               vm.Points = vm.Tasks.Sum( x => x.Points );
+               vm.PointsRemaining = vm.Tasks.Sum( x => x.PointsRemaining );
+            }
+         }
+
+         return vm;
       }
 
       private IEnumerable<WorkItemIndexViewModel> GetChildTasks( ISession session, Guid id )

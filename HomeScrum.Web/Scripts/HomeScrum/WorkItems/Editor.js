@@ -1,14 +1,4 @@
 ﻿var Editor = (function () {
-   function DisableInputs() {
-      $("#Points").spinner("disable");
-      $("#PointsRemaining").spinner("disable");
-   }
-
-   function EnableInputs() {
-      $("#Points").spinner("enable");
-      $("#PointsRemaining").spinner("enable");
-   }
-
    function ShowHideParentWorkItem(effect) {
       var canHaveParent = $("#WorkItemTypeId").find(":selected").attr("data-CanHaveParent");
       if (canHaveParent == "True") {
@@ -29,22 +19,18 @@
       }
    }
 
-   function ShowHideTaskList(effect) {
-      var mode = $("#Mode").val();
-      if (CanHaveChildren() && $("#Mode").val() != "Create") {
-         $("#TaskListDiv").show(effect);
-         $("#CreateNewTask").show(effect);
-      }
-      else {
-         $("#TaskListDiv").hide(effect);
-         $("#CreateNewTask").hide(effect);
+   function ShowHidePoints(effect) {
+      if (CanHaveChildren()) {
+         $("#PointsArea").hide(effect);
+      } else {
+         $("#PointsArea").show(effect);
       }
    }
 
    function ShowHideDataItems(effect) {
       ShowHideParentWorkItem(effect);
       ShowHideAssignedUser(effect);
-      ShowHideTaskList(effect);
+      ShowHidePoints(effect);
    }
 
    function SetProjectToParentWorkItemProject() {
@@ -172,7 +158,7 @@
    }
 
    function SetPointsAccess() {
-      if (CanHaveChildren() || WorkStartedOnWorkItem() || EditorBase.readOnlyMode()) {
+      if (WorkStartedOnWorkItem()) {
          $("#Points").spinner("disable");
       } else {
          $("#Points").spinner("enable");
@@ -180,7 +166,7 @@
    }
 
    function SetPointsRemainingAccess() {
-      if (CanHaveChildren() || WorkItemIsClosed() || EditorBase.readOnlyMode()) {
+      if (WorkItemIsClosed()) {
          $("#PointsRemaining").spinner("disable");
       } else {
          $("#PointsRemaining").spinner("enable");
@@ -268,20 +254,7 @@
       $("#PointsRemaining").spinner("value", points);
    }
 
-   function HandleSubmitClicked() {
-      EnableInputs();
-      EditorBase.submitButtonClicked();
-      SetAccess();
-   }
-
-   function HandleCancelClicked() {
-      DisableInputs();
-      EditorBase.cancelButtonClicked();
-      ShowHideDataItems();
-   }
-
    var init = function () {
-      EditorBase.init(HandleSubmitClicked, HandleCancelClicked);
       ShowHideDataItems();
 
       SetupStatusSelectList();

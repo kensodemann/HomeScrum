@@ -10,9 +10,10 @@ using Ninject.Extensions.Logging;
 
 namespace HomeScrum.Web.Controllers.Base
 {
-   public abstract class ReadWriteController<ModelT, EditorViewModelT>
-      : ReadOnlyController<ModelT>
+   public abstract class ReadWriteController<ModelT, ViewModelT, EditorViewModelT>
+      : ReadOnlyController<ModelT, ViewModelT>
       where ModelT : DomainObjectBase, HomeScrum.Data.Validation.IValidatable
+      where ViewModelT : DomainObjectViewModel
       where EditorViewModelT : DomainObjectViewModel, IEditorViewModel, new()
    {
       public ReadWriteController( IPropertyNameTranslator<ModelT, EditorViewModelT> translator, ILogger logger, ISessionFactory sessionFactory )
@@ -62,14 +63,7 @@ namespace HomeScrum.Web.Controllers.Base
                   {
                      Save( session, model, user );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = model.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToCaller( viewModel );
                   }
 
                   TransferErrorMessages( model );
@@ -87,7 +81,6 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
-
       //
       // GET: /ModelTs/Edit/Guid
       public virtual ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
@@ -99,7 +92,7 @@ namespace HomeScrum.Web.Controllers.Base
 
             if (viewModel != null)
             {
-               viewModel.Mode = EditMode.ReadOnly;
+               viewModel.Mode = EditMode.Edit;
                UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
@@ -131,14 +124,7 @@ namespace HomeScrum.Web.Controllers.Base
                   {
                      Update( session, model, user );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = viewModel.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToCaller( viewModel );
                   }
                   TransferErrorMessages( model );
                }
@@ -155,6 +141,13 @@ namespace HomeScrum.Web.Controllers.Base
          }
       }
 
+      private ActionResult RedirectToCaller( EditorViewModelT viewModel )
+      {
+         return RedirectToAction(
+            viewModel.CallingAction ?? "index",
+            viewModel.CallingController,
+            viewModel.CallingId != Guid.Empty ? new { id = viewModel.CallingId.ToString() } : null );
+      }
 
       private void TransferErrorMessages( ModelT model )
       {

@@ -31,7 +31,7 @@
                @Html.DisplayFor( modelItem => item.StatusName )
             </td>
             <td class="DescriptiveText">
-               @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Sprints", callingAction = "Edit", callingId = ViewBag.SprintId }, null )
+               @Html.ActionLink( item.Name, "Details", "WorkItems", new { id = item.Id, callingController = "Sprints", callingAction = "Details", callingId = ViewBag.SprintId }, null )
             </td>
             <td class="DataColumn">
                @Html.DisplayFor( modelItem => points )

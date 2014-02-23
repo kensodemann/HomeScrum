@@ -4,11 +4,6 @@
       return (isClosed == "True");
    }
 
-   function TaskListIsClosed() {
-      var isClosed = $("#StatusId").find(":selected").attr("data-TaskListIsClosed");
-      return (isClosed == "True");
-   }
-
    function SprintIsClosed() {
       var isOpen = $("#StatusId").find(":selected").attr("data-IsOpenStatus");
       return (isOpen == "False");
@@ -35,49 +30,18 @@
       }
    }
 
-   function ShowHideDataItems() {
-      ShowHideBacklogLink();
-      ShowHideTaskListLink();
-   }
-
-   function ShowHideBacklogLink() {
-      if (BacklogIsClosed() || SprintIsClosed()) {
-         $("#BacklogLink").hide();
-      }
-      else {
-         $("#BacklogLink").show();
-      }
-   }
-
-   function ShowHideTaskListLink() {
-      if (TaskListIsClosed() || SprintIsClosed()) {
-         $("#TaskListLink").hide();
-      }
-      else {
-         $("#TaskListLink").show();
-      }
-   }
-
    function SetAccess() {
       SetTextInputAccess($("#Name"));
       SetTextInputAccess($("#Description"));
       SetTextInputAccess($("#Goal"));
       SetProjectIdAccess();
-      SetDateAccess($("#StartDate"));
-      SetDateAccess($("#EndDate"));
       SetCapacityAccess();
    }
 
    function SetupStatusSelectList() {
       $("#StatusId").change(function () {
-         ShowHideDataItems();
          SetAccess();
       });
-   }
-
-   function handleSubmitClicked() {
-      EditorBase.submitButtonClicked();
-      SetAccess();
    }
 
    function SetupDates() {
@@ -85,21 +49,11 @@
          changeMonth: true,
          changeYear: true
       });
-      SetDateAccess($("#StartDate"));
 
       $("#EndDate").datepicker({
          changeMonth: true,
          changeYear: true
       });
-      SetDateAccess("#EndDate");
-   }
-
-   function SetDateAccess(datePicker) {
-      if (EditorBase.readOnlyMode()) {
-         $(datePicker).datepicker("disable");
-      } else {
-         $(datePicker).datepicker("enable");
-      }
    }
 
    function SetupCapacity() {
@@ -112,7 +66,7 @@
 
    function SetCapacityAccess() {
       var c = $("#Capacity");
-      if (EditorBase.readOnlyMode() || BacklogIsClosed()) {
+      if (BacklogIsClosed()) {
          c.spinner("disable");
          c.prop("disabled", true);
       } else {
@@ -122,13 +76,9 @@
    }
 
    var init = function () {
-      ShowHideDataItems();
-
       SetupStatusSelectList();
       SetupDates();
       SetupCapacity();
-
-      EditorBase.init(handleSubmitClicked);
    };
 
    return {

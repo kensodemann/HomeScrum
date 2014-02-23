@@ -7,7 +7,7 @@
    padding-right: 2em;
 }
 
-#ActionButtonArea {
+.ActionButtonArea {
    margin-top: 2em;
 }
 
@@ -31,5 +31,4 @@ table.dataTable tr.even td.sorting_1 {
 div.burndown {
    height: 400px;
    width: 500px;
-   margin-top: 2em;
 }
