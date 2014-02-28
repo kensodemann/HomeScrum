@@ -75,10 +75,19 @@
       }
    }
 
+   function SetupSubmitButton() {
+      $("#SubmitButton").click(function () {
+         $(".MainData:disabled").prop("disabled", false);
+         $("form#Editor").submit();
+      });
+   }
+
    var init = function () {
       SetupStatusSelectList();
       SetupDates();
       SetupCapacity();
+      SetupSubmitButton();
+      SetAccess();
    };
 
    return {
