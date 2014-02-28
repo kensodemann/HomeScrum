@@ -87,6 +87,7 @@
       SetupDates();
       SetupCapacity();
       SetupSubmitButton();
+      SetAccess();
    };
 
    return {

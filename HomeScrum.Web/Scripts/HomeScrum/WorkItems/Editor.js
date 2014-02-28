@@ -278,6 +278,8 @@
       SetupPointsSpinners();
 
       SetupSubmitButton();
+
+      SetAccess();
    };
 
    return {
