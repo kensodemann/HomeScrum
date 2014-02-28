@@ -77,6 +77,7 @@
 
    function SetupSubmitButton() {
       $("#SubmitButton").click(function () {
+         $(this).prop('disabled', true);
          $(".MainData:disabled").prop("disabled", false);
          $("form#Editor").submit();
       });
