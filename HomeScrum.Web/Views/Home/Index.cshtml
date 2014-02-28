@@ -25,7 +25,7 @@
       <div class="list-group">
          @foreach (var item in Model.RecentActivity)
          {
-            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+            @Html.ActionLink( item.Name, "Details", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
          }
       </div>
    </div>
@@ -35,7 +35,7 @@
       <div class="list-group">
          @foreach (var item in Model.NewestWorkItems)
          {
-            @Html.ActionLink( item.Name, "Edit", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+            @Html.ActionLink( item.Name, "Details", "WorkItems", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
          }
       </div>
    </div>
@@ -45,7 +45,7 @@
       <div class="list-group">
          @foreach (var item in Model.LatestSprints)
          {
-            @Html.ActionLink( item.Name, "Edit", "Sprints", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
+            @Html.ActionLink( item.Name, "Details", "Sprints", new { id = item.Id, callingController = "Home", callingAction = "Index" }, new { @class = "list-group-item" } )
          }
       </div>
    </div>

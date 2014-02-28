@@ -254,6 +254,19 @@
       $("#PointsRemaining").spinner("value", points);
    }
 
+   function SetupSubmitButton() {
+      $("#SubmitButton").click(function () {
+         EnableInputs();
+         $("form#Editor").submit();
+      });
+   }
+
+   function EnableInputs() {
+      $("#Points").spinner("enable");
+      $("#PointsRemaining").spinner("enable");
+      $(".MainData:disabled").prop("disabled", false);
+   }
+
    var init = function () {
       ShowHideDataItems();
 
@@ -263,6 +276,10 @@
       SetupSprintSelectList();
 
       SetupPointsSpinners();
+
+      SetupSubmitButton();
+
+      SetAccess();
    };
 
    return {
