@@ -96,7 +96,7 @@ namespace HomeScrum.Web.Controllers.Base
                UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
-               return View( viewModel );
+               return this.Request.IsAjaxRequest() ? PartialView( "_ModalEditor", viewModel ) : View( viewModel ) as ActionResult;
             }
             transaction.Commit();
          }

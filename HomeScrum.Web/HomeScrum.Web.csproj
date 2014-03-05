@@ -734,6 +734,7 @@
     <Content Include="Views\WorkItems\Details.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Sprints\Details.cshtml" />
+    <Content Include="Views\WorkItemTypes\_ModalEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Admin.WorkItemTypeViewModel>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
 
 <table class="adminList table table-bordered">
    <thead class="ListHead">
@@ -13,6 +15,7 @@
          <th class="LastDataColumn">
             @Html.DisplayNameFor( model => model.Category )
          </th>
+         <th></th>
       </tr>
    </thead>
 
@@ -32,7 +35,26 @@
             <td class="LastDataColumn">
                @Html.DisplayFor( modelItem => item.Category )
             </td>
+            <td>
+               @Html.ActionLink( "Edit", "Edit", new { id = item.Id }, new { @class = "editDialog" } )
+            </td>
          </tr>
       }
    </tbody>
 </table>
+
+<script type="text/javascript">
+   $(document).ready(function () {
+      $.ajaxSetup({ cache: false });
+
+      $(".editDialog").on("click", function (e) {
+         var url = $(this).attr('href');
+         
+         $('#myModal').modal({
+            remote: url
+         });
+
+         return false;
+      });
+   });
+</script>
