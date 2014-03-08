@@ -1,37 +1,44 @@
 ﻿@using HomeScrum.Web.Extensions
 @model HomeScrum.Web.Models.Admin.WorkItemTypeEditorViewModel
 
-<h2>@ViewBag.Title</h2>
-
 @using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
 {
-   @Html.ValidationSummary( true )
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Edit Work Item Type</h4>
+         </div>
+         <div class="modal-body">
 
-   @Html.Partial( "_SystemDomainObjectEditor", Model )
+            @Html.ValidationSummary( true )
 
-   <fieldset>
-      <legend class="hidden">Properties</legend>
+            @Html.Partial( "_SystemDomainObjectEditor", Model )
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.Category, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.Category )
+            <fieldset>
+               <legend class="hidden">Properties</legend>
+
+               <div class="form-group">
+                  @Html.LabelFor( model => model.Category, new { @class = "col-sm-2 control-label" } )
+                  <div class="col-sm-10">
+                     @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData form-control" } )
+                     @Html.ValidationMessageFor( model => model.Category )
+                  </div>
+               </div>
+
+               <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                     @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
+                     @Html.LabelFor( model => model.AllowUse )
+                     @Html.ValidationMessageFor( model => model.AllowUse )
+                  </div>
+               </div>
+            </fieldset>
+         </div>
+
+         <div class="modal-footer">
+            @Html.Partial( "_EditorButtonArea", Model )
          </div>
       </div>
-
-      <div class="form-group">
-         <div class="col-sm-offset-2 col-sm-6">
-            @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
-         </div>
-      </div>
-   </fieldset>
-
-   @Html.Partial( "_EditorButtonArea", Model )
-}
-
-@section Scripts {
-   @Scripts.Render( "~/bundles/jqueryval" )
+   </div>
 }

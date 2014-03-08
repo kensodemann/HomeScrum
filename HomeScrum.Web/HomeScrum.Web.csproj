@@ -671,7 +671,6 @@
     <Content Include="Views\SprintStatuses\Index.cshtml" />
     <Content Include="Views\ProjectStatuses\Index.cshtml" />
     <Content Include="Views\WorkItemTypes\Create.cshtml" />
-    <Content Include="Views\WorkItemTypes\Edit.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\Create.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\Edit.cshtml" />
     <Content Include="Views\ProjectStatuses\Create.cshtml" />
@@ -681,7 +680,6 @@
     <Content Include="Views\SprintStatuses\Create.cshtml" />
     <Content Include="Views\SprintStatuses\Edit.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectList.cshtml" />
-    <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
     <Content Include="Views\WorkItemStatuses\_Editor.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\_Editor.cshtml" />
     <Content Include="Views\ProjectStatuses\_Editor.cshtml" />
@@ -725,7 +723,6 @@
     <Content Include="Views\Shared\_BurndownChart.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
     <Content Include="Views\Shared\_DetailsButtonArea.cshtml" />
-    <Content Include="Views\WorkItemTypes\Details.cshtml" />
     <Content Include="Views\WorkItemStatuses\Details.cshtml" />
     <Content Include="Views\SprintStatuses\Details.cshtml" />
     <Content Include="Views\ProjectStatuses\Details.cshtml" />
@@ -734,7 +731,7 @@
     <Content Include="Views\WorkItems\Details.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Sprints\Details.cshtml" />
-    <Content Include="Views\WorkItemTypes\_ModalEditor.cshtml" />
+    <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

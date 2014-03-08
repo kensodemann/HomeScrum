@@ -2,12 +2,25 @@
 
 @Html.DisplayFor( m => Model, "List" )
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 <div class="ActionButtonArea">
-   @Html.ActionLink( "Create New", "Create", null, new { id = "CreateNewItem", @class = "btn btn-primary" } )
+   @Html.ActionLink( "Create New", "Create", null,
+      new { id = "CreateNewItem", @class = "btn btn-primary", data_toggle="modal", data_target="#modalEditor" } )
    <button id="SortableToggle" type="button" class="btn btn-default" data-toggle="button" data-ordering-text="Save Changes">Allow Sorting</button> 
 </div>
 
-<script>
+<script type="text/javascript">
+   $(document).ready(function () {
+      $.ajaxSetup({ cache: false });
+
+      $('.modal').on('hidden.bs.modal', function () {
+         $(this).removeData('bs.modal');
+      });
+   });
+
+
    function postSortData(controllerName) {
       $.ajax({
          url: controllerName + '/UpdateSortOrders/',
