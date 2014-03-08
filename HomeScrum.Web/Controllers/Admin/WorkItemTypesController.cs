@@ -29,5 +29,17 @@ namespace HomeScrum.Web.Controllers.Admin
             Category = EnumHelper.GetDescription( x.Category )
          } );
       }
+
+      public override System.Web.Mvc.ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentWorkItemId = null )
+      {
+         ViewBag.EditorTitle = "New Work Item Type";
+         return base.Create( callingController, callingAction, callingId, parentWorkItemId );
+      }
+
+      public override System.Web.Mvc.ActionResult Edit( System.Guid id, string callingController = null, string callingAction = null, string callingId = null )
+      {
+         ViewBag.EditorTitle = "Work Item Type";
+         return base.Edit( id, callingController, callingAction, callingId );
+      }
    }
 }

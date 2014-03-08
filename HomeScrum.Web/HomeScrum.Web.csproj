@@ -685,10 +685,6 @@
     <Content Include="Views\SprintStatuses\Create.cshtml" />
     <Content Include="Views\SprintStatuses\Edit.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectList.cshtml" />
-    <Content Include="Views\WorkItemStatuses\_ModalEditor.cshtml" />
-    <Content Include="Views\AcceptanceCriterionStatuses\_ModalEditor.cshtml" />
-    <Content Include="Views\ProjectStatuses\_ModalEditor.cshtml" />
-    <Content Include="Views\SprintStatuses\_ModalEditor.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\_Editor.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
@@ -732,7 +728,7 @@
     <Content Include="Views\WorkItems\Details.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Sprints\Details.cshtml" />
-    <Content Include="Views\WorkItemTypes\_ModalEditor.cshtml" />
+    <Content Include="Views\Shared\_ModalEditor.cshtml" />
     <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
     <Content Include="Views\Shared\_EditorButtonArea.cshtml" />
     <Content Include="Views\WorkItemTypes\Edit.cshtml" />

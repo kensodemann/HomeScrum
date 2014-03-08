@@ -97,6 +97,8 @@ namespace HomeScrum.Web.Controllers
       {
          Guid parsedId;
 
+         ViewBag.EditorTitle = "New Work Item";
+
          var view = base.Create( callingController, callingAction, callingId, parentId ) as PartialViewResult;
          var model = (WorkItemEditorViewModel)view.Model;
 
@@ -123,7 +125,6 @@ namespace HomeScrum.Web.Controllers
          return view;
       }
 
-
       //
       // POST: /WorkItem/Create
       public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
@@ -133,6 +134,14 @@ namespace HomeScrum.Web.Controllers
          var session = SessionFactory.GetCurrentSession();
          viewModel.CreatedByUserId = user.Identity.GetUserId( session );
          return base.Create( viewModel, user );
+      }
+
+      //
+      // GET: /WorkItem/Edit/Id
+      public override ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
+      {
+         ViewBag.EditorTitle = "Work Item";
+         return base.Edit( id, callingController, callingAction, callingId );
       }
 
       //

@@ -2,91 +2,84 @@
 @model HomeScrum.Web.Models.WorkItems.WorkItemEditorViewModel
 
 
-<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
-{
-   @Html.Partial( "_DomainObjectBaseEditor", Model )
+@Html.Partial( "_DomainObjectBaseEditor", Model )
 
-   <fieldset>
-      <legend class="hidden">Properties</legend>
+<fieldset>
+   <legend class="hidden">Properties</legend>
 
-      <div id="PointsArea">
-         <div class="form-group">
-            @Html.LabelFor( model => model.Points, new { @class = "col-sm-2 control-label" } )
-            <div class="col-sm-6">
-               @Html.TextBoxFor( model => model.Points, new { @class = "MainData form-control" } )
-               @Html.ValidationMessageFor( model => model.Points )
-            </div>
-         </div>
-
-         <div class="form-group">
-            @Html.LabelFor( model => model.PointsRemaining, new { @class = "col-sm-2 control-label" } )
-            <div class="col-sm-6">
-               @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData form-control" } )
-               @Html.ValidationMessageFor( model => model.PointsRemaining )
-            </div>
+   <div id="PointsArea">
+      <div class="form-group">
+         @Html.LabelFor( model => model.Points, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-10">
+            @Html.TextBoxFor( model => model.Points, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.Points )
          </div>
       </div>
 
       <div class="form-group">
-         @Html.LabelFor( model => model.WorkItemTypeId, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.WorkItemTypeId )
+         @Html.LabelFor( model => model.PointsRemaining, new { @class = "col-sm-2 control-label" } )
+         <div class="col-sm-10">
+            @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData form-control" } )
+            @Html.ValidationMessageFor( model => model.PointsRemaining )
          </div>
       </div>
+   </div>
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.StatusId, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.StatusId )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.WorkItemTypeId, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.DropDownListWithDataAttributesFor( model => model.WorkItemTypeId, Model.WorkItemTypes, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.WorkItemTypeId )
       </div>
+   </div>
 
-      <div class="form-group" id="ParentWorkItemDiv">
-         @Html.LabelFor( model => model.ParentWorkItemId, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.ParentWorkItemId )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.StatusId, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.DropDownListWithDataAttributesFor( model => model.StatusId, Model.Statuses, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.StatusId )
       </div>
+   </div>
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.ProjectId, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.ProjectId )
-         </div>
+   <div class="form-group" id="ParentWorkItemDiv">
+      @Html.LabelFor( model => model.ParentWorkItemId, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.DropDownListWithDataAttributesFor( model => model.ParentWorkItemId, Model.ProductBacklogItems, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.ParentWorkItemId )
       </div>
+   </div>
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.SprintId, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DropDownListWithDataAttributesFor( model => model.SprintId, Model.Sprints, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.SprintId )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.ProjectId, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.DropDownListFor( model => model.ProjectId, Model.Projects, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.ProjectId )
       </div>
+   </div>
 
-      <div class="form-group" id="AssignedToUserDiv">
-         @Html.LabelFor( model => model.AssignedToUserId, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.AssignedToUserId )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.SprintId, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.DropDownListWithDataAttributesFor( model => model.SprintId, Model.Sprints, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.SprintId )
       </div>
+   </div>
 
-      @Html.HiddenFor( model => model.CreatedByUserId )
-      @Html.HiddenFor( m => m.Mode )
-   </fieldset>
+   <div class="form-group" id="AssignedToUserDiv">
+      @Html.LabelFor( model => model.AssignedToUserId, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.DropDownListFor( model => model.AssignedToUserId, Model.AssignedToUsers, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.AssignedToUserId )
+      </div>
+   </div>
 
-   @Html.ValidationSummary( false )
-   @Html.Partial( "_EditorButtonArea", Model )
-}
+   @Html.HiddenFor( model => model.CreatedByUserId )
+   @Html.HiddenFor( m => m.Mode )
+</fieldset>
 
+@Html.ValidationSummary( false )
 
-@Scripts.Render( "~/bundles/jqueryval" )
 @Scripts.Render( "~/bundles/workItemScripts" )
 
 

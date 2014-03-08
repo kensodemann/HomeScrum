@@ -1,38 +1,42 @@
 ﻿/* validations */
-.field-validation-error
-{
+.field-validation-error {
    color: #e80c4d;
    font-weight: bold;
 }
 
-.field-validation-valid
-{
+.field-validation-valid {
    display: none;
 }
 
-input.input-validation-error
-{
+input.input-validation-error {
    border: 1px solid #e80c4d;
 }
 
-input[type="checkbox"].input-validation-error
-{
+input[type="checkbox"].input-validation-error {
    border: 0 none;
 }
 
-.validation-summary-errors
-{
+.validation-summary-errors {
    color: #e80c4d;
    font-weight: bold;
    font-size: 1.1em;
 }
 
-   .validation-summary-errors ul
-   {
+   .validation-summary-errors ul {
       list-style: none;
    }
 
-.validation-summary-valid
-{
+.validation-summary-valid {
    display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .modal-dialog {
+    width: 70%;
+    margin: 30px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
 }

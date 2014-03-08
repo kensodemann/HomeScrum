@@ -1,5 +1,8 @@
 ﻿@model HomeScrum.Web.Models.WorkItems.WorkItemViewModel
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 @Html.Partial( "_DomainObjectBaseDetails", Model )
 
 <fieldset>
@@ -93,70 +96,9 @@
    </div>
 }
 
-<!-- Button trigger modal -->
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-   Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Edit Work Item</h4>
-         </div>
-         <div class="modal-body">
-            @using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
-            {
-               @Html.Partial( "_DomainObjectBaseEditor", Model )
-
-               <fieldset>
-                  <legend class="hidden">Properties</legend>
-
-                  <div id="PointsArea">
-                     <div class="form-group">
-                        @Html.LabelFor( model => model.Points, new { @class = "col-sm-2 control-label" } )
-                        <div class="col-sm-6">
-                           @Html.TextBoxFor( model => model.Points, new { @class = "MainData form-control" } )
-                           @Html.ValidationMessageFor( model => model.Points )
-                        </div>
-                     </div>
-
-                     <div class="form-group">
-                        @Html.LabelFor( model => model.PointsRemaining, new { @class = "col-sm-2 control-label" } )
-                        <div class="col-sm-6">
-                           @Html.TextBoxFor( model => model.PointsRemaining, new { @class = "MainData form-control" } )
-                           @Html.ValidationMessageFor( model => model.PointsRemaining )
-                        </div>
-                     </div>
-                  </div>
-               </fieldset>
-
-               @Html.ValidationSummary( false )
-               @Html.Partial( "_EditorButtonArea", Model )
-            }
-
-
-            @Scripts.Render( "~/bundles/jqueryval" )
-            @Scripts.Render( "~/bundles/workItemScripts" )
-
-
-            <script>
-               $(document).ready(function () {
-                  Editor.init();
-               });
-            </script>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-         </div>
-      </div>
-   </div>
-</div>
-
-@Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }, new { @class = "btn btn-primary" } )
+@Html.ActionLink( "Edit", "Edit",
+   new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() },
+   new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
 @Html.ActionLink( "Add New Task", "Create", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString(), parentId = Model.Id.ToString() },
    new { id = "AddNewButton", @class = "btn btn-default" } )
 @Html.ActionLink( "Close", Model.CallingAction ?? "Index", Model.CallingController,

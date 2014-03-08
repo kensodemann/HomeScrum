@@ -5,10 +5,15 @@
    ViewBag.ActionName = "UnassignedProblems";
 }
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 <h2>@ViewBag.Title</h2>
 
 @Html.Partial( "_WorkItemList", Model )
 
 <div class="ActionButtonArea">
-   @Html.ActionLink( "Create New Work Item", "Create", new { callingAction = ViewBag.ActionName }, new { @class = "btn btn-primary" } )
+   @Html.ActionLink( "Create New Work Item", "Create",
+         new { callingAction = ViewBag.ActionName },
+         new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
 </div>
