@@ -35,7 +35,7 @@ namespace HomeScrum.Web
 
          bundles.Add( new ScriptBundle( "~/bundles/jqueryval" )
             .Include( "~/Scripts/jquery.unobtrusive*",
-                     "~/Scripts/jquery.validate*" ) );
+                      "~/Scripts/jquery.validate*" ) );
 
          bundles.Add( new ScriptBundle( "~/jqPlot" )
             .Include( "~/Scripts/jqPlot/jquery.jqplot.js" ) );

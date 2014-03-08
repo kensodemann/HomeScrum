@@ -26,7 +26,7 @@
             <td class="FirstDataColumn">
                @Html.ActionLink( item.Name, "Edit",
                   new { id = item.Id },
-                  new { @class = "editDialog", data_target="#modalEditor", data_toggle="modal" } )
+                  new { @class = "editDialog", data_target = "#modalEditor", data_toggle = "modal" } )
             </td>
             <td class="DescriptiveText">
                @Html.DisplayFor( modelItem => item.Description )

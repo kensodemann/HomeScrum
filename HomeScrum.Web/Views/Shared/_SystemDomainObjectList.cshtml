@@ -7,8 +7,8 @@
 
 <div class="ActionButtonArea">
    @Html.ActionLink( "Create New", "Create", null,
-      new { id = "CreateNewItem", @class = "btn btn-primary", data_toggle="modal", data_target="#modalEditor" } )
-   <button id="SortableToggle" type="button" class="btn btn-default" data-toggle="button" data-ordering-text="Save Changes">Allow Sorting</button> 
+      new { id = "CreateNewItem", @class = "btn btn-primary", data_toggle = "modal", data_target = "#modalEditor" } )
+   <button id="SortableToggle" type="button" class="btn btn-default" data-toggle="button" data-ordering-text="Save Changes">Allow Sorting</button>
 </div>
 
 <script type="text/javascript">
@@ -50,7 +50,7 @@
                 postSortData("@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()");
                 $(".SortIcon").hide("fade");
              }
-             else {              
+             else {
                 $(".ListBody").sortable("enable");
                 $(".ListBody").disableSelection();
                 $(".SortIcon").show("fade");

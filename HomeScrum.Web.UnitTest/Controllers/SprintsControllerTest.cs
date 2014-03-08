@@ -292,7 +292,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          Assert.IsNotNull( result );
          var model = result.Model as SprintEditorViewModel;
@@ -302,7 +302,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesWorkItemStatusList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          var model = result.Model as SprintEditorViewModel;
 
@@ -318,7 +318,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesProjectList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          var model = result.Model as SprintEditorViewModel;
 
@@ -335,7 +335,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
       {
-         var viewModel = ((ViewResult)_controller.Create()).Model as SprintEditorViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create()).Model as SprintEditorViewModel;
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( default( Guid ), viewModel.CallingId );
@@ -346,7 +346,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as SprintEditorViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as SprintEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -358,7 +358,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          _controller.Create( callingAction: "Index" );
-         var viewModel = ((ViewResult)_controller.Create( callingController: "Bogus", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)_controller.Create( callingController: "Bogus", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -424,7 +424,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( callingAction: "Index" );
          _controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)_controller.Create()).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)_controller.Create()).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -443,7 +443,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_SetsModeToCreate()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
          var model = result.Model as SprintEditorViewModel;
 
          Assert.AreEqual( EditMode.Create, model.Mode );

@@ -40,7 +40,7 @@ namespace HomeScrum.Web.Controllers.Base
             PopulateSelectLists( session, viewModel );
             transaction.Commit();
          }
-         return View( viewModel );
+         return PartialView( "_Editor", viewModel );
       }
 
       //

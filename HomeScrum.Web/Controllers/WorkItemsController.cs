@@ -90,14 +90,14 @@ namespace HomeScrum.Web.Controllers
          return IndexView( query );
       }
 
-      
+
       //
       // GET: /WorkItem/Create
       public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentId = null )
       {
          Guid parsedId;
 
-         var view = base.Create( callingController, callingAction, callingId, parentId ) as ViewResult;
+         var view = base.Create( callingController, callingAction, callingId, parentId ) as PartialViewResult;
          var model = (WorkItemEditorViewModel)view.Model;
 
          if (Guid.TryParse( parentId, out parsedId ))

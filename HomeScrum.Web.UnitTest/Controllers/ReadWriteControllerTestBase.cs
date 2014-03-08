@@ -131,7 +131,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateController();
 
-         var result = controller.Create() as ViewResult;
+         var result = controller.Create() as PartialViewResult;
 
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result.Model, typeof( EditorViewModelT ) );
@@ -142,7 +142,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateController();
 
-         var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create()).Model as ViewModelBase;
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( default( Guid ), viewModel.CallingId );
@@ -154,7 +154,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -167,7 +167,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          controller.Create( callingAction: "Index" );
-         var viewModel = ((ViewResult)controller.Create( callingController: "BlueJackets", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create( callingController: "BlueJackets", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -235,7 +235,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.Create( callingAction: "Index" );
          controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create()).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -258,7 +258,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as IEditorViewModel;
+         var viewModel = ((PartialViewResult)controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as IEditorViewModel;
 
          Assert.AreEqual( EditMode.Create, viewModel.Mode );
       }
