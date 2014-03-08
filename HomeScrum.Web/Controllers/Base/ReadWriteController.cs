@@ -40,7 +40,7 @@ namespace HomeScrum.Web.Controllers.Base
             PopulateSelectLists( session, viewModel );
             transaction.Commit();
          }
-         return PartialView( "_Editor", viewModel );
+         return PartialView( "_ModalEditor", viewModel );
       }
 
       //
@@ -96,7 +96,7 @@ namespace HomeScrum.Web.Controllers.Base
                UpdateNavigationStack( viewModel, callingController, callingAction, callingId );
                PopulateSelectLists( session, viewModel );
                transaction.Commit();
-               return PartialView( "_Editor", viewModel );
+               return PartialView( "_ModalEditor", viewModel );
             }
             transaction.Commit();
          }
