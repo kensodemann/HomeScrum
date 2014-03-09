@@ -4,6 +4,9 @@
    ViewBag.Title = "Users";
 }
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 <h2>@ViewBag.Title</h2>
 
 <table class="dataTableList table table-striped table-bordered">
@@ -29,7 +32,8 @@
       {
          <tr>
             <td>
-               @Html.ActionLink( item.UserName, "Details", new { id = item.Id } )
+               @Html.ActionLink( item.UserName, "Edit",
+                  new { id = item.Id }, new { data_target = "#modalEditor", data_toggle = "modal" } )
             </td>
             <td>
                @Html.DisplayFor( modelItem => item.FirstName )
@@ -46,5 +50,16 @@
 </table>
 
 <div class="ActionButtonArea">
-   @Html.ActionLink( "Create New", "Create", null, new { @class = "btn btn-primary" } )
+   @Html.ActionLink( "Create New", "Create", null,
+         new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
 </div>
+
+<script type="text/javascript">
+   $(document).ready(function () {
+      $.ajaxSetup({ cache: false });
+
+      $('.modal').on('hidden.bs.modal', function () {
+         $(this).removeData('bs.modal');
+      });
+   });
+</script>

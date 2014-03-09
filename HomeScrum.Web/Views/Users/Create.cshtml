@@ -1,7 +1,10 @@
 ﻿@model HomeScrum.Web.Models.Admin.UserEditorViewModel
 
-@{
-   ViewBag.Title = "Create New User";
-}
+<h2>New User</h2>
 
-@Html.Partial( "_Editor", Model )
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
+{
+   @Html.Partial( "_Editor", Model )
+
+   @Html.Partial( "_EditorButtonArea", Model )
+}

@@ -67,9 +67,11 @@ namespace HomeScrum.Web.Controllers
             Mode = EditMode.Create
          };
 
+         ViewBag.EditorTitle = "New User";
+
          UpdateNavigationStack( viewModel, null, callingAction, callingId );
 
-         return View( viewModel );
+         return PartialView( "_ModalEditor", viewModel );
       }
 
       //
@@ -147,6 +149,7 @@ namespace HomeScrum.Web.Controllers
       // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
+         ViewBag.EditorTitle = "User";
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
@@ -157,7 +160,7 @@ namespace HomeScrum.Web.Controllers
                viewModel.Mode = EditMode.Edit;
                UpdateNavigationStack( viewModel, null, callingAction, callingId );
                transaction.Commit();
-               return View( viewModel );
+               return PartialView( "_ModalEditor", viewModel );
             }
          }
 
