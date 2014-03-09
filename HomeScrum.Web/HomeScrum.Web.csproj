@@ -723,7 +723,6 @@
     <Content Include="Views\WorkItems\UnassignedProblems.cshtml" />
     <Content Include="Views\Shared\_BurndownChart.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
-    <Content Include="Views\Shared\_DetailsButtonArea.cshtml" />
     <Content Include="Views\WorkItems\Details.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Sprints\Details.cshtml" />

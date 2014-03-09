@@ -16,9 +16,6 @@ namespace HomeScrum.Data.UnitTest.Domains
          var required = AttributeHelper.GetRequiredAttribute( () => model.UserName );
 
          Assert.IsNotNull( required );
-         Assert.AreEqual( "UserNameIsRequired", required.ErrorMessageResourceName );
-         Assert.AreEqual( typeof( ErrorMessages ), required.ErrorMessageResourceType );
-         Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.UserNameIsRequired ) );
       }
 
       [TestMethod]
@@ -29,9 +26,6 @@ namespace HomeScrum.Data.UnitTest.Domains
          var required = AttributeHelper.GetRequiredAttribute( () => model.FirstName );
 
          Assert.IsNotNull( required );
-         Assert.AreEqual( "FirstNameIsRequired", required.ErrorMessageResourceName );
-         Assert.AreEqual( typeof( ErrorMessages ), required.ErrorMessageResourceType );
-         Assert.IsFalse( String.IsNullOrWhiteSpace( ErrorMessages.FirstNameIsRequired ) );
       }
 
       [TestMethod]

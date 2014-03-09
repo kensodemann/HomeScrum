@@ -9,9 +9,11 @@ namespace HomeScrum.Web.Models.Admin
       public Guid Id { get; set; }
 
       [Display( Name = "UserName", Prompt = "UserNamePrompt", ResourceType = typeof( DisplayStrings ) )]
+      [Required( ErrorMessageResourceName = "UserNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
       public virtual string UserName { get; set; }
 
       [Display( Name = "FirstName", Prompt = "FirstNamePrompt", ResourceType = typeof( DisplayStrings ) )]
+      [Required( ErrorMessageResourceName = "FirstNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
       public virtual string FirstName { get; set; }
 
       [Display( Name = "MiddleName", ResourceType = typeof( DisplayStrings ) )]

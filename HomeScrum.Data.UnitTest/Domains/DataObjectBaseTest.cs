@@ -18,9 +18,6 @@ namespace HomeScrum.Data.UnitTest.Domains
          };
 
          Assert.IsFalse( model.IsValidFor( TransactionType.All ) );
-         var messages = model.GetErrorMessages();
-         Assert.AreEqual( 1, messages.Count );
-         Assert.AreEqual( ErrorMessages.NameIsRequired, messages["Name"] );
       }
 
       [TestMethod]
@@ -34,9 +31,6 @@ namespace HomeScrum.Data.UnitTest.Domains
          };
 
          Assert.IsFalse( model.IsValidFor( TransactionType.All ) );
-         var messages = model.GetErrorMessages();
-         Assert.AreEqual( 1, messages.Count );
-         Assert.AreEqual( ErrorMessages.NameMaxLength, messages["Name"] );
       }
 
       [TestMethod]
