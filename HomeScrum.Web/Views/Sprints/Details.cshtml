@@ -1,5 +1,8 @@
 ﻿@model HomeScrum.Web.Models.Sprints.SprintViewModel
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 @{
    @* The _WorkItemList needs this *@
    ViewBag.SprintId = Model.Id;
@@ -58,12 +61,14 @@
 </fieldset>
 
 <div class="ActionButtonArea">
-   @Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }, new { @class = "btn btn-primary" } )
+   @Html.ActionLink( "Edit", "Edit",
+         new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() },
+         new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
    <span>
       @Html.ActionLink( "Close", Model.CallingAction ?? "Index", Model.CallingController,
        (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, null )
    </span>
-</div>@Html.Partial( "_DetailsButtonArea", Model )
+</div>
 
 @Scripts.Render( "~/bundles/sprintScripts" )
 

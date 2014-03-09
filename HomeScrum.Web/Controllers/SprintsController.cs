@@ -67,12 +67,29 @@ namespace HomeScrum.Web.Controllers
 
 
       //
+      // GET: /Sprints/Create
+      public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentWorkItemId = null )
+      {
+         ViewBag.EditorTitle = "New Sprint";
+         return base.Create( callingController, callingAction, callingId, parentWorkItemId );
+      }
+
+      //
       // POST: /Sprints/Create
       public override ActionResult Create( SprintEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
          viewModel.CreatedByUserId = user.Identity.GetUserId( session );
          return base.Create( viewModel, user );
+      }
+
+
+      //
+      // GET: /Sprints/Edit/Id
+      public override ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
+      {
+         ViewBag.EditorTitle = "Sprint";
+         return base.Edit( id, callingController, callingAction, callingId );
       }
 
 
