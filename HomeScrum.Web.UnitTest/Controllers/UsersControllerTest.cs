@@ -145,7 +145,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewModel()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          Assert.IsNotNull( result );
          Assert.IsInstanceOfType( result.Model, typeof( CreateUserViewModel ) );
@@ -154,7 +154,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
       {
-         var viewModel = ((ViewResult)_controller.Create()).Model as CreateUserViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create()).Model as CreateUserViewModel;
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( default( Guid ), viewModel.CallingId );
@@ -165,7 +165,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -176,7 +176,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
          var result = _controller.Create() as ViewResult;
-         var viewModel = ((ViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create( "Edit", parentId.ToString() )).Model as CreateUserViewModel;
 
          Assert.AreEqual( EditMode.Create, viewModel.Mode );
       }
@@ -188,7 +188,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          _controller.Create( callingAction: "Index" );
-         var viewModel = ((ViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -256,7 +256,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Create( callingAction: "Index" );
          _controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)_controller.Details( id )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)_controller.Create()).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -299,18 +299,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Create( viewModel ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreNotEqual( new Guid( value.ToString() ), Guid.Empty );
-
-         result.RouteValues.ContainsKey( "callingController" );
-         result.RouteValues.ContainsKey( "callingAction" );
-         result.RouteValues.ContainsKey( "callingId" );
+         Assert.AreEqual( "Index", value.ToString() );
       }
 
       [TestMethod]
@@ -528,7 +521,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var user = Users.ModelData.ToArray()[3];
 
-         var result = _controller.Edit( user.Id ) as ViewResult;
+         var result = _controller.Edit( user.Id ) as PartialViewResult;
          Assert.IsNotNull( result );
 
          Assert.IsInstanceOfType( result.Model, typeof( EditUserViewModel ) );
@@ -548,7 +541,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var id = Users.ModelData.ToArray()[0].Id;
 
-         var result = _controller.Edit( id ) as ViewResult;
+         var result = _controller.Edit( id ) as PartialViewResult;
          var viewModel = result.Model as EditUserViewModel;
 
          Assert.IsNull( viewModel.CallingAction );
@@ -561,7 +554,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var id = Users.ModelData.ToArray()[0].Id;
          var callingId = Guid.NewGuid();
 
-         var result = _controller.Edit( id, "Details", callingId.ToString() ) as ViewResult;
+         var result = _controller.Edit( id, "Details", callingId.ToString() ) as PartialViewResult;
          var viewModel = result.Model as EditUserViewModel;
 
          Assert.AreEqual( viewModel.CallingAction, "Details" );
@@ -575,7 +568,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          _controller.Edit( id, callingAction: "Index" );
-         var viewModel = ((ViewResult)_controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)_controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -643,7 +636,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          _controller.Edit( id, callingAction: "Index" );
          _controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)_controller.Details( id )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)_controller.Edit( id )).Model as ViewModelBase;
 
          var stack = _controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -664,7 +657,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var user = Users.ModelData.ToArray()[3];
 
-         var result = _controller.Edit( user.Id ) as ViewResult;
+         var result = _controller.Edit( user.Id ) as PartialViewResult;
          var viewModel = result.Model as EditUserViewModel;
 
          Assert.AreEqual( EditMode.Edit, viewModel.Mode );
@@ -737,18 +730,11 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var result = _controller.Edit( model ) as RedirectToRouteResult;
 
          Assert.IsNotNull( result );
-         Assert.AreEqual( 5, result.RouteValues.Count );
+         Assert.AreEqual( 1, result.RouteValues.Count );
 
          object value;
          result.RouteValues.TryGetValue( "action", out value );
-         Assert.AreEqual( "Edit", value.ToString() );
-
-         result.RouteValues.TryGetValue( "id", out value );
-         Assert.AreEqual( new Guid( value.ToString() ), model.Id );
-
-         result.RouteValues.ContainsKey( "callingController" );
-         result.RouteValues.ContainsKey( "callingAction" );
-         result.RouteValues.ContainsKey( "callingId" );
+         Assert.AreEqual( "Index", value.ToString() );
       }
 
       [TestMethod]

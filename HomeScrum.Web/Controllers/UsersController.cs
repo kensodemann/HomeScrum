@@ -94,14 +94,7 @@ namespace HomeScrum.Web.Controllers
                   {
                      session.Save( model );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = model.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToAction( "Index" );
                   }
                   else
                   {
@@ -185,14 +178,7 @@ namespace HomeScrum.Web.Controllers
                   {
                      session.Update( model );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = viewModel.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToAction( "Index" );
                   }
                   else
                   {

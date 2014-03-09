@@ -69,7 +69,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateController();
 
-         var view = controller.Index() as PartialViewResult;
+         var view = controller.Index() as ViewResult;
          var model = view.Model as IEnumerable<DomainObjectViewModel>;
 
          Assert.IsNotNull( view );
