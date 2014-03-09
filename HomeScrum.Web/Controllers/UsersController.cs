@@ -119,27 +119,6 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Users/Edit/Guid
-      public ActionResult Details( Guid id, string callingAction = null, string callingId = null )
-      {
-         var session = _sessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var model = session.Get<User>( id );
-            if (model != null)
-            {
-               var viewModel = Mapper.Map<UserViewModel>( model );
-               transaction.Commit();
-               UpdateNavigationStack( viewModel, null, callingAction, callingId );
-               return View( viewModel );
-            }
-         }
-
-         return HttpNotFound();
-      }
-
-
-      //
-      // GET: /Users/Edit/Guid
       public ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
          ViewBag.EditorTitle = "User";
