@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<HomeScrum.Web.Models.Base.DomainObjectViewModel>
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 @{
    ViewBag.Title = "Projects";
 }
@@ -34,5 +37,5 @@
 </table>
 
 <div class="ActionButtonArea">
-   @Html.ActionLink( "Create New", "Create", null, new { @class = "btn btn-primary" } )
+   @Html.ActionLink( "Create New", "Create", null, new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
 </div>

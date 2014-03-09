@@ -19,6 +19,22 @@ namespace HomeScrum.Web.Controllers
       public ProjectsController( IPropertyNameTranslator<Project, ProjectEditorViewModel> translator, ILogger logger, ISessionFactory sessionFactory )
          : base( translator, logger, sessionFactory ) { }
 
+      //
+      // GET: /Projects/Creae
+      public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentWorkItemId = null )
+      {
+         ViewBag.EditorTitle = "New Project";
+         return base.Create( callingController, callingAction, callingId, parentWorkItemId );
+      }
+
+      //
+      // GET: /Projects/Edit/Guid
+      public override ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
+      {
+         ViewBag.EditorTitle = "Project";
+         return base.Edit( id, callingController, callingAction, callingId );
+      }
+
       protected override void PopulateSelectLists( ISession session, ProjectEditorViewModel viewModel )
       {
          base.PopulateSelectLists( session, viewModel );

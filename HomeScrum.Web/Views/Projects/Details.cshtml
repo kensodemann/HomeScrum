@@ -1,5 +1,8 @@
 ﻿@model HomeScrum.Web.Models.Admin.ProjectViewModel
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 @Html.Partial( "_DomainObjectBaseDetails", Model )
 
 <fieldset>
@@ -11,4 +14,12 @@
    </dl>
 </fieldset>
 
-@Html.Partial( "_DetailsButtonArea" )
+<div class="ActionButtonArea">
+   @Html.ActionLink( "Edit", "Edit",
+         new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() },
+         new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
+   <span>
+      @Html.ActionLink( "Close", Model.CallingAction ?? "Index", Model.CallingController,
+       (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, null )
+   </span>
+</div>
