@@ -4,6 +4,7 @@
    var chartId = String.Format( "chartdiv{0}", Model.Id.ToString( "N" ) );
    var startDate = ((DateTime)Model.StartDate).ToString( "yyyy-MM-dd" );
    var endDate = ((DateTime)Model.EndDate).ToString( "yyyy-MM-dd" );
+   var data = "data" + chartId;
 }
 
 <div id="@chartId" class="burndown"></div>
@@ -12,7 +13,7 @@
    var json_data = @Html.Raw( Json.Encode( Model.Calendar ) );
 
    var dataArray = [];
-   var data = [];
+   var @data = [];
 
    for (var i in json_data) {
       var json_element = json_data[i];
@@ -21,11 +22,11 @@
       element.push(json_element["PointsRemaining"]);
       dataArray.push(element);
    }
-   data.push(dataArray);
+   @(data).push(dataArray);
 
    $(document).ready(function () {
       $.jqplot("@chartId",
-         data,
+         @data,
          {
             title: "@Model.Name",
             axesDefaults: {
