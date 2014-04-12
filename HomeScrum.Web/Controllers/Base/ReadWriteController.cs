@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using AutoMapper;
 using HomeScrum.Data.Domain;
+using HomeScrum.Web.Attributes;
 using HomeScrum.Web.Models.Base;
 using HomeScrum.Web.Translators;
 using NHibernate;
@@ -27,6 +28,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Create
+      [ReleaseRequireHttps]
       public virtual ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentWorkItemId = null )
       {
          var viewModel = new EditorViewModelT()
@@ -47,6 +49,7 @@ namespace HomeScrum.Web.Controllers.Base
       // POST: /ModelTs/Create
       [HttpPost]
       [ValidateInput( false )]
+      [ReleaseRequireHttps]
       public virtual ActionResult Create( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -83,6 +86,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Edit/Guid
+      [ReleaseRequireHttps]
       public virtual ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -108,6 +112,7 @@ namespace HomeScrum.Web.Controllers.Base
       // POST: /ModelTs/Edit/Guid
       [HttpPost]
       [ValidateInput( false )]
+      [ReleaseRequireHttps]
       public virtual ActionResult Edit( EditorViewModelT viewModel, IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();

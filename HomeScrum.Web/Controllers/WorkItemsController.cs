@@ -12,6 +12,7 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using HomeScrum.Data.Queries;
+using HomeScrum.Web.Attributes;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -39,6 +40,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/MyAssignments
+      [ReleaseRequireHttps]
       public ActionResult MyAssignments( System.Security.Principal.IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -53,6 +55,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/UnassignedBacklog
+      [ReleaseRequireHttps]
       public ActionResult UnassignedBacklog()
       {
          var session = SessionFactory.GetCurrentSession();
@@ -66,6 +69,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/UnassignedProblems
+      [ReleaseRequireHttps]
       public ActionResult UnassignedProblems()
       {
          var session = SessionFactory.GetCurrentSession();
@@ -79,6 +83,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/UnassignedTasks
+      [ReleaseRequireHttps]
       public ActionResult UnassignedTasks()
       {
          var session = SessionFactory.GetCurrentSession();
@@ -146,6 +151,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/RemoveParent/Id
+      [ReleaseRequireHttps]
       public virtual ActionResult RemoveParent( Guid id, string callingAction = null, string callingId = null )
       {
          var session = SessionFactory.GetCurrentSession();

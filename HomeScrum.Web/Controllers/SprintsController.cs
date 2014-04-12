@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using HomeScrum.Data.Domain;
 using HomeScrum.Data.Queries;
 using HomeScrum.Data.Services;
+using HomeScrum.Web.Attributes;
 using HomeScrum.Web.Controllers.Base;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Sprints;
@@ -41,6 +42,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/CurrentSprints
+      [ReleaseRequireHttps]
       public System.Web.Mvc.ActionResult CurrentSprints()
       {
          Log.Debug( "CurrentSprints()" );
@@ -54,6 +56,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/OpenSprints
+      [ReleaseRequireHttps]
       public System.Web.Mvc.ActionResult OpenSprints()
       {
          Log.Debug( "OpenSprints()" );
@@ -95,6 +98,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddBacklogItems
+      [ReleaseRequireHttps]
       public virtual ActionResult AddBacklogItems( Guid id, string callingAction = null, string callingId = null )
       {
          var model = new WorkItemsListForSprintViewModel()
@@ -123,6 +127,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Sprints/5/AddBacklogItems
       [HttpPost]
+      [ReleaseRequireHttps]
       public virtual ActionResult AddBacklogItems( WorkItemsListForSprintViewModel viewModel )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -152,6 +157,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Sprints/5/AddTasks
+      [ReleaseRequireHttps]
       public virtual ActionResult AddTasks( Guid id, string callingAction = null, string callingId = null )
       {
          var model = new WorkItemsListForSprintViewModel()
@@ -181,6 +187,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Sprints/5/AddBacklogItems
       [HttpPost]
+      [ReleaseRequireHttps]
       public virtual ActionResult AddTasks( WorkItemsListForSprintViewModel viewModel )
       {
          var session = SessionFactory.GetCurrentSession();
