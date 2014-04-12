@@ -1,53 +1,42 @@
 ﻿@using HomeScrum.Web.Extensions
 @model HomeScrum.Web.Models.Admin.SprintStatusEditorViewModel
 
-<h2>@ViewBag.Title</h2>
+@Html.ValidationSummary( true )
 
-@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
-{
-   @Html.ValidationSummary( true )
+@Html.Partial( "_SystemDomainObjectEditor", Model )
 
-   @Html.Partial( "_SystemDomainObjectEditor", Model )
+<fieldset>
+   <legend class="hidden">Properties</legend>
 
-   <fieldset>
-      <legend class="hidden">Properties</legend>
-
-      <div class="form-group">
-         @Html.LabelFor( model => model.Category, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData form-control" } )
-            @Html.ValidationMessageFor( model => model.Category )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.Category, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-10">
+         @Html.EnumDropDownListFor( model => model.Category, new { @class = "MainData form-control" } )
+         @Html.ValidationMessageFor( model => model.Category )
       </div>
+   </div>
 
-      <div class="form-group">
-         <div class="col-sm-offset-2 col-sm-6">
-            @Html.CheckBoxFor( model => model.CanAddBacklogItems, new { @class = "MainData" } )
-            @Html.LabelFor( model => model.CanAddBacklogItems )
-            @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
-         </div>
+   <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+         @Html.CheckBoxFor( model => model.CanAddBacklogItems, new { @class = "MainData" } )
+         @Html.LabelFor( model => model.CanAddBacklogItems )
+         @Html.ValidationMessageFor( model => model.CanAddBacklogItems )
       </div>
+   </div>
 
-      <div class="form-group">
-         <div class="col-sm-offset-2 col-sm-6">
-            @Html.CheckBoxFor( model => model.CanAddTaskListItems, new { @class = "MainData" } )
-            @Html.LabelFor( model => model.CanAddTaskListItems )
-            @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
-         </div>
+   <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+         @Html.CheckBoxFor( model => model.CanAddTaskListItems, new { @class = "MainData" } )
+         @Html.LabelFor( model => model.CanAddTaskListItems )
+         @Html.ValidationMessageFor( model => model.CanAddTaskListItems )
       </div>
+   </div>
 
-      <div class="form-group">
-         <div class="col-sm-offset-2 col-sm-6">
-            @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
-            @Html.LabelFor( model => model.AllowUse )
-            @Html.ValidationMessageFor( model => model.AllowUse )
-         </div>
+   <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+         @Html.CheckBoxFor( model => model.AllowUse, new { @class = "MainData" } )
+         @Html.LabelFor( model => model.AllowUse )
+         @Html.ValidationMessageFor( model => model.AllowUse )
       </div>
-   </fieldset>
-
-   @Html.Partial( "_EditorButtonArea", Model )
-}
-
-@section Scripts {
-   @Scripts.Render( "~/bundles/jqueryval" )
-}
+   </div>
+</fieldset>

@@ -13,10 +13,10 @@ namespace HomeScrum.Data.Domain
 
       public virtual Guid Id { get; set; }
 
-      [Required( ErrorMessageResourceName = "UserNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
+      [Required]
       public virtual string UserName { get; set; }
 
-      [Required( ErrorMessageResourceName = "FirstNameIsRequired", ErrorMessageResourceType = typeof( ErrorMessages ) )]
+      [Required]
       public virtual string FirstName { get; set; }
 
       public virtual string MiddleName { get; set; }

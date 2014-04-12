@@ -82,7 +82,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var controller = CreateController();
 
-         var result = controller.Create() as ViewResult;
+         var result = controller.Create() as PartialViewResult;
 
          Assert.IsNotNull( result );
          var model = result.Model as ProjectEditorViewModel;
@@ -98,7 +98,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Where( x => x.StatusCd == 'A' )
             .OrderBy( x => x.SortSequence );
 
-         var result = controller.Create() as ViewResult;
+         var result = controller.Create() as PartialViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
 
          AssertSelectListOrderAndContents( expected, viewModel.Statuses );
@@ -111,7 +111,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          controller.Create( callingAction: "Index" );
-         var viewModel = ((ViewResult)controller.Create( callingController: "Butts", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create( callingController: "Butts", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -179,7 +179,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.Create( callingAction: "Index" );
          controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create()).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -199,7 +199,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       public void CreateGet_SetsEditModeToCreate()
       {
          var controller = CreateController();
-         var result = controller.Create() as ViewResult;
+         var result = controller.Create() as PartialViewResult;
          var model = result.Model as ProjectEditorViewModel;
 
          Assert.AreEqual( EditMode.Create, model.Mode );
@@ -363,7 +363,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var model = Projects.ModelData[3];
 
-         var result = controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as PartialViewResult;
 
          Assert.IsNotNull( result );
          var returnedModel = result.Model as ProjectEditorViewModel;
@@ -381,7 +381,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Where( x => x.StatusCd == 'A' )
             .OrderBy( x => x.SortSequence );
 
-         var result = controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
 
          AssertSelectListOrderAndContents( expected, viewModel.Statuses, model.Status.Id );
@@ -398,7 +398,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Where( x => x.StatusCd == 'A' || x.Id == model.Status.Id )
             .OrderBy( x => x.SortSequence );
 
-         var result = controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as ProjectEditorViewModel;
 
          AssertSelectListOrderAndContents( expected, viewModel.Statuses, model.Status.Id );
@@ -422,7 +422,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          controller.Edit( id, callingAction: "Index" );
-         var viewModel = ((ViewResult)controller.Edit( id, callingController: "Jimmy", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Edit( id, callingController: "Jimmy", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -492,7 +492,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.Edit( id, callingAction: "Index" );
          controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Edit( id )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -514,7 +514,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var controller = CreateController();
          var model = Projects.ModelData[3];
 
-         var result = controller.Edit( model.Id ) as ViewResult;
+         var result = controller.Edit( model.Id ) as PartialViewResult;
          var returnedModel = result.Model as ProjectEditorViewModel;
 
          Assert.AreEqual( EditMode.Edit, returnedModel.Mode );

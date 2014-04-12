@@ -76,6 +76,9 @@
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.WebHelpers.3.1.2\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -128,7 +131,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -148,19 +151,19 @@
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -184,8 +187,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.1.2\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.1.2\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
@@ -196,6 +205,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\ReleaseRequireHttpsAttribute.cs" />
     <Compile Include="Binders\PrincipalModelBinder.cs" />
     <Compile Include="Controllers\Admin\AcceptanceCriterionStatusesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -217,6 +227,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DisplayStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\IIdentityExtensions.cs" />
@@ -609,6 +624,7 @@
     <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.min.js.gz" />
+    <None Include="Properties\PublishProfiles\HomeScrum.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -671,7 +687,6 @@
     <Content Include="Views\SprintStatuses\Index.cshtml" />
     <Content Include="Views\ProjectStatuses\Index.cshtml" />
     <Content Include="Views\WorkItemTypes\Create.cshtml" />
-    <Content Include="Views\WorkItemTypes\Edit.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\Create.cshtml" />
     <Content Include="Views\AcceptanceCriterionStatuses\Edit.cshtml" />
     <Content Include="Views\ProjectStatuses\Create.cshtml" />
@@ -681,16 +696,11 @@
     <Content Include="Views\SprintStatuses\Create.cshtml" />
     <Content Include="Views\SprintStatuses\Edit.cshtml" />
     <Content Include="Views\Shared\_SystemDomainObjectList.cshtml" />
-    <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
-    <Content Include="Views\WorkItemStatuses\_Editor.cshtml" />
-    <Content Include="Views\AcceptanceCriterionStatuses\_Editor.cshtml" />
-    <Content Include="Views\ProjectStatuses\_Editor.cshtml" />
-    <Content Include="Views\SprintStatuses\_Editor.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\_Editor.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Shared\_EditorButtonArea.cshtml" />
+    <Content Include="Views\Shared\_ModalEditorButtonArea.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseEditor.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\_Editor.cshtml" />
@@ -724,16 +734,18 @@
     <Content Include="Views\WorkItems\UnassignedProblems.cshtml" />
     <Content Include="Views\Shared\_BurndownChart.cshtml" />
     <Content Include="Views\Shared\_DomainObjectBaseDetails.cshtml" />
-    <Content Include="Views\Shared\_DetailsButtonArea.cshtml" />
-    <Content Include="Views\WorkItemTypes\Details.cshtml" />
-    <Content Include="Views\WorkItemStatuses\Details.cshtml" />
-    <Content Include="Views\SprintStatuses\Details.cshtml" />
-    <Content Include="Views\ProjectStatuses\Details.cshtml" />
-    <Content Include="Views\AcceptanceCriterionStatuses\Details.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\WorkItems\Details.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Sprints\Details.cshtml" />
+    <Content Include="Views\Shared\_ModalEditor.cshtml" />
+    <Content Include="Views\WorkItemTypes\_Editor.cshtml" />
+    <Content Include="Views\Shared\_EditorButtonArea.cshtml" />
+    <Content Include="Views\WorkItemTypes\Edit.cshtml" />
+    <Content Include="Views\WorkItemStatuses\_Editor.cshtml" />
+    <Content Include="Views\SprintStatuses\_Editor.cshtml" />
+    <Content Include="Views\ProjectStatuses\_Editor.cshtml" />
+    <Content Include="Views\AcceptanceCriterionStatuses\_Editor.cshtml" />
+    <Content Include="Views\Users\_ModalEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -758,6 +770,10 @@
     <EmbeddedResource Include="DisplayStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DisplayStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

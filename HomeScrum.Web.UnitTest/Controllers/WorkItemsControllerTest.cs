@@ -223,7 +223,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_ReturnsViewWithViewWithModel()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          Assert.IsNotNull( result );
          var model = result.Model as WorkItemEditorViewModel;
@@ -235,7 +235,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var expectedStatuses = WorkItemStatuses.ModelData.Where( x => x.StatusCd == 'A' );
 
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
          var model = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( expectedStatuses.Count(), model.Statuses.Count() );
@@ -252,7 +252,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesWorkItemTypeList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -268,7 +268,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesProjectList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -287,7 +287,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var expectedSprints = Sprints.ModelData.Where( x => x.Status.StatusCd == 'A' && x.Status.Category != SprintStatusCategory.Complete && (!x.Status.BacklogIsClosed || !x.Status.TaskListIsClosed) );
 
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( expectedSprints.Count() + 1, viewModel.Sprints.Count() );
@@ -315,7 +315,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesUserList_UassignedSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -342,7 +342,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_InitializesProductBacklogList_NothingSelected()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -366,7 +366,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_LeavesCallingActionAndIdAsDefault_IfNotSupplied()
       {
-         var viewModel = ((ViewResult)_controller.Create()).Model as WorkItemEditorViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create()).Model as WorkItemEditorViewModel;
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( default( Guid ), viewModel.CallingId );
@@ -377,7 +377,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemEditorViewModel;
+         var viewModel = ((PartialViewResult)_controller.Create( callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -390,7 +390,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          controller.Create( callingAction: "Index" );
-         var viewModel = ((ViewResult)controller.Create( callingController: "Bogus", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create( callingController: "Bogus", callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -458,7 +458,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.Create( callingAction: "Index" );
          controller.Create( callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Create()).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Create()).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -481,7 +481,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             .Where( x => x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' && x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' )
             .ToList();
          var backlogItemId = backlogItems.ElementAt( 2 ).Id;
-         var result = _controller.Create( parentId: backlogItemId.ToString() ) as ViewResult;
+         var result = _controller.Create( parentId: backlogItemId.ToString() ) as PartialViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -520,7 +520,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var backlogItem = backlogItems.First( x => x.Sprint != null && x.Sprint.Id != Guid.Empty );
          var sprintId = backlogItem.Sprint.Id;
 
-         var result = _controller.Create( parentId: backlogItem.Id.ToString() ) as ViewResult;
+         var result = _controller.Create( parentId: backlogItem.Id.ToString() ) as PartialViewResult;
 
          var model = result.Model as WorkItemEditorViewModel;
 
@@ -550,7 +550,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_SetsEditModeToCreate()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
          var model = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( EditMode.Create, model.Mode );
@@ -559,7 +559,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_PointsIsOne()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
          var model = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( 1, model.Points );
@@ -568,7 +568,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       [TestMethod]
       public void CreateGet_PointsRemainingIsOne()
       {
-         var result = _controller.Create() as ViewResult;
+         var result = _controller.Create() as PartialViewResult;
          var model = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( 1, model.PointsRemaining );
@@ -1095,7 +1095,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData[3];
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
 
          Assert.IsNotNull( result );
          var returnedModel = result.Model as WorkItemEditorViewModel;
@@ -1108,7 +1108,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.Status.StatusCd == 'A' );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItemStatuses.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.Statuses.Count() );
@@ -1127,7 +1127,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.WorkItemType != null && x.WorkItemType.StatusCd == 'A' );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItemTypes.ModelData.Count( x => x.StatusCd == 'A' ), viewModel.WorkItemTypes.Count() );
@@ -1146,7 +1146,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.Project != null && x.Project.Status.Category == ProjectStatusCategory.Active && x.Project.Status.StatusCd == 'A' );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( Projects.ModelData.Count( x => x.Status.Category == ProjectStatusCategory.Active && x.Status.StatusCd == 'A' ), viewModel.Projects.Count() );
@@ -1167,7 +1167,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.AssignedToUser != null && x.AssignedToUser.StatusCd == 'A' );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( Users.ModelData.Count( x => x.StatusCd == 'A' ) + 1, viewModel.AssignedToUsers.Count() );
@@ -1189,7 +1189,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData.First( x => x.ParentWorkItem != null );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( WorkItems.ModelData.Count( x => x.WorkItemType.Category == WorkItemTypeCategory.BacklogItem && x.WorkItemType.StatusCd == 'A' && x.Status.Category != WorkItemStatusCategory.Complete && x.Status.StatusCd == 'A' ) + 1, viewModel.ProductBacklogItems.Count() );
@@ -1231,7 +1231,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var expectedChildWorkItems = WorkItems.ModelData
             .Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == parentId );
 
-         var result = _controller.Edit( parentId ) as ViewResult;
+         var result = _controller.Edit( parentId ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( expectedChildWorkItems.Count(), viewModel.Tasks.Count() );
@@ -1246,7 +1246,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var id = WorkItems.ModelData[0].Id;
 
-         var viewModel = ((ViewResult)_controller.Edit( id )).Model as WorkItemEditorViewModel;
+         var viewModel = ((PartialViewResult)_controller.Edit( id )).Model as WorkItemEditorViewModel;
 
          Assert.IsNull( viewModel.CallingAction );
          Assert.AreEqual( default( Guid ), viewModel.CallingId );
@@ -1258,7 +1258,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var modelId = WorkItems.ModelData[0].Id;
          var parentId = Guid.NewGuid();
 
-         var viewModel = ((ViewResult)_controller.Edit( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemEditorViewModel;
+         var viewModel = ((PartialViewResult)_controller.Edit( modelId, callingAction: "Edit", callingId: parentId.ToString() )).Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( "Edit", viewModel.CallingAction );
          Assert.AreEqual( parentId, viewModel.CallingId );
@@ -1272,7 +1272,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          var parentId = Guid.NewGuid();
 
          controller.Edit( id, callingAction: "Index" );
-         var viewModel = ((ViewResult)controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -1342,7 +1342,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          controller.Edit( id, callingAction: "Index" );
          controller.Edit( id, callingAction: "Edit", callingId: parentId.ToString() );
-         var viewModel = ((ViewResult)controller.Edit( id )).Model as ViewModelBase;
+         var viewModel = ((PartialViewResult)controller.Edit( id )).Model as ViewModelBase;
 
          var stack = controller.Session["NavigationStack"] as Stack<NavigationData>;
 
@@ -1363,7 +1363,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
       {
          var model = WorkItems.ModelData[3];
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var returnedModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( EditMode.Edit, returnedModel.Mode );
@@ -1376,7 +1376,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             && x.PointsRemaining != x.Points
             && x.PointsRemaining != 1 );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( model.Points, viewModel.Points );
@@ -1389,7 +1389,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
             && x.PointsRemaining != x.Points
             && x.PointsRemaining != 1 );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( model.PointsRemaining, viewModel.PointsRemaining );
@@ -1403,7 +1403,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var expectedPoints = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.Points );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( expectedPoints, viewModel.Points );
@@ -1417,7 +1417,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
 
          var expectedPointsRemaining = WorkItems.ModelData.Where( x => x.ParentWorkItem != null && x.ParentWorkItem.Id == model.Id ).Sum( x => x.PointsRemaining );
 
-         var result = _controller.Edit( model.Id ) as ViewResult;
+         var result = _controller.Edit( model.Id ) as PartialViewResult;
          var viewModel = result.Model as WorkItemEditorViewModel;
 
          Assert.AreEqual( expectedPointsRemaining, viewModel.PointsRemaining );

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using HomeScrum.Web.Models.Base;
 using Ninject.Extensions.Logging;
 using HomeScrum.Web.Controllers.Base;
+using HomeScrum.Web.Attributes;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -36,6 +37,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Users/
+      [ReleaseRequireHttps]
       public ActionResult Index()
       {
          var session = _sessionFactory.GetCurrentSession();
@@ -60,6 +62,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Users/Create
+      [ReleaseRequireHttps]
       public ActionResult Create( string callingAction = null, string callingId = null )
       {
          var viewModel = new CreateUserViewModel()
@@ -67,14 +70,17 @@ namespace HomeScrum.Web.Controllers
             Mode = EditMode.Create
          };
 
+         ViewBag.EditorTitle = "New User";
+
          UpdateNavigationStack( viewModel, null, callingAction, callingId );
 
-         return View( viewModel );
+         return PartialView( "_ModalEditor", viewModel );
       }
 
       //
       // POST: /Users/Create
       [HttpPost]
+      [ReleaseRequireHttps]
       public virtual ActionResult Create( CreateUserViewModel viewModel )
       {
          var session = _sessionFactory.GetCurrentSession();
@@ -92,14 +98,7 @@ namespace HomeScrum.Web.Controllers
                   {
                      session.Save( model );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = model.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToAction( "Index" );
                   }
                   else
                   {
@@ -124,29 +123,10 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Users/Edit/Guid
-      public ActionResult Details( Guid id, string callingAction = null, string callingId = null )
-      {
-         var session = _sessionFactory.GetCurrentSession();
-         using (var transaction = session.BeginTransaction())
-         {
-            var model = session.Get<User>( id );
-            if (model != null)
-            {
-               var viewModel = Mapper.Map<UserViewModel>( model );
-               transaction.Commit();
-               UpdateNavigationStack( viewModel, null, callingAction, callingId );
-               return View( viewModel );
-            }
-         }
-
-         return HttpNotFound();
-      }
-
-
-      //
-      // GET: /Users/Edit/Guid
+      [ReleaseRequireHttps]
       public ActionResult Edit( Guid id, string callingAction = null, string callingId = null )
       {
+         ViewBag.EditorTitle = "User";
          var session = _sessionFactory.GetCurrentSession();
          using (var transaction = session.BeginTransaction())
          {
@@ -157,7 +137,7 @@ namespace HomeScrum.Web.Controllers
                viewModel.Mode = EditMode.Edit;
                UpdateNavigationStack( viewModel, null, callingAction, callingId );
                transaction.Commit();
-               return View( viewModel );
+               return PartialView( "_ModalEditor", viewModel );
             }
          }
 
@@ -167,6 +147,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Users/Edit/5
       [HttpPost]
+      [ReleaseRequireHttps]
       public ActionResult Edit( EditUserViewModel viewModel )
       {
          var session = _sessionFactory.GetCurrentSession();
@@ -182,14 +163,7 @@ namespace HomeScrum.Web.Controllers
                   {
                      session.Update( model );
                      transaction.Commit();
-                     return RedirectToAction( "Edit",
-                        new
-                        {
-                           id = viewModel.Id.ToString(),
-                           callingController = viewModel.CallingController,
-                           callingAction = viewModel.CallingAction,
-                           callingId = viewModel.CallingId != Guid.Empty ? viewModel.CallingId.ToString() : null
-                        } );
+                     return RedirectToAction( "Index" );
                   }
                   else
                   {

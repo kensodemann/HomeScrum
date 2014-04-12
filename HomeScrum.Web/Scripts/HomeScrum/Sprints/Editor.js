@@ -79,6 +79,7 @@
       $("#SubmitButton").click(function () {
          $(".MainData:disabled").prop("disabled", false);
          $("form#Editor").submit();
+         return false;
       });
    }
 

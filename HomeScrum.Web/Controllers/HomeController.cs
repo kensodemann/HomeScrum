@@ -13,6 +13,7 @@ using System;
 using HomeScrum.Web.Extensions;
 using System.Security.Principal;
 using HomeScrum.Web.Models.Sprints;
+using HomeScrum.Web.Attributes;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -33,7 +34,7 @@ namespace HomeScrum.Web.Controllers
          _sessionFactory = sessionFactory;
       }
 
-
+      [ReleaseRequireHttps]
       public ActionResult Index( IPrincipal user )
       {
          var viewModel = new Snapshot()

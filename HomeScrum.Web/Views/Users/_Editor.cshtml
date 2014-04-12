@@ -1,79 +1,69 @@
 ﻿@model HomeScrum.Web.Models.Admin.UserEditorViewModel
 
-<h2>@ViewBag.Title</h2>
+@Html.ValidationSummary( true )
 
-@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
-{
-   @Html.ValidationSummary( true )
+<fieldset>
+   <legend class="hidden">User</legend>
 
-   <fieldset>
-      <legend class="hidden">User</legend>
+   <div class="form-group">
+      @Html.LabelFor( model => model.UserName, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-6">
+         @Html.TextBoxFor( model => model.UserName, new { @class = "form-control MainData" } )
+         @Html.ValidationMessageFor( model => model.UserName )
+      </div>
+   </div>
 
+   @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
+   @if (Model == null || Model.IsNewUser)
+   {
       <div class="form-group">
-         @Html.LabelFor( model => model.UserName, new { @class = "col-sm-2 control-label" } )
+         @Html.LabelFor( model => model.NewPassword, new { @class = "col-sm-2 control-label" } )
          <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.UserName, new { @class = "form-control MainData" } )
-            @Html.ValidationMessageFor( model => model.UserName )
+            @Html.PasswordFor( model => model.NewPassword, new { @class = "form-control MainData" } )
+            @Html.ValidationMessageFor( model => model.NewPassword )
          </div>
       </div>
 
-      @*If the Model is NULL, a new user is being created, and thus the password needs to be entered.*@
-      @if (Model == null || Model.IsNewUser)
-      {
-         <div class="form-group">
-            @Html.LabelFor( model => model.NewPassword, new { @class = "col-sm-2 control-label" } )
-            <div class="col-sm-6">
-               @Html.PasswordFor( model => model.NewPassword, new { @class = "form-control MainData" } )
-               @Html.ValidationMessageFor( model => model.NewPassword )
-            </div>
-         </div>
-
-         <div class="form-group">
-            @Html.LabelFor( model => model.ConfirmPassword, new { @class = "col-sm-2 control-label" } )
-            <div class="col-sm-6">
-               @Html.PasswordFor( model => model.ConfirmPassword, new { @class = "form-control MainData" } )
-               @Html.ValidationMessageFor( model => model.ConfirmPassword )
-            </div>
-         </div>
-      }
-
       <div class="form-group">
-         @Html.LabelFor( model => model.FirstName, new { @class = "col-sm-2 control-label" } )
+         @Html.LabelFor( model => model.ConfirmPassword, new { @class = "col-sm-2 control-label" } )
          <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.FirstName, new { @class = "form-control MainData" } )
-            @Html.ValidationMessageFor( model => model.FirstName )
+            @Html.PasswordFor( model => model.ConfirmPassword, new { @class = "form-control MainData" } )
+            @Html.ValidationMessageFor( model => model.ConfirmPassword )
          </div>
       </div>
+   }
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.MiddleName, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            <span>@Html.TextBoxFor( model => model.MiddleName, new { @class = "form-control MainData" } )</span>
-            @Html.ValidationMessageFor( model => model.MiddleName )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.FirstName, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-6">
+         @Html.TextBoxFor( model => model.FirstName, new { @class = "form-control MainData" } )
+         @Html.ValidationMessageFor( model => model.FirstName )
       </div>
+   </div>
 
-      <div class="form-group">
-         @Html.LabelFor( model => model.LastName, new { @class = "col-sm-2 control-label" } )
-         <div class="col-sm-6">
-            @Html.TextBoxFor( model => model.LastName, new { @class = "form-control MainData" } )
-            @Html.ValidationMessageFor( model => model.LastName )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.MiddleName, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-6">
+         <span>@Html.TextBoxFor( model => model.MiddleName, new { @class = "form-control MainData" } )</span>
+         @Html.ValidationMessageFor( model => model.MiddleName )
       </div>
+   </div>
 
-      <div class="form-group">
-         <div class="col-sm-offset-2 col-sm-6">
-            @Html.EditorFor( model => model.IsActive )
-            @Html.LabelFor( model => model.IsActive )
-            @Html.ValidationMessageFor( model => model.IsActive )
-         </div>
+   <div class="form-group">
+      @Html.LabelFor( model => model.LastName, new { @class = "col-sm-2 control-label" } )
+      <div class="col-sm-6">
+         @Html.TextBoxFor( model => model.LastName, new { @class = "form-control MainData" } )
+         @Html.ValidationMessageFor( model => model.LastName )
       </div>
-   </fieldset>
+   </div>
 
-   
-   @Html.Partial( "_EditorButtonArea", Model )
-}
+   <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-6">
+         @Html.EditorFor( model => model.IsActive )
+         @Html.LabelFor( model => model.IsActive )
+         @Html.ValidationMessageFor( model => model.IsActive )
+      </div>
+   </div>
+</fieldset>
 
-@section Scripts {
-   @Scripts.Render( "~/bundles/jqueryval" )
-}
+@Scripts.Render( "~/bundles/jqueryval" )

@@ -12,6 +12,7 @@ using NHibernate.Linq;
 using Ninject;
 using Ninject.Extensions.Logging;
 using HomeScrum.Data.Queries;
+using HomeScrum.Web.Attributes;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -39,6 +40,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/MyAssignments
+      [ReleaseRequireHttps]
       public ActionResult MyAssignments( System.Security.Principal.IPrincipal user )
       {
          var session = SessionFactory.GetCurrentSession();
@@ -53,6 +55,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/UnassignedBacklog
+      [ReleaseRequireHttps]
       public ActionResult UnassignedBacklog()
       {
          var session = SessionFactory.GetCurrentSession();
@@ -66,6 +69,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/UnassignedProblems
+      [ReleaseRequireHttps]
       public ActionResult UnassignedProblems()
       {
          var session = SessionFactory.GetCurrentSession();
@@ -79,6 +83,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /WorkItems/UnassignedTasks
+      [ReleaseRequireHttps]
       public ActionResult UnassignedTasks()
       {
          var session = SessionFactory.GetCurrentSession();
@@ -90,14 +95,16 @@ namespace HomeScrum.Web.Controllers
          return IndexView( query );
       }
 
-      
+
       //
       // GET: /WorkItem/Create
       public override ActionResult Create( string callingController = null, string callingAction = null, string callingId = null, string parentId = null )
       {
          Guid parsedId;
 
-         var view = base.Create( callingController, callingAction, callingId, parentId ) as ViewResult;
+         ViewBag.EditorTitle = "New Work Item";
+
+         var view = base.Create( callingController, callingAction, callingId, parentId ) as PartialViewResult;
          var model = (WorkItemEditorViewModel)view.Model;
 
          if (Guid.TryParse( parentId, out parsedId ))
@@ -123,7 +130,6 @@ namespace HomeScrum.Web.Controllers
          return view;
       }
 
-
       //
       // POST: /WorkItem/Create
       public override ActionResult Create( WorkItemEditorViewModel viewModel, System.Security.Principal.IPrincipal user )
@@ -136,7 +142,16 @@ namespace HomeScrum.Web.Controllers
       }
 
       //
+      // GET: /WorkItem/Edit/Id
+      public override ActionResult Edit( Guid id, string callingController = null, string callingAction = null, string callingId = null )
+      {
+         ViewBag.EditorTitle = "Work Item";
+         return base.Edit( id, callingController, callingAction, callingId );
+      }
+
+      //
       // GET: /WorkItems/RemoveParent/Id
+      [ReleaseRequireHttps]
       public virtual ActionResult RemoveParent( Guid id, string callingAction = null, string callingId = null )
       {
          var session = SessionFactory.GetCurrentSession();

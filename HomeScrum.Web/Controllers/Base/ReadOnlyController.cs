@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using HomeScrum.Common.Utility;
 using HomeScrum.Data.Domain;
+using HomeScrum.Web.Attributes;
 using HomeScrum.Web.Extensions;
 using HomeScrum.Web.Models.Base;
 using NHibernate;
@@ -38,6 +39,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/
+      [ReleaseRequireHttps]
       public virtual ActionResult Index()
       {
          Log.Debug( "Index()" );
@@ -62,6 +64,7 @@ namespace HomeScrum.Web.Controllers.Base
 
       //
       // GET: /ModelTs/Display/Guid
+      [ReleaseRequireHttps]
       public virtual ActionResult Details( Guid id, string callingController = null, string callingAction = null, string callingId = null )
       {
          ViewModelT viewModel;

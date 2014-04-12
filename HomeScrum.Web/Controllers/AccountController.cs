@@ -4,6 +4,7 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Web.Mvc;
 using WebMatrix.WebData;
+using HomeScrum.Web.Attributes;
 
 namespace HomeScrum.Web.Controllers
 {
@@ -24,6 +25,7 @@ namespace HomeScrum.Web.Controllers
       //
       // GET: /Account/Login
       [AllowAnonymous]
+      [ReleaseRequireHttps]
       public ActionResult Login( string returnUrl )
       {
          ViewBag.ReturnUrl = returnUrl;
@@ -35,6 +37,7 @@ namespace HomeScrum.Web.Controllers
       // POST: /Account/Login
       [HttpPost]
       [AllowAnonymous]
+      [ReleaseRequireHttps]
       [ValidateAntiForgeryToken]
       public ActionResult Login( LoginModel model, string returnUrl )
       {
@@ -64,6 +67,7 @@ namespace HomeScrum.Web.Controllers
 
       //
       // GET: /Account/Manage
+      [ReleaseRequireHttps]
       public ActionResult Manage( ManageMessageId? message )
       {
          ViewBag.StatusMessage =
@@ -79,6 +83,7 @@ namespace HomeScrum.Web.Controllers
       //
       // POST: /Account/Manage
       [HttpPost]
+      [ReleaseRequireHttps]
       [ValidateAntiForgeryToken]
       public ActionResult Manage( LocalPasswordModel model )
       {

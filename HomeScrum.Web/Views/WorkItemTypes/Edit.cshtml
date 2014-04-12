@@ -1,7 +1,10 @@
 ﻿@model HomeScrum.Web.Models.Admin.WorkItemTypeEditorViewModel
 
-@{
-    ViewBag.Title = "Edit Work Item Type";
-}
+<h2>Work Item Type</h2>
 
-@Html.Partial( "_Editor", Model )
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
+{
+   @Html.Partial( "_Editor", Model )
+
+   @Html.Partial( "_EditorButtonArea", Model )
+}

@@ -1,5 +1,8 @@
 ﻿@model HomeScrum.Web.Models.WorkItems.WorkItemViewModel
 
+<div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
 @Html.Partial( "_DomainObjectBaseDetails", Model )
 
 <fieldset>
@@ -93,7 +96,9 @@
    </div>
 }
 
-@Html.ActionLink( "Edit", "Edit", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() }, new { @class = "btn btn-primary" } )
+@Html.ActionLink( "Edit", "Edit",
+   new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() },
+   new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
 @Html.ActionLink( "Add New Task", "Create", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString(), parentId = Model.Id.ToString() },
    new { id = "AddNewButton", @class = "btn btn-default" } )
 @Html.ActionLink( "Close", Model.CallingAction ?? "Index", Model.CallingController,

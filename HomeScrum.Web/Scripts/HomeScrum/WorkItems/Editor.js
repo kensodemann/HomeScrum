@@ -257,6 +257,8 @@
    function SetupSubmitButton() {
       $("#SubmitButton").click(function () {
          EnableInputs();
+         $("form#Editor").submit();
+         return false;
       });
    }
 

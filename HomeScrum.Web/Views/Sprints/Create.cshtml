@@ -1,7 +1,10 @@
 ﻿@model HomeScrum.Web.Models.Sprints.SprintEditorViewModel
 
-@{
-    ViewBag.Title = "Create Sprint";
-}
+<h2>New Sprint</h2>
 
-@Html.Partial( "_Editor", Model )
+@using (Html.BeginForm( null, null, null, FormMethod.Post, new { id = "Editor", @class = "form-horizontal", role = "form" } ))
+{
+   @Html.Partial( "_Editor", Model )
+
+   @Html.Partial( "_EditorButtonArea", Model )
+}
