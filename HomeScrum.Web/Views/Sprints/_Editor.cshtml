@@ -91,4 +91,8 @@
    $(document).ready(function () {
       Editor.init();
    });
+
+   $('.modal').on('shown.bs.modal', function () {
+      $('#Name').focus();
+   });
 </script>
