@@ -100,7 +100,7 @@
    new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString() },
    new { @class = "btn btn-primary", data_target = "#modalEditor", data_toggle = "modal" } )
 @Html.ActionLink( "Add New Task", "Create", new { id = Model.Id, callingAction = "Details", callingId = Model.Id.ToString(), parentId = Model.Id.ToString() },
-   new { id = "AddNewButton", @class = "btn btn-default" } )
+      new { id = "AddNewButton", @class = "btn btn-default", data_target = "#modalEditor", data_toggle = "modal" } )
 @Html.ActionLink( "Close", Model.CallingAction ?? "Index", Model.CallingController,
    (Model.CallingId != default( Guid )) ? new { id = Model.CallingId.ToString() } : null, null )
 
@@ -109,5 +109,11 @@
 <script>
    $(document).ready(function () {
       Details.init();
+
+      $.ajaxSetup({ cache: false });
+
+      $('.modal').on('hidden.bs.modal', function () {
+         $(this).removeData('bs.modal');
+      });
    });
 </script>

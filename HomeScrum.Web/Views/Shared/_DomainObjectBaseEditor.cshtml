@@ -6,7 +6,7 @@
    <div class="form-group">
       @Html.LabelFor( model => model.Name, new { @class = "col-sm-2 control-label" } )
       <div class="col-sm-10">
-         @Html.TextBoxFor( model => model.Name, new { @class = "MainData form-control" } )
+         @Html.TextBoxFor( model => model.Name, new { @class = "MainData form-control", autofocus = true } )
          @Html.ValidationMessageFor( model => model.Name )
       </div>
    </div>
@@ -19,3 +19,9 @@
       </div>
    </div>
 </fieldset>
+
+<script type="text/javascript">
+   $('.modal').on('shown.bs.modal', function () {
+      $('#Name').focus();
+   })
+</script>

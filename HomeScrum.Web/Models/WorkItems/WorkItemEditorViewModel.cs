@@ -76,9 +76,11 @@ namespace HomeScrum.Web.Models.WorkItems
       }
 
       [Display( Name = "EstimatedPoints", ResourceType = typeof( DisplayStrings ) )]
+      [Range( 1, 12 )]
       public int Points { get; set; }
 
       [Display( Name = "PointsRemaining", ResourceType = typeof( DisplayStrings ) )]
+      [Range( 0, 12 )]
       public int PointsRemaining { get; set; }
 
       public EditMode Mode { get; set; }
