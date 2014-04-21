@@ -45,16 +45,6 @@ namespace HomeScrum.Data.Domain
       {
          _objectName = "Sprint";
       }
-
-      protected override void PerformModelValidations()
-      {
-         base.PerformModelValidations();
-
-         if (_sessionFactory != null)
-         {
-            var session = _sessionFactory.GetCurrentSession();
-         }
-      }
       #endregion
    }
 }
