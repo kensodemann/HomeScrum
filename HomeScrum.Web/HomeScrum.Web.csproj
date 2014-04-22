@@ -379,6 +379,7 @@
     <Content Include="Content\Detail.css" />
     <Content Include="Content\HeaderFooter.css" />
     <Content Include="Content\SignIn.css" />
+    <Content Include="Content\bootstrap-spacelab.css" />
     <Content Include="Content\themes\redmond\images\animated-overlay.gif" />
     <Content Include="Content\themes\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
