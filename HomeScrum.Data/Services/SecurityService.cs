@@ -9,9 +9,6 @@ namespace HomeScrum.Data.Services
 {
    public class SecurityService : ISecurityService
    {
-      //[Inject]
-      //public SecurityService() { }
-
       public SecurityService( ILogger logger, ISessionFactory sessionFactory )
       {
          _logger = logger;
