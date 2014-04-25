@@ -45,14 +45,12 @@
    }
 
    function SetupDates() {
-      $("#StartDate").datepicker({
-         changeMonth: true,
-         changeYear: true
+      $("#StartDate").datetimepicker({
+         pickTime: false
       });
 
-      $("#EndDate").datepicker({
-         changeMonth: true,
-         changeYear: true
+      $("#EndDate").datetimepicker({
+         pickTime: false
       });
    }
 
