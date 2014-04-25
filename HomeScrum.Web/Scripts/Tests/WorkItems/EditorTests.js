@@ -256,27 +256,13 @@ test('Points Remaining hidden on type change items that can have child tasks', f
 });
 
 // Points and Points Remaining Values
-test('Points Min and Max 1 and 12', function () {
-   Editor.init();
-   strictEqual($("#Points").spinner("option", "min"), 1);
-   strictEqual($("#Points").spinner("option", "max"), 12);
-});
-
-test('Points Remaining Min and Max 0 and Points Value', function () {
-   $("#Points").val(8);
-   Editor.init();
-   strictEqual($("#PointsRemaining").spinner("option", "min"), 0);
-   strictEqual($("#PointsRemaining").spinner("option", "max"), 8);
-});
-
-test('Points Remaining Max And Value are Points Value on Points Value Change', function () {
+test('Points Remaining Value is Points Value on Points Value Change', function () {
    $("#Points").val(8);
    $("#PointsRemaining").val(2);
    Editor.init();
    $("#Points").val(4);
    $("#Points").change();
-   strictEqual($("#PointsRemaining").spinner("option", "max"), 4);
-   strictEqual($("#PointsRemaining").spinner("value"), 4);
+   equal($("#PointsRemaining").val(), 4);
 });
 
 test('Points Remaining set to zero on status change if status not open', function () {
@@ -286,7 +272,7 @@ test('Points Remaining set to zero on status change if status not open', functio
    Editor.init();
    $("#selStatus").attr("data-IsOpenStatus", "False");
    $("#StatusId").change();
-   strictEqual($("#PointsRemaining").spinner("value"), 0);
+   equal($("#PointsRemaining").val(), 0);
 });
 
 

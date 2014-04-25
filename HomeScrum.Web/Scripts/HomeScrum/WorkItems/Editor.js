@@ -159,23 +159,23 @@
 
    function SetPointsAccess() {
       if (WorkStartedOnWorkItem()) {
-         $("#Points").spinner("disable");
+         $("#Points").prop("disabled", true);
       } else {
-         $("#Points").spinner("enable");
+         $("#Points").prop("disabled", false);
       }
    }
 
    function SetPointsRemainingAccess() {
       if (WorkItemIsClosed()) {
-         $("#PointsRemaining").spinner("disable");
+         $("#PointsRemaining").prop("disabled", true);
       } else {
-         $("#PointsRemaining").spinner("enable");
+         $("#PointsRemaining").prop("disabled", false);
       }
    }
 
    function ClosePointsRemainingIfStatusIsClosed() {
       if (WorkItemIsClosed()) {
-         $("#PointsRemaining").spinner("value", 0);
+         $("#PointsRemaining").val(0);
       }
    }
 
@@ -230,16 +230,8 @@
       });
    }
 
-   function SetupPointsSpinners() {
+   function SetupPointsInputs() {
       var points = $("#Points").val();
-      $("#Points").spinner({
-         min: 1,
-         max: 12,
-         stop: function () {
-            SyncPointsRemaining();
-         },
-      });
-      $("#PointsRemaining").spinner({ min: 0, max: points });
       SetPointsAccess();
       SetPointsRemainingAccess();
 
@@ -250,8 +242,7 @@
 
    function SyncPointsRemaining() {
       var points = $("#Points").val();
-      $("#PointsRemaining").spinner("option", "max", points);
-      $("#PointsRemaining").spinner("value", points);
+      $("#PointsRemaining").val(points)
    }
 
    function SetupSubmitButton() {
@@ -263,8 +254,8 @@
    }
 
    function EnableInputs() {
-      $("#Points").spinner("enable");
-      $("#PointsRemaining").spinner("enable");
+      $("#Points").prop("disabled", false);
+      $("#PointsRemaining").prop("disabled", false);
       $(".MainData:disabled").prop("disabled", false);
    }
 
@@ -276,7 +267,7 @@
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
 
-      SetupPointsSpinners();
+      SetupPointsInputs();
 
       SetupSubmitButton();
 
