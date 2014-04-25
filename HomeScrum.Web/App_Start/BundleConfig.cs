@@ -25,6 +25,8 @@ namespace HomeScrum.Web
             .Include( "~/Scripts/jquery.storage.js" )
             .Include( "~/Scripts/jquery-ui-{version}.js" )
             .Include( "~/Scripts/Bootstrap.js" )
+            .Include( "~/Scripts/moment.js" )
+            .Include( "~/Scripts/bootstrap-datetimepicker.js" )
             .Include( "~/Scripts/knockout-{version}.js" ) );
 
          bundles.Add( new ScriptBundle( "~/bundles/jqueryDataTables" )
@@ -57,7 +59,8 @@ namespace HomeScrum.Web
             .Include( "~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" ) );
 
          bundles.Add( new StyleBundle( "~/Content/css" )
-            .Include("~/Content/Bootstrap-spacelab.css")
+            .Include( "~/Content/Bootstrap-spacelab.css" )
+            .Include( "~/Content/Bootstrap-datetimepicker.css" )
             .Include( "~/Content/dataTables.bootstrap.css" )
             .Include( "~/Content/Site.css" )
             .Include( "~/Content/Editor.css" )
