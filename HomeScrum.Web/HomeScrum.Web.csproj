@@ -533,6 +533,10 @@
     <Content Include="Scripts\knockout-3.0.0.debug.js" />
     <Content Include="Scripts\knockout-3.0.0.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
+    <Content Include="Scripts\moment-with-langs.js" />
+    <Content Include="Scripts\moment-with-langs.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\Tests\qunit\qunit-composite.css" />
     <Content Include="Scripts\Tests\qunit\qunit-composite.js" />
     <Content Include="Scripts\Tests\runAllTests.html" />
