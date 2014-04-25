@@ -59,6 +59,7 @@ namespace HomeScrum.Web
             .Include( "~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css" ) );
 
          bundles.Add( new StyleBundle( "~/Content/css" )
+            .Include( "~/Content/Bootstrap.css" )
             .Include( "~/Content/Bootstrap-spacelab.css" )
             .Include( "~/Content/Bootstrap-datetimepicker.css" )
             .Include( "~/Content/dataTables.bootstrap.css" )
