@@ -20,9 +20,9 @@
       <dt>@Html.DisplayNameFor( model => model.ProjectName )</dt>
       <dd>@Html.DisplayFor( model => model.ProjectName )</dd>
       <dt>@Html.DisplayNameFor( model => model.StartDate )</dt>
-      <dd>@Html.DisplayFor( model => model.StartDate )</dd>
+      <dd>@String.Format( "{0:d}", Model.StartDate )</dd>
       <dt>@Html.DisplayNameFor( model => model.EndDate )</dt>
-      <dd>@Html.DisplayFor( model => model.EndDate )</dd>
+      <dd>@String.Format( "{0:d}", Model.EndDate )</dd>
       <dt>@Html.DisplayNameFor( model => model.StatusName )</dt>
       <dd>@Html.DisplayFor( model => model.StatusName )</dd>
       <dt>@Html.DisplayNameFor( model => model.Capacity )</dt>
