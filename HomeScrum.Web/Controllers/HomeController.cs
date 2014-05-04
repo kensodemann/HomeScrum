@@ -79,7 +79,7 @@ namespace HomeScrum.Web.Controllers
             .Select( x => new DomainObjectViewModel()
             {
                Id = x.WorkItem.Id,
-               Name = x.WorkItem.Name,
+               Name = x.WorkItem.Name + " (" + x.WorkItem.Project.Name + ")",
                Description = x.WorkItem.Description
             } )
             .ToList();
@@ -93,11 +93,17 @@ namespace HomeScrum.Web.Controllers
 
          var data = session.Query<WorkItemHistory>()
             .Where( x => x.LastModifiedUser.Id == userId )
-            .GroupBy( x => new { x.WorkItem.Id, x.WorkItem.Name, x.WorkItem.Description } )
+            .GroupBy( x => new
+            { 
+               Id = x.WorkItem.Id,
+               Name = x.WorkItem.Name,
+               ProjectName = x.WorkItem.Project.Name,
+               Description = x.WorkItem.Description
+            } )
             .Select( g => new
             {
                Id = g.Key.Id,
-               Name = g.Key.Name,
+               Name = g.Key.Name + " (" + g.Key.ProjectName + ")",
                Description = g.Key.Description,
                HistoryDate = g.Max( x => x.HistoryTimestamp )
             } ).ToList();
