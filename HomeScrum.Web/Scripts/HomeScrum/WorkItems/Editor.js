@@ -27,6 +27,27 @@
       }
    }
 
+   function ShowHideSprints() {
+      var selectedProjectId = $("#ProjectId").val();
+      ShowAllSprints();
+      if (selectedProjectId !== "00000000-0000-0000-0000-000000000000") {
+         HideOtherProjectSprints(selectedProjectId);
+      }
+   }
+
+   function ShowAllSprints() {
+      $("#SprintId option").each(function (i, e) {
+         if ($(e).parent().is('span')) {
+            $(e).unwrap();
+         }
+      });
+   }
+
+   function HideOtherProjectSprints(id) {
+      var domQuery = "#SprintId option[data-projectId != '00000000-0000-0000-0000-000000000000'][data-projectId != '" + id + "']";
+      $(domQuery).wrap('<span>');
+   }
+
    function ShowHideDataItems(effect) {
       ShowHideParentWorkItem(effect);
       ShowHideAssignedUser(effect);
@@ -230,6 +251,12 @@
       });
    }
 
+   function SetupProjectSlectList() {
+      $("#ProjectId").change(function () {
+         ShowHideSprints();
+      });
+   }
+
    function SetupPointsInputs() {
       var points = $("#Points").val();
       SetPointsAccess();
@@ -261,11 +288,13 @@
 
    var init = function () {
       ShowHideDataItems();
+      ShowHideSprints();
 
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
+      SetupProjectSlectList();
 
       SetupPointsInputs();
 
