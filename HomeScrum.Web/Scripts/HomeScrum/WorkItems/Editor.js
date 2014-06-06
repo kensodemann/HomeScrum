@@ -27,6 +27,27 @@
       }
    }
 
+   function ShowHideSprints() {
+      var selectedProjectId = $("#ProjectId").val();
+      ShowAllSprints();
+      if (selectedProjectId !== "00000000-0000-0000-0000-000000000000") {
+         HideOtherProjectSprints(selectedProjectId);
+      }
+   }
+
+   function ShowAllSprints() {
+      $("#SprintId option").each(function (i, e) {
+         if ($(e).parent().is('span')) {
+            $(e).unwrap();
+         }
+      });
+   }
+
+   function HideOtherProjectSprints(id) {
+      var domQuery = "#SprintId option[data-projectId != '00000000-0000-0000-0000-000000000000'][data-projectId != '" + id + "']";
+      $(domQuery).wrap('<span>');
+   }
+
    function ShowHideDataItems(effect) {
       ShowHideParentWorkItem(effect);
       ShowHideAssignedUser(effect);
@@ -159,23 +180,23 @@
 
    function SetPointsAccess() {
       if (WorkStartedOnWorkItem()) {
-         $("#Points").spinner("disable");
+         $("#Points").prop("disabled", true);
       } else {
-         $("#Points").spinner("enable");
+         $("#Points").prop("disabled", false);
       }
    }
 
    function SetPointsRemainingAccess() {
       if (WorkItemIsClosed()) {
-         $("#PointsRemaining").spinner("disable");
+         $("#PointsRemaining").prop("disabled", true);
       } else {
-         $("#PointsRemaining").spinner("enable");
+         $("#PointsRemaining").prop("disabled", false);
       }
    }
 
    function ClosePointsRemainingIfStatusIsClosed() {
       if (WorkItemIsClosed()) {
-         $("#PointsRemaining").spinner("value", 0);
+         $("#PointsRemaining").val(0);
       }
    }
 
@@ -230,16 +251,14 @@
       });
    }
 
-   function SetupPointsSpinners() {
-      var points = $("#Points").val();
-      $("#Points").spinner({
-         min: 1,
-         max: 12,
-         stop: function () {
-            SyncPointsRemaining();
-         },
+   function SetupProjectSlectList() {
+      $("#ProjectId").change(function () {
+         ShowHideSprints();
       });
-      $("#PointsRemaining").spinner({ min: 0, max: points });
+   }
+
+   function SetupPointsInputs() {
+      var points = $("#Points").val();
       SetPointsAccess();
       SetPointsRemainingAccess();
 
@@ -250,8 +269,7 @@
 
    function SyncPointsRemaining() {
       var points = $("#Points").val();
-      $("#PointsRemaining").spinner("option", "max", points);
-      $("#PointsRemaining").spinner("value", points);
+      $("#PointsRemaining").val(points)
    }
 
    function SetupSubmitButton() {
@@ -263,20 +281,22 @@
    }
 
    function EnableInputs() {
-      $("#Points").spinner("enable");
-      $("#PointsRemaining").spinner("enable");
+      $("#Points").prop("disabled", false);
+      $("#PointsRemaining").prop("disabled", false);
       $(".MainData:disabled").prop("disabled", false);
    }
 
    var init = function () {
       ShowHideDataItems();
+      ShowHideSprints();
 
       SetupStatusSelectList();
       SetupWorkItemTypeSelectList();
       SetupParentWorkItemSelectList();
       SetupSprintSelectList();
+      SetupProjectSlectList();
 
-      SetupPointsSpinners();
+      SetupPointsInputs();
 
       SetupSubmitButton();
 

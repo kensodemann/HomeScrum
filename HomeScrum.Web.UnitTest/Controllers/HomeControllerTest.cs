@@ -193,7 +193,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          for (var i = 0; i < 5; i++)
          {
             Assert.AreEqual( expected[i].WorkItem.Id, actual[i].Id );
-            Assert.AreEqual( expected[i].WorkItem.Name, actual[i].Name );
+            Assert.AreEqual( expected[i].WorkItem.FullName() , actual[i].Name );
          }
       }
 
@@ -218,7 +218,7 @@ namespace HomeScrum.Web.UnitTest.Controllers
          {
             var workItem = WorkItems.ModelData.Single( x => x.Id == expected[i].Id );
             Assert.AreEqual( workItem.Id, actual[i].Id );
-            Assert.AreEqual( workItem.Name, actual[i].Name );
+            Assert.AreEqual( workItem.FullName(), actual[i].Name );
          }
       }
 
@@ -248,4 +248,14 @@ namespace HomeScrum.Web.UnitTest.Controllers
          }
       }
    }
+
+
+   static internal class WorkItemHistoryTestExtensions
+   {
+      static public String FullName( this WorkItem workItem )
+      {
+         return workItem.Name + " (" + workItem.Project.Name + ")";
+      }
+   }
+
 }

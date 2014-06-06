@@ -4,6 +4,9 @@
    <thead>
       <tr>
          <th class="DataColumn">
+            @Html.DisplayNameFor( model => model.ProjectName )
+         </th>
+         <th class="DataColumn">
             @Html.DisplayNameFor( model => model.WorkItemTypeName )
          </th>
          <th class="DescriptiveText">
@@ -25,6 +28,9 @@
          var points = item.PointsRemaining.ToString() + "/" + item.Points.ToString();
 
          <tr id="@Html.AttributeEncode( item.Id.ToString() )" class="@rowClass">
+            <td class="DataColumn">
+               @Html.DisplayFor( modelItem => item.ProjectName )
+            </td>
             <td class="DataColumn">
                @Html.DisplayFor( modelItem => item.WorkItemTypeName )
             </td>

@@ -45,32 +45,24 @@
    }
 
    function SetupDates() {
-      $("#StartDate").datepicker({
-         changeMonth: true,
-         changeYear: true
+      $("#StartDate").datetimepicker({
+         pickTime: false
       });
 
-      $("#EndDate").datepicker({
-         changeMonth: true,
-         changeYear: true
+      $("#EndDate").datetimepicker({
+         pickTime: false
       });
    }
 
    function SetupCapacity() {
-      $("#Capacity").spinner({
-         min: 1,
-         max: 32767,
-      });
       SetCapacityAccess();
    }
 
    function SetCapacityAccess() {
       var c = $("#Capacity");
       if (BacklogIsClosed()) {
-         c.spinner("disable");
          c.prop("disabled", true);
       } else {
-         c.spinner("enable");
          c.prop("disabled", false);
       }
    }

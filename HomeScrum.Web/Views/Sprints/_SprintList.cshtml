@@ -39,11 +39,11 @@
             <td>
                @Html.DisplayFor( modelItem => item.StatusName )
             </td>
-            <td>
-               @Html.DisplayFor( modelItem => item.StartDate )
+            <td class="text-center">
+               @String.Format( "{0:d}", item.StartDate )
             </td>
-            <td>
-               @Html.DisplayFor( modelItem => item.EndDate )
+            <td class="text-center">
+               @String.Format( "{0:d}", item.EndDate )
             </td>
          </tr>
       }

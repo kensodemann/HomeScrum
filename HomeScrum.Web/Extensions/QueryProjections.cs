@@ -133,6 +133,7 @@ namespace HomeScrum.Web.Extensions
             Name = x.Name,
             WorkItemTypeName = x.WorkItemType.Name,
             StatusName = x.Status.Name,
+            ProjectName = x.Project.Name,
             IsComplete = x.Status.Category == WorkItemStatusCategory.Complete,
             Points = (x.WorkItemType.Category == 0 ? (x.Tasks.Count() == 0 ? 0 : x.Tasks.Sum( t => t.Points )) : x.Points),
             PointsRemaining = (x.WorkItemType.Category == 0 ? (x.Tasks.Count() == 0 ? 0 : x.Tasks.Sum( t => t.PointsRemaining )) : x.PointsRemaining)
